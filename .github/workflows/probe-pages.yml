@@ -1,0 +1,27 @@
+name: Probe Pages deployment
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Inspect GitHub Pages API and public endpoint
+        shell: bash
+        run: |
+          set -u
+          echo '=== GitHub Pages API ==='
+          curl --silent --show-error --location \
+            --header 'Accept: application/vnd.github+json' \
+            --write-out '\nHTTP_STATUS=%{http_code}\n' \
+            https://api.github.com/repos/TomasOrtega/CapacityAtlas/pages || true
+          echo '=== Public endpoint ==='
+          curl --silent --show-error --location \
+            --max-time 30 \
+            --write-out '\nHTTP_STATUS=%{http_code}\n' \
+            https://tomasortega.github.io/CapacityAtlas/ | head -n 30 || true
