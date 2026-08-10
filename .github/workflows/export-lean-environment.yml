@@ -1,0 +1,31 @@
+name: Export Lean environment
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    if: github.head_ref == 'agent/audit-and-complete-bsc'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: lean
+          build: true
+          use-mathlib-cache: true
+      - name: Package source, dependencies, and toolchain
+        run: |
+          tar --zstd -cf "$RUNNER_TEMP/capacity-atlas-lean-env.tar.zst" \
+            -C "$GITHUB_WORKSPACE" lean \
+            -C "$HOME/.elan/toolchains" leanprover--lean4---v4.32.0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: capacity-atlas-lean-env
+          path: ${{ runner.temp }}/capacity-atlas-lean-env.tar.zst
+          compression-level: 0
+          retention-days: 1
