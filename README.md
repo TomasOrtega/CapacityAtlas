@@ -70,14 +70,15 @@ See [docs/lean.md](docs/lean.md) and
 
 ## Discussions
 
-GitHub Discussions is enabled. Each problem page links to a stable search and a
-prefilled new thread using `capacityatlas:<problem-id>`. The repository and
-`General` category GraphQL IDs are pinned in `data/site.yaml`.
+GitHub Discussions and giscus are enabled. Every problem page embeds the thread
+identified by `capacityatlas:<problem-id>`, with strict matching so that titles
+or routes can change without detaching the conversation. The page also retains
+direct links to find or start the same Discussion on GitHub.
 
-The inline giscus embed is intentionally disabled because the giscus GitHub App
-is not currently installed on the repository. After installation, set
-`social.giscus.enabled` to `true`; no other identifiers need to be discovered.
-Until then, all discussion links on the website work directly through GitHub.
+The repository and `General` category GraphQL IDs are pinned in
+`data/site.yaml`. Discussion content, identities, reactions, edits, and
+moderation remain entirely in GitHub; the static website has no comment database
+or account system.
 
 See [docs/discussions.md](docs/discussions.md).
 
