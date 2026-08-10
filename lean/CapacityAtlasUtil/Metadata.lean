@@ -47,7 +47,7 @@ initialize capacityProblemAttr : ParametricAttribute String ←
     getParam := fun _ stx =>
       match stx with
       | `(attr| capacity_problem $problemId:str) => pure problemId.getString
-      | _ => throwUnsupportedSyntax
+      | _ => throwError "invalid `capacity_problem` attribute syntax"
   }
 
 /-- Marks a channel- or problem-specific definition. -/
