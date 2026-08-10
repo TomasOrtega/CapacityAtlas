@@ -111,6 +111,34 @@ theorem sum_mass_mul_apply_mul_apply (w f g : α → ℝ)
       · intro k hk
         simp [h, hk.1, hk.2, hw]
 
+/-- The second moment of a sum of centered coordinate observables is the sum of
+its coordinate second moments. -/
+@[capacity_shared_api]
+theorem sum_mass_mul_centered_sum_sq (w : α → ℝ) (f : ι → α → ℝ)
+    (hw : ∑ a, w a = 1) (hmean : ∀ i, mean w (f i) = 0) :
+    ∑ x : ι → α, mass w x * (∑ i, f i (x i)) ^ 2 =
+      ∑ i, mean w (fun a => (f i a) ^ 2) := by
+  calc
+    ∑ x : ι → α, mass w x * (∑ i, f i (x i)) ^ 2 =
+        ∑ x : ι → α, ∑ i, ∑ j, mass w x * (f i (x i) * f j (x j)) := by
+          apply Fintype.sum_congr
+          intro x
+          simp only [pow_two, ← mul_assoc, Finset.mul_sum, Finset.sum_mul]
+    _ = ∑ i, ∑ j, ∑ x : ι → α, mass w x * (f i (x i) * f j (x j)) := by
+      rw [Finset.sum_comm]
+      apply Fintype.sum_congr
+      intro i
+      rw [Finset.sum_comm]
+    _ = ∑ i, mean w (fun a => (f i a) ^ 2) := by
+      apply Fintype.sum_congr
+      intro i
+      rw [Fintype.sum_eq_single i]
+      · simpa only [pow_two] using
+          sum_mass_mul_apply w (fun a => f i a * f i a) hw i
+      · intro j hji
+        rw [sum_mass_mul_apply_mul_apply w (f i) (f j) hw (Ne.symm hji)]
+        simp [hmean]
+
 end FiniteProductProbability
 
 end CapacityAtlas
