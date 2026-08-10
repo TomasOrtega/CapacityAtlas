@@ -31,30 +31,31 @@ theorem xor_apply {n : ℕ} (x y : BinaryWord n) (i : Fin n) :
 @[simp, capacity_shared_api]
 theorem xor_self {n : ℕ} (x : BinaryWord n) : xor x x = fun _ => false := by
   funext i
-  cases x i <;> simp [xor]
+  cases hx : x i <;> simp [xor, hx]
 
 @[simp, capacity_shared_api]
 theorem xor_false_right {n : ℕ} (x : BinaryWord n) :
     xor x (fun _ => false) = x := by
   funext i
-  cases x i <;> simp [xor]
+  cases hx : x i <;> simp [xor, hx]
 
 @[simp, capacity_shared_api]
 theorem xor_false_left {n : ℕ} (x : BinaryWord n) :
     xor (fun _ => false) x = x := by
   funext i
-  cases x i <;> simp [xor]
+  cases hx : x i <;> simp [xor, hx]
 
 @[capacity_shared_api]
 theorem xor_comm {n : ℕ} (x y : BinaryWord n) : xor x y = xor y x := by
   funext i
-  cases x i <;> cases y i <;> simp [xor]
+  cases hx : x i <;> cases hy : y i <;> simp [xor, hx, hy]
 
 @[capacity_shared_api]
 theorem xor_assoc {n : ℕ} (x y z : BinaryWord n) :
     xor (xor x y) z = xor x (xor y z) := by
   funext i
-  cases x i <;> cases y i <;> cases z i <;> simp [xor]
+  cases hx : x i <;> cases hy : y i <;> cases hz : z i <;>
+    simp [xor, hx, hy, hz]
 
 /-- Translation by a word is an involutive permutation of the Boolean cube. -/
 @[capacity_shared_api]
@@ -63,10 +64,10 @@ def xorEquiv {n : ℕ} (x : BinaryWord n) : BinaryWord n ≃ BinaryWord n where
   invFun := xor x
   left_inv y := by
     funext i
-    cases x i <;> cases y i <;> simp [xor]
+    cases hx : x i <;> cases hy : y i <;> simp [xor, hx, hy]
   right_inv y := by
     funext i
-    cases x i <;> cases y i <;> simp [xor]
+    cases hx : x i <;> cases hy : y i <;> simp [xor, hx, hy]
 
 /-- Number of one-bits in a binary word. -/
 @[capacity_shared_api]
