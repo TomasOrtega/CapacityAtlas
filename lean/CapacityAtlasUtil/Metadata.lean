@@ -30,10 +30,6 @@ open Lean
 namespace Lean.Parser.Attr
 
 syntax (name := capacityProblem) "capacity_problem" str : attr
-syntax (name := capacityDefinition) "capacity_definition" : attr
-syntax (name := capacityStatement) "capacity_statement" : attr
-syntax (name := capacityShortProof) "capacity_short_proof" : attr
-syntax (name := capacitySharedApi) "capacity_shared_api" : attr
 
 end Lean.Parser.Attr
 
@@ -52,18 +48,18 @@ initialize capacityProblemAttr : ParametricAttribute String ←
 
 /-- Marks a channel- or problem-specific definition. -/
 initialize capacityDefinitionAttr : TagAttribute ←
-  registerTagAttribute `capacityDefinition "Capacity Atlas problem definition."
+  registerTagAttribute `capacity_definition "Capacity Atlas problem definition."
 
 /-- Marks the canonical proposition representing a capacity problem. -/
 initialize capacityStatementAttr : TagAttribute ←
-  registerTagAttribute `capacityStatement "Canonical Capacity Atlas problem statement."
+  registerTagAttribute `capacity_statement "Canonical Capacity Atlas problem statement."
 
 /-- Marks a short proof retained in the registry as a test or compact result. -/
 initialize capacityShortProofAttr : TagAttribute ←
-  registerTagAttribute `capacityShortProof "Short proof retained in Capacity Atlas."
+  registerTagAttribute `capacity_short_proof "Short proof retained in Capacity Atlas."
 
 /-- Marks reusable information-theory infrastructure intended for possible upstreaming. -/
 initialize capacitySharedApiAttr : TagAttribute ←
-  registerTagAttribute `capacitySharedApi "Reusable Capacity Atlas API declaration."
+  registerTagAttribute `capacity_shared_api "Reusable Capacity Atlas API declaration."
 
 end CapacityAtlas.Metadata
