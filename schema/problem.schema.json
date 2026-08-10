@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://tomasortega.github.io/CapacityAtlas/api/problem.schema.json",
+  "$id": "https://capacityatlas.org/api/problem.schema.json",
   "title": "Capacity Atlas problem",
   "type": "object",
   "additionalProperties": false,
