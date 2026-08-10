@@ -35,7 +35,7 @@ make check
 make serve
 ```
 
-Then open `http://localhost:8000`. The production site uses `/CapacityAtlas` as its base path, while a local build defaults to root-relative links.
+Then open `http://localhost:8000`. Both local development and the production custom domain use root-relative links.
 
 To check the Lean library:
 
@@ -74,9 +74,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/data-model.md](docs/data-model.
 
 ## Deployment
 
-The `ci.yml` workflow builds and deploys the static site from `main`. The repository needs GitHub Pages configured with **GitHub Actions** as its source. No database, server process, or secret is required.
+The `ci.yml` workflow builds and deploys the static site from `main`. The repository uses GitHub Pages with **GitHub Actions** as its source and `capacityatlas.org` as its custom domain. The generator writes `dist/CNAME` from `data/site.yaml`, so the domain configuration stays version controlled. No database, server process, or deployment secret is required.
 
-The expected public URL is <https://tomasortega.github.io/CapacityAtlas/>.
+The public site is <https://capacityatlas.org/>.
 
 ## Scope
 
