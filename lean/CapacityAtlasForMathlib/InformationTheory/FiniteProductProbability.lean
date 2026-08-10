@@ -45,7 +45,9 @@ theorem sum_mass_mul_prod (w : α → ℝ) (h : ι → α → ℝ) :
           apply Fintype.sum_congr
           intro x
           simp only [mass, Finset.prod_mul_distrib]
-    _ = ∏ i, ∑ a, w a * h i a := (Fintype.prod_sum _).symm
+    _ = ∏ i, ∑ a, w a * h i a := by
+      simpa only using
+        (Fintype.prod_sum (fun i a => w a * h i a)).symm
 
 /-- A coordinate has its prescribed one-coordinate expectation. -/
 @[capacity_shared_api]
