@@ -4,7 +4,6 @@ description: Capacity Atlas records precise channel models, exact capacities, be
 repository: TomasOrtega/CapacityAtlas
 repository_url: https://github.com/TomasOrtega/CapacityAtlas
 canonical_url: https://capacityatlas.org
-custom_domain: capacityatlas.org
 base_url: ""
 license: MIT
 social:
