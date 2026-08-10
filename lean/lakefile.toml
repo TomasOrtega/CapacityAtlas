@@ -1,4 +1,4 @@
-name = "capacity-atlas"
+name = "CapacityAtlas"
 version = "0.1.0"
 defaultTargets = ["CapacityAtlas"]
 
