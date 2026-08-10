@@ -74,7 +74,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/data-model.md](docs/data-model.
 
 ## Deployment
 
-The `ci.yml` workflow builds and deploys the static site from `main`. The repository uses GitHub Pages with **GitHub Actions** as its source and `capacityatlas.org` as its custom domain. The domain is stored in `data/site.yaml`; CI writes that value to `dist/CNAME` before uploading the Pages artifact. No database, server process, or deployment secret is required.
+The `ci.yml` workflow builds and deploys the static site from `main`. The repository uses GitHub Pages with **GitHub Actions** as its source. The generated site is rooted at `/`, and `data/site.yaml` sets `https://capacityatlas.org` as the canonical URL. The actual custom-domain binding is configured in **Settings → Pages** on GitHub. No database, server process, or deployment secret is required.
 
 The public site is <https://capacityatlas.org/>.
 

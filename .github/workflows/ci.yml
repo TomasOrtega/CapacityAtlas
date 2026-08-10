@@ -36,8 +36,6 @@ jobs:
         run: ruff check src tests
       - name: Build production site
         run: capacity-atlas build
-      - name: Add custom domain
-        run: python -c 'import yaml; print(yaml.safe_load(open("data/site.yaml"))["custom_domain"])' > dist/CNAME
       - name: Configure GitHub Pages
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/configure-pages@v5
