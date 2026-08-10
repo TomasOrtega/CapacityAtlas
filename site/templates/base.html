@@ -6,7 +6,7 @@
   <title>{% if page_title %}{{ page_title }} · {% endif %}{{ site.name }}</title>
   <meta name="description" content="{{ page_description or site.description }}">
   <meta name="theme-color" content="#102a43">
-  <link rel="canonical" href="{{ site.canonical_url.rstrip('/') }}{{ site_url(request_path or '') }}">
+  <link rel="canonical" href="{{ site.canonical_url.rstrip('/') }}/{{ request_path or '' }}">
   <link rel="stylesheet" href="{{ site_url('assets/styles.css') }}">
   <script>
     window.MathJax = {
