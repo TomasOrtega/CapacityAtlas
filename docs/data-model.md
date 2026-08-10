@@ -39,6 +39,12 @@ not a substitute for provenance.
 commits. Mathematical status and formal proof status are never inferred from one
 another.
 
+The Browse page presents both axes in one grouped control without conflating
+them. `Lean formalization available` means the local statement status is not
+`none`. `Formally verified claim` means at least one registered Lean proof has
+status `complete`. A formally verified claim may establish a bound or another
+component of an open problem rather than solve the entire capacity problem.
+
 ## Discussion identity
 
 The discussion key is derived from the permanent problem ID:
