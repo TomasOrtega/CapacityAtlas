@@ -17,11 +17,10 @@ immutable commit.
 
 ## Current scope
 
-The initial curated collection contains **32 classical and open capacity
-problems**, including point-to-point channels, feedback, state information,
-multiple-access and broadcast channels, relay and interference networks,
-wiretap channels, zero-error information theory, arbitrarily varying channels,
-and index coding.
+The curated collection contains **32 classical and open capacity problems**,
+including point-to-point channels, feedback, state information, multiple-access
+and broadcast channels, relay and interference networks, wiretap channels,
+zero-error information theory, arbitrarily varying channels, and index coding.
 
 Each problem records:
 
@@ -40,11 +39,11 @@ facets describe communication models and operational quantities directly.
 
 The architecture takes explicit inspiration from Google DeepMind's
 [Formal Conjectures](https://github.com/google-deepmind/formal-conjectures)
-project. In particular, Capacity Atlas adapts its statement-first registry,
-structured declaration metadata, external formal-proof links, separation of
-reusable definitions from problem statements, benchmark-oriented versioning,
-and compact browse interface. Capacity Atlas uses a channel-specific taxonomy
-and a stricter no-placeholder policy in the central Lean tree.
+project. Capacity Atlas adapts its statement-first registry, structured
+declaration metadata, external formal-proof links, separation of reusable
+definitions from problem statements, benchmark-oriented versioning, and compact
+browse interface. Capacity Atlas uses a channel-specific taxonomy and a stricter
+no-placeholder policy in the central Lean tree.
 
 See [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md) for the exact attribution and
 citation.
@@ -65,16 +64,20 @@ should normally live in a separate repository. External proof repositories
 should import a pinned Capacity Atlas release or commit and prove the registered
 statement rather than restating it independently.
 
+Lean status is shown on each problem page rather than in a separate site tab.
 See [docs/lean.md](docs/lean.md) and
 [docs/external-proofs.md](docs/external-proofs.md).
 
 ## Discussions
 
-Every problem page contains an inline-discussion section backed by GitHub
-Discussions through giscus. Discussion storage remains in GitHub, so the static
-site needs no accounts, database, or comment server. Until repository and
-category IDs are configured, pages display a setup notice and link to the
-repository Discussions area.
+GitHub Discussions is enabled. Each problem page links to a stable search and a
+prefilled new thread using `capacityatlas:<problem-id>`. The repository and
+`General` category GraphQL IDs are pinned in `data/site.yaml`.
+
+The inline giscus embed is intentionally disabled because the giscus GitHub App
+is not currently installed on the repository. After installation, set
+`social.giscus.enabled` to `true`; no other identifiers need to be discovered.
+Until then, all discussion links on the website work directly through GitHub.
 
 See [docs/discussions.md](docs/discussions.md).
 
@@ -127,5 +130,5 @@ identify the stable problem ID. See [CONTRIBUTING.md](CONTRIBUTING.md).
 - Curated problem data, bibliographic metadata, and editorial documentation are
   licensed under **CC-BY-4.0**, unless otherwise noted.
 
-The root `LICENSE` is Apache-2.0. License notices, legal-text links, and scope details are in
-[LICENSES](LICENSES/) and [NOTICE](NOTICE).
+The root `LICENSE` is Apache-2.0. License notices, legal-text links, and scope
+details are in [LICENSES](LICENSES/) and [NOTICE](NOTICE).

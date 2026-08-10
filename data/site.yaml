@@ -11,13 +11,16 @@ licenses:
   software: Apache-2.0
   content: CC-BY-4.0
 social:
-  discussions_enabled: false
+  discussions_enabled: true
+  discussions_url: https://github.com/TomasOrtega/CapacityAtlas/discussions
   giscus:
     enabled: false
+    install_url: https://github.com/apps/giscus
     repo: TomasOrtega/CapacityAtlas
-    repo_id: ""
-    category: Capacity Problems
-    category_id: ""
+    repo_id: R_kgDOTzuIlQ
+    category: General
+    category_slug: general
+    category_id: DIC_kwDOTzuIlc4DDFDj
     term_prefix: "capacityatlas:"
     strict: true
     reactions_enabled: true

@@ -5,10 +5,9 @@ Capacity Atlas has one authoritative data layer and several generated views:
 ```text
 problem YAML ─┬─ static website
               ├─ JSON API
-              ├─ search index
-              └─ formalization dashboard
+              └─ faceted problem index
 
-Lean source ──── canonical definitions and statements
+Lean source ──── canonical definitions and statements shown on problem pages
 
 external repos ─ immutable proof records
 

@@ -72,11 +72,29 @@ def build_site(
         return f"{atlas.site['repository_url']}/edit/main/{path}"
 
     def discussion_url(problem: dict[str, Any]) -> str:
-        term = f"capacityatlas:{problem['id']}"
-        query = quote(term)
+        query = quote(f"capacityatlas:{problem['id']}")
         return f"{atlas.site['repository_url']}/discussions?discussions_q={query}"
 
-    env.globals.update(site_url=site_url, edit_url=edit_url, discussion_url=discussion_url)
+    def new_discussion_url(problem: dict[str, Any]) -> str:
+        giscus = atlas.site.get("social", {}).get("giscus", {})
+        category = quote(str(giscus.get("category_slug", "general")))
+        title = quote(f"capacityatlas:{problem['id']}")
+        public_url = f"{atlas.site['canonical_url'].rstrip('/')}/problems/{problem['id']}/"
+        body = quote(
+            f"Discussion for [{problem['title']}]({public_url}).\n\n"
+            "Please cite specific bounds, assumptions, references, or formalization targets."
+        )
+        return (
+            f"{atlas.site['repository_url']}/discussions/new"
+            f"?category={category}&title={title}&body={body}"
+        )
+
+    env.globals.update(
+        site_url=site_url,
+        edit_url=edit_url,
+        discussion_url=discussion_url,
+        new_discussion_url=new_discussion_url,
+    )
 
     tag_values = atlas.tag_values
     problems = sorted(
@@ -177,10 +195,8 @@ def build_site(
         )
 
     featured = [problem for problem in problems if problem["featured"]]
-    recent = sorted(problems, key=lambda p: str(p["updated"]), reverse=True)[:8]
-    render("index.html", "index.html", page_id="home", featured=featured, recent=recent)
+    render("index.html", "index.html", page_id="home", featured=featured)
     render("problems.html", "problems/index.html", page_id="problems")
-    render("formalizations.html", "formalizations/index.html", page_id="formalizations")
     render("contribute.html", "contribute/index.html", page_id="contribute")
     render("about.html", "about/index.html", page_id="about")
     render("api.html", "api/index.html", page_id="api")
@@ -238,12 +254,12 @@ def build_site(
     shutil.copy2(atlas.root / "schema" / "problem.schema.json", api / "problem.schema.json")
 
     canonical = str(atlas.site["canonical_url"]).rstrip("/")
-    paths = ["", "problems/", "formalizations/", "contribute/", "about/", "api/"] + [
+    paths = ["", "problems/", "contribute/", "about/", "api/"] + [
         f"problems/{problem['id']}/" for problem in problems
     ]
     sitemap = [
         '<?xml version="1.0" encoding="UTF-8"?>',
-        '<urlset xmlns="http://www.sitemaps.org/sitemap/0.9">',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
         *(f"  <url><loc>{canonical}/{path}</loc></url>" for path in paths),
         "</urlset>",
         "",
