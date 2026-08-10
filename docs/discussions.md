@@ -6,32 +6,23 @@ has no database or account system.
 
 ## Current configuration
 
-Discussions is enabled for `TomasOrtega/CapacityAtlas`. Problem pages provide two
-working links:
+Discussions and the giscus GitHub App are enabled for
+`TomasOrtega/CapacityAtlas`. Each problem page:
 
-- search for the thread with the stable key `capacityatlas:<problem-id>`
-- start a prefilled thread in the `General` category when none exists
+- embeds the corresponding GitHub Discussion inline
+- links to a search for the stable key `capacityatlas:<problem-id>`
+- links to a prefilled new thread in the `General` category when none exists
 
-The GraphQL identifiers are recorded in `data/site.yaml`:
+The pinned identifiers live in `data/site.yaml`:
 
 ```yaml
-repo_id: R_kgDOTzuIlQ
-category: General
-category_id: DIC_kwDOTzuIlc4DDFDj
+giscus:
+  enabled: true
+  repo: TomasOrtega/CapacityAtlas
+  repo_id: R_kgDOTzuIlQ
+  category: General
+  category_id: DIC_kwDOTzuIlc4DDFDj
 ```
-
-## Inline comments
-
-The giscus GitHub App is not installed on the repository, so the inline widget is
-intentionally disabled rather than rendering a broken embed. To activate it:
-
-1. Install the [giscus GitHub App](https://github.com/apps/giscus) for
-   `TomasOrtega/CapacityAtlas`.
-2. Set `social.giscus.enabled` to `true` in `data/site.yaml`.
-3. Build the site and verify one open and one solved problem page.
-
-No repository or category lookup is needed after installation because both IDs
-are already pinned.
 
 ## Mapping
 
@@ -42,7 +33,21 @@ term:
 capacityatlas:<problem-id>
 ```
 
-This keeps a thread attached if its problem title or website route changes.
+This keeps the conversation attached if a problem title or website route
+changes. When no matching thread exists, giscus creates it when a visitor first
+comments or reacts.
+
+## Maintenance
+
+If the repository or Discussion category changes, update the name and GraphQL ID
+together in `data/site.yaml`. After any configuration change, build the site and
+check the rendered `data-repo`, `data-repo-id`, `data-category`,
+`data-category-id`, `data-term`, and `data-strict` attributes on a representative
+problem page.
+
+Keep the direct GitHub links even while the embed is active. They provide a
+usable fallback when scripts are blocked and let contributors participate without
+using the embedded interface.
 
 ## Moderation
 

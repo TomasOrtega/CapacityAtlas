@@ -14,7 +14,7 @@ social:
   discussions_enabled: true
   discussions_url: https://github.com/TomasOrtega/CapacityAtlas/discussions
   giscus:
-    enabled: false
+    enabled: true
     install_url: https://github.com/apps/giscus
     repo: TomasOrtega/CapacityAtlas
     repo_id: R_kgDOTzuIlQ

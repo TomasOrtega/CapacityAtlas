@@ -9,10 +9,10 @@ site and Lean jobs succeed.
 
 ## Discussions
 
-GitHub Discussions is enabled. The repository and `General` category IDs are
-stored in `data/site.yaml`. The giscus embed remains disabled until its GitHub App
-is installed. After installation, set `social.giscus.enabled` to `true` and
-verify the widget on a problem page. See `docs/discussions.md`.
+GitHub Discussions and the giscus embed are enabled. The repository and
+`General` category IDs are stored in `data/site.yaml`. Keep those IDs synchronized
+with the configured repository and category, and verify both the inline widget
+and the direct GitHub links after any change. See `docs/discussions.md`.
 
 ## Statement versions
 
@@ -44,6 +44,6 @@ Before release:
 2. run `make lean`
 3. inspect the generated home page, filters, and representative problem pages
 4. verify Discussion search and creation links
-5. verify the giscus widget when enabled
+5. verify the inline giscus widget on an open and a solved problem
 6. update `pyproject.toml` and `CITATION.cff`
 7. tag the exact deployed commit
