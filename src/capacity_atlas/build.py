@@ -40,6 +40,17 @@ def _tag_overlap(
     )
 
 
+def _browse_statuses(problem: dict[str, Any]) -> list[str]:
+    """Return independent mathematical and formalization filters for a problem."""
+    statuses = [problem["status"]]
+    formalization = problem["formalization"]
+    if formalization["statement"]["status"] != "none":
+        statuses.append("lean-available")
+    if any(proof["status"] == "complete" for proof in formalization.get("proofs", [])):
+        statuses.append("formally-verified")
+    return statuses
+
+
 def build_site(
     root: Path | None = None,
     output: Path | None = None,
@@ -121,6 +132,7 @@ def build_site(
         statement = problem["formalization"]["statement"]
         statement.setdefault("notes", "")
         statement.setdefault("files", [])
+        problem["browse_statuses"] = _browse_statuses(problem)
         for bound in problem["bounds"]:
             bound.setdefault("conditions", "")
             bound.setdefault("notes", "")
@@ -153,6 +165,9 @@ def build_site(
         "solved": status_counts["solved"],
         "statements": sum(
             problem["formalization"]["statement"]["status"] != "none" for problem in problems
+        ),
+        "verified": sum(
+            "formally-verified" in problem["browse_statuses"] for problem in problems
         ),
         "proofs": sum(len(problem["formalization"]["proofs"]) for problem in problems),
     }
@@ -233,7 +248,14 @@ def build_site(
         payload = {
             key: value
             for key, value in problem.items()
-            if key not in {"tag_groups", "search_text", "resolved_references", "discussion_term"}
+            if key
+            not in {
+                "browse_statuses",
+                "tag_groups",
+                "search_text",
+                "resolved_references",
+                "discussion_term",
+            }
         }
         payload["url"] = site_url(f"problems/{problem['id']}/")
         payload = json_ready(payload)
