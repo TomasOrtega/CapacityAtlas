@@ -6,7 +6,7 @@ from pathlib import Path
 
 from bs4 import BeautifulSoup
 
-from capacity_atlas.build import build_site
+from capacity_atlas.build import _browse_statuses, build_site
 
 
 def test_build_writes_pages_and_api(tmp_path: Path) -> None:
@@ -20,6 +20,7 @@ def test_build_writes_pages_and_api(tmp_path: Path) -> None:
     assert len(problems) == 32
     assert all(problem["url"].startswith("/problems/") for problem in problems)
     assert all("tags" in problem for problem in problems)
+    assert all("browse_statuses" not in problem for problem in problems)
 
 
 def test_production_urls_use_custom_domain_root(tmp_path: Path) -> None:
@@ -73,6 +74,40 @@ def test_navigation_has_discussions_without_a_lean_tab(tmp_path: Path) -> None:
     assert "Discussions" in labels
     assert "Lean" not in labels
     assert not soup.select('a[href="/formalizations/"]')
+
+
+def test_browse_status_filter_includes_formal_verification(tmp_path: Path) -> None:
+    output = build_site(output=tmp_path / "site")
+    page = (output / "problems" / "index.html").read_text(encoding="utf-8")
+    soup = BeautifulSoup(page, "html.parser")
+    status_filter = soup.select_one('select[name="status"]')
+
+    assert status_filter is not None
+    groups = [group.get("label") for group in status_filter.select("optgroup")]
+    assert groups == ["Mathematical status", "Lean formalization"]
+    options = {
+        option.get("value", ""): option.get_text(" ", strip=True)
+        for option in status_filter.select("option")
+    }
+    assert options["lean-available"].startswith("Lean formalization available")
+    assert options["formally-verified"].startswith("Formally verified claim")
+    assert soup.select_one('[data-problem-row][data-status~="lean-available"]') is not None
+
+
+def test_browse_statuses_keep_math_and_formal_status_independent() -> None:
+    problem = {
+        "status": "open",
+        "formalization": {
+            "statement": {"status": "statement"},
+            "proofs": [{"status": "partial"}, {"status": "complete"}],
+        },
+    }
+
+    assert _browse_statuses(problem) == [
+        "open",
+        "lean-available",
+        "formally-verified",
+    ]
 
 
 def test_home_is_compact_faceted_registry(tmp_path: Path) -> None:
