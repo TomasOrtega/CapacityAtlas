@@ -57,15 +57,33 @@ bounds:
   - shannon-1948
 formalization:
   statement:
-    status: definitions
-    version: 1
+    status: statement
+    version: 2
     language: Lean
-    notes: The transition kernel and a zero-noise sanity theorem are formalized.
+    notes: The single-letter information capacity is proved from reusable finite-distribution and entropy APIs. The
+      operational average-error formula is a canonical statement whose proof reduces to the finite-channel coding
+      theorem.
     files:
+    - path: lean/CapacityAtlasForMathlib/InformationTheory/BinarySymmetric.lean
+      declaration: CapacityAtlas.FiniteChannel.informationCapacityBits_eq_binarySymmetric
+      role: shared-api
+      description: Information capacity of any finite channel with binary-symmetric transition rows.
+    - path: lean/CapacityAtlasForMathlib/InformationTheory/OperationalCapacity.lean
+      declaration: CapacityAtlas.FiniteChannel.operationalCapacityBits
+      role: shared-api
+      description: Operational average-error capacity defined through block codes and vanishing error.
     - path: lean/CapacityAtlas/Channels/Binary.lean
       declaration: CapacityAtlas.Channel.binarySymmetric
       role: definition
       description: Binary symmetric channel as a finite stochastic channel.
+    - path: lean/CapacityAtlas/Channels/Binary.lean
+      declaration: CapacityAtlas.Channel.binarySymmetric_informationCapacity
+      role: statement
+      description: Exact single-letter information capacity in bits per channel use.
+    - path: lean/CapacityAtlas/Channels/Binary.lean
+      declaration: CapacityAtlas.Channel.binarySymmetricCapacityStatement
+      role: statement
+      description: Canonical operational average-error capacity proposition.
     - path: lean/CapacityAtlas/Channels/Binary.lean
       declaration: CapacityAtlas.Channel.binarySymmetric_zero
       role: test

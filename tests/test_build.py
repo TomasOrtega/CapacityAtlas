@@ -49,7 +49,7 @@ def test_problem_page_exposes_versioned_lean_and_active_giscus(tmp_path: Path) -
     soup = BeautifulSoup(page, "html.parser")
     giscus = soup.select_one('script[src="https://giscus.app/client.js"]')
 
-    assert "Version 1" in soup.get_text(" ", strip=True)
+    assert "Version 2" in soup.get_text(" ", strip=True)
     assert "capacityatlas:binary-symmetric-channel" in page
     assert "discussions/new?category=general" in page
     assert giscus is not None

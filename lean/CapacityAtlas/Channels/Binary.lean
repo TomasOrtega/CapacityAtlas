@@ -14,7 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -/
 
-import CapacityAtlasForMathlib.InformationTheory.FiniteChannel
+import CapacityAtlasForMathlib.InformationTheory.BinarySymmetric
+import CapacityAtlasForMathlib.InformationTheory.OperationalCapacity
 
 namespace CapacityAtlas.Channel
 
@@ -36,6 +37,52 @@ def binarySymmetric (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
     · exact hp0
   row_sum input := by
     cases input <;> simp [binarySymmetricTransition]
+
+/-- The BSC constructor has the shared binary-symmetric transition predicate. -/
+@[capacity_problem "binary-symmetric-channel", capacity_short_proof]
+theorem binarySymmetric_isBinarySymmetric (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    (binarySymmetric p hp0 hp1).IsBinarySymmetric p := by
+  intro input output
+  rfl
+
+/-- The single-letter information capacity of the binary symmetric channel. -/
+@[capacity_problem "binary-symmetric-channel", capacity_statement]
+theorem binarySymmetric_informationCapacity (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    (binarySymmetric p hp0 hp1).informationCapacityBits =
+      1 - Real.binEntropy p / Real.log 2 :=
+  FiniteChannel.informationCapacityBits_eq_binarySymmetric
+    (binarySymmetric_isBinarySymmetric p hp0 hp1) hp0 hp1
+
+/-- The noiseless BSC has information capacity one bit per use. -/
+@[capacity_problem "binary-symmetric-channel", capacity_short_proof]
+theorem binarySymmetric_informationCapacity_zero :
+    (binarySymmetric 0 (by norm_num) (by norm_num)).informationCapacityBits = 1 := by
+  rw [binarySymmetric_informationCapacity]
+  simp
+
+/-- The completely noisy BSC has zero information capacity. -/
+@[capacity_problem "binary-symmetric-channel", capacity_short_proof]
+theorem binarySymmetric_informationCapacity_half :
+    (binarySymmetric 2⁻¹ (by norm_num) (by norm_num)).informationCapacityBits = 0 := by
+  rw [binarySymmetric_informationCapacity, Real.binEntropy_two_inv]
+  field_simp [Real.log_ne_zero_of_pos_of_ne_one (by norm_num : (0 : ℝ) < 2) (by norm_num)]
+  norm_num
+
+/-- The operational average-error capacity claim for the BSC parameter range used by the atlas. -/
+@[capacity_problem "binary-symmetric-channel", capacity_statement]
+def binarySymmetricCapacityStatement (p : ℝ) (hp0 : 0 ≤ p) (hpHalf : p ≤ 2⁻¹) : Prop :=
+  let channel := binarySymmetric p hp0 (hpHalf.trans (by norm_num))
+  channel.operationalCapacityBits = 1 - Real.binEntropy p / Real.log 2
+
+/-- The operational BSC formula follows from the finite-channel coding theorem. -/
+@[capacity_problem "binary-symmetric-channel", capacity_short_proof]
+theorem binarySymmetric_operationalCapacity_of_codingTheorem
+    (p : ℝ) (hp0 : 0 ≤ p) (hpHalf : p ≤ 2⁻¹)
+    (codingTheorem :
+      (binarySymmetric p hp0 (hpHalf.trans (by norm_num))).SatisfiesCodingTheorem) :
+    binarySymmetricCapacityStatement p hp0 hpHalf :=
+  FiniteChannel.operationalCapacityBits_eq_of_satisfiesCodingTheorem _ _ codingTheorem
+    (binarySymmetric_informationCapacity p hp0 (hpHalf.trans (by norm_num)))
 
 /-- At crossover probability zero, the binary symmetric channel is noiseless. -/
 @[capacity_problem "binary-symmetric-channel", capacity_short_proof]
