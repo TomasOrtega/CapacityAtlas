@@ -40,19 +40,26 @@ def test_production_urls_use_custom_domain_root(tmp_path: Path) -> None:
     assert 'src="/CapacityAtlas/' not in home
 
 
-def test_problem_page_exposes_versioned_lean_and_discussion(tmp_path: Path) -> None:
+def test_problem_page_exposes_versioned_lean_and_active_giscus(tmp_path: Path) -> None:
     output = build_site(output=tmp_path / "site")
     page = (output / "problems" / "binary-symmetric-channel" / "index.html").read_text(
         encoding="utf-8"
     )
     soup = BeautifulSoup(page, "html.parser")
+    giscus = soup.select_one('script[src="https://giscus.app/client.js"]')
 
     assert "Version 1" in soup.get_text(" ", strip=True)
     assert "capacityatlas:binary-symmetric-channel" in page
-    assert "GitHub Discussions is enabled" in page
-    assert "giscus GitHub App" in page
     assert "discussions/new?category=general" in page
-    assert "Inline discussion is ready but not yet activated" not in page
+    assert giscus is not None
+    assert giscus["data-repo"] == "TomasOrtega/CapacityAtlas"
+    assert giscus["data-repo-id"] == "R_kgDOTzuIlQ"
+    assert giscus["data-category"] == "General"
+    assert giscus["data-category-id"] == "DIC_kwDOTzuIlc4DDFDj"
+    assert giscus["data-mapping"] == "specific"
+    assert giscus["data-term"] == "capacityatlas:binary-symmetric-channel"
+    assert giscus["data-strict"] == "1"
+    assert "GitHub Discussions is enabled" not in page
     assert "Edit this entry" in page
     assert "data/problems/binary-symmetric-channel.yaml" in page
 
