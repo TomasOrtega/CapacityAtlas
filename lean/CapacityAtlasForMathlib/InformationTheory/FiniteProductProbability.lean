@@ -83,6 +83,34 @@ theorem sum_mass_mul_sum (w : α → ℝ) (f : ι → α → ℝ)
   intro i
   exact sum_mass_mul_apply w (f i) hw i
 
+/-- Distinct coordinates factor under a product mass. -/
+@[capacity_shared_api]
+theorem sum_mass_mul_apply_mul_apply (w f g : α → ℝ)
+    (hw : ∑ a, w a = 1) {i j : ι} (hij : i ≠ j) :
+    ∑ x : ι → α, mass w x * (f (x i) * g (x j)) =
+      mean w f * mean w g := by
+  let h : ι → α → ℝ := fun k a =>
+    (if k = i then f a else 1) * (if k = j then g a else 1)
+  calc
+    ∑ x : ι → α, mass w x * (f (x i) * g (x j)) =
+        ∑ x : ι → α, mass w x * ∏ k, h k (x k) := by
+          apply Fintype.sum_congr
+          intro x
+          congr 1
+          simp only [h, Finset.prod_mul_distrib]
+          rw [Fintype.prod_eq_single i, Fintype.prod_eq_single j]
+          · simp [hij, Ne.symm hij]
+          · intro k hki
+            simp [hki]
+          · intro k hkj
+            simp [hkj]
+    _ = ∏ k, ∑ a, w a * h k a := sum_mass_mul_prod w h
+    _ = mean w f * mean w g := by
+      rw [Fintype.prod_eq_mul i j hij]
+      · simp [h, mean, hij, Ne.symm hij]
+      · intro k hk
+        simp [h, hk.1, hk.2, hw]
+
 end FiniteProductProbability
 
 end CapacityAtlas
