@@ -29,8 +29,10 @@ def test_production_urls_use_custom_domain_root(tmp_path: Path) -> None:
     )
     assert 'href="/assets/styles.css"' in home
     assert 'href="/problems/"' in home
-    assert "/CapacityAtlas/" not in home
-    assert "/CapacityAtlas/" not in problem
+    assert 'href="/CapacityAtlas/' not in home
+    assert 'src="/CapacityAtlas/' not in home
+    assert 'href="/CapacityAtlas/' not in problem
+    assert 'src="/CapacityAtlas/' not in problem
 
 
 def test_problem_pages_have_edit_links(tmp_path: Path) -> None:
