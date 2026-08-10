@@ -83,9 +83,9 @@ def test_home_is_compact_faceted_registry(tmp_path: Path) -> None:
 def test_typography_uses_a_balanced_scale() -> None:
     css = Path("site/static/styles.css").read_text(encoding="utf-8")
     assert "--title-xl: clamp(2.2rem, 5vw, 3.6rem)" in css
-    assert "--text-sm: 0.84rem" in css
+    assert "--text-sm: .84rem" in css
     assert "5.4rem" not in css
-    assert "font-size: 0.72rem" not in css
+    assert "font-size: .72rem" not in css
 
 
 def test_license_split_is_visible(tmp_path: Path) -> None:
