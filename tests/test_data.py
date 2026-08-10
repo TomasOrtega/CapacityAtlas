@@ -54,11 +54,11 @@ def test_external_proof_must_match_statement_version() -> None:
             "url": f"https://github.com/example/bsc-proof/commit/{'0' * 40}",
             "file": "BSC/Main.lean",
             "declaration": "BSC.capacity",
-            "statement_version": 2,
+            "statement_version": 1,
         }
     ]
     messages = [issue.message for issue in validate_atlas(atlas)]
-    assert any("targets statement version 2, expected 1" in message for message in messages)
+    assert any("targets statement version 1, expected 2" in message for message in messages)
 
 
 def test_formalized_entries_link_existing_declarations() -> None:

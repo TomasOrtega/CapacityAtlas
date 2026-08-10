@@ -6,4 +6,8 @@ See https://www.apache.org/licenses/LICENSE-2.0
 
 import CapacityAtlasForMathlib.InformationTheory.FiniteChannel
 import CapacityAtlasForMathlib.InformationTheory.Code
+import CapacityAtlasForMathlib.InformationTheory.FiniteDistribution
+import CapacityAtlasForMathlib.InformationTheory.FiniteChannelCapacity
+import CapacityAtlasForMathlib.InformationTheory.BinarySymmetric
+import CapacityAtlasForMathlib.InformationTheory.OperationalCapacity
 import CapacityAtlasForMathlib.Network.IndexCoding

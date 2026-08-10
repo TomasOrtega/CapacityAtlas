@@ -59,8 +59,9 @@ formalization:
     status: definitions
     version: 1
     language: Lean
-    notes: Shared finite stochastic channels and one-shot codes are formalized. The asymptotic coding theorem is
-      not.
+    notes: Shared finite stochastic channels, finite distributions, information capacity, memoryless block
+      channels, block codes, achievable rates, and operational average-error capacity are formalized. The general
+      finite-channel coding theorem is not yet proved.
     files:
     - path: lean/CapacityAtlasForMathlib/InformationTheory/FiniteChannel.lean
       declaration: CapacityAtlas.FiniteChannel
@@ -70,6 +71,22 @@ formalization:
       declaration: CapacityAtlas.OneShotCode
       role: shared-api
       description: One-shot encoder, decoder, and error definitions.
+    - path: lean/CapacityAtlasForMathlib/InformationTheory/FiniteDistribution.lean
+      declaration: CapacityAtlas.FiniteDistribution
+      role: shared-api
+      description: Finite probability distributions and entropy in nats and bits.
+    - path: lean/CapacityAtlasForMathlib/InformationTheory/FiniteChannelCapacity.lean
+      declaration: CapacityAtlas.FiniteChannel.informationCapacityBits
+      role: shared-api
+      description: Mutual information and single-letter information capacity.
+    - path: lean/CapacityAtlasForMathlib/InformationTheory/OperationalCapacity.lean
+      declaration: CapacityAtlas.FiniteChannel.BlockCode
+      role: shared-api
+      description: Deterministic block codes for memoryless product channels.
+    - path: lean/CapacityAtlasForMathlib/InformationTheory/OperationalCapacity.lean
+      declaration: CapacityAtlas.FiniteChannel.operationalCapacityBits
+      role: shared-api
+      description: Operational capacity through achievable rates and vanishing average error.
   proofs: []
 references:
 - shannon-1948
