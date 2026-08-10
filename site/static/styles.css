@@ -59,8 +59,8 @@ mjx-container { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
 
 .stats { border-bottom: 1px solid var(--line); }
 .stats__grid { display: grid; grid-template-columns: repeat(4, 1fr); }
-.stats a, .stats div { padding: 1.35rem 1rem; border-right: 1px solid var(--line); color: var(--ink); text-decoration: none; }
-.stats a:first-child { border-left: 1px solid var(--line); }
+.stats__grid > a, .stats__grid > div { padding: 1.35rem 1rem; border-right: 1px solid var(--line); color: var(--ink); text-decoration: none; }
+.stats__grid > :first-child { border-left: 1px solid var(--line); }
 .stats strong, .stats span { display: block; }
 .stats strong { font-size: 1.7rem; line-height: 1; }
 .stats span { margin-top: .35rem; color: var(--muted); font-size: .88rem; }
@@ -174,7 +174,7 @@ td small { display: block; margin-top: .25rem; color: var(--muted); font-size: v
   .site-nav { position: absolute; inset: 4rem 0 auto; display: none; flex-direction: column; align-items: stretch; padding: 1rem; border-bottom: 1px solid var(--line); background: #fff; }
   .site-nav[data-open="true"] { display: flex; }
   .stats__grid, .browse-grid, .policy-grid, .columns, .prose .columns { grid-template-columns: 1fr 1fr; }
-  .stats a:nth-child(odd), .stats div:nth-child(odd) { border-left: 1px solid var(--line); }
+  .stats__grid > :nth-child(odd) { border-left: 1px solid var(--line); }
   .filters { grid-template-columns: 1fr; }
   .search-field { grid-column: auto; }
   .problem-header__grid, .problem-row { grid-template-columns: 1fr; gap: 1rem; }
@@ -186,6 +186,6 @@ td small { display: block; margin-top: .25rem; color: var(--muted); font-size: v
 
 @media (max-width: 30rem) {
   .stats__grid, .browse-grid, .policy-grid, .columns, .prose .columns { grid-template-columns: 1fr; }
-  .stats a, .stats div { border-left: 1px solid var(--line); }
+  .stats__grid > a, .stats__grid > div { border-left: 1px solid var(--line); }
   .section-heading { align-items: start; flex-direction: column; }
 }
