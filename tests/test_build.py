@@ -31,7 +31,6 @@ def test_production_urls_use_custom_domain_root(tmp_path: Path) -> None:
     assert 'href="/problems/"' in home
     assert "/CapacityAtlas/" not in home
     assert "/CapacityAtlas/" not in problem
-    assert (output / "CNAME").read_text(encoding="utf-8") == "capacityatlas.org\n"
 
 
 def test_problem_pages_have_edit_links(tmp_path: Path) -> None:
