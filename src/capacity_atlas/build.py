@@ -40,9 +40,9 @@ def _tag_overlap(
     )
 
 
-def _browse_statuses(problem: dict[str, Any]) -> list[str]:
-    """Return independent mathematical and formalization filters for a problem."""
-    statuses = [problem["status"]]
+def _browse_formalization(problem: dict[str, Any]) -> list[str]:
+    """Return the Lean-related filters available for a problem."""
+    statuses: list[str] = []
     formalization = problem["formalization"]
     if formalization["statement"]["status"] != "none":
         statuses.append("lean-available")
@@ -132,7 +132,7 @@ def build_site(
         statement = problem["formalization"]["statement"]
         statement.setdefault("notes", "")
         statement.setdefault("files", [])
-        problem["browse_statuses"] = _browse_statuses(problem)
+        problem["browse_formalization"] = _browse_formalization(problem)
         for bound in problem["bounds"]:
             bound.setdefault("conditions", "")
             bound.setdefault("notes", "")
@@ -167,7 +167,7 @@ def build_site(
             problem["formalization"]["statement"]["status"] != "none" for problem in problems
         ),
         "verified": sum(
-            "formally-verified" in problem["browse_statuses"] for problem in problems
+            "formally-verified" in problem["browse_formalization"] for problem in problems
         ),
         "proofs": sum(len(problem["formalization"]["proofs"]) for problem in problems),
     }
@@ -250,7 +250,7 @@ def build_site(
             for key, value in problem.items()
             if key
             not in {
-                "browse_statuses",
+                "browse_formalization",
                 "tag_groups",
                 "search_text",
                 "resolved_references",
