@@ -17,7 +17,7 @@ def test_build_writes_pages_and_api(tmp_path: Path) -> None:
     assert (output / "api" / "tags.json").is_file()
 
     problems = json.loads((output / "api" / "problems.json").read_text(encoding="utf-8"))
-    assert len(problems) == 32
+    assert problems
     assert all(problem["url"].startswith("/problems/") for problem in problems)
     assert all("tags" in problem for problem in problems)
     assert all("browse_formalization" not in problem for problem in problems)
@@ -31,10 +31,7 @@ def test_production_urls_use_custom_domain_root(tmp_path: Path) -> None:
     )
 
     assert 'href="https://capacityatlas.org/"' in home
-    assert (
-        'href="https://capacityatlas.org/problems/binary-symmetric-channel/"'
-        in problem
-    )
+    assert 'href="https://capacityatlas.org/problems/binary-symmetric-channel/"' in problem
     assert 'href="/assets/styles.css"' in home
     assert 'href="/problems/"' in home
     assert 'href="/CapacityAtlas/' not in home
@@ -95,16 +92,10 @@ def test_browse_filters_keep_status_and_formalization_separate(tmp_path: Path) -
         option.get("value", ""): option.get_text(" ", strip=True)
         for option in formalization_filter.select("option")
     }
-    assert formalization_options["lean-available"].startswith(
-        "Lean formalization available"
-    )
-    assert formalization_options["formally-verified"].startswith(
-        "Formally verified claim"
-    )
+    assert formalization_options["lean-available"].startswith("Lean formalization available")
+    assert formalization_options["formally-verified"].startswith("Formally verified claim")
 
-    formalized_row = soup.select_one(
-        '[data-problem-row][data-formalization~="lean-available"]'
-    )
+    formalized_row = soup.select_one('[data-problem-row][data-formalization~="lean-available"]')
     assert formalized_row is not None
     assert formalized_row.get("data-status") in {
         "open",

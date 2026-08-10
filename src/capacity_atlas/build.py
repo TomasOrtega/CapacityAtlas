@@ -31,13 +31,8 @@ def _authors(authors: list[str]) -> str:
     return f"{', '.join(authors[:-1])}, and {authors[-1]}"
 
 
-def _tag_overlap(
-    left: dict[str, Any], right: dict[str, Any], axes: dict[str, Any]
-) -> int:
-    return sum(
-        bool(set(left["tags"][axis]) & set(right["tags"][axis]))
-        for axis in axes
-    )
+def _tag_overlap(left: dict[str, Any], right: dict[str, Any], axes: dict[str, Any]) -> int:
+    return sum(bool(set(left["tags"][axis]) & set(right["tags"][axis])) for axis in axes)
 
 
 def _browse_formalization(problem: dict[str, Any]) -> list[str]:
@@ -203,9 +198,7 @@ def build_site(
         target.parent.mkdir(parents=True, exist_ok=True)
         request_path = "" if path == "index.html" else path.removesuffix("index.html")
         target.write_text(
-            env.get_template(template).render(
-                **common, request_path=request_path, **context
-            ),
+            env.get_template(template).render(**common, request_path=request_path, **context),
             encoding="utf-8",
         )
 
@@ -222,8 +215,7 @@ def build_site(
             (
                 other
                 for other in problems
-                if other["id"] != problem["id"]
-                and _tag_overlap(problem, other, atlas.tag_axes) > 0
+                if other["id"] != problem["id"] and _tag_overlap(problem, other, atlas.tag_axes) > 0
             ),
             key=lambda other: (
                 -_tag_overlap(problem, other, atlas.tag_axes),

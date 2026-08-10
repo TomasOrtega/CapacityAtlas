@@ -17,11 +17,7 @@ def _resolve_internal_target(output: Path, source: Path, url: str) -> Path | Non
         return source
 
     decoded = unquote(parsed.path)
-    target = (
-        output / decoded.lstrip("/")
-        if decoded.startswith("/")
-        else source.parent / decoded
-    )
+    target = output / decoded.lstrip("/") if decoded.startswith("/") else source.parent / decoded
     if decoded.endswith("/") or target.is_dir():
         target = target / "index.html"
     return target.resolve()

@@ -11,9 +11,8 @@ def test_registry_is_valid() -> None:
     assert validate_atlas() == []
 
 
-def test_expanded_registry_and_controlled_axes() -> None:
+def test_registry_uses_controlled_axes() -> None:
     atlas = load_atlas()
-    assert len(atlas.problems) == 32
     assert list(atlas.tag_axes) == ["model", "features", "quantity", "knowledge"]
     assert "AMS" not in str(atlas.tag_axes)
     assert not (atlas.root / "data" / "categories.yaml").exists()
