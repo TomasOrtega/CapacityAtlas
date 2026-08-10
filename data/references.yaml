@@ -1,0 +1,86 @@
+shannon-1948:
+  title: A Mathematical Theory of Communication
+  authors: [Claude E. Shannon]
+  year: 1948
+  venue: Bell System Technical Journal
+  doi: 10.1002/j.1538-7305.1948.tb01338.x
+  url: https://doi.org/10.1002/j.1538-7305.1948.tb01338.x
+
+cover-thomas-2006:
+  title: Elements of Information Theory
+  authors: [Thomas M. Cover, Joy A. Thomas]
+  year: 2006
+  venue: Wiley, second edition
+  doi: 10.1002/047174882X
+  url: https://doi.org/10.1002/047174882X
+
+ahlswede-1971:
+  title: Multi-way communication channels
+  authors: [Rudolf Ahlswede]
+  year: 1971
+  venue: Second International Symposium on Information Theory
+  url: https://www.math.uni-bielefeld.de/ahlswede/homepage/public/1.pdf
+
+liao-1972:
+  title: Multiple Access Channels
+  authors: [Hsiao-Hwa Liao]
+  year: 1972
+  venue: PhD thesis, University of Hawaii
+  url: https://scholarspace.manoa.hawaii.edu/handle/10125/55860
+
+bergmans-1973:
+  title: Random coding theorem for broadcast channels with degraded components
+  authors: [Peter P. Bergmans]
+  year: 1973
+  venue: IEEE Transactions on Information Theory
+  doi: 10.1109/TIT.1973.1054980
+  url: https://doi.org/10.1109/TIT.1973.1054980
+
+wyner-1975:
+  title: The wire-tap channel
+  authors: [Aaron D. Wyner]
+  year: 1975
+  venue: Bell System Technical Journal
+  doi: 10.1002/j.1538-7305.1975.tb02040.x
+  url: https://doi.org/10.1002/j.1538-7305.1975.tb02040.x
+
+cover-elgamal-1979:
+  title: Capacity theorems for the relay channel
+  authors: [Thomas M. Cover, Abbas El Gamal]
+  year: 1979
+  venue: IEEE Transactions on Information Theory
+  doi: 10.1109/TIT.1979.1056084
+  url: https://doi.org/10.1109/TIT.1979.1056084
+
+rubinstein-con-2023:
+  title: Improved Upper and Lower Bounds on the Capacity of the Binary Deletion Channel
+  authors: [Ittai Rubinstein, Roni Con]
+  year: 2023
+  venue: arXiv preprint
+  arxiv: '2305.07156'
+  url: https://arxiv.org/abs/2305.07156
+
+pinto-ribeiro-2026:
+  title: Improved Capacity Upper Bounds for the Deletion Channel using a Parallelized Blahut-Arimoto Algorithm
+  authors: [Martim Pinto, João Ribeiro]
+  year: 2026
+  venue: arXiv preprint; presented at ISIT 2026
+  arxiv: '2604.05867'
+  url: https://arxiv.org/abs/2604.05867
+
+sun-jafar-2015:
+  title: 'Index Coding Capacity: How Far Can One Go With Only Shannon Inequalities?'
+  authors: [Hua Sun, Syed A. Jafar]
+  year: 2015
+  venue: IEEE Transactions on Information Theory
+  doi: 10.1109/TIT.2015.2418289
+  arxiv: '1303.7000'
+  url: https://arxiv.org/abs/1303.7000
+
+zhang-yeung-1998:
+  title: On characterization of entropy function via information inequalities
+  authors: [Zhen Zhang, Raymond W. Yeung]
+  year: 1998
+  venue: IEEE Transactions on Information Theory
+  doi: 10.1109/18.681320
+  url: https://doi.org/10.1109/18.681320

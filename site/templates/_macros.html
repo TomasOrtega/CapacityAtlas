@@ -1,0 +1,57 @@
+{% macro status_badge(status) -%}
+  {% set labels = {
+    'solved': 'Solved',
+    'open': 'Open',
+    'partially-solved': 'Partial'
+  } %}
+  <span class="badge badge--status badge--{{ status }}">{{ labels[status] }}</span>
+{%- endmacro %}
+
+{% macro formalization_badge(status) -%}
+  {% set labels = {
+    'none': 'Lean: not started',
+    'definitions': 'Lean: definitions',
+    'statement': 'Lean: statement',
+    'partial': 'Lean: partial proof',
+    'complete': 'Lean: complete'
+  } %}
+  <span class="badge badge--lean badge--lean-{{ status }}">{{ labels[status] }}</span>
+{%- endmacro %}
+
+{% macro problem_card(problem, compact=false) -%}
+<article
+  class="problem-card{% if compact %} problem-card--compact{% endif %}"
+  data-problem-card
+  data-status="{{ problem.status }}"
+  data-category="{{ problem.category }}"
+  data-formalization="{{ problem.formalization.status }}"
+  data-search="{{ problem.search_text }}"
+>
+  <div class="problem-card__topline">
+    <span class="eyebrow">{{ problem.category_data.title }}</span>
+    <span class="problem-card__updated">Updated {{ problem.updated }}</span>
+  </div>
+  <h3><a href="{{ site_url('problems/' ~ problem.id ~ '/') }}">{{ problem.title }}</a></h3>
+  <div class="badge-row">
+    {{ status_badge(problem.status) }}
+    {{ formalization_badge(problem.formalization.status) }}
+  </div>
+  <p>{{ problem.summary }}</p>
+  <div class="capacity-inline math-inline">\({{ problem.capacity.display }}\)</div>
+  <div class="problem-card__footer">
+    <span>{{ problem.bounds | length }} bound{% if problem.bounds | length != 1 %}s{% endif %}</span>
+    <a class="text-link" href="{{ site_url('problems/' ~ problem.id ~ '/') }}">Open entry <span aria-hidden="true">→</span></a>
+  </div>
+</article>
+{%- endmacro %}
+
+{% macro reference_item(reference) -%}
+<li id="ref-{{ reference.id }}" class="reference-item">
+  <span class="reference-item__authors">{{ reference.authors | authors }}</span>
+  ({{ reference.year }}).
+  <a href="{{ reference.url }}">{{ reference.title }}</a>.
+  <span>{{ reference.venue }}.</span>
+  {% if reference.doi %}<span class="reference-id">doi:{{ reference.doi }}</span>{% endif %}
+  {% if reference.arxiv %}<span class="reference-id">arXiv:{{ reference.arxiv }}</span>{% endif %}
+</li>
+{%- endmacro %}

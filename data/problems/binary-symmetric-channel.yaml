@@ -1,0 +1,59 @@
+id: binary-symmetric-channel
+title: Binary symmetric channel
+abbreviation: BSC
+status: solved
+category: point-to-point
+featured: true
+updated: 2026-08-09
+summary: Each bit is independently flipped with probability p. This is the canonical finite noisy channel.
+tags: [binary, discrete-memoryless, symmetric]
+parameters:
+  - symbol: p
+    description: Crossover probability.
+    range: '0\le p\le1/2'
+model:
+  input: 'X\in\{0,1\}'
+  output: 'Y\in\{0,1\}'
+  law: 'Y=X\oplus Z, where Z\sim\mathrm{Bernoulli}(p) independently across uses.'
+  assumptions:
+    - The range p at most 1/2 removes the equivalent relabelled regime.
+    - Average probability of error vanishes with blocklength.
+quantity:
+  name: Shannon capacity
+  symbol: 'C_{\mathrm{BSC}}(p)'
+  units: bits per channel use
+  criterion: Average-error capacity.
+capacity:
+  kind: exact
+  display: 'C_{\mathrm{BSC}}(p)=1-h_2(p)'
+  conditions: '0\le p\le1/2, where h_2 is binary entropy.'
+  notes: The uniform input distribution achieves capacity.
+bounds:
+  - id: uniform-input-achievability
+    direction: lower
+    relation: 'C\ge1-h_2(p)'
+    method: Apply the noisy-channel coding theorem to independent uniform inputs.
+    year: 1948
+    references: [shannon-1948]
+  - id: symmetric-channel-converse
+    direction: upper
+    relation: 'C\le1-h_2(p)'
+    method: Maximize I(X;Y) over the binary input distribution; symmetry makes the uniform input optimal.
+    year: 1948
+    references: [shannon-1948]
+timeline:
+  - year: 1948
+    event: Shannon's noisy-channel coding theorem determines the capacity.
+    references: [shannon-1948]
+formalization:
+  status: definitions
+  language: Lean
+  notes: The transition kernel and its zero-noise identity are formalized. The coding theorem and entropy optimization remain open.
+  files:
+    - path: lean/CapacityAtlas/Channels/Binary.lean
+      declaration: CapacityAtlas.Channel.binarySymmetric
+      description: Binary symmetric channel as a finite stochastic channel.
+    - path: lean/CapacityAtlas/Channels/Binary.lean
+      declaration: CapacityAtlas.Channel.binarySymmetric_zero
+      description: At p=0 the BSC is the identity channel.
+references: [shannon-1948, cover-thomas-2006]

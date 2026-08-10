@@ -1,0 +1,44 @@
+id: degraded-wiretap-channel
+title: Degraded discrete memoryless wiretap channel
+status: solved
+category: security
+updated: 2026-08-09
+summary: A sender communicates reliably to a legitimate receiver while keeping the message secret from a degraded eavesdropper.
+tags: [secrecy, discrete-memoryless, degraded]
+model:
+  input: 'X\in\mathcal X'
+  output: 'Legitimate output Y\in\mathcal Y and eavesdropper output Z\in\mathcal Z.'
+  law: 'The channel is memoryless and physically degraded: X\to Y\to Z.'
+  assumptions:
+    - Reliability is required at the legitimate receiver.
+    - Information leakage to the eavesdropper vanishes under the chosen secrecy criterion.
+quantity:
+  name: Secrecy capacity
+  symbol: C_s
+  units: secret bits per channel use
+  criterion: Reliable communication with asymptotically vanishing leakage.
+capacity:
+  kind: characterization
+  display: 'C_s=\max_{P_X}\bigl[I(X;Y)-I(X;Z)\bigr]'
+  conditions: The channel is physically degraded.
+bounds:
+  - id: random-binning-achievability
+    direction: lower
+    relation: 'C_s\ge\max_{P_X}[I(X;Y)-I(X;Z)]'
+    method: Stochastic encoding and random binning.
+    year: 1975
+    references: [wyner-1975]
+  - id: degraded-secrecy-converse
+    direction: upper
+    relation: 'C_s\le\max_{P_X}[I(X;Y)-I(X;Z)]'
+    method: Fano's inequality, secrecy, and degradedness.
+    year: 1975
+    references: [wyner-1975]
+timeline:
+  - year: 1975
+    event: Wyner introduced the wiretap channel and proved the degraded secrecy-capacity formula.
+    references: [wyner-1975]
+formalization:
+  status: none
+  notes: Secrecy criteria and mutual-information converses are not yet present in the Lean core.
+references: [wyner-1975, cover-thomas-2006]

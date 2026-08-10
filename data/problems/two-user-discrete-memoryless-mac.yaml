@@ -1,0 +1,48 @@
+id: two-user-discrete-memoryless-mac
+title: Two-user discrete memoryless multiple-access channel
+abbreviation: DM-MAC
+status: solved
+category: multi-user
+updated: 2026-08-09
+summary: Two independent senders communicate to one receiver through a memoryless channel, yielding a polymatroidal capacity region.
+tags: [multiple-access, discrete-memoryless, capacity-region]
+model:
+  input: 'Independent encoder inputs X_1\in\mathcal X_1 and X_2\in\mathcal X_2.'
+  output: 'A common receiver observes Y\in\mathcal Y.'
+  law: 'A memoryless transition law p(y\mid x_1,x_2).'
+  assumptions:
+    - The two messages are independent.
+    - Time sharing is allowed.
+quantity:
+  name: Capacity region
+  symbol: '\mathcal C_{\mathrm{MAC}}'
+  units: rate pairs in bits per channel use
+  criterion: Vanishing average joint decoding error.
+capacity:
+  kind: region
+  display: '\bigcup_{p(q)p(x_1\mid q)p(x_2\mid q)}\!\left\{\begin{array}{l}R_1\le I(X_1;Y\mid X_2,Q),\\R_2\le I(X_2;Y\mid X_1,Q),\\R_1+R_2\le I(X_1,X_2;Y\mid Q)\end{array}\right\}'
+  notes: The auxiliary Q represents time sharing.
+bounds:
+  - id: mac-random-coding-inner
+    direction: inner-region
+    relation: 'R_1\le I(X_1;Y\mid X_2,Q), R_2\le I(X_2;Y\mid X_1,Q), R_1+R_2\le I(X_1,X_2;Y\mid Q)'
+    method: Independent random codebooks and joint decoding.
+    year: 1971
+    references: [ahlswede-1971, liao-1972]
+  - id: mac-converse-outer
+    direction: outer-region
+    relation: The same three mutual-information inequalities.
+    method: Fano's inequality and single-letterization with a time-sharing variable.
+    year: 1972
+    references: [ahlswede-1971, liao-1972]
+timeline:
+  - year: 1971
+    event: Ahlswede established the multiple-access coding theorem.
+    references: [ahlswede-1971]
+  - year: 1972
+    event: Liao independently developed the multiple-access capacity region.
+    references: [liao-1972]
+formalization:
+  status: none
+  notes: Product input distributions, rate regions, and the MAC coding theorem are not yet formalized.
+references: [ahlswede-1971, liao-1972, cover-thomas-2006]

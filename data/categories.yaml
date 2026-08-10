@@ -1,0 +1,16 @@
+categories:
+  - id: point-to-point
+    title: Point-to-point
+    description: Single-sender, single-receiver channels.
+  - id: multi-user
+    title: Multi-user
+    description: Multiple-access, broadcast, interference, and relay networks.
+  - id: channels-with-memory
+    title: Channels with memory
+    description: Synchronization and finite-state channels whose outputs depend on more than one symbol.
+  - id: security
+    title: Security
+    description: Secrecy capacities and confidential communication.
+  - id: network-coding
+    title: Network coding
+    description: Index coding and related network information problems.

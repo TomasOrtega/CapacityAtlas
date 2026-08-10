@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% from "_macros.html" import problem_card %}
+{% set page_title = 'Problems' %}
+{% set page_description = 'Browse solved and open channel-capacity problems.' %}
+{% set request_path = 'problems/' %}
+
+{% block content %}
+<section class="page-hero page-hero--compact">
+  <div class="shell">
+    <span class="kicker">Problem index</span>
+    <h1>Channel-capacity problems</h1>
+    <p>Search by channel, method, category, status, or formalization level.</p>
+  </div>
+</section>
+
+<section class="section section--compact">
+  <div class="shell">
+    <div class="filter-panel" data-filter-panel>
+      <div class="search-field">
+        <label for="problem-search">Search</label>
+        <input id="problem-search" type="search" placeholder="Try deletion, relay, Gaussian, non-Shannon…" autocomplete="off" data-problem-search>
+      </div>
+      <div class="filter-group">
+        <label for="status-filter">Status</label>
+        <select id="status-filter" data-filter="status">
+          <option value="all">All statuses</option>
+          <option value="open">Open</option>
+          <option value="partially-solved">Partially solved</option>
+          <option value="solved">Solved</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="category-filter">Category</label>
+        <select id="category-filter" data-filter="category">
+          <option value="all">All categories</option>
+          {% for category in categories %}
+          <option value="{{ category.id }}">{{ category.title }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="lean-filter">Lean status</label>
+        <select id="lean-filter" data-filter="formalization">
+          <option value="all">All Lean statuses</option>
+          <option value="none">Not started</option>
+          <option value="definitions">Definitions</option>
+          <option value="statement">Statement</option>
+          <option value="partial">Partial proof</option>
+          <option value="complete">Complete proof</option>
+        </select>
+      </div>
+      <button class="button button--small button--secondary" type="button" data-clear-filters>Clear</button>
+    </div>
+
+    <div class="results-bar">
+      <p><strong data-result-count>{{ problems | length }}</strong> entries shown</p>
+      <p class="results-bar__hint">The initial release is deliberately curated rather than exhaustive.</p>
+    </div>
+
+    <div class="card-grid card-grid--three" data-problem-grid>
+      {% for problem in problems %}
+        {{ problem_card(problem) }}
+      {% endfor %}
+    </div>
+    <div class="empty-state" hidden data-empty-state>
+      <h2>No matching problems</h2>
+      <p>Clear a filter or propose the missing channel on GitHub.</p>
+      <a class="button button--secondary" href="{{ site.repository_url }}/issues/new">Propose an entry</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

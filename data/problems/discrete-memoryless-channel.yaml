@@ -1,0 +1,53 @@
+id: discrete-memoryless-channel
+title: Finite discrete memoryless channel
+abbreviation: DMC
+status: solved
+category: point-to-point
+updated: 2026-08-09
+summary: The general finite memoryless point-to-point channel has a single-letter mutual-information characterization.
+tags: [finite-alphabet, discrete-memoryless, foundational]
+model:
+  input: 'X\in\mathcal X, with finite \mathcal X.'
+  output: 'Y\in\mathcal Y, with finite \mathcal Y.'
+  law: 'A stochastic matrix W(y\mid x), used independently at each channel use.'
+  assumptions:
+    - The channel law is known to encoder and decoder.
+    - Average probability of error vanishes with blocklength.
+quantity:
+  name: Shannon capacity
+  symbol: C(W)
+  units: bits per channel use
+  criterion: Average-error capacity.
+capacity:
+  kind: characterization
+  display: 'C(W)=\max_{P_X} I(X;Y)'
+  notes: The maximum is over all probability distributions on the finite input alphabet.
+bounds:
+  - id: random-coding-achievability
+    direction: lower
+    relation: 'C(W)\ge\max_{P_X}I(X;Y)'
+    method: Random coding and typical-set decoding.
+    year: 1948
+    references: [shannon-1948]
+  - id: fano-converse
+    direction: upper
+    relation: 'C(W)\le\max_{P_X}I(X;Y)'
+    method: Fano's inequality, the chain rule, and memorylessness.
+    year: 1948
+    references: [shannon-1948]
+timeline:
+  - year: 1948
+    event: Shannon proved the noisy-channel coding theorem.
+    references: [shannon-1948]
+formalization:
+  status: definitions
+  language: Lean
+  notes: Shared finite stochastic channels, serial composition, and one-shot codes are formalized. The asymptotic coding theorem is not.
+  files:
+    - path: lean/CapacityAtlas/FiniteChannel.lean
+      declaration: CapacityAtlas.FiniteChannel
+      description: Shared finite stochastic-channel structure.
+    - path: lean/CapacityAtlas/Code.lean
+      declaration: CapacityAtlas.OneShotCode
+      description: Shared one-shot encoder, decoder, and error definitions.
+references: [shannon-1948, cover-thomas-2006]

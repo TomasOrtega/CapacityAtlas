@@ -1,0 +1,56 @@
+id: example-channel
+# Keep the filename equal to id: data/problems/example-channel.yaml
+title: Example channel
+abbreviation: EC
+status: open
+category: point-to-point
+featured: false
+updated: 2026-08-09
+summary: A precise one-sentence description of the operational problem and its current status.
+tags: [finite-alphabet]
+parameters:
+  - symbol: p
+    description: Channel parameter.
+    range: 0 <= p <= 1
+model:
+  input: Describe the input alphabet.
+  output: Describe the output alphabet.
+  law: Give the transition law in text or LaTeX.
+  assumptions:
+    - State memory, feedback, cost, side-information, and code assumptions.
+quantity:
+  name: Shannon capacity
+  symbol: C
+  units: bits per channel use
+  criterion: Vanishing average error for block codes.
+capacity:
+  kind: bounds
+  display: L <= C <= U
+  lower: L
+  upper: U
+  conjectured: L
+  notes: Explain the status in one paragraph.
+bounds:
+  - id: example-lower-bound
+    direction: lower
+    relation: C >= L
+    method: Name the coding construction or argument.
+    year: 2026
+    conditions: State any extra condition.
+    references: [reference-key]
+timeline:
+  - year: 2026
+    event: State the substantive result.
+    references: [reference-key]
+frontier:
+  question: What exact claim is unresolved?
+  bottleneck: Why do current methods stop?
+  progress:
+    - Describe a result that would strictly improve knowledge.
+  subproblems:
+    - title: A concrete formalization or mathematical target.
+      status: open
+formalization:
+  status: none
+  notes: Name the first reusable Lean object or theorem needed.
+references: [reference-key]

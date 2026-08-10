@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% from "_macros.html" import problem_card %}
+{% set page_title = none %}
+{% set page_description = site.description %}
+{% set request_path = '' %}
+
+{% block content %}
+<section class="hero">
+  <div class="shell hero__grid">
+    <div class="hero__copy">
+      <span class="kicker">A living research index</span>
+      <h1>Know the channel. See the gap. Work on the proof.</h1>
+      <p>{{ site.tagline }}</p>
+      <div class="hero__actions">
+        <a class="button" href="{{ site_url('problems/') }}">Browse capacity problems</a>
+        <a class="button button--secondary" href="{{ site_url('contribute/') }}">Add a result</a>
+      </div>
+      <p class="hero__note">Every entry separates literature claims from machine-checked Lean proofs.</p>
+    </div>
+    <div class="hero__panel" aria-label="Example capacity gap">
+      <div class="hero__panel-label">Open capacity gap</div>
+      <div class="hero__equation math-display">\[\frac{5}{13}\le C_{\mathrm{sym}}\le\frac{11}{28}\]</div>
+      <div class="gap-line" aria-hidden="true">
+        <span class="gap-line__point"></span>
+        <span class="gap-line__open"></span>
+        <span class="gap-line__point"></span>
+      </div>
+      <div class="gap-labels">
+        <span>Achievability</span>
+        <strong>open</strong>
+        <span>Converse</span>
+      </div>
+      <a href="{{ site_url('problems/sun-jafar-11-message-index-coding/') }}">Sun-Jafar 11-message instance <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="stats-strip" aria-label="Atlas statistics">
+  <div class="shell stats-grid">
+    <div><strong>{{ stats.total }}</strong><span>capacity problems</span></div>
+    <div><strong>{{ stats.open }}</strong><span>open problems</span></div>
+    <div><strong>{{ stats.solved }}</strong><span>solved entries</span></div>
+    <div><strong>{{ stats.lean_started }}</strong><span>Lean work started</span></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="shell">
+    <div class="section-heading section-heading--split">
+      <div>
+        <span class="eyebrow">Featured problems</span>
+        <h2>Start from a precise research target</h2>
+        <p>Each page fixes the model, rate convention, best bounds, provenance, and what would count as progress.</p>
+      </div>
+      <a class="text-link text-link--large" href="{{ site_url('problems/') }}">View all {{ stats.total }} problems <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="card-grid card-grid--three">
+      {% for problem in featured %}
+        {{ problem_card(problem) }}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section section--tinted">
+  <div class="shell">
+    <div class="section-heading">
+      <span class="eyebrow">Built for research</span>
+      <h2>More than a table of formulas</h2>
+    </div>
+    <div class="feature-grid">
+      <article>
+        <span class="feature-number">01</span>
+        <h3>Exact specification</h3>
+        <p>Inputs, outputs, transition law, side information, constraints, error criterion, and normalization are explicit.</p>
+      </article>
+      <article>
+        <span class="feature-number">02</span>
+        <h3>Bounds as data</h3>
+        <p>Every achievability and converse has its own method, conditions, year, and references.</p>
+      </article>
+      <article>
+        <span class="feature-number">03</span>
+        <h3>Research frontier</h3>
+        <p>Open entries explain the bottleneck and list concrete results that would move the state of the art.</p>
+      </article>
+      <article>
+        <span class="feature-number">04</span>
+        <h3>Lean, honestly labelled</h3>
+        <p>Definitions, statements, partial proofs, and complete proofs are distinct statuses. No badge hides a missing theorem.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="shell split-panel">
+    <div>
+      <span class="eyebrow">Formalization policy</span>
+      <h2>Lean is the only proof-assistant target for now</h2>
+      <p>Channel definitions live in shared modules. Contributions should reuse those definitions, contain no <code>sorry</code>, and name the exact theorem that has been checked.</p>
+      <a class="button button--secondary" href="{{ site_url('formalizations/') }}">See the Lean dashboard</a>
+    </div>
+    <ol class="status-ladder" aria-label="Formalization levels">
+      <li><span>1</span><div><strong>Definitions</strong><small>The model compiles.</small></div></li>
+      <li><span>2</span><div><strong>Statement</strong><small>The capacity claim is stated precisely.</small></div></li>
+      <li><span>3</span><div><strong>Partial</strong><small>Some bounds or lemmas are proved.</small></div></li>
+      <li><span>4</span><div><strong>Complete</strong><small>The claimed result is machine-checked.</small></div></li>
+    </ol>
+  </div>
+</section>
+
+<section class="section section--compact section--bordered">
+  <div class="shell">
+    <div class="section-heading section-heading--split">
+      <div>
+        <span class="eyebrow">Recently curated</span>
+        <h2>Latest entry updates</h2>
+      </div>
+    </div>
+    <div class="recent-list">
+      {% for problem in recent %}
+      <a href="{{ site_url('problems/' ~ problem.id ~ '/') }}">
+        <span>{{ problem.updated }}</span>
+        <strong>{{ problem.title }}</strong>
+        <em>{{ problem.status | replace('-', ' ') }}</em>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

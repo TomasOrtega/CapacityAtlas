@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "capacity-atlas"
+version = "0.1.0"
+description = "Static site and data validator for Capacity Atlas"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{ name = "Capacity Atlas contributors" }]
+dependencies = [
+  "Jinja2>=3.1,<4",
+  "PyYAML>=6.0,<7",
+  "jsonschema>=4.23,<5",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3,<10",
+  "beautifulsoup4>=4.12,<5",
+  "ruff>=0.12,<1",
+]
+
+[project.scripts]
+capacity-atlas = "capacity_atlas.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]

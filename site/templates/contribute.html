@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% set page_title = 'Contribute' %}
+{% set page_description = 'How to contribute channel data, bounds, and Lean proofs to Capacity Atlas.' %}
+{% set request_path = 'contribute/' %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="shell page-hero__grid">
+    <div><span class="kicker">Community maintained</span><h1>Contribute to Capacity Atlas</h1><p>Use a pull request for canonical data or Lean code. Use an issue to discuss uncertain claims before editing.</p></div>
+    <div class="page-hero__actions"><a class="button" href="{{ site.repository_url }}/issues/new/choose">Open an issue</a><a class="button button--secondary" href="{{ site.repository_url }}/fork">Fork the repository</a></div>
+  </div>
+</section>
+
+<section class="section section--compact">
+  <div class="shell prose-layout">
+    <aside class="prose-nav"><span>On this page</span><a href="#problem">Add a problem</a><a href="#bound">Update a bound</a><a href="#lean">Add Lean</a><a href="#checks">Run checks</a><a href="#review">Review standard</a></aside>
+    <div class="prose">
+      <section id="problem">
+        <span class="section-label">01 · Problems</span>
+        <h2>Add a capacity problem</h2>
+        <p>Copy an existing file in <code>data/problems</code>. A problem is not merely a channel name. It fixes the information pattern, constraints, error criterion, and requested quantity.</p>
+        <ol>
+          <li>Choose a stable lowercase identifier and matching YAML filename.</li>
+          <li>Specify the channel model so a reader can reconstruct the problem without opening a paper.</li>
+          <li>Record the current result as an exact formula, characterization, region, or explicit lower and upper bounds.</li>
+          <li>Add primary references to <code>data/references.yaml</code>.</li>
+          <li>For an open entry, explain the bottleneck and concrete forms of progress.</li>
+        </ol>
+        <div class="callout"><strong>Scope rule.</strong> Separate variants when feedback, state knowledge, zero-error criteria, cost constraints, code linearity, or another assumption changes the capacity question.</div>
+      </section>
+
+      <section id="bound">
+        <span class="section-label">02 · Bounds</span>
+        <h2>Update a bound</h2>
+        <p>Bounds are first-class records. Do not replace a number without preserving its provenance and conditions.</p>
+        <pre><code>bounds:
+  - id: descriptive-bound-id
+    direction: lower
+    relation: 'C \ge R'
+    method: One-sentence description of the code or converse.
+    year: 2026
+    conditions: Optional parameter range.
+    references: [paper-id]</code></pre>
+        <p>For numerical or computer-assisted results, link the paper and note the certificate or implementation in the method or notes field. The initial release does not display non-Lean proof-assistant artifacts as formal proofs.</p>
+      </section>
+
+      <section id="lean">
+        <span class="section-label">03 · Lean</span>
+        <h2>Add a Lean formalization</h2>
+        <p>Reuse the definitions in <code>lean/CapacityAtlas</code>. Add a shared abstraction only when at least two entries can plausibly use it.</p>
+        <ol>
+          <li>Add the Lean file and import it from <code>lean/CapacityAtlas.lean</code>.</li>
+          <li>Prove all stochasticity and well-formedness obligations.</li>
+          <li>Use no <code>sorry</code>, <code>admit</code>, or hidden axiom.</li>
+          <li>List every displayed declaration in the problem YAML.</li>
+          <li>Set the status conservatively: definitions, statement, partial, or complete.</li>
+        </ol>
+        <p>A complete badge means the capacity claim shown on the page is proved. A valid channel definition alone earns the definitions badge, not a proof badge.</p>
+      </section>
+
+      <section id="checks">
+        <span class="section-label">04 · Checks</span>
+        <h2>Run the same checks as CI</h2>
+        <pre><code>python -m pip install -e '.[dev]'
+make check
+cd lean
+lake build</code></pre>
+        <p><code>make check</code> validates the schema, reference identifiers, Lean file links, named declarations, Python tests, formatting, and a complete static-site build.</p>
+      </section>
+
+      <section id="review">
+        <span class="section-label">05 · Review</span>
+        <h2>What maintainers review</h2>
+        <ul class="check-list">
+          <li>The model and rate convention are unambiguous.</li>
+          <li>Every factual claim has a primary source.</li>
+          <li>The displayed bounds are current and carry their parameter ranges.</li>
+          <li>Open-problem language distinguishes conjecture from theorem.</li>
+          <li>Formalization status matches what Lean actually checks.</li>
+          <li>The contribution stays small enough to maintain.</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</section>
+{% endblock %}

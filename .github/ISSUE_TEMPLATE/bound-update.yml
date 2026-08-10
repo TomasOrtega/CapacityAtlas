@@ -1,0 +1,54 @@
+name: Report a new or corrected bound
+description: Update the mathematical status of an existing entry.
+title: "[Bound] "
+body:
+  - type: input
+    id: problem
+    attributes:
+      label: Capacity Atlas problem ID
+      placeholder: binary-deletion-channel
+    validations:
+      required: true
+  - type: dropdown
+    id: direction
+    attributes:
+      label: Bound type
+      options:
+        - Achievability / lower bound
+        - Converse / upper bound
+        - Exact result
+        - Inner region
+        - Outer region
+        - Linear-only exact result
+    validations:
+      required: true
+  - type: textarea
+    id: claim
+    attributes:
+      label: Exact mathematical claim
+      description: Include all parameter ranges and assumptions.
+    validations:
+      required: true
+  - type: textarea
+    id: method
+    attributes:
+      label: Method and comparison
+      description: Explain the mechanism and why this improves or corrects the current entry.
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Primary source
+      description: Link the paper and identify the theorem, proposition, or section.
+    validations:
+      required: true
+  - type: checkboxes
+    id: verification
+    attributes:
+      label: Verification
+      options:
+        - label: I checked that the assumptions and normalization match the atlas entry.
+          required: true
+        - label: I checked that this is not merely a numerical observation or secondary citation.
+          required: true

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% from "_macros.html" import formalization_badge %}
+{% set page_title = 'Lean formalizations' %}
+{% set page_description = 'Lean formalization status for Capacity Atlas.' %}
+{% set request_path = 'formalizations/' %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="shell page-hero__grid">
+    <div>
+      <span class="kicker">Machine-checked mathematics</span>
+      <h1>Lean formalizations</h1>
+      <p>Capacity Atlas accepts Lean formalizations only. The status labels say exactly how much has been checked.</p>
+    </div>
+    <div class="page-hero__stat"><strong>{{ stats.lean_started }}</strong><span>entries with Lean work</span><small>{{ stats.lean_complete }} complete capacity proofs</small></div>
+  </div>
+</section>
+
+<section class="section section--compact">
+  <div class="shell">
+    <div class="policy-banner">
+      <div><span class="eyebrow">Current policy</span><h2>One proof assistant, shared definitions</h2></div>
+      <p>New formalizations must compile with the pinned Lean toolchain, contain no <code>sorry</code>, and reuse the common channel and code definitions whenever the model fits them.</p>
+    </div>
+
+    <div class="section-heading"><span class="eyebrow">Status ladder</span><h2>What each badge means</h2></div>
+    <div class="formalization-levels">
+      <article><span>0</span><h3>Not started</h3><p>No Lean artifact is linked.</p></article>
+      <article><span>1</span><h3>Definitions</h3><p>The channel model or instance compiles and its basic well-formedness obligations are proved.</p></article>
+      <article><span>2</span><h3>Statement</h3><p>The exact capacity or bound is stated against the shared definitions.</p></article>
+      <article><span>3</span><h3>Partial proof</h3><p>At least one substantive achievability, converse, or supporting theorem is checked.</p></article>
+      <article><span>4</span><h3>Complete proof</h3><p>The advertised capacity result follows with no unproved axioms or placeholders.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tinted">
+  <div class="shell split-panel split-panel--top">
+    <div>
+      <span class="eyebrow">Shared library</span>
+      <h2>Common definitions live once</h2>
+      <p>The initial Lean library defines finite stochastic channels, serial composition, one-shot codes, standard binary channels, and a reusable multiple-unicast index-coding instance.</p>
+      <div class="code-links">
+        <a href="{{ site.repository_url }}/blob/main/lean/CapacityAtlas/FiniteChannel.lean"><code>FiniteChannel.lean</code><span>Stochastic kernels, identity, and serial composition</span></a>
+        <a href="{{ site.repository_url }}/blob/main/lean/CapacityAtlas/Code.lean"><code>Code.lean</code><span>One-shot encoders, decoders, success and error</span></a>
+        <a href="{{ site.repository_url }}/blob/main/lean/CapacityAtlas/Channels/Binary.lean"><code>Channels/Binary.lean</code><span>BSC, BEC, and Z-channel definitions</span></a>
+        <a href="{{ site.repository_url }}/blob/main/lean/CapacityAtlas/Network/IndexCoding.lean"><code>Network/IndexCoding.lean</code><span>Multiple-unicast instances and Sun-Jafar 11</span></a>
+      </div>
+    </div>
+    <div class="principles-card">
+      <h3>Review rules</h3>
+      <ul class="check-list">
+        <li>No <code>sorry</code>, <code>admit</code>, or undocumented axioms.</li>
+        <li>The data entry names every linked declaration.</li>
+        <li>Definitions state the same assumptions as the web page.</li>
+        <li>CI builds the complete Lean project.</li>
+        <li>A proof badge is upgraded only with the relevant theorem.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="shell">
+    <div class="section-heading section-heading--split"><div><span class="eyebrow">Dashboard</span><h2>Formalization by problem</h2></div><a class="text-link" href="{{ site_url('contribute/') }}#lean">Submit a formalization →</a></div>
+    <div class="table-wrap">
+      <table class="formalization-table">
+        <thead><tr><th>Problem</th><th>Capacity status</th><th>Lean status</th><th>Files</th></tr></thead>
+        <tbody>
+          {% for problem in problems | sort(attribute='title') %}
+          <tr>
+            <td><a href="{{ site_url('problems/' ~ problem.id ~ '/') }}"><strong>{{ problem.title }}</strong></a><small>{{ problem.category_data.title }}</small></td>
+            <td>{{ problem.status | replace('-', ' ') }}</td>
+            <td>{{ formalization_badge(problem.formalization.status) }}</td>
+            <td>{{ problem.formalization.files | default([]) | length }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% endblock %}

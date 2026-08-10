@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if page_title %}{{ page_title }} · {% endif %}{{ site.name }}</title>
+  <meta name="description" content="{{ page_description or site.description }}">
+  <meta name="theme-color" content="#102a43">
+  <link rel="canonical" href="{{ site.canonical_url.rstrip('/') }}{{ site_url(request_path or '') }}">
+  <link rel="stylesheet" href="{{ site_url('assets/styles.css') }}">
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script defer src="{{ site_url('assets/site.js') }}"></script>
+</head>
+<body data-page="{{ page_id }}">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="shell site-header__inner">
+      <a class="brand" href="{{ site_url() }}" aria-label="Capacity Atlas home">
+        <span class="brand__mark" aria-hidden="true">C</span>
+        <span>
+          <strong>{{ site.name }}</strong>
+          <small>Channel-capacity problems</small>
+        </span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
+        Menu
+      </button>
+      <nav id="site-nav" class="site-nav" aria-label="Primary navigation" data-site-nav>
+        <a {% if page_id in ['problems', 'problem'] %}aria-current="page"{% endif %} href="{{ site_url('problems/') }}">Problems</a>
+        <a {% if page_id == 'formalizations' %}aria-current="page"{% endif %} href="{{ site_url('formalizations/') }}">Lean</a>
+        <a {% if page_id == 'contribute' %}aria-current="page"{% endif %} href="{{ site_url('contribute/') }}">Contribute</a>
+        <a {% if page_id == 'about' %}aria-current="page"{% endif %} href="{{ site_url('about/') }}">About</a>
+        <a class="button button--small button--ghost" href="{{ site.repository_url }}">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell site-footer__grid">
+      <div>
+        <a class="brand brand--footer" href="{{ site_url() }}">
+          <span class="brand__mark" aria-hidden="true">C</span>
+          <strong>{{ site.name }}</strong>
+        </a>
+        <p>Precise capacity problems, auditable bounds, and honest formalization status.</p>
+      </div>
+      <div>
+        <h2>Explore</h2>
+        <a href="{{ site_url('problems/') }}">All problems</a>
+        <a href="{{ site_url('formalizations/') }}">Lean dashboard</a>
+        <a href="{{ site_url('api/') }}">Machine-readable API</a>
+      </div>
+      <div>
+        <h2>Community</h2>
+        <a href="{{ site_url('contribute/') }}">Contribution guide</a>
+        <a href="{{ site.repository_url }}/issues">Issues</a>
+        <a href="{{ site.repository_url }}/pulls">Pull requests</a>
+      </div>
+    </div>
+    <div class="shell site-footer__bottom">
+      <span>Data and code are maintained in GitHub.</span>
+      <span>Site license: {{ site.license }}.</span>
+    </div>
+  </footer>
+</body>
+</html>

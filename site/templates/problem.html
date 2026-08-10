@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+{% from "_macros.html" import status_badge, formalization_badge, problem_card, reference_item %}
+{% set request_path = 'problems/' ~ problem.id ~ '/' %}
+
+{% block content %}
+<section class="problem-hero">
+  <div class="shell">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="{{ site_url() }}">Home</a><span aria-hidden="true">/</span>
+      <a href="{{ site_url('problems/') }}">Problems</a><span aria-hidden="true">/</span>
+      <span>{{ problem.abbreviation or problem.title }}</span>
+    </nav>
+    <div class="problem-hero__grid">
+      <div>
+        <span class="kicker">{{ problem.category_data.title }}</span>
+        <h1>{{ problem.title }}</h1>
+        <p>{{ problem.summary }}</p>
+        <div class="badge-row badge-row--large">
+          {{ status_badge(problem.status) }}
+          {{ formalization_badge(problem.formalization.status) }}
+          {% if problem.abbreviation %}<span class="badge">{{ problem.abbreviation }}</span>{% endif %}
+        </div>
+      </div>
+      <aside class="problem-meta">
+        <div><span>Last curated</span><strong>{{ problem.updated }}</strong></div>
+        <div><span>Bounds recorded</span><strong>{{ problem.bounds | length }}</strong></div>
+        <div><span>References</span><strong>{{ problem.references | length }}</strong></div>
+        <a href="{{ github_edit_url(problem.id) }}">Edit this entry <span aria-hidden="true">↗</span></a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="section section--compact">
+  <div class="shell problem-layout">
+    <div class="problem-main">
+      <section class="content-section" id="model">
+        <div class="section-label">01 · Model</div>
+        <h2>Channel specification</h2>
+        <div class="definition-grid">
+          <div><span>Input</span><p class="math-inline">\({{ problem.model.input }}\)</p></div>
+          <div><span>Output</span><p class="math-inline">\({{ problem.model.output }}\)</p></div>
+          <div class="definition-grid__wide"><span>Law</span><p class="math-inline">{{ problem.model.law }}</p></div>
+        </div>
+        {% if problem.parameters %}
+        <h3>Parameters</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Symbol</th><th>Meaning</th><th>Range</th></tr></thead>
+            <tbody>
+              {% for parameter in problem.parameters %}
+              <tr>
+                <td class="math-inline">\({{ parameter.symbol }}\)</td>
+                <td>{{ parameter.description }}</td>
+                <td class="math-inline">{% if parameter.range %}\({{ parameter.range }}\){% else %}—{% endif %}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% endif %}
+        <h3>Assumptions</h3>
+        <ul class="plain-list">
+          {% for assumption in problem.model.assumptions %}<li>{{ assumption }}</li>{% endfor %}
+        </ul>
+      </section>
+
+      <section class="content-section" id="capacity">
+        <div class="section-label">02 · Capacity</div>
+        <h2>{{ problem.quantity.name }}</h2>
+        <div class="capacity-card capacity-card--{{ problem.capacity.kind }}">
+          <div class="capacity-card__header">
+            <span>{{ problem.quantity.units }}</span>
+            <span>{{ problem.capacity.kind | replace('-', ' ') }}</span>
+          </div>
+          <div class="capacity-card__formula math-display">\[{{ problem.capacity.display }}\]</div>
+          {% if problem.capacity.conditions %}<p><strong>Conditions.</strong> {{ problem.capacity.conditions }}</p>{% endif %}
+          {% if problem.capacity.notes %}<p>{{ problem.capacity.notes }}</p>{% endif %}
+          {% if problem.capacity.kind == 'bounds' %}
+          <div class="bound-gap" aria-label="Known capacity interval">
+            <div class="bound-gap__labels"><span>Best lower bound</span><span>Open gap</span><span>Best upper bound</span></div>
+            <div class="bound-gap__track"><i></i><b></b><i></i></div>
+            <div class="bound-gap__values math-inline"><span>\({{ problem.capacity.lower }}\)</span><span>{% if problem.capacity.conjectured %}Conjectured: \({{ problem.capacity.conjectured }}\){% endif %}</span><span>\({{ problem.capacity.upper }}\)</span></div>
+          </div>
+          {% endif %}
+        </div>
+        <dl class="quantity-meta">
+          <div><dt>Symbol</dt><dd class="math-inline">\({{ problem.quantity.symbol }}\)</dd></div>
+          <div><dt>Error criterion</dt><dd>{{ problem.quantity.criterion or 'See assumptions.' }}</dd></div>
+        </dl>
+      </section>
+
+      <section class="content-section" id="bounds">
+        <div class="section-label">03 · Evidence</div>
+        <h2>Known bounds and characterizations</h2>
+        <div class="table-wrap table-wrap--bounds">
+          <table>
+            <thead><tr><th>Type</th><th>Claim</th><th>Method</th><th>Source</th></tr></thead>
+            <tbody>
+            {% for bound in problem.bounds %}
+              <tr>
+                <td><span class="bound-type bound-type--{{ bound.direction }}">{{ bound.direction | replace('-', ' ') }}</span></td>
+                <td><span class="math-inline">\({{ bound.relation }}\)</span>{% if bound.conditions %}<small>{{ bound.conditions }}</small>{% endif %}</td>
+                <td>{{ bound.method }}{% if bound.notes %}<small>{{ bound.notes }}</small>{% endif %}</td>
+                <td>{{ bound.year }}{% for ref in bound.references %} <a class="reference-chip" href="#ref-{{ ref }}">[{{ loop.index }}]</a>{% endfor %}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {% if problem.timeline %}
+      <section class="content-section" id="history">
+        <div class="section-label">04 · History</div>
+        <h2>Bound timeline</h2>
+        <ol class="timeline">
+          {% for event in problem.timeline | sort(attribute='year') %}
+          <li>
+            <span>{{ event.year }}</span>
+            <div><p>{{ event.event }}</p>{% for ref in event.references %}<a href="#ref-{{ ref }}">Reference</a>{% endfor %}</div>
+          </li>
+          {% endfor %}
+        </ol>
+      </section>
+      {% endif %}
+
+      {% if problem.frontier %}
+      <section class="content-section frontier" id="frontier">
+        <div class="section-label">05 · Frontier</div>
+        <h2>What remains open?</h2>
+        <div class="frontier__question">
+          <span>Central question</span>
+          <p>{{ problem.frontier.question }}</p>
+        </div>
+        <h3>Why the gap remains</h3>
+        <p>{{ problem.frontier.bottleneck }}</p>
+        <h3>What would count as progress</h3>
+        <ul class="check-list">
+          {% for item in problem.frontier.progress %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+        {% if problem.frontier.subproblems %}
+        <h3>Concrete subproblems</h3>
+        <div class="subproblem-list">
+          {% for subproblem in problem.frontier.subproblems %}
+          <div>
+            <span class="subproblem-status subproblem-status--{{ subproblem.status }}">{{ subproblem.status | replace('-', ' ') }}</span>
+            {% if subproblem.url %}<a href="{{ subproblem.url }}">{{ subproblem.title }}</a>{% else %}<p>{{ subproblem.title }}</p>{% endif %}
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </section>
+      {% endif %}
+
+      <section class="content-section" id="lean">
+        <div class="section-label">{% if problem.frontier %}06{% else %}05{% endif %} · Lean</div>
+        <h2>Formalization status</h2>
+        <div class="lean-status-card lean-status-card--{{ problem.formalization.status }}">
+          <div>
+            {{ formalization_badge(problem.formalization.status) }}
+            <h3>{{ {'none': 'Not started', 'definitions': 'Definitions', 'statement': 'Statement', 'partial': 'Partial proof', 'complete': 'Complete proof'}[problem.formalization.status] }}</h3>
+            <p>{{ problem.formalization.notes }}</p>
+          </div>
+          <ol class="mini-ladder">
+            {% for level, label in [('definitions','Definitions'),('statement','Statement'),('partial','Partial proof'),('complete','Complete proof')] %}
+            <li class="{% if formalization_rank[problem.formalization.status] >= formalization_rank[level] %}is-reached{% endif %}"><span></span>{{ label }}</li>
+            {% endfor %}
+          </ol>
+        </div>
+        {% if problem.formalization.files %}
+        <div class="lean-file-list">
+          {% for file in problem.formalization.files %}
+          <a href="{{ site.repository_url }}/blob/main/{{ file.path }}">
+            <code>{{ file.declaration }}</code>
+            <span>{{ file.description }}</span>
+            <small>{{ file.path }}</small>
+          </a>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="callout">No Lean file is linked yet. A contribution should begin by reusing the shared definitions under <code>lean/CapacityAtlas</code>.</p>
+        {% endif %}
+      </section>
+
+      <section class="content-section" id="references">
+        <div class="section-label">References</div>
+        <h2>Primary sources</h2>
+        <ol class="reference-list">
+          {% for reference in problem.resolved_references %}
+            {{ reference_item(reference) }}
+          {% endfor %}
+        </ol>
+      </section>
+    </div>
+
+    <aside class="problem-sidebar">
+      <nav class="toc" aria-label="On this page">
+        <span>On this page</span>
+        <a href="#model">Channel specification</a>
+        <a href="#capacity">Capacity</a>
+        <a href="#bounds">Known bounds</a>
+        {% if problem.timeline %}<a href="#history">History</a>{% endif %}
+        {% if problem.frontier %}<a href="#frontier">Research frontier</a>{% endif %}
+        <a href="#lean">Lean</a>
+        <a href="#references">References</a>
+      </nav>
+      <div class="community-card">
+        <span class="eyebrow">Community</span>
+        <h2>Discuss this problem</h2>
+        <p>Share corrections, new bounds, attempted approaches, or a Lean branch.</p>
+        <a class="button button--small" href="{{ discussion_url(problem) }}">Start a GitHub thread</a>
+        <a class="text-link" href="{{ github_edit_url(problem.id) }}">Edit the data directly</a>
+      </div>
+      {% if problem.tags %}
+      <div class="tag-panel">
+        <span>Tags</span>
+        <div>{% for tag in problem.tags %}<a href="{{ site_url('problems/') }}?q={{ tag }}">{{ tag }}</a>{% endfor %}</div>
+      </div>
+      {% endif %}
+    </aside>
+  </div>
+</section>
+
+{% if related %}
+<section class="section section--tinted section--compact">
+  <div class="shell">
+    <div class="section-heading"><span class="eyebrow">Keep exploring</span><h2>Related entries</h2></div>
+    <div class="card-grid card-grid--three">
+      {% for item in related %}{{ problem_card(item, true) }}{% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Browse the atlas
+    url: https://tomasortega.github.io/CapacityAtlas/
+    about: Check whether the problem or bound is already represented.

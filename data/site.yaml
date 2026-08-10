@@ -1,0 +1,11 @@
+name: Capacity Atlas
+tagline: A community-maintained atlas of channel capacities, open gaps, and Lean formalizations.
+description: Capacity Atlas records precise channel models, exact capacities, best known bounds, research frontiers, and the status of machine-checked Lean proofs.
+repository: TomasOrtega/CapacityAtlas
+repository_url: https://github.com/TomasOrtega/CapacityAtlas
+canonical_url: https://tomasortega.github.io/CapacityAtlas
+base_url: ""
+license: MIT
+social:
+  discussions_enabled: false
+  comments_provider: giscus

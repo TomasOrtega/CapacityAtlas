@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% set page_title = 'API' %}
+{% set page_description = 'Machine-readable Capacity Atlas data.' %}
+{% set request_path = 'api/' %}
+
+{% block content %}
+<section class="page-hero page-hero--compact"><div class="shell"><span class="kicker">Machine-readable data</span><h1>Static JSON API</h1><p>The API is generated from the same validated YAML files as the website.</p></div></section>
+<section class="section section--compact"><div class="shell prose prose--wide"><section><h2>Endpoints</h2><div class="endpoint-list"><a href="{{ site_url('api/problems.json') }}"><code>/api/problems.json</code><span>Complete problem index</span></a><a href="{{ site_url('api/references.json') }}"><code>/api/references.json</code><span>Reference database</span></a><a href="{{ site_url('api/problem.schema.json') }}"><code>/api/problem.schema.json</code><span>Problem JSON Schema</span></a><a href="{{ site_url('api/problems/binary-symmetric-channel.json') }}"><code>/api/problems/&lt;id&gt;.json</code><span>One problem record</span></a></div></section><section><h2>Example</h2><pre><code>curl {{ site.canonical_url }}/api/problems/sun-jafar-11-message-index-coding.json</code></pre></section><section><h2>Stability</h2><p>Problem identifiers and endpoint paths are intended to be stable. The schema is versioned with the repository. Before a 1.0 release, fields may still be refined through reviewed migrations.</p></section></div></section>
+{% endblock %}

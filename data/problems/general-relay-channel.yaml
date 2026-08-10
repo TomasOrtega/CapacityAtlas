@@ -1,0 +1,59 @@
+id: general-relay-channel
+title: General discrete memoryless relay channel
+status: open
+category: multi-user
+featured: true
+updated: 2026-08-09
+summary: A relay assists communication from a source to a destination. Decode-forward and the cut-set bound do not coincide in general.
+tags: [relay, discrete-memoryless, multi-user, open-capacity]
+model:
+  input: 'Source input X and relay input X_r.'
+  output: 'Relay observation Y_r and destination observation Y.'
+  law: 'A memoryless transition law p(y,y_r\mid x,x_r).'
+  assumptions:
+    - The relay acts causally on its past observations.
+    - Average probability of error vanishes with blocklength.
+quantity:
+  name: Shannon capacity
+  symbol: C
+  units: bits per channel use
+  criterion: Average-error source-to-destination capacity.
+capacity:
+  kind: bounds
+  display: 'R_{\mathrm{DF}}\le C\le R_{\mathrm{cut}}'
+  lower: 'R_{\mathrm{DF}}=\max_{p(x,x_r)}\min\{I(X;Y_r\mid X_r),I(X,X_r;Y)\}'
+  upper: 'R_{\mathrm{cut}}=\max_{p(x,x_r)}\min\{I(X;Y,Y_r\mid X_r),I(X,X_r;Y)\}'
+  notes: The bounds coincide for important subclasses, including degraded and reversely degraded relay channels, but not for the general model.
+bounds:
+  - id: decode-forward
+    direction: lower
+    relation: 'C\ge R_{\mathrm{DF}}'
+    method: The relay decodes the source message and cooperatively forwards it.
+    year: 1979
+    references: [cover-elgamal-1979]
+  - id: cut-set
+    direction: upper
+    relation: 'C\le R_{\mathrm{cut}}'
+    method: Apply a converse across each cut separating source and destination.
+    year: 1979
+    references: [cover-elgamal-1979]
+timeline:
+  - year: 1979
+    event: Cover and El Gamal established the principal coding theorems and capacity for major relay subclasses.
+    references: [cover-elgamal-1979]
+frontier:
+  question: Find a computable exact capacity characterization for the unrestricted discrete memoryless relay channel.
+  bottleneck: The relay can mix partial decoding, compression, and coherent cooperation across blocks, while standard cut-set arguments ignore the causal structure that limits these strategies.
+  progress:
+    - Identify a new nontrivial subclass where an inner and outer bound coincide.
+    - Strengthen the converse using relay causality without introducing an intractable multiletter expression.
+    - Produce a channel family with a certified quantitative gap between standard bounds and a new scheme or converse.
+  subproblems:
+    - title: Formalize the causal relay code model and the classical cut-set statement.
+      status: open
+    - title: Curate exact-capacity subclasses as separate atlas entries.
+      status: open
+formalization:
+  status: none
+  notes: A reusable causal network-code layer is needed before formalizing relay bounds.
+references: [cover-elgamal-1979]
