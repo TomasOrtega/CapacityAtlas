@@ -31,10 +31,13 @@ def test_discussion_configuration_matches_the_enabled_repository() -> None:
     giscus = social["giscus"]
 
     assert social["discussions_enabled"] is True
+    assert giscus["enabled"] is True
     assert giscus["repo"] == "TomasOrtega/CapacityAtlas"
     assert giscus["repo_id"] == "R_kgDOTzuIlQ"
     assert giscus["category"] == "General"
     assert giscus["category_id"] == "DIC_kwDOTzuIlc4DDFDj"
+    assert giscus["term_prefix"] == "capacityatlas:"
+    assert giscus["strict"] is True
 
 
 def test_external_proof_must_match_statement_version() -> None:
