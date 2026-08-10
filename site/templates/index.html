@@ -3,8 +3,7 @@
 {% block content %}
 <header class="hero">
   <div class="container hero__inner">
-    <p class="eyebrow">Open information theory, precisely stated</p>
-    <h1>Channel capacities and the gaps that remain.</h1>
+    <h1>Channel capacities and open gaps.</h1>
     <p>{{ site.tagline }}</p>
     <div class="hero__actions"><a class="button" href="{{ site_url('problems/') }}">Browse problems</a><a class="button button--quiet" href="{{ site_url('contribute/') }}">Contribute</a></div>
   </div>
@@ -13,13 +12,13 @@
   <div class="container stats__grid">
     <a href="{{ site_url('problems/') }}"><strong>{{ stats.total }}</strong><span>Problems</span></a>
     <a href="{{ site_url('problems/?status=open') }}"><strong>{{ stats.open }}</strong><span>Open</span></a>
-    <a href="{{ site_url('formalizations/') }}"><strong>{{ stats.statements }}</strong><span>Lean started</span></a>
-    <a href="{{ site_url('formalizations/') }}"><strong>{{ stats.proofs }}</strong><span>External proofs</span></a>
+    <div><strong>{{ stats.statements }}</strong><span>Lean statements</span></div>
+    <div><strong>{{ stats.proofs }}</strong><span>External proofs</span></div>
   </div>
 </section>
 <section class="section">
   <div class="container">
-    <div class="section-heading"><div><p class="eyebrow">Find a problem</p><h2>Browse by information-theory structure</h2></div><a href="{{ site_url('problems/') }}">All filters →</a></div>
+    <div class="section-heading"><h2>Browse by structure</h2><a href="{{ site_url('problems/') }}">All filters →</a></div>
     <div class="browse-grid">
       {% for axis_id in ['model','features','quantity','knowledge'] %}
       <div class="browse-group"><h3>{{ tag_axes[axis_id].label }}</h3><ul>
@@ -29,6 +28,6 @@
     </div>
   </div>
 </section>
-{% if featured %}<section class="section section--alt"><div class="container"><div class="section-heading"><div><p class="eyebrow">Research frontier</p><h2>Featured open problems</h2></div></div><div class="problem-list">{% for problem in featured if problem.status != 'solved' %}{{ problem_row(problem) }}{% endfor %}</div></div></section>{% endif %}
-<section class="section"><div class="container"><div class="section-heading"><div><p class="eyebrow">Design</p><h2>A registry, not a proof monorepo</h2></div></div><div class="prose columns"><p>Capacity Atlas keeps canonical channel specifications, controlled tags, and versioned Lean statements in one reviewable repository. Substantial proofs live in dedicated repositories and link back by immutable commit.</p><p>The statement-first organization, external-proof links, and simple browse interface are inspired by <a href="https://github.com/google-deepmind/formal-conjectures">Google DeepMind's Formal Conjectures</a>. See the acknowledgements for the exact design influences and citation.</p></div></div></section>
+{% if featured %}<section class="section section--alt"><div class="container"><div class="section-heading"><h2>Featured open problems</h2></div><div class="problem-list">{% for problem in featured if problem.status != 'solved' %}{{ problem_row(problem) }}{% endfor %}</div></div></section>{% endif %}
+<section class="section"><div class="container prose"><h2>A registry, not a proof monorepo</h2><div class="columns"><p>Capacity Atlas keeps canonical channel specifications, controlled tags, and versioned Lean statements in one reviewable repository. Substantial proofs live in dedicated repositories and link back by immutable commit.</p><p>The statement-first organization, external-proof links, and simple browse interface are inspired by <a href="https://github.com/google-deepmind/formal-conjectures">Google DeepMind's Formal Conjectures</a>. See the acknowledgements for the exact design influences and citation.</p></div></div></section>
 {% endblock %}
