@@ -31,6 +31,15 @@ def _authors(authors: list[str]) -> str:
     return f"{', '.join(authors[:-1])}, and {authors[-1]}"
 
 
+def _tag_overlap(
+    left: dict[str, Any], right: dict[str, Any], axes: dict[str, Any]
+) -> int:
+    return sum(
+        bool(set(left["tags"][axis]) & set(right["tags"][axis]))
+        for axis in axes
+    )
+
+
 def build_site(
     root: Path | None = None,
     output: Path | None = None,
@@ -54,7 +63,9 @@ def build_site(
 
     def site_url(path: str = "") -> str:
         clean = path.lstrip("/")
-        return f"{base}/{clean}" if clean and base else f"/{clean}" if clean else f"{base}/" or "/"
+        if clean:
+            return f"{base}/{clean}" if base else f"/{clean}"
+        return f"{base}/" if base else "/"
 
     def edit_url(problem_id: str) -> str:
         path = atlas.problem_files[problem_id].relative_to(atlas.root).as_posix()
@@ -176,19 +187,17 @@ def build_site(
     render("404.html", "404.html", page_id="404")
 
     for problem in problems:
-        def overlap(other: dict[str, Any]) -> int:
-            return sum(
-                bool(set(problem["tags"][axis]) & set(other["tags"][axis]))
-                for axis in atlas.tag_axes
-            )
-
         related = sorted(
             (
                 other
                 for other in problems
-                if other["id"] != problem["id"] and overlap(other) > 0
+                if other["id"] != problem["id"]
+                and _tag_overlap(problem, other, atlas.tag_axes) > 0
             ),
-            key=lambda other: (-overlap(other), other["title"]),
+            key=lambda other: (
+                -_tag_overlap(problem, other, atlas.tag_axes),
+                other["title"],
+            ),
         )[:4]
         render(
             "problem.html",
