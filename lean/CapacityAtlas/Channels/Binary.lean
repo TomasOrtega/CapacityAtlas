@@ -18,7 +18,7 @@ def binarySymmetric (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
     · linarith
     · exact hp0
   row_sum input := by
-    cases input <;> simp [binarySymmetricTransition] <;> ring
+    cases input <;> simp [binarySymmetricTransition]
 
 /-- At crossover probability zero, the binary symmetric channel is noiseless. -/
 theorem binarySymmetric_zero :
@@ -49,7 +49,7 @@ def binaryErasure (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) :
         · linarith
         · norm_num
   row_sum input := by
-    cases input <;> simp [binaryErasureTransition] <;> ring
+    cases input <;> simp [binaryErasureTransition]
 
 /-- Transition probabilities of the binary Z-channel.
 
@@ -70,6 +70,6 @@ def binaryZ (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
   nonnegative input output := by
     cases input <;> cases output <;> simp [binaryZTransition] <;> linarith
   row_sum input := by
-    cases input <;> simp [binaryZTransition] <;> ring
+    cases input <;> simp [binaryZTransition]
 
 end CapacityAtlas.Channel
