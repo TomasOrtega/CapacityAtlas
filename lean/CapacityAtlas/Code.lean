@@ -29,11 +29,11 @@ def errorProbability (code : OneShotCode W M) (message : M) : ℝ :=
   1 - code.successProbability message
 
 /-- Average success probability under the uniform message distribution. -/
-def averageSuccessProbability [Nonempty M] (code : OneShotCode W M) : ℝ :=
+noncomputable def averageSuccessProbability [Nonempty M] (code : OneShotCode W M) : ℝ :=
   (Fintype.card M : ℝ)⁻¹ * ∑ message, code.successProbability message
 
 /-- Average error probability under the uniform message distribution. -/
-def averageErrorProbability [Nonempty M] (code : OneShotCode W M) : ℝ :=
+noncomputable def averageErrorProbability [Nonempty M] (code : OneShotCode W M) : ℝ :=
   1 - code.averageSuccessProbability
 
 end OneShotCode
