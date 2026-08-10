@@ -31,30 +31,30 @@ theorem xor_apply {n : ℕ} (x y : BinaryWord n) (i : Fin n) :
 @[simp, capacity_shared_api]
 theorem xor_self {n : ℕ} (x : BinaryWord n) : xor x x = fun _ => false := by
   funext i
-  cases x i <;> rfl
+  cases x i <;> simp [xor]
 
 @[simp, capacity_shared_api]
 theorem xor_false_right {n : ℕ} (x : BinaryWord n) :
     xor x (fun _ => false) = x := by
   funext i
-  cases x i <;> rfl
+  cases x i <;> simp [xor]
 
 @[simp, capacity_shared_api]
 theorem xor_false_left {n : ℕ} (x : BinaryWord n) :
     xor (fun _ => false) x = x := by
   funext i
-  cases x i <;> rfl
+  cases x i <;> simp [xor]
 
 @[capacity_shared_api]
 theorem xor_comm {n : ℕ} (x y : BinaryWord n) : xor x y = xor y x := by
   funext i
-  cases x i <;> cases y i <;> rfl
+  cases x i <;> cases y i <;> simp [xor]
 
 @[capacity_shared_api]
 theorem xor_assoc {n : ℕ} (x y z : BinaryWord n) :
     xor (xor x y) z = xor x (xor y z) := by
   funext i
-  cases x i <;> cases y i <;> cases z i <;> rfl
+  cases x i <;> cases y i <;> cases z i <;> simp [xor]
 
 /-- Translation by a word is an involutive permutation of the Boolean cube. -/
 @[capacity_shared_api]
@@ -63,15 +63,15 @@ def xorEquiv {n : ℕ} (x : BinaryWord n) : BinaryWord n ≃ BinaryWord n where
   invFun := xor x
   left_inv y := by
     funext i
-    cases x i <;> cases y i <;> rfl
+    cases x i <;> cases y i <;> simp [xor]
   right_inv y := by
     funext i
-    cases x i <;> cases y i <;> rfl
+    cases x i <;> cases y i <;> simp [xor]
 
 /-- Number of one-bits in a binary word. -/
 @[capacity_shared_api]
 def weight {n : ℕ} (x : BinaryWord n) : ℕ :=
-  #{i | x i = true}
+  (Finset.univ.filter fun i => x i = true).card
 
 @[simp, capacity_shared_api]
 theorem weight_false {n : ℕ} : weight (fun _ : Fin n => false) = 0 := by
@@ -79,12 +79,14 @@ theorem weight_false {n : ℕ} : weight (fun _ : Fin n => false) = 0 := by
 
 @[capacity_shared_api]
 theorem weight_le {n : ℕ} (x : BinaryWord n) : weight x ≤ n := by
-  simpa [weight] using Finset.card_filter_le (s := Finset.univ) (p := fun i => x i = true)
+  calc
+    weight x ≤ Finset.univ.card := by exact Finset.card_filter_le _ _
+    _ = n := Fintype.card_fin n
 
 /-- The Boolean cube has `2^n` words. -/
 @[capacity_shared_api]
 theorem card (n : ℕ) : Fintype.card (BinaryWord n) = 2 ^ n := by
-  simp [BinaryWord, Fintype.card_pi_const]
+  simp [BinaryWord]
 
 /-- Mass of one Bernoulli noise bit. -/
 @[capacity_shared_api]
