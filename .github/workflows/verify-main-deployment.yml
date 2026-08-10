@@ -1,0 +1,49 @@
+name: Verify main deployment
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify main workflow and custom-domain HTML
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MAIN_SHA: c9be8d3552408c17607585b80366969ea058ee81
+        run: |
+          set -euo pipefail
+          run_id=""
+          for _ in $(seq 1 36); do
+            runs="$(gh api "repos/TomasOrtega/CapacityAtlas/actions/runs?head_sha=${MAIN_SHA}&per_page=20")"
+            run_id="$(jq -r '.workflow_runs[] | select(.name == "Site, Lean, and Pages" and .event == "push") | .id' <<<"$runs" | head -n1)"
+            if [[ -n "$run_id" ]]; then
+              status="$(jq -r --argjson id "$run_id" '.workflow_runs[] | select(.id == $id) | .status' <<<"$runs")"
+              conclusion="$(jq -r --argjson id "$run_id" '.workflow_runs[] | select(.id == $id) | .conclusion // ""' <<<"$runs")"
+              if [[ "$status" == "completed" ]]; then
+                [[ "$conclusion" == "success" ]]
+                break
+              fi
+            fi
+            sleep 5
+          done
+          [[ -n "$run_id" ]]
+          jobs="$(gh api "repos/TomasOrtega/CapacityAtlas/actions/runs/${run_id}/jobs?per_page=100")"
+          jq -e 'all(.jobs[]; .conclusion == "success")' <<<"$jobs"
+          jq -r '.jobs[] | "\(.name): \(.conclusion)"' <<<"$jobs"
+
+          curl --fail --location --silent --show-error --retry 18 --retry-delay 5 \
+            https://capacityatlas.org/ -o /tmp/home.html
+          curl --fail --location --silent --show-error --retry 18 --retry-delay 5 \
+            https://capacityatlas.org/problems/binary-symmetric-channel/ -o /tmp/problem.html
+          grep -Fq 'Channel capacities and open gaps.' /tmp/home.html
+          grep -Fq '>Discussions<' /tmp/home.html
+          ! grep -Fq '/formalizations/' /tmp/home.html
+          grep -Fq 'Start discussion' /tmp/problem.html
+          grep -Fq 'GitHub Discussions is enabled' /tmp/problem.html
+          echo "Main workflow and live custom-domain HTML verified."
