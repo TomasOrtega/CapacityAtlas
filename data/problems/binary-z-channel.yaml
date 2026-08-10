@@ -11,9 +11,9 @@ parameters:
     description: Probability that input 1 is received as 0.
     range: '0\le p\le1'
 model:
-  input: 'X\in\{0,1\}'
-  output: 'Y\in\{0,1\}'
-  law: 'P(Y=0\mid X=0)=1 and P(Y=0\mid X=1)=p.'
+  input: '\(X\in\{0,1\}\)'
+  output: '\(Y\in\{0,1\}\)'
+  law: '\(P(Y=0\mid X=0)=1\) and \(P(Y=0\mid X=1)=p\).'
   assumptions:
     - Channel uses are independent.
     - Average probability of error vanishes with blocklength.
@@ -25,7 +25,7 @@ quantity:
 capacity:
   kind: exact
   display: 'C_Z(p)=\log_2\!\left(1+(1-p)p^{p/(1-p)}\right)'
-  conditions: '0<p<1, with the endpoint values C_Z(0)=1 and C_Z(1)=0 obtained by continuity.'
+  conditions: '\(0<p<1\), with the endpoint values \(C_Z(0)=1\) and \(C_Z(1)=0\) obtained by continuity.'
   notes: Unlike a symmetric channel, the capacity-achieving input is generally not uniform.
 bounds:
   - id: optimized-input-achievability

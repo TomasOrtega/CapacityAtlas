@@ -38,9 +38,9 @@
         <div class="section-label">01 · Model</div>
         <h2>Channel specification</h2>
         <div class="definition-grid">
-          <div><span>Input</span><p class="math-inline">\({{ problem.model.input }}\)</p></div>
-          <div><span>Output</span><p class="math-inline">\({{ problem.model.output }}\)</p></div>
-          <div class="definition-grid__wide"><span>Law</span><p class="math-inline">{{ problem.model.law }}</p></div>
+          <div><span>Input</span><p class="definition-grid__value">{{ problem.model.input }}</p></div>
+          <div><span>Output</span><p class="definition-grid__value">{{ problem.model.output }}</p></div>
+          <div class="definition-grid__wide"><span>Law</span><p class="definition-grid__value">{{ problem.model.law }}</p></div>
         </div>
         {% if problem.parameters %}
         <h3>Parameters</h3>

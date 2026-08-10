@@ -14,9 +14,9 @@ parameters:
     description: Total crossover probability.
     range: '0\le p\le(q-1)/q'
 model:
-  input: 'X\in\{1,\ldots,q\}'
-  output: 'Y\in\{1,\ldots,q\}'
-  law: 'P(Y=X)=1-p; conditioned on an error, each of the q-1 other symbols is equally likely.'
+  input: '\(X\in\{1,\ldots,q\}\)'
+  output: '\(Y\in\{1,\ldots,q\}\)'
+  law: '\(P(Y=X)=1-p\); conditioned on an error, each of the \(q-1\) other symbols is equally likely.'
   assumptions:
     - Channel uses are independent.
     - The displayed parameter range uses the usual monotone-noise convention.
@@ -28,7 +28,7 @@ quantity:
 capacity:
   kind: exact
   display: 'C_q(p)=\log_2 q-h_2(p)-p\log_2(q-1)'
-  conditions: 'q\ge2 and 0\le p\le(q-1)/q.'
+  conditions: '\(q\ge2\) and \(0\le p\le(q-1)/q\).'
   notes: The uniform input distribution achieves capacity by channel symmetry.
 bounds:
   - id: uniform-qary-achievability

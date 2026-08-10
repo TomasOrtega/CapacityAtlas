@@ -7,9 +7,9 @@ updated: 2026-08-09
 summary: The general finite memoryless point-to-point channel has a single-letter mutual-information characterization.
 tags: [finite-alphabet, discrete-memoryless, foundational]
 model:
-  input: 'X\in\mathcal X, with finite \mathcal X.'
-  output: 'Y\in\mathcal Y, with finite \mathcal Y.'
-  law: 'A stochastic matrix W(y\mid x), used independently at each channel use.'
+  input: '\(X\in\mathcal X\), with finite \(\mathcal X\).'
+  output: '\(Y\in\mathcal Y\), with finite \(\mathcal Y\).'
+  law: 'A stochastic matrix \(W(y\mid x)\), used independently at each channel use.'
   assumptions:
     - The channel law is known to encoder and decoder.
     - Average probability of error vanishes with blocklength.

@@ -37,7 +37,6 @@
     {{ formalization_badge(problem.formalization.status) }}
   </div>
   <p>{{ problem.summary }}</p>
-  <div class="capacity-inline math-inline">\({{ problem.capacity.display }}\)</div>
   <div class="problem-card__footer">
     <span>{{ problem.bounds | length }} bound{% if problem.bounds | length != 1 %}s{% endif %}</span>
     <a class="text-link" href="{{ site_url('problems/' ~ problem.id ~ '/') }}">Open entry <span aria-hidden="true">→</span></a>

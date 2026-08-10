@@ -6,9 +6,9 @@ updated: 2026-08-09
 summary: A sender communicates reliably to a legitimate receiver while keeping the message secret from a degraded eavesdropper.
 tags: [secrecy, discrete-memoryless, degraded]
 model:
-  input: 'X\in\mathcal X'
-  output: 'Legitimate output Y\in\mathcal Y and eavesdropper output Z\in\mathcal Z.'
-  law: 'The channel is memoryless and physically degraded: X\to Y\to Z.'
+  input: '\(X\in\mathcal X\)'
+  output: 'Legitimate output \(Y\in\mathcal Y\) and eavesdropper output \(Z\in\mathcal Z\).'
+  law: 'The channel is memoryless and physically degraded: \(X\to Y\to Z\).'
   assumptions:
     - Reliability is required at the legitimate receiver.
     - Information leakage to the eavesdropper vanishes under the chosen secrecy criterion.

@@ -11,9 +11,9 @@ parameters:
     description: Erasure probability.
     range: '0\le\varepsilon\le1'
 model:
-  input: 'X\in\{0,1\}'
-  output: 'Y\in\{0,1,?\}'
-  law: 'Y=X with probability 1-\varepsilon and Y=? with probability \varepsilon.'
+  input: '\(X\in\{0,1\}\)'
+  output: '\(Y\in\{0,1,?\}\)'
+  law: '\(Y=X\) with probability \(1-\varepsilon\), and \(Y=?\) with probability \(\varepsilon\).'
   assumptions:
     - Channel uses are independent.
     - Average probability of error vanishes with blocklength.
@@ -25,7 +25,7 @@ quantity:
 capacity:
   kind: exact
   display: 'C_{\mathrm{BEC}}(\varepsilon)=1-\varepsilon'
-  conditions: '0\le\varepsilon\le1.'
+  conditions: '\(0\le\varepsilon\le1\).'
 bounds:
   - id: erasure-random-coding
     direction: lower

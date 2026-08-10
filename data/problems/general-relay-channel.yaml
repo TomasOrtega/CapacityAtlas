@@ -7,9 +7,9 @@ updated: 2026-08-09
 summary: A relay assists communication from a source to a destination. Decode-forward and the cut-set bound do not coincide in general.
 tags: [relay, discrete-memoryless, multi-user, open-capacity]
 model:
-  input: 'Source input X and relay input X_r.'
-  output: 'Relay observation Y_r and destination observation Y.'
-  law: 'A memoryless transition law p(y,y_r\mid x,x_r).'
+  input: 'Source input \(X\) and relay input \(X_r\).'
+  output: 'Relay observation \(Y_r\) and destination observation \(Y\).'
+  law: 'A memoryless transition law \(p(y,y_r\mid x,x_r)\).'
   assumptions:
     - The relay acts causally on its past observations.
     - Average probability of error vanishes with blocklength.

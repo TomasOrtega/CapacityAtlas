@@ -6,9 +6,9 @@ updated: 2026-08-09
 summary: One transmitter sends private messages to two receivers whose outputs form a degradation chain.
 tags: [broadcast, discrete-memoryless, degraded, capacity-region]
 model:
-  input: 'X\in\mathcal X'
-  output: 'Receiver outputs Y_1 and Y_2.'
-  law: 'A memoryless channel satisfying X\to Y_1\to Y_2.'
+  input: '\(X\in\mathcal X\)'
+  output: 'Receiver outputs \(Y_1\) and \(Y_2\).'
+  law: 'A memoryless channel satisfying \(X\to Y_1\to Y_2\).'
   assumptions:
     - Receiver 1 is the stronger receiver.
     - Each receiver requests its own private message.
@@ -20,7 +20,7 @@ quantity:
 capacity:
   kind: region
   display: '\mathcal C=\bigcup_{p(u,x)}\{(R_1,R_2):R_1\le I(X;Y_1\mid U),\ R_2\le I(U;Y_2)\}'
-  conditions: 'U\to X\to Y_1\to Y_2.'
+  conditions: '\(U\to X\to Y_1\to Y_2\).'
 bounds:
   - id: superposition-inner-region
     direction: inner-region

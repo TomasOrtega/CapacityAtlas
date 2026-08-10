@@ -12,9 +12,9 @@ parameters:
     description: Independent deletion probability.
     range: '0<d<1'
 model:
-  input: 'X^n\in\{0,1\}^n'
+  input: '\(X^n\in\{0,1\}^n\)'
   output: A random subsequence of the input, with no markers indicating deleted positions.
-  law: Each input bit is independently retained with probability 1-d and the surviving bits keep their order.
+  law: 'Each input bit is independently retained with probability \(1-d\), and the surviving bits keep their order.'
   assumptions:
     - Neither encoder nor decoder observes the deletion pattern.
     - Average probability of error vanishes with blocklength.
@@ -28,7 +28,7 @@ capacity:
   display: '0.1221(1-d)<C_{\mathrm{del}}(d)\le 0.3578(1-d)'
   lower: '0.1221(1-d)'
   upper: '0.3578(1-d)'
-  conditions: The displayed pair is valid in the high-deletion regime d at least 0.64; stronger pointwise bounds may apply at individual d.
+  conditions: 'The displayed pair is valid in the high-deletion regime \(d\ge0.64\); stronger pointwise bounds may apply at individual \(d\).'
   notes: The site records simple uniform high-deletion bounds here. A future data extension should store the full pointwise numerical envelopes.
 bounds:
   - id: run-length-lower-2023
@@ -42,7 +42,7 @@ bounds:
     relation: 'C_{\mathrm{del}}(d)\le 0.3578(1-d)'
     method: Finite-block deletion-channel upper bounds computed by a parallelized Blahut-Arimoto algorithm.
     year: 2026
-    conditions: 'd\ge 0.64'
+    conditions: '\(d\ge 0.64\)'
     references: [pinto-ribeiro-2026]
 timeline:
   - year: 2023
@@ -52,7 +52,7 @@ timeline:
     event: Pinto and Ribeiro improved the uniform high-deletion upper constant to 0.3578.
     references: [pinto-ribeiro-2026]
 frontier:
-  question: Determine C_del(d), even at a single benchmark value such as d=1/2, or substantially narrow the pointwise gap.
+  question: 'Determine \(C_{\mathrm{del}}(d)\), even at a single benchmark value such as \(d=1/2\), or substantially narrow the pointwise gap.'
   bottleneck: Deletions destroy symbol alignment, so finite-letter mutual-information optimizations grow exponentially and do not single-letterize.
   progress:
     - Improve a certified pointwise lower or upper bound at a specified deletion probability.

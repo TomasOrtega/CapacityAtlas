@@ -12,9 +12,9 @@ parameters:
     description: Crossover probability.
     range: '0\le p\le1/2'
 model:
-  input: 'X\in\{0,1\}'
-  output: 'Y\in\{0,1\}'
-  law: 'Y=X\oplus Z, where Z\sim\mathrm{Bernoulli}(p) independently across uses.'
+  input: '\(X\in\{0,1\}\)'
+  output: '\(Y\in\{0,1\}\)'
+  law: '\(Y=X\oplus Z\), where \(Z\sim\mathrm{Bernoulli}(p)\) independently across uses.'
   assumptions:
     - The range p at most 1/2 removes the equivalent relabelled regime.
     - Average probability of error vanishes with blocklength.
@@ -26,7 +26,7 @@ quantity:
 capacity:
   kind: exact
   display: 'C_{\mathrm{BSC}}(p)=1-h_2(p)'
-  conditions: '0\le p\le1/2, where h_2 is binary entropy.'
+  conditions: '\(0\le p\le1/2\), where \(h_2\) is binary entropy.'
   notes: The uniform input distribution achieves capacity.
 bounds:
   - id: uniform-input-achievability

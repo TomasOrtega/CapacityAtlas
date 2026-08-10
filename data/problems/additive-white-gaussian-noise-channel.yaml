@@ -15,11 +15,11 @@ parameters:
     description: Noise variance per channel use.
     range: 'N > 0'
 model:
-  input: 'X \in \mathbb{R}'
-  output: 'Y \in \mathbb{R}'
-  law: 'Y=X+Z, where Z\sim\mathcal{N}(0,N) is independent across channel uses.'
+  input: '\(X \in \mathbb{R}\)'
+  output: '\(Y \in \mathbb{R}\)'
+  law: '\(Y=X+Z\), where \(Z\sim\mathcal{N}(0,N)\) is independent across channel uses.'
   assumptions:
-    - 'The encoder satisfies \mathbb{E}[X^2]\le P.'
+    - 'The encoder satisfies \(\mathbb{E}[X^2]\le P\).'
     - Average probability of error vanishes with blocklength.
 quantity:
   name: Shannon capacity
@@ -29,7 +29,7 @@ quantity:
 capacity:
   kind: exact
   display: 'C_{\mathrm{AWGN}}(P,N)=\frac12\log_2\!\left(1+\frac{P}{N}\right)'
-  conditions: 'P\ge 0 and N>0.'
+  conditions: '\(P\ge 0\) and \(N>0\).'
   notes: A zero-mean Gaussian input with variance P achieves capacity.
 bounds:
   - id: gaussian-achievability

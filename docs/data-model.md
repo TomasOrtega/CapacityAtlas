@@ -12,6 +12,9 @@ The canonical object in Capacity Atlas is a **capacity problem**, not merely a n
 
 `model` specifies the input alphabet, output alphabet, transition law, and assumptions. Assumptions should include memorylessness, information available to terminals, cost constraints, feedback, common randomness, and code restrictions when relevant.
 
+Write the input, output, and law as readable prose. Wrap only mathematical spans in
+MathJax inline delimiters, for example `The receiver observes \(Y\in\mathcal Y\).`.
+
 ### Quantity
 
 `quantity` names the object being determined, its symbol, units, and operational criterion. Examples include Shannon capacity, zero-error capacity, symmetric capacity, secrecy capacity, and a capacity region.
@@ -25,7 +28,7 @@ The canonical object in Capacity Atlas is a **capacity problem**, not merely a n
 - `bounds`: an unresolved lower/upper gap
 - `region`: a complete capacity-region description
 
-`capacity.display` is the concise expression shown on cards. Open numerical problems should also provide `lower` and `upper` so the page can render the gap.
+`capacity.display` is the expression shown on the problem page. Open numerical problems should also provide `lower` and `upper` so the page can render the gap.
 
 ### Bounds
 

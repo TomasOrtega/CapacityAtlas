@@ -13,9 +13,9 @@ parameters:
     description: Channel parameter.
     range: 0 <= p <= 1
 model:
-  input: Describe the input alphabet.
-  output: Describe the output alphabet.
-  law: Give the transition law in text or LaTeX.
+  input: 'Describe the input alphabet; wrap symbols such as \(X\) in inline math delimiters.'
+  output: 'Describe the output alphabet; wrap symbols such as \(Y\) in inline math delimiters.'
+  law: 'Give the transition law in text, with any LaTeX spans wrapped in \(...\).'
   assumptions:
     - State memory, feedback, cost, side-information, and code assumptions.
 quantity:
