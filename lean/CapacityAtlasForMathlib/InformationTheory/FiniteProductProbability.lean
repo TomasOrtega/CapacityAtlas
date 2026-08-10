@@ -14,7 +14,7 @@ namespace CapacityAtlas
 
 namespace FiniteProductProbability
 
-variable {ι α : Type*} [Fintype ι] [Fintype α]
+variable {ι α : Type*} [Fintype ι] [Fintype α] [DecidableEq ι]
 
 /-- Unnormalized product mass associated with a one-coordinate mass function. -/
 @[capacity_shared_api]
@@ -77,36 +77,10 @@ theorem sum_mass_mul_sum (w : α → ℝ) (f : ι → α → ℝ)
     ∑ x : ι → α, mass w x * ∑ i, f i (x i) =
       ∑ i, mean w (f i) := by
   simp_rw [Finset.mul_sum]
-  rw [Fintype.sum_comm]
+  rw [Finset.sum_comm]
   apply Fintype.sum_congr
   intro i
   exact sum_mass_mul_apply w (f i) hw i
-
-/-- Two distinct coordinates are independent under a product mass. -/
-@[capacity_shared_api]
-theorem sum_mass_mul_apply_mul_apply (w f g : α → ℝ)
-    (hw : ∑ a, w a = 1) {i j : ι} (hij : i ≠ j) :
-    ∑ x : ι → α, mass w x * (f (x i) * g (x j)) = mean w f * mean w g := by
-  let h : ι → α → ℝ := fun k a =>
-    if k = i then f a else if k = j then g a else 1
-  calc
-    ∑ x : ι → α, mass w x * (f (x i) * g (x j)) =
-        ∑ x : ι → α, mass w x * ∏ k, h k (x k) := by
-          apply Fintype.sum_congr
-          intro x
-          congr 1
-          rw [Fintype.prod_eq_mul]
-          · simp [h, hij]
-          · exact hij
-          · intro k hk
-            simp [h, hk.1, hk.2]
-    _ = ∏ k, ∑ a, w a * h k a := sum_mass_mul_prod w h
-    _ = mean w f * mean w g := by
-      rw [Fintype.prod_eq_mul]
-      · simp [h, mean, hij]
-      · exact hij
-      · intro k hk
-        simp [h, hk.1, hk.2, hw]
 
 end FiniteProductProbability
 
