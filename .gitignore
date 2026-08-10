@@ -7,5 +7,4 @@ __pycache__/
 build/
 dist/
 lean/.lake/
-lean/lake-manifest.json
 .DS_Store
