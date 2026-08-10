@@ -12,5 +12,4 @@ import CapacityAtlasForMathlib.InformationTheory.FiniteProductProbability
 import CapacityAtlasForMathlib.InformationTheory.BinaryWords
 import CapacityAtlasForMathlib.InformationTheory.BinarySymmetric
 import CapacityAtlasForMathlib.InformationTheory.OperationalCapacity
-import CapacityAtlasForMathlib.InformationTheory.Scratch
 import CapacityAtlasForMathlib.Network.IndexCoding
