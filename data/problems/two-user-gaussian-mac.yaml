@@ -1,0 +1,70 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: two-user-gaussian-mac
+title: Two-user Gaussian multiple-access channel
+status: solved
+updated: '2026-08-10'
+summary: Two power-constrained Gaussian users share one receiver, giving an exact pentagonal capacity region.
+tags:
+  model:
+  - multiple-access
+  features:
+  - continuous-alphabet
+  - gaussian
+  - additive-noise
+  - power-constraint
+  quantity:
+  - capacity-region
+  knowledge:
+  - exact
+parameters:
+- symbol: P_1,P_2
+  description: User power constraints.
+  range: P_1,P_2\ge0
+- symbol: N
+  description: Noise variance.
+  range: N>0
+model:
+  input: Independent inputs \(X_1,X_2\) with powers \(P_1,P_2\).
+  output: \(Y=X_1+X_2+Z\)
+  law: \(Z\sim\mathcal N(0,N)\) iid.
+  assumptions:
+  - Messages are independent.
+  - There is no feedback.
+quantity:
+  name: Capacity region
+  symbol: \mathcal C_{\mathrm{GMAC}}
+  units: rate pairs in bits per channel use
+  criterion: Vanishing average joint decoding error.
+capacity:
+  kind: region
+  display: \left\{\begin{array}{l}R_1\le\frac12\log_2(1+P_1/N),\\R_2\le\frac12\log_2(1+P_2/N),\\R_1+R_2\le\frac12\log_2(1+(P_1+P_2)/N)\end{array}\right\}
+bounds:
+- id: gaussian-mac-inner
+  direction: inner-region
+  relation: R_i\le\frac12\log_2(1+P_i/N),\ R_1+R_2\le\frac12\log_2(1+(P_1+P_2)/N)
+  method: Independent Gaussian codebooks and joint decoding.
+  year: 1971
+  references:
+  - ahlswede-1971
+  - liao-1972
+- id: gaussian-mac-outer
+  direction: outer-region
+  relation: R_i\le\frac12\log_2(1+P_i/N),\ R_1+R_2\le\frac12\log_2(1+(P_1+P_2)/N)
+  method: Gaussian entropy maximization in the MAC converse.
+  year: 1972
+  references:
+  - liao-1972
+  - elgamal-kim-2011
+formalization:
+  statement:
+    status: none
+    version: 1
+    language: Lean
+    notes: Gaussian random variables and multi-user regions are not yet formalized.
+    files: []
+  proofs: []
+references:
+- ahlswede-1971
+- liao-1972
+- elgamal-kim-2011

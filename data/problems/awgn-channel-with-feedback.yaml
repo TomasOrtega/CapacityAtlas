@@ -1,0 +1,69 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: awgn-channel-with-feedback
+title: AWGN channel with noiseless feedback
+status: solved
+updated: '2026-08-10'
+summary: Noiseless feedback dramatically improves reliability schemes but leaves the ordinary AWGN capacity unchanged.
+tags:
+  model:
+  - point-to-point
+  features:
+  - continuous-alphabet
+  - gaussian
+  - additive-noise
+  - feedback
+  - power-constraint
+  quantity:
+  - capacity
+  knowledge:
+  - exact
+parameters:
+- symbol: P
+  description: Average input power.
+  range: P\ge0
+- symbol: N
+  description: Noise variance.
+  range: N>0
+model:
+  input: \(X_t\) may depend on the message and past outputs \(Y^{t-1}\).
+  output: \(Y_t=X_t+Z_t\), with \(Y_t\) returned noiselessly to the encoder.
+  law: \(Z_t\sim\mathcal N(0,N)\) iid.
+  assumptions:
+  - Average power \(P\).
+  - Vanishing average decoding error.
+quantity:
+  name: Feedback capacity
+  symbol: C_{\mathrm{AWGN,fb}}
+  units: bits per channel use
+  criterion: Average-error capacity with causal feedback.
+capacity:
+  kind: exact
+  display: C_{\mathrm{AWGN,fb}}=\frac12\log_2\!\left(1+\frac PN\right)
+bounds:
+- id: ignore-feedback
+  direction: lower
+  relation: C_{\mathrm{AWGN,fb}}\ge\frac12\log_2(1+P/N)
+  method: Use a no-feedback Gaussian code.
+  year: 1956
+  references:
+  - shannon-1956
+- id: memoryless-feedback-converse
+  direction: upper
+  relation: C_{\mathrm{AWGN,fb}}\le\frac12\log_2(1+P/N)
+  method: Entropy maximization and the memoryless feedback converse.
+  year: 1956
+  references:
+  - shannon-1956
+  - cover-thomas-2006
+formalization:
+  statement:
+    status: none
+    version: 1
+    language: Lean
+    notes: Continuous feedback codes are outside the current finite Lean core.
+    files: []
+  proofs: []
+references:
+- shannon-1956
+- cover-thomas-2006

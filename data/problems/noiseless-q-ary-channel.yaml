@@ -1,0 +1,66 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: noiseless-q-ary-channel
+title: Noiseless finite-alphabet channel
+status: solved
+updated: '2026-08-10'
+summary: A q-symbol input is reproduced exactly, providing the basic normalization for channel capacity.
+tags:
+  model:
+  - point-to-point
+  features:
+  - q-ary
+  - finite-alphabet
+  - discrete-memoryless
+  quantity:
+  - capacity
+  knowledge:
+  - exact
+parameters:
+- symbol: q
+  description: Alphabet size.
+  range: q\ge2
+model:
+  input: \(X\in\{1,\ldots,q\}\)
+  output: \(Y=X\)
+  law: \(W(y|x)=\mathbf 1\{y=x\}\).
+  assumptions:
+  - Channel uses are independent.
+  - Rates are measured in bits.
+quantity:
+  name: Shannon capacity
+  symbol: C
+  units: bits per channel use
+  criterion: Zero-error and average-error capacities coincide.
+capacity:
+  kind: exact
+  display: C=\log_2 q
+bounds:
+- id: uncoded-achievability
+  direction: lower
+  relation: C\ge\log_2 q
+  method: Transmit one q-ary symbol per use.
+  year: 1948
+  references:
+  - shannon-1948
+- id: alphabet-converse
+  direction: upper
+  relation: C\le\log_2 q
+  method: There are only q outputs per use.
+  year: 1948
+  references:
+  - shannon-1948
+formalization:
+  statement:
+    status: definitions
+    version: 1
+    language: Lean
+    notes: The identity finite channel is part of the shared API.
+    files:
+    - path: lean/CapacityAtlasForMathlib/InformationTheory/FiniteChannel.lean
+      declaration: CapacityAtlas.FiniteChannel.identity
+      role: shared-api
+      description: Noiseless finite channel.
+  proofs: []
+references:
+- shannon-1948

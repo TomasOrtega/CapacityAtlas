@@ -1,4 +1,4 @@
-.PHONY: install validate test lint build serve check lean
+.PHONY: install validate test lint build check serve lean
 
 install:
 	python -m pip install -e '.[dev]'
@@ -15,10 +15,10 @@ lint:
 build:
 	capacity-atlas build
 
+check: validate test lint build
+
 serve: build
-	python -m http.server 8000 --directory dist
+	python -m http.server --directory dist 8000
 
 lean:
 	cd lean && lake build
-
-check: validate test lint build

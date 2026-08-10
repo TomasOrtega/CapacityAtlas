@@ -1,44 +1,61 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
 id: physically-degraded-broadcast-channel
 title: Physically degraded two-receiver broadcast channel
 status: solved
-category: multi-user
-updated: 2026-08-09
-summary: One transmitter sends private messages to two receivers whose outputs form a degradation chain.
-tags: [broadcast, discrete-memoryless, degraded, capacity-region]
+updated: '2026-08-10'
+summary: One transmitter sends private messages to receivers whose outputs form a degradation chain.
+tags:
+  model:
+  - broadcast
+  features:
+  - finite-alphabet
+  - discrete-memoryless
+  - degraded
+  quantity:
+  - capacity-region
+  knowledge:
+  - exact
+  - single-letter-characterization
 model:
-  input: '\(X\in\mathcal X\)'
-  output: 'Receiver outputs \(Y_1\) and \(Y_2\).'
-  law: 'A memoryless channel satisfying \(X\to Y_1\to Y_2\).'
+  input: \(X\in\mathcal X\)
+  output: Receiver outputs \(Y_1\) and \(Y_2\).
+  law: A memoryless channel satisfying \(X\to Y_1\to Y_2\).
   assumptions:
-    - Receiver 1 is the stronger receiver.
-    - Each receiver requests its own private message.
+  - Receiver 1 is stronger.
+  - Each receiver requests a private message.
 quantity:
   name: Capacity region
-  symbol: '\mathcal C'
+  symbol: \mathcal C
   units: rate pairs in bits per channel use
   criterion: Vanishing average error at both receivers.
 capacity:
   kind: region
-  display: '\mathcal C=\bigcup_{p(u,x)}\{(R_1,R_2):R_1\le I(X;Y_1\mid U),\ R_2\le I(U;Y_2)\}'
-  conditions: '\(U\to X\to Y_1\to Y_2\).'
+  display: \mathcal C=\bigcup_{p(u,x)}\{(R_1,R_2):R_1\le I(X;Y_1|U),\ R_2\le I(U;Y_2)\}
+  conditions: \(U\to X\to Y_1\to Y_2\).
 bounds:
-  - id: superposition-inner-region
-    direction: inner-region
-    relation: 'R_1\le I(X;Y_1\mid U),\quad R_2\le I(U;Y_2)'
-    method: Superposition coding and successive decoding.
-    year: 1973
-    references: [bergmans-1973]
-  - id: degraded-broadcast-outer-region
-    direction: outer-region
-    relation: 'R_1\le I(X;Y_1\mid U),\quad R_2\le I(U;Y_2)'
-    method: Single-letter converse exploiting physical degradedness.
-    year: 1973
-    references: [bergmans-1973]
-timeline:
-  - year: 1973
-    event: Bergmans proved the capacity region for degraded broadcast channels.
-    references: [bergmans-1973]
+- id: superposition-inner
+  direction: inner-region
+  relation: R_1\le I(X;Y_1|U),\quad R_2\le I(U;Y_2)
+  method: Superposition coding and successive decoding.
+  year: 1973
+  references:
+  - bergmans-1973
+- id: degraded-broadcast-converse
+  direction: outer-region
+  relation: R_1\le I(X;Y_1|U),\quad R_2\le I(U;Y_2)
+  method: Single-letter converse exploiting degradation.
+  year: 1973
+  references:
+  - bergmans-1973
 formalization:
-  status: none
-  notes: Multi-user rate regions and auxiliary random variables are not yet formalized.
-references: [bergmans-1973, cover-thomas-2006]
+  statement:
+    status: none
+    version: 1
+    language: Lean
+    notes: Multi-user rate regions and auxiliary variables are not yet in the Lean core.
+    files: []
+  proofs: []
+references:
+- bergmans-1973
+- elgamal-kim-2011

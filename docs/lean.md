@@ -1,48 +1,88 @@
 # Lean formalization guide
 
-The Lean library is intentionally small. It establishes common objects once, then lets channel-specific files reuse them.
+Capacity Atlas is a formal specification registry. It keeps shared definitions,
+canonical statements, and short proofs in one small Lean project while allowing
+substantial proofs to develop independently.
 
-## Shared modules
+## Package layers
 
-- `CapacityAtlas.FiniteChannel` defines finite stochastic channels and serial composition.
-- `CapacityAtlas.Code` defines deterministic one-shot codes and error probabilities.
-- `CapacityAtlas.Channels.Binary` defines the BSC, BEC, and binary Z-channel.
-- `CapacityAtlas.Network.IndexCoding` defines multiple-unicast instances and the Sun--Jafar 11-message instance.
+### `CapacityAtlasUtil`
 
-New shared definitions should be mathematically neutral and useful to more than one page. Do not place a second finite-channel structure inside a problem file.
+Metadata attributes and tooling used to connect Lean declarations to atlas
+records:
 
-## Status ladder
+```lean
+@[capacity_problem "binary-symmetric-channel", capacity_definition]
+def binarySymmetric ...
+```
 
-### `none`
+Available role attributes are:
 
-No linked Lean declaration exists.
+- `capacity_definition`
+- `capacity_statement`
+- `capacity_short_proof`
+- `capacity_shared_api`
 
-### `definitions`
+The attribute system is inspired by the category and `formal_proof` metadata in
+Google DeepMind's Formal Conjectures project. Capacity Atlas omits AMS tags and
+uses its channel-specific YAML facets for subject classification.
 
-The model or reusable objects compile, but the operational statement has not been encoded.
+### `CapacityAtlasForMathlib`
 
-### `statement`
+Reusable information-theory infrastructure that is useful across several
+capacity problems and may eventually be proposed to Mathlib. Current modules
+cover finite channels, one-shot codes, and multiple-unicast index-coding
+instances.
 
-The exact theorem represented on the page has a faithful Lean statement. Supporting lemmas may remain open only outside the merged branch. Merged code itself may not contain placeholders.
+### `CapacityAtlas`
 
-### `partial`
+Channel-specific definitions, canonical problem statements, tests, and compact
+proofs. Compatibility imports preserve the original module paths while new code
+should import the `CapacityAtlasForMathlib` modules directly.
 
-A strict part of the displayed result has been proved, such as achievability but not converse, or one bound in an open interval.
+## Statement status
 
-### `complete`
+Each problem records one of:
 
-The displayed operational capacity or capacity region is proved under the page's assumptions. Definitions alone, a finite-blocklength special case, or an analytic identity without the coding theorem is not complete.
+- `none`: no local Lean declaration exists
+- `definitions`: the model or reusable API is formalized
+- `statement`: the exact proposition represented on the page is formalized
+
+The statement carries an integer version. Increment it when a change can
+invalidate an external proof. Editorial changes and API refactors that preserve
+the proposition do not require an increment.
+
+## Proof status
+
+Proof records are independent of the statement status and live in problem YAML.
+A registered proof is either `partial` or `complete`. It must point to an
+immutable Lean repository commit and identify the declaration and statement
+version.
+
+## What belongs here
+
+Keep these in the central repository:
+
+- neutral shared definitions
+- canonical channel and code models
+- the proposition that constitutes the capacity problem
+- tests of definitions
+- short, illuminating proofs
+
+A proof longer than approximately 25–50 lines, or one requiring meaningful
+problem-specific infrastructure, should normally live in a dedicated repository.
+This threshold follows the successful contribution model used by Formal
+Conjectures.
 
 ## Build and review
 
 ```bash
 cd lean
-lake update
+lake exe cache get
 lake build
 ```
 
-CI rejects textual `sorry` and `admit` tokens in source modules and compiles the library against the pinned Mathlib version. Review should also check faithfulness: compilation does not establish that a theorem formalizes the intended communication problem.
-
-## Next shared layer
-
-The most useful next milestone is a finite probability and information layer that supports entropy, conditional entropy, mutual information, product channels, and block codes without duplicating Mathlib abstractions. That layer should precede formalizations of the finite-DMC coding theorem and elementary exact capacities.
+CI rejects `sorry` and `admit` tokens in all three package layers and compiles the
+library against the pinned Lean and Mathlib versions. Compilation does not by
+itself establish that a statement faithfully represents the informal problem,
+so every statement change also needs mathematical review.

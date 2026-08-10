@@ -1,73 +1,58 @@
+/* Copyright 2026 The Capacity Atlas Authors */
+/* SPDX-License-Identifier: Apache-2.0 */
+
 (() => {
-  "use strict";
-
-  const navToggle = document.querySelector("[data-nav-toggle]");
-  const siteNav = document.querySelector("[data-site-nav]");
-
-  if (navToggle && siteNav) {
-    navToggle.addEventListener("click", () => {
-      const open = siteNav.classList.toggle("is-open");
-      navToggle.setAttribute("aria-expanded", String(open));
-    });
-
-    siteNav.addEventListener("click", (event) => {
-      if (event.target instanceof HTMLAnchorElement) {
-        siteNav.classList.remove("is-open");
-        navToggle.setAttribute("aria-expanded", "false");
-      }
+  const toggle = document.querySelector("[data-nav-toggle]");
+  const nav = document.querySelector("[data-site-nav]");
+  if (toggle && nav) {
+    toggle.addEventListener("click", () => {
+      const open = toggle.getAttribute("aria-expanded") !== "true";
+      toggle.setAttribute("aria-expanded", String(open));
+      nav.dataset.open = String(open);
     });
   }
 
-  const panel = document.querySelector("[data-filter-panel]");
-  if (!panel) return;
+  const form = document.querySelector("[data-problem-filters]");
+  if (!form) return;
+  const rows = [...document.querySelectorAll("[data-problem-row]")];
+  const count = document.querySelector("[data-result-count]");
+  const empty = document.querySelector("[data-empty-state]");
+  const controls = [...form.elements].filter((element) => element.name);
+  const params = new URLSearchParams(window.location.search);
 
-  const search = panel.querySelector("[data-problem-search]");
-  const filters = Array.from(panel.querySelectorAll("[data-filter]"));
-  const clear = panel.querySelector("[data-clear-filters]");
-  const cards = Array.from(document.querySelectorAll("[data-problem-card]"));
-  const resultCount = document.querySelector("[data-result-count]");
-  const emptyState = document.querySelector("[data-empty-state]");
+  for (const control of controls) {
+    if (params.has(control.name)) control.value = params.get(control.name) || "";
+  }
 
-  const normalise = (value) => value.trim().toLowerCase();
-
-  const applyFilters = () => {
-    const query = search ? normalise(search.value) : "";
-    const selected = Object.fromEntries(
-      filters.map((filter) => [filter.dataset.filter, filter.value])
-    );
-
-    let visible = 0;
-    cards.forEach((card) => {
-      const searchMatches = !query || card.dataset.search.includes(query);
-      const filterMatches = Object.entries(selected).every(([key, value]) => {
-        return value === "all" || card.dataset[key] === value;
-      });
-      const show = searchMatches && filterMatches;
-      card.hidden = !show;
-      if (show) visible += 1;
-    });
-
-    if (resultCount) resultCount.textContent = String(visible);
-    if (emptyState) emptyState.hidden = visible !== 0;
+  const matches = (row, values) => {
+    const query = values.q.trim().toLowerCase();
+    if (query && !row.dataset.search.includes(query)) return false;
+    for (const [axis, value] of Object.entries(values)) {
+      if (!value || axis === "q") continue;
+      const selected = (row.dataset[axis] || "").split(" ");
+      if (!selected.includes(value)) return false;
+    }
+    return true;
   };
 
-  if (search) search.addEventListener("input", applyFilters);
-  filters.forEach((filter) => filter.addEventListener("change", applyFilters));
+  const apply = () => {
+    const values = Object.fromEntries(new FormData(form));
+    let visible = 0;
+    for (const row of rows) {
+      row.hidden = !matches(row, values);
+      if (!row.hidden) visible += 1;
+    }
+    count.textContent = String(visible);
+    empty.hidden = visible !== 0;
 
-  if (clear) {
-    clear.addEventListener("click", () => {
-      if (search) search.value = "";
-      filters.forEach((filter) => {
-        filter.value = "all";
-      });
-      applyFilters();
-      if (search) search.focus();
-    });
-  }
+    const next = new URLSearchParams();
+    for (const [key, value] of Object.entries(values)) if (value) next.set(key, value);
+    const suffix = next.toString();
+    history.replaceState(null, "", suffix ? `?${suffix}` : window.location.pathname);
+  };
 
-  const query = new URLSearchParams(window.location.search).get("q");
-  if (query && search) {
-    search.value = query;
-  }
-  applyFilters();
+  form.addEventListener("input", apply);
+  form.addEventListener("change", apply);
+  form.addEventListener("reset", () => requestAnimationFrame(apply));
+  apply();
 })();

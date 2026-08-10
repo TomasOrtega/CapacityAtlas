@@ -1,0 +1,60 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: gaussian-wiretap-channel
+title: Degraded Gaussian wiretap channel
+status: solved
+updated: '2026-08-10'
+summary: A Gaussian receiver has a lower noise variance than the eavesdropper, yielding a closed-form secrecy capacity.
+tags:
+  model:
+  - wiretap
+  features:
+  - continuous-alphabet
+  - gaussian
+  - degraded
+  - secrecy
+  - power-constraint
+  quantity:
+  - secrecy-capacity
+  knowledge:
+  - exact
+model:
+  input: \(X\in\mathbb R\) with average power \(P\).
+  output: \(Y=X+N_1\) and \(Z=X+N_2\).
+  law: Gaussian noise variances satisfy \(\sigma_1^2<\sigma_2^2\).
+  assumptions:
+  - The eavesdropper channel is degraded.
+  - Weak or strong secrecy gives the same asymptotic value under standard formulations.
+quantity:
+  name: Secrecy capacity
+  symbol: C_s
+  units: secret bits per channel use
+  criterion: Reliable communication with vanishing leakage.
+capacity:
+  kind: exact
+  display: C_s=\frac12\log_2\!\left(1+\frac{P}{\sigma_1^2}\right)-\frac12\log_2\!\left(1+\frac{P}{\sigma_2^2}\right)
+bounds:
+- id: gaussian-wiretap-achievability
+  direction: lower
+  relation: C_s\ge C(\sigma_1^2)-C(\sigma_2^2)
+  method: Gaussian stochastic encoding and binning.
+  year: 1978
+  references:
+  - leung-yan-cheong-hellman-1978
+- id: gaussian-wiretap-converse
+  direction: upper
+  relation: C_s\le C(\sigma_1^2)-C(\sigma_2^2)
+  method: Degraded secrecy converse and Gaussian extremality.
+  year: 1978
+  references:
+  - leung-yan-cheong-hellman-1978
+formalization:
+  statement:
+    status: none
+    version: 1
+    language: Lean
+    notes: A future continuous secrecy layer should share definitions with the discrete wiretap channel.
+    files: []
+  proofs: []
+references:
+- leung-yan-cheong-hellman-1978

@@ -1,0 +1,71 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: general-two-user-interference-channel
+title: General two-user discrete memoryless interference channel
+status: open
+featured: true
+updated: '2026-08-10'
+summary: Two transmitter-receiver pairs interfere, and the exact capacity region is unknown in general.
+tags:
+  model:
+  - interference
+  features:
+  - finite-alphabet
+  - discrete-memoryless
+  quantity:
+  - capacity-region
+  knowledge:
+  - bounds
+model:
+  input: Independent inputs \(X_1,X_2\).
+  output: Receivers observe \(Y_1,Y_2\).
+  law: An arbitrary memoryless law \(p(y_1,y_2|x_1,x_2)\).
+  assumptions:
+  - Receiver i requests only message i.
+  - No strong- or weak-interference ordering is assumed.
+quantity:
+  name: Capacity region
+  symbol: \mathcal C_{\mathrm{IC}}
+  units: rate pairs in bits per channel use
+  criterion: Vanishing average error at both receivers.
+capacity:
+  kind: bounds
+  display: \mathcal R_{\mathrm{HK}}\subseteq\mathcal C_{\mathrm{IC}}\subseteq\mathcal R_{\mathrm{outer}}
+  lower: \mathcal R_{\mathrm{HK}}
+  upper: \mathcal R_{\mathrm{outer}}
+  notes: No universally tight single-letter outer bound is known.
+bounds:
+- id: han-kobayashi-inner
+  direction: inner-region
+  relation: \mathcal R_{\mathrm{HK}}\subseteq\mathcal C
+  method: Split each message into common and private parts.
+  year: 1981
+  references:
+  - han-kobayashi-1981
+- id: cut-and-genie-outers
+  direction: outer-region
+  relation: \mathcal C\subseteq\mathcal R_{\mathrm{outer}}
+  method: Cut-set, genie-aided, and receiver-cooperation converses.
+  year: 1981
+  references:
+  - han-kobayashi-1981
+  - elgamal-kim-2011
+frontier:
+  question: Determine the capacity region of the general two-user interference channel.
+  bottleneck: The optimal extent of partial interference decoding depends delicately on the channel, while existing
+    outer bounds lose the distributed decoding structure.
+  progress:
+  - Close the region for a new nontrivial subclass.
+  - Separate Han-Kobayashi from a known outer bound on an explicit channel.
+  - Formalize one exact-capacity regime before the general problem.
+formalization:
+  statement:
+    status: none
+    version: 1
+    language: Lean
+    notes: This needs a shared interference-network model and independent-message code definitions.
+    files: []
+  proofs: []
+references:
+- han-kobayashi-1981
+- elgamal-kim-2011

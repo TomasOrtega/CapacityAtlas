@@ -1,3 +1,6 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: Apache-2.0
+
 from __future__ import annotations
 
 import argparse
@@ -9,40 +12,34 @@ from .data import find_root, load_atlas
 from .validate import validate_atlas
 
 
-def _parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="capacity-atlas")
-    parser.add_argument("--root", type=Path, help="repository root; defaults to auto-detection")
-    subparsers = parser.add_subparsers(dest="command", required=True)
-
-    subparsers.add_parser("validate", help="validate source data and Lean links")
-
-    build = subparsers.add_parser("build", help="build the static website")
-    build.add_argument("--output", type=Path, help="output directory; defaults to dist")
-    build.add_argument("--base-url", help="URL path prefix, for example /CapacityAtlas")
-    return parser
-
-
 def main(argv: list[str] | None = None) -> int:
-    args = _parser().parse_args(argv)
+    parser = argparse.ArgumentParser(prog="capacity-atlas")
+    parser.add_argument("--root", type=Path)
+    commands = parser.add_subparsers(dest="command", required=True)
+    commands.add_parser("validate")
+    build = commands.add_parser("build")
+    build.add_argument("--output", type=Path)
+    build.add_argument("--base-url")
+    args = parser.parse_args(argv)
     root = args.root.resolve() if args.root else find_root()
 
     if args.command == "validate":
         issues = validate_atlas(load_atlas(root))
+        for issue in issues:
+            print(f"ERROR {issue}", file=sys.stderr)
         if issues:
-            for issue in issues:
-                print(f"ERROR {issue}", file=sys.stderr)
             print(f"Validation failed with {len(issues)} issue(s).", file=sys.stderr)
             return 1
         print("Capacity Atlas data is valid.")
         return 0
 
-    if args.command == "build":
-        output = args.output.resolve() if args.output else None
-        destination = build_site(root=root, output=output, base_url=args.base_url)
-        print(f"Built Capacity Atlas at {destination}")
-        return 0
-
-    return 2
+    destination = build_site(
+        root=root,
+        output=args.output.resolve() if args.output else None,
+        base_url=args.base_url,
+    )
+    print(f"Built Capacity Atlas at {destination}")
+    return 0
 
 
 if __name__ == "__main__":

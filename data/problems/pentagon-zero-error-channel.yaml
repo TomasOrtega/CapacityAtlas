@@ -1,0 +1,62 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: pentagon-zero-error-channel
+title: Pentagon zero-error channel
+abbreviation: C5
+status: solved
+featured: true
+updated: '2026-08-10'
+summary: The confusability graph is a five-cycle, whose Shannon capacity is exactly the square root of five.
+tags:
+  model:
+  - zero-error
+  features:
+  - finite-alphabet
+  - discrete-memoryless
+  quantity:
+  - zero-error-capacity
+  knowledge:
+  - exact
+  - regularized-characterization
+model:
+  input: Five symbols represented by the vertices of the cycle graph C5.
+  output: Channel outputs induce confusability exactly along the edges of C5.
+  law: Two input symbols can share an output if and only if they are adjacent in the pentagon confusability graph.
+  assumptions:
+  - Decoding error must be exactly zero.
+  - Independent channel uses correspond to strong graph products.
+quantity:
+  name: Zero-error capacity
+  symbol: C_0(C_5)
+  units: bits per channel use
+  criterion: Asymptotic zero-error communication.
+capacity:
+  kind: exact
+  display: \Theta(C_5)=\sqrt5,\qquad C_0(C_5)=\frac12\log_2 5
+  notes: Theta is the multiplicative Shannon capacity of the graph.
+bounds:
+- id: two-use-code
+  direction: lower
+  relation: \Theta(C_5)\ge\sqrt5
+  method: Five independent codewords exist in the two-fold strong product.
+  year: 1956
+  references:
+  - shannon-1956
+- id: lovasz-theta
+  direction: upper
+  relation: \Theta(C_5)\le\vartheta(C_5)=\sqrt5
+  method: The Lovász theta function upper-bounds Shannon capacity.
+  year: 1979
+  references:
+  - lovasz-1979
+formalization:
+  statement:
+    status: none
+    version: 1
+    language: Lean
+    notes: This is a good first substantial external proof after graph products and Lovász theta are available.
+    files: []
+  proofs: []
+references:
+- shannon-1956
+- lovasz-1979

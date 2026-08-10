@@ -2,31 +2,46 @@
 
 ## GitHub Pages
 
-In repository settings, choose **Pages → Build and deployment → Source: GitHub Actions**. The `Site, Lean, and Pages` workflow validates and tests the site, builds Lean, uploads `dist/`, and deploys only after both jobs succeed on `main`.
+Select **Settings → Pages → Build and deployment → Source: GitHub Actions** and
+set the custom domain to `capacityatlas.org`. The main workflow validates data,
+runs tests and linting, compiles Lean, uploads `dist/`, and deploys only after the
+site and Lean jobs succeed.
 
-The production site is rooted at `https://capacityatlas.org/`. `data/site.yaml` records the canonical URL, while the actual custom-domain binding is configured in **Settings → Pages**. Because deployment uses a custom GitHub Actions workflow, a repository `CNAME` file is not required.
+## Discussions
 
-If the domain changes later, update `canonical_url` in `data/site.yaml`, update public metadata such as `CITATION.cff`, and change the custom domain in **Settings → Pages**.
+Follow `docs/discussions.md`. Keep the giscus repository and category IDs in
+`data/site.yaml`. The category name and IDs are infrastructure configuration, not
+problem data.
 
-## Social features
+## Statement versions
 
-The initial site uses GitHub issues and pull requests as its social layer. Each problem page creates a prefilled discussion issue. This avoids a second account system and works before GitHub Discussions is enabled.
+Review every Lean statement change for semantic compatibility. Increment the
+problem's statement version whenever an existing external proof might no longer
+apply. Do not accept a proof record whose version differs from the statement.
 
-To add embedded comments later:
+## External proofs
 
-1. Enable GitHub Discussions.
-2. Install and configure giscus for this public repository.
-3. Add the repository and category IDs to `data/site.yaml`.
-4. Render the giscus script only when the feature flag is enabled.
+Require immutable commit URLs and public CI. Do not merge a branch name such as
+`main` as proof evidence. Large developments remain in their own repositories.
 
-Keep issue-based discussion links as a no-JavaScript fallback.
+## Releases and benchmark snapshots
 
-## Releases
+Software releases use semantic versions. Benchmark snapshots should use an
+immutable tag such as:
 
-Before tagging a release:
+```text
+benchmark-v1-lean4.32.0
+```
+
+Increment the benchmark version when problems are added or removed, a statement
+changes materially, or a misformalization is corrected. Do not rewrite existing
+snapshot tags.
+
+Before release:
 
 1. run `make check`
 2. run `make lean`
-3. inspect the generated site at mobile and desktop widths
-4. update the version in `pyproject.toml` and `CITATION.cff`
-5. tag the exact commit deployed to Pages
+3. inspect the generated home, browse, open-problem, solved-problem, and Lean pages
+4. verify giscus on one problem when enabled
+5. update `pyproject.toml` and `CITATION.cff`
+6. tag the exact deployed commit

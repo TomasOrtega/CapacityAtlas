@@ -1,54 +1,70 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
 id: additive-white-gaussian-noise-channel
 title: Real additive white Gaussian noise channel
 abbreviation: AWGN
 status: solved
-category: point-to-point
 featured: true
-updated: 2026-08-09
+updated: '2026-08-10'
 summary: The power-constrained real Gaussian channel has a closed-form capacity attained by a Gaussian input.
-tags: [continuous-alphabet, gaussian, memoryless, power-constraint]
+tags:
+  model:
+  - point-to-point
+  features:
+  - continuous-alphabet
+  - gaussian
+  - additive-noise
+  - power-constraint
+  quantity:
+  - capacity
+  knowledge:
+  - exact
 parameters:
-  - symbol: P
-    description: Average input power constraint.
-    range: 'P \ge 0'
-  - symbol: N
-    description: Noise variance per channel use.
-    range: 'N > 0'
+- symbol: P
+  description: Average input power.
+  range: P\ge0
+- symbol: N
+  description: Noise variance.
+  range: N>0
 model:
-  input: '\(X \in \mathbb{R}\)'
-  output: '\(Y \in \mathbb{R}\)'
-  law: '\(Y=X+Z\), where \(Z\sim\mathcal{N}(0,N)\) is independent across channel uses.'
+  input: \(X\in\mathbb R\)
+  output: \(Y\in\mathbb R\)
+  law: \(Y=X+Z\), where \(Z\sim\mathcal N(0,N)\) independently across uses.
   assumptions:
-    - 'The encoder satisfies \(\mathbb{E}[X^2]\le P\).'
-    - Average probability of error vanishes with blocklength.
+  - The encoder satisfies \(\mathbb E[X^2]\le P\).
+  - Average decoding error vanishes with blocklength.
 quantity:
   name: Shannon capacity
-  symbol: 'C_{\mathrm{AWGN}}(P,N)'
+  symbol: C_{\mathrm{AWGN}}(P,N)
   units: bits per channel use
   criterion: Average-error capacity without feedback.
 capacity:
   kind: exact
-  display: 'C_{\mathrm{AWGN}}(P,N)=\frac12\log_2\!\left(1+\frac{P}{N}\right)'
-  conditions: '\(P\ge 0\) and \(N>0\).'
-  notes: A zero-mean Gaussian input with variance P achieves capacity.
+  display: C_{\mathrm{AWGN}}(P,N)=\frac12\log_2\!\left(1+\frac PN\right)
+  notes: A zero-mean Gaussian input of variance P achieves capacity.
 bounds:
-  - id: gaussian-achievability
-    direction: lower
-    relation: 'C\ge \frac12\log_2(1+P/N)'
-    method: Gaussian random coding and typical decoding.
-    year: 1948
-    references: [shannon-1948]
-  - id: entropy-maximization-converse
-    direction: upper
-    relation: 'C\le \frac12\log_2(1+P/N)'
-    method: The Gaussian distribution maximizes differential entropy at fixed variance.
-    year: 1948
-    references: [shannon-1948]
-timeline:
-  - year: 1948
-    event: Shannon identified the Gaussian-channel capacity formula and coding theorem.
-    references: [shannon-1948]
+- id: gaussian-achievability
+  direction: lower
+  relation: C\ge\frac12\log_2(1+P/N)
+  method: Gaussian random coding.
+  year: 1948
+  references:
+  - shannon-1948
+- id: entropy-maximization-converse
+  direction: upper
+  relation: C\le\frac12\log_2(1+P/N)
+  method: Gaussian distributions maximize differential entropy at fixed variance.
+  year: 1948
+  references:
+  - shannon-1948
 formalization:
-  status: none
-  notes: The initial Lean library covers finite channels. Continuous probability and differential entropy are a later milestone.
-references: [shannon-1948, cover-thomas-2006]
+  statement:
+    status: none
+    version: 1
+    language: Lean
+    notes: Continuous probability and differential entropy are not yet in the shared Lean layer.
+    files: []
+  proofs: []
+references:
+- shannon-1948
+- cover-thomas-2006

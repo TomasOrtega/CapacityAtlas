@@ -1,4 +1,20 @@
-import CapacityAtlas.FiniteChannel
+/-
+Copyright 2026 The Capacity Atlas Authors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-/
+
+import CapacityAtlasForMathlib.InformationTheory.FiniteChannel
 
 namespace CapacityAtlas.Channel
 
@@ -9,6 +25,7 @@ def binarySymmetricTransition (p : ℝ) (input output : Bool) : ℝ :=
   if input = output then 1 - p else p
 
 /-- The binary symmetric channel with crossover probability `p`. -/
+@[capacity_problem "binary-symmetric-channel", capacity_definition]
 def binarySymmetric (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
     FiniteChannel Bool Bool where
   transition := binarySymmetricTransition p
@@ -21,6 +38,7 @@ def binarySymmetric (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
     cases input <;> simp [binarySymmetricTransition]
 
 /-- At crossover probability zero, the binary symmetric channel is noiseless. -/
+@[capacity_problem "binary-symmetric-channel", capacity_short_proof]
 theorem binarySymmetric_zero :
     binarySymmetric 0 (by norm_num) (by norm_num) =
       FiniteChannel.identity Bool := by
@@ -37,6 +55,7 @@ def binaryErasureTransition (e : ℝ) (input : Bool) : Option Bool → ℝ
   | some output => if input = output then 1 - e else 0
 
 /-- The binary erasure channel with erasure probability `e`. -/
+@[capacity_problem "binary-erasure-channel", capacity_definition]
 def binaryErasure (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) :
     FiniteChannel Bool (Option Bool) where
   transition := binaryErasureTransition e
@@ -64,6 +83,7 @@ def binaryZTransition (p : ℝ) (input output : Bool) : ℝ :=
   | true, true => 1 - p
 
 /-- The binary Z-channel with crossover probability `p`. -/
+@[capacity_problem "binary-z-channel", capacity_definition]
 def binaryZ (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
     FiniteChannel Bool Bool where
   transition := binaryZTransition p

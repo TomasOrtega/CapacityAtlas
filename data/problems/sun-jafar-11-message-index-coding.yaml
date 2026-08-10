@@ -1,78 +1,95 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
 id: sun-jafar-11-message-index-coding
 title: Sun-Jafar 11-message multiple-unicast index-coding instance
 abbreviation: SJ11
 status: open
-category: network-coding
 featured: true
-updated: 2026-08-09
-summary: This is the smallest multiple-unicast instance identified by Sun and Jafar where Shannon inequalities do not give the best known converse.
-tags: [index-coding, multiple-unicast, non-shannon, nonlinear-coding, open-capacity]
+updated: '2026-08-10'
+summary: A multiple-unicast instance where the exact nonlinear symmetric capacity is separated from the known linear
+  answer.
+tags:
+  model:
+  - index-coding
+  features:
+  - finite-alphabet
+  - multiple-unicast
+  - non-shannon
+  - nonlinear-coding
+  quantity:
+  - symmetric-capacity
+  knowledge:
+  - bounds
+  - linear-only
 model:
-  input: 'Eleven independent messages \(W_1\) through \(W_{11}\) held by one broadcaster.'
-  output: 'Receiver \(j\) must recover \(W_j\) from the common broadcast and its side information.'
-  law: 'The unknown interferers at receivers \(1\) through \(11\) are respectively \(\{W_4,W_5\}\), \(\{W_5\}\), \(\{\}\), \(\{\}\), \(\{W_2\}\), \(\{W_2,W_3\}\), \(\{W_1,W_3\}\), \(\{W_2,W_4\}\), \(\{W_3,W_4\}\), \(\{W_3,W_5\}\), and \(\{W_4,W_6\}\). Every other nonrequested message is side information.'
+  input: Eleven independent messages \(W_1,\ldots,W_{11}\) held by one broadcaster.
+  output: Receiver \(j\) recovers \(W_j\) from the broadcast and its side information.
+  law: The unknown interferer sets are \(\{4,5\},\{5\},\varnothing,\varnothing,\{2\},\{2,3\},\{1,3\},\{2,4\},\{3,4\},\{3,5\},\{4,6\}\).
   assumptions:
-    - All messages have the same rate.
-    - Arbitrary blocklength and nonlinear codes are allowed.
-    - Each receiver has zero-error or asymptotically vanishing-error decoding under the stated capacity convention.
+  - Messages have equal rate.
+  - Arbitrary blocklength and nonlinear codes are allowed.
 quantity:
   name: Nonlinear symmetric capacity
-  symbol: 'C_{\mathrm{sym}}'
+  symbol: C_{\mathrm{sym}}
   units: message symbols per broadcast symbol
   criterion: Symmetric multiple-unicast index-coding capacity.
 capacity:
   kind: bounds
-  display: '\frac{5}{13}\le C_{\mathrm{sym}}\le\frac{11}{28}'
-  lower: '\frac{5}{13}'
-  upper: '\frac{11}{28}'
-  conjectured: '\frac{5}{13}'
-  notes: The linear symmetric capacity is exactly 5/13. Whether nonlinear coding improves it remains open.
+  display: \frac5{13}\le C_{\mathrm{sym}}\le\frac{11}{28}
+  lower: \frac5{13}
+  upper: \frac{11}{28}
+  conjectured: \frac5{13}
+  notes: The linear symmetric capacity is exactly 5/13.
 bounds:
-  - id: vector-linear-code
-    direction: lower
-    relation: 'C_{\mathrm{sym}}\ge\frac{5}{13}'
-    method: Explicit vector linear interference-alignment code.
-    year: 2015
-    references: [sun-jafar-2015]
-  - id: zhang-yeung-converse
-    direction: upper
-    relation: 'C_{\mathrm{sym}}\le\frac{11}{28}'
-    method: Entropic converse using the Zhang-Yeung non-Shannon information inequality.
-    year: 2015
-    references: [sun-jafar-2015, zhang-yeung-1998]
-  - id: linear-capacity
-    direction: linear-exact
-    relation: 'C_{\mathrm{sym}}^{\mathrm{linear}}=\frac{5}{13}'
-    method: Achievability plus an Ingleton linear-rank converse.
-    year: 2015
-    references: [sun-jafar-2015]
-timeline:
-  - year: 1998
-    event: Zhang and Yeung discovered the first non-Shannon information inequality used in the converse.
-    references: [zhang-yeung-1998]
-  - year: 2015
-    event: Sun and Jafar established the 5/13 linear capacity and the 11/28 nonlinear outer bound.
-    references: [sun-jafar-2015]
+- id: vector-linear-code
+  direction: lower
+  relation: C_{\mathrm{sym}}\ge\frac5{13}
+  method: Explicit vector-linear interference alignment.
+  year: 2015
+  references:
+  - sun-jafar-2015
+- id: zhang-yeung-converse
+  direction: upper
+  relation: C_{\mathrm{sym}}\le\frac{11}{28}
+  method: Entropic converse using a non-Shannon inequality.
+  year: 2015
+  references:
+  - sun-jafar-2015
+  - zhang-yeung-1998
+- id: linear-capacity
+  direction: linear-exact
+  relation: C_{\mathrm{sym}}^{\mathrm{linear}}=\frac5{13}
+  method: Achievability plus an Ingleton linear-rank converse.
+  year: 2015
+  references:
+  - sun-jafar-2015
 frontier:
-  question: 'Prove the nonlinear symmetric capacity is \(5/13\), or construct a nonlinear code with rate strictly above \(5/13\) and determine the resulting capacity.'
-  bottleneck: Linear-rank inequalities close the linear problem, while known entropic inequalities have not reduced the nonlinear upper bound to the achievable rate.
+  question: Prove \(C_{\mathrm{sym}}=5/13\), or construct a nonlinear code above \(5/13\).
+  bottleneck: Linear-rank inequalities close the linear problem, while known entropic inequalities do not close
+    the nonlinear gap.
   progress:
-    - Improve either endpoint with a fully specified code or auditable entropy certificate.
-    - Rule out a concrete family of nonlinear codes or bounded blocklengths.
-    - Formalize the existing 5/13 code, the Ingleton converse, or the 11/28 entropic converse in Lean.
+  - Improve either endpoint with an auditable certificate.
+  - Rule out a concrete nonlinear code family.
+  - Formalize the linear code or entropic converse.
   subproblems:
-    - title: Formalize the exact 11-receiver instance from the interference sets.
-      status: done
-    - title: Formalize the explicit 5/13 vector linear code.
-      status: open
-    - title: Formalize the 11/28 Zhang-Yeung converse.
-      status: open
+  - title: Formalize the exact receiver interference sets.
+    status: done
+  - title: Formalize the 5/13 vector-linear code.
+    status: open
+  - title: Formalize the 11/28 converse.
+    status: open
 formalization:
-  status: definitions
-  language: Lean
-  notes: The shared multiple-unicast model and exact interference sets are formalized. No capacity bound is yet machine-checked.
-  files:
-    - path: lean/CapacityAtlas/Network/IndexCoding.lean
+  statement:
+    status: definitions
+    version: 1
+    language: Lean
+    notes: The shared multiple-unicast model and exact interference sets are formalized.
+    files:
+    - path: lean/CapacityAtlasForMathlib/Network/IndexCoding.lean
       declaration: CapacityAtlas.IndexCoding.sunJafar11
-      description: Exact 11-message instance encoded by its receiver interference sets.
-references: [sun-jafar-2015, zhang-yeung-1998]
+      role: definition
+      description: Exact 11-message instance.
+  proofs: []
+references:
+- sun-jafar-2015
+- zhang-yeung-1998

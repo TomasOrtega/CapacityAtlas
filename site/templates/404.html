@@ -1,8 +1,1 @@
-{% extends "base.html" %}
-{% set page_title = 'Page not found' %}
-{% set page_description = 'The requested Capacity Atlas page was not found.' %}
-{% set request_path = '404.html' %}
-
-{% block content %}
-<section class="not-found"><div class="shell"><span class="kicker">404</span><h1>This channel was not found.</h1><p>The entry may have moved, or it may be a capacity problem the atlas does not contain yet.</p><div><a class="button" href="{{ site_url('problems/') }}">Browse problems</a><a class="button button--secondary" href="{{ site.repository_url }}/issues/new">Propose an entry</a></div></div></section>
-{% endblock %}
+{% extends "base.html" %}{% block content %}<section class="page-header"><div class="container"><p class="eyebrow">404</p><h1>That capacity problem is not here.</h1><p>Browse the registry or propose a missing channel.</p><p><a class="button" href="{{ site_url('problems/') }}">Browse problems</a></p></div></section>{% endblock %}

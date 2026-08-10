@@ -2,4 +2,7 @@ blank_issues_enabled: false
 contact_links:
   - name: Browse the atlas
     url: https://capacityatlas.org/
-    about: Check whether the problem or bound is already represented.
+    about: Check whether the problem or result is already represented.
+  - name: Research discussion
+    url: https://github.com/TomasOrtega/CapacityAtlas/discussions
+    about: Discuss proof ideas, questions, literature, and partial progress.

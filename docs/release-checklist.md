@@ -1,13 +1,12 @@
 # Release checklist
 
-Use this checklist before tagging a Capacity Atlas release.
-
-- Validate every YAML entry and bibliography reference with `make validate`.
-- Run the Python test suite and static-site build with `make check`.
-- Compile the complete Lean library with `make lean`.
-- Confirm that no formalization status exceeds what the linked declarations prove.
-- Review newly changed mathematical claims against their primary sources.
-- Inspect the generated home page, problem index, one solved entry, and one open entry.
-- Confirm that the GitHub Pages deployment completed from the tagged commit.
-
-The GitHub Actions workflow enforces the automated items. Mathematical faithfulness and conservative formalization labels remain review responsibilities.
+- Validate all problem, tag, bibliography, and formal-proof records.
+- Run the Python tests, lint, and production site build.
+- Compile the full Lean library with no placeholders.
+- Confirm no statement version changed accidentally.
+- Check every new mathematical claim against a primary source.
+- Inspect the home page, combined filters, one solved entry, one open entry, and
+  the formalization dashboard.
+- Verify custom-domain deployment and HTTPS.
+- Verify one embedded Discussion when giscus is enabled.
+- Create an immutable benchmark tag when the problem set or statements changed.

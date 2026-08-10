@@ -1,0 +1,13 @@
+Creative Commons Attribution 4.0 International
+
+Capacity Atlas problem data, bibliographic metadata, and editorial content are
+licensed under the Creative Commons Attribution 4.0 International Public License
+unless otherwise noted.
+
+Human-readable summary:
+https://creativecommons.org/licenses/by/4.0/
+
+Complete legal text:
+https://creativecommons.org/licenses/by/4.0/legalcode.txt
+
+SPDX-License-Identifier: CC-BY-4.0

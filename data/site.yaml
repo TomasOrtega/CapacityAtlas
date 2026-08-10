@@ -1,11 +1,26 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
 name: Capacity Atlas
-tagline: A community-maintained atlas of channel capacities, open gaps, and Lean formalizations.
-description: Capacity Atlas records precise channel models, exact capacities, best known bounds, research frontiers, and the status of machine-checked Lean proofs.
+tagline: A community-maintained registry of channel capacities, open gaps, and Lean statements.
+description: Capacity Atlas records precise channel models, exact capacities, best known bounds, research frontiers, canonical Lean statements, and external machine-checked proofs.
 repository: TomasOrtega/CapacityAtlas
 repository_url: https://github.com/TomasOrtega/CapacityAtlas
 canonical_url: https://capacityatlas.org
 base_url: ""
-license: MIT
+licenses:
+  software: Apache-2.0
+  content: CC-BY-4.0
 social:
   discussions_enabled: false
-  comments_provider: giscus
+  giscus:
+    enabled: false
+    repo: TomasOrtega/CapacityAtlas
+    repo_id: ""
+    category: Capacity Problems
+    category_id: ""
+    term_prefix: "capacityatlas:"
+    strict: true
+    reactions_enabled: true
+    input_position: top
+    theme: preferred_color_scheme
+    language: en

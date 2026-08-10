@@ -1,3 +1,6 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: Apache-2.0
+
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
@@ -19,14 +22,13 @@ def _resolve_internal_target(output: Path, source: Path, url: str) -> Path | Non
         if decoded.startswith("/")
         else source.parent / decoded
     )
-
     if decoded.endswith("/") or target.is_dir():
         target = target / "index.html"
     return target.resolve()
 
 
 def test_every_generated_internal_link_has_a_target(tmp_path: Path) -> None:
-    output = build_site(output=tmp_path / "site", base_url="")
+    output = build_site(output=tmp_path / "site")
     missing: list[str] = []
 
     for page in output.rglob("*.html"):
@@ -42,13 +44,12 @@ def test_every_generated_internal_link_has_a_target(tmp_path: Path) -> None:
 
 
 def test_generated_pages_have_unique_ids_and_no_template_markers(tmp_path: Path) -> None:
-    output = build_site(output=tmp_path / "site", base_url="")
+    output = build_site(output=tmp_path / "site")
 
     for page in output.rglob("*.html"):
         contents = page.read_text(encoding="utf-8")
         assert "{{" not in contents
         assert "{%" not in contents
-
         soup = BeautifulSoup(contents, "html.parser")
         ids = [element["id"] for element in soup.select("[id]")]
         assert len(ids) == len(set(ids)), page

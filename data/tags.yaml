@@ -1,0 +1,64 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+axes:
+  - id: model
+    label: Channel model
+    description: The communication topology or operational channel family.
+    values:
+      - {id: point-to-point, label: Point-to-point}
+      - {id: multiple-access, label: Multiple access}
+      - {id: broadcast, label: Broadcast}
+      - {id: interference, label: Interference}
+      - {id: relay, label: Relay}
+      - {id: two-way, label: Two-way}
+      - {id: wiretap, label: Wiretap}
+      - {id: index-coding, label: Index coding}
+      - {id: zero-error, label: Zero error}
+      - {id: arbitrarily-varying, label: Arbitrarily varying}
+  - id: features
+    label: Features
+    description: Structural assumptions and phenomena that shape the capacity problem.
+    values:
+      - {id: finite-alphabet, label: Finite alphabet}
+      - {id: continuous-alphabet, label: Continuous alphabet}
+      - {id: discrete-memoryless, label: Discrete memoryless}
+      - {id: memory, label: Memory}
+      - {id: binary, label: Binary}
+      - {id: q-ary, label: q-ary}
+      - {id: gaussian, label: Gaussian}
+      - {id: additive-noise, label: Additive noise}
+      - {id: symmetric, label: Symmetric}
+      - {id: asymmetric, label: Asymmetric}
+      - {id: erasure, label: Erasure}
+      - {id: deletion, label: Deletion}
+      - {id: feedback, label: Feedback}
+      - {id: causal-state, label: Causal state information}
+      - {id: noncausal-state, label: Noncausal state information}
+      - {id: side-information, label: Side information}
+      - {id: compound, label: Compound}
+      - {id: degraded, label: Degraded}
+      - {id: secrecy, label: Secrecy}
+      - {id: multiple-unicast, label: Multiple unicast}
+      - {id: nonlinear-coding, label: Nonlinear coding}
+      - {id: non-shannon, label: Non-Shannon inequalities}
+      - {id: symmetrizability, label: Symmetrizability}
+      - {id: power-constraint, label: Power constraint}
+  - id: quantity
+    label: Quantity
+    description: The operational rate object being determined.
+    values:
+      - {id: capacity, label: Capacity}
+      - {id: capacity-region, label: Capacity region}
+      - {id: symmetric-capacity, label: Symmetric capacity}
+      - {id: secrecy-capacity, label: Secrecy capacity}
+      - {id: zero-error-capacity, label: Zero-error capacity}
+      - {id: deterministic-code-capacity, label: Deterministic-code capacity}
+  - id: knowledge
+    label: Current knowledge
+    description: The mathematical form of the best known answer.
+    values:
+      - {id: exact, label: Exact}
+      - {id: single-letter-characterization, label: Single-letter characterization}
+      - {id: regularized-characterization, label: Regularized characterization}
+      - {id: bounds, label: Bounds only}
+      - {id: linear-only, label: Linear-only result}

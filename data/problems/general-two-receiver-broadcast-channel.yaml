@@ -1,0 +1,71 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: general-two-receiver-broadcast-channel
+title: General two-receiver discrete memoryless broadcast channel
+status: open
+featured: true
+updated: '2026-08-10'
+summary: The capacity region for two arbitrary broadcast receivers remains unknown outside important ordered subclasses.
+tags:
+  model:
+  - broadcast
+  features:
+  - finite-alphabet
+  - discrete-memoryless
+  quantity:
+  - capacity-region
+  knowledge:
+  - bounds
+model:
+  input: One transmitter chooses \(X\in\mathcal X\).
+  output: Receivers observe \(Y_1\) and \(Y_2\).
+  law: An arbitrary memoryless law \(p(y_1,y_2|x)\).
+  assumptions:
+  - Each receiver requests a private message.
+  - No degradedness or receiver ordering is assumed.
+quantity:
+  name: Capacity region
+  symbol: \mathcal C_{\mathrm{BC}}
+  units: rate pairs in bits per channel use
+  criterion: Vanishing average error at both receivers.
+capacity:
+  kind: bounds
+  display: \mathcal R_{\mathrm{Marton}}\subseteq\mathcal C_{\mathrm{BC}}\subseteq\mathcal R_{\mathrm{UV}}
+  lower: \mathcal R_{\mathrm{Marton}}
+  upper: \mathcal R_{\mathrm{UV}}
+  notes: The two regions coincide for many special classes but not in general.
+bounds:
+- id: marton-inner
+  direction: inner-region
+  relation: \mathcal R_{\mathrm{Marton}}\subseteq\mathcal C
+  method: Correlated auxiliaries, random binning, and superposition.
+  year: 1979
+  references:
+  - marton-1979
+- id: uv-outer
+  direction: outer-region
+  relation: \mathcal C\subseteq\mathcal R_{\mathrm{UV}}
+  method: A single-letter outer region using two auxiliary variables.
+  year: 2007
+  references:
+  - nair-elgamal-2007
+frontier:
+  question: Determine the private-message capacity region of the general two-receiver DMC broadcast channel.
+  bottleneck: The transmitter must coordinate incompatible receiver-specific descriptions, and known converses do
+    not capture the full binning structure of the best inner bounds.
+  progress:
+  - Find a channel separating or matching Marton's inner region and current outer bounds.
+  - Discover a tighter computable outer region.
+  - Formalize a sharply stated benchmark subclass.
+formalization:
+  statement:
+    status: none
+    version: 1
+    language: Lean
+    notes: The canonical statement should follow a shared broadcast-code and rate-region API.
+    files: []
+  proofs: []
+references:
+- marton-1979
+- nair-elgamal-2007
+- elgamal-kim-2011
