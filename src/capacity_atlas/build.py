@@ -11,9 +11,7 @@ from urllib.parse import quote
 from jinja2 import Environment, FileSystemLoader, StrictUndefined, select_autoescape
 
 from .data import json_ready
-from .model import Atlas
 from .validate import assert_valid
-
 
 FORMALIZATION_RANK = {
     "none": 0,
