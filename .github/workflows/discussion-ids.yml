@@ -25,3 +25,8 @@ jobs:
               }
             }
           }'
+      - name: Verify giscus access
+        run: |
+          curl --fail-with-body --silent --show-error \
+            'https://giscus.app/api/discussions/categories?repo=TomasOrtega%2FCapacityAtlas'
+          echo
