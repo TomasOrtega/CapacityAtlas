@@ -20,9 +20,9 @@ List the primary sources checked and the exact claims they support. Write “not
 
 ## Checks
 
+- [ ] `make lint`
 - [ ] `make validate`
 - [ ] `make test`
-- [ ] `make lint`
 - [ ] `make build`
 - [ ] `make lean` when Lean or formalization metadata changed
 - [ ] No generated `dist/` files are committed

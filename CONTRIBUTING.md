@@ -94,12 +94,18 @@ and prove the canonical proposition directly whenever possible.
 Each problem lives at `data/problems/<id>.yaml`. The identifier is permanent,
 lowercase, and hyphenated. Start from `docs/problem-template.yaml`.
 
+Set up the locked development environment and Git hooks once:
+
+```bash
+make install
+```
+
 Run:
 
 ```bash
+make lint
 make validate
 make test
-make lint
 make build
 make lean
 ```

@@ -69,9 +69,7 @@ def validate_atlas(atlas: Atlas | None = None) -> list[ValidationIssue]:
                 continue
             for tag_id in selected:
                 if tag_id not in tag_values[axis_id]:
-                    issues.append(
-                        ValidationIssue(source, f"unknown {axis_id} tag {tag_id!r}")
-                    )
+                    issues.append(ValidationIssue(source, f"unknown {axis_id} tag {tag_id!r}"))
 
         for reference_id in sorted(set(_all_reference_ids(problem))):
             if reference_id not in reference_ids:
@@ -114,9 +112,7 @@ def validate_atlas(atlas: Atlas | None = None) -> list[ValidationIssue]:
             token = _declaration_token(str(declaration))
             kinds = r"(?:def|theorem|lemma|structure|inductive|abbrev)"
             declaration_match = (
-                re.search(rf"\b{kinds}\s+{re.escape(token)}\b", contents)
-                if declaration
-                else None
+                re.search(rf"\b{kinds}\s+{re.escape(token)}\b", contents) if declaration else None
             )
             if declaration and declaration_match is None:
                 issues.append(
@@ -167,9 +163,7 @@ def validate_atlas(atlas: Atlas | None = None) -> list[ValidationIssue]:
             proof_id = proof.get("id")
             claim = proof.get("claim")
             if proof_id in proof_ids:
-                issues.append(
-                    ValidationIssue(source, f"duplicate external proof id {proof_id!r}")
-                )
+                issues.append(ValidationIssue(source, f"duplicate external proof id {proof_id!r}"))
             if isinstance(proof_id, str):
                 proof_ids.add(proof_id)
             if proof.get("statement_version") != version:
@@ -183,9 +177,7 @@ def validate_atlas(atlas: Atlas | None = None) -> list[ValidationIssue]:
             commit = str(proof.get("commit", ""))
             if not re.fullmatch(r"[0-9a-f]{40}", commit):
                 issues.append(
-                    ValidationIssue(
-                        source, f"external proof {claim!r} needs a 40-character commit"
-                    )
+                    ValidationIssue(source, f"external proof {claim!r} needs a 40-character commit")
                 )
             repository = str(proof.get("repository", ""))
             expected_prefix = f"https://github.com/{repository}/commit/{commit}"

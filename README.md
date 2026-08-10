@@ -17,9 +17,9 @@ immutable commit.
 
 ## Current scope
 
-The curated collection contains **32 classical and open capacity problems**,
-including point-to-point channels, feedback, state information, multiple-access
-and broadcast channels, relay and interference networks, wiretap channels,
+The curated collection spans classical and open capacity problems, including
+point-to-point channels, feedback, state information, multiple-access and
+broadcast channels, relay and interference networks, wiretap channels,
 zero-error information theory, arbitrarily varying channels, and index coding.
 
 Each problem records:
@@ -84,15 +84,18 @@ See [docs/discussions.md](docs/discussions.md).
 
 ## Local development
 
-Python 3.11 or newer is required.
+Python 3.11 or newer and
+[uv](https://docs.astral.sh/uv/getting-started/installation/) are required.
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-python -m pip install -e '.[dev]'
+uv sync --locked
+uv run --locked prek install
 make check
 make serve
 ```
+
+The installed prek hook applies Ruff fixes and formatting, checks repository
+hygiene, and verifies that `uv.lock` stays synchronized before each commit.
 
 Open `http://localhost:8000`.
 
