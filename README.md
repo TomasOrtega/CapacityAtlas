@@ -15,26 +15,6 @@ information-theory tags, primary references, and versioned Lean statements.
 Substantial formal proofs live in dedicated repositories and are linked by an
 immutable commit.
 
-## Current scope
-
-The curated collection spans classical and open capacity problems, including
-point-to-point channels, feedback, state information, multiple-access and
-broadcast channels, relay and interference networks, wiretap channels,
-zero-error information theory, arbitrarily varying channels, and index coding.
-
-Each problem records:
-
-- the exact model, assumptions, rate normalization, and error criterion
-- the exact answer, characterization, or best known bounds
-- independent controlled tags for model, features, quantity, and current knowledge
-- a research-frontier explanation and concrete progress targets when open
-- a versioned canonical Lean definition or statement when available
-- zero or more external Lean proof records pinned to immutable commits
-- a stable GitHub Discussion key of the form `capacityatlas:<problem-id>`
-
-No AMS tags are used. The project is entirely within information theory, so its
-facets describe communication models and operational quantities directly.
-
 ## Design
 
 The architecture takes explicit inspiration from Google DeepMind's
