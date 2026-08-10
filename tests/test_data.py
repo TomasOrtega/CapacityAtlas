@@ -25,6 +25,18 @@ def test_expanded_registry_and_controlled_axes() -> None:
         assert problem["tags"]["knowledge"]
 
 
+def test_discussion_configuration_matches_the_enabled_repository() -> None:
+    atlas = load_atlas()
+    social = atlas.site["social"]
+    giscus = social["giscus"]
+
+    assert social["discussions_enabled"] is True
+    assert giscus["repo"] == "TomasOrtega/CapacityAtlas"
+    assert giscus["repo_id"] == "R_kgDOTzuIlQ"
+    assert giscus["category"] == "General"
+    assert giscus["category_id"] == "DIC_kwDOTzuIlc4DDFDj"
+
+
 def test_external_proof_must_match_statement_version() -> None:
     atlas = deepcopy(load_atlas())
     problem = atlas.problems_by_id["binary-symmetric-channel"]
