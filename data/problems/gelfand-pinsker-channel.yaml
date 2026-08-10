@@ -1,0 +1,62 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: gelfand-pinsker-channel
+title: DMC with noncausal state information at the encoder
+abbreviation: Gel'fand-Pinsker channel
+status: solved
+updated: '2026-08-10'
+summary: The entire iid state sequence is known noncausally to the encoder but not the decoder.
+tags:
+  model:
+  - point-to-point
+  features:
+  - finite-alphabet
+  - discrete-memoryless
+  - noncausal-state
+  - side-information
+  quantity:
+  - capacity
+  knowledge:
+  - exact
+  - single-letter-characterization
+model:
+  input: The encoder maps \((M,S^n)\) to \(X^n\).
+  output: \(Y_t\sim W(\cdot|X_t,S_t)\).
+  law: States \(S_t\) are iid and known in full to the encoder before transmission.
+  assumptions:
+  - The decoder does not know the state sequence.
+  - The state distribution is fixed and known.
+quantity:
+  name: Gel'fand-Pinsker capacity
+  symbol: C_{\mathrm{GP}}
+  units: bits per channel use
+  criterion: Average-error capacity.
+capacity:
+  kind: characterization
+  display: C_{\mathrm{GP}}=\max_{P_{U|S},\,x=f(U,S)}\bigl[I(U;Y)-I(U;S)\bigr]
+bounds:
+- id: binning-achievability
+  direction: lower
+  relation: C_{\mathrm{GP}}\ge\max[I(U;Y)-I(U;S)]
+  method: Random binning selects a codeword jointly typical with the state.
+  year: 1980
+  references:
+  - gelfand-pinsker-1980
+- id: gp-converse
+  direction: upper
+  relation: C_{\mathrm{GP}}\le\max[I(U;Y)-I(U;S)]
+  method: Csiszár's sum identity and an auxiliary random variable.
+  year: 1980
+  references:
+  - gelfand-pinsker-1980
+formalization:
+  statement:
+    status: none
+    version: 1
+    language: Lean
+    notes: This theorem is a natural substantial external-proof repository once state and entropy APIs exist.
+    files: []
+  proofs: []
+references:
+- gelfand-pinsker-1980
+- elgamal-kim-2011

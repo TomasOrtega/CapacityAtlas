@@ -1,17 +1,18 @@
 cff-version: 1.2.0
-message: If you use Capacity Atlas, please cite the repository and the primary sources attached to the relevant entries.
+message: If you use Capacity Atlas, cite the repository and the primary sources attached to the relevant entries.
 title: Capacity Atlas
-version: 0.1.0
-date-released: 2026-08-09
+version: 0.2.0
+date-released: 2026-08-10
 authors:
   - family-names: Ortega
     given-names: Tomas
 repository-code: https://github.com/TomasOrtega/CapacityAtlas
 url: https://capacityatlas.org/
-license: MIT
+license: Apache-2.0
 keywords:
   - information theory
   - channel capacity
   - Lean
   - formalization
   - open problems
+  - benchmark

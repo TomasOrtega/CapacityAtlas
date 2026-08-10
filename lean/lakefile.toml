@@ -1,9 +1,15 @@
 name = "CapacityAtlas"
-version = "0.1.0"
+version = "0.2.0"
 defaultTargets = ["CapacityAtlas"]
 
 [leanOptions]
 autoImplicit = false
+
+[[lean_lib]]
+name = "CapacityAtlasUtil"
+
+[[lean_lib]]
+name = "CapacityAtlasForMathlib"
 
 [[lean_lib]]
 name = "CapacityAtlas"

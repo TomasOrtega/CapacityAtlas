@@ -1,27 +1,82 @@
 # Capacity Atlas
 
-[![Site and data](https://github.com/TomasOrtega/CapacityAtlas/actions/workflows/ci.yml/badge.svg)](https://github.com/TomasOrtega/CapacityAtlas/actions/workflows/ci.yml)
-[![Lean](https://img.shields.io/badge/formalization-Lean%204-blue)](lean/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Site, data, and Lean](https://github.com/TomasOrtega/CapacityAtlas/actions/workflows/ci.yml/badge.svg)](https://github.com/TomasOrtega/CapacityAtlas/actions/workflows/ci.yml)
+[![Lean 4](https://img.shields.io/badge/formalization-Lean%204-blue)](lean/)
+[![Software: Apache-2.0](https://img.shields.io/badge/software-Apache--2.0-blue)](LICENSE)
+[![Content: CC-BY-4.0](https://img.shields.io/badge/content-CC--BY--4.0-lightgrey)](LICENSES/CC-BY-4.0.txt)
 
-Capacity Atlas is a community-maintained atlas of channel capacities, open gaps, and Lean formalizations. Each entry fixes the complete channel model, names the operational quantity, records exact results or best known bounds, explains the remaining research frontier, and distinguishes definitions from proved theorems.
+**Capacity Atlas** is a community-maintained registry of channel capacities,
+known bounds, open gaps, canonical Lean statements, and external machine-checked
+proofs. The public site is [capacityatlas.org](https://capacityatlas.org/).
 
-The repository is the source of truth. A small Python program validates the YAML data and builds a static website. GitHub Actions checks the data, tests the generator, compiles every Lean file, and deploys the generated pages.
+The repository is deliberately a registry rather than a proof monorepo. It owns
+stable problem identifiers, precise communication models, controlled
+information-theory tags, primary references, and versioned Lean statements.
+Substantial formal proofs live in dedicated repositories and are linked by an
+immutable commit.
 
-## What is included
+## Current scope
 
-The initial release contains:
+The initial curated collection contains **32 classical and open capacity
+problems**, including point-to-point channels, feedback, state information,
+multiple-access and broadcast channels, relay and interference networks,
+wiretap channels, zero-error information theory, arbitrarily varying channels,
+and index coding.
 
-- 12 curated classical channel and network problems
-- exact-capacity, capacity-region, and open-bound entries
-- a searchable and filterable problem index
-- detailed problem pages with assumptions, bound provenance, timelines, and concrete research targets
-- static JSON endpoints for every problem
-- a JSON Schema for reviewed data contributions
-- a shared Lean library for finite channels, one-shot codes, binary channels, and multiple-unicast index coding
-- GitHub issue forms and pull-request workflows for community contributions
+Each problem records:
 
-Only Lean formalizations are accepted at present. A problem page uses a five-level status ladder: not started, definitions, statement, partial proof, and complete proof.
+- the exact model, assumptions, rate normalization, and error criterion
+- the exact answer, characterization, or best known bounds
+- independent controlled tags for model, features, quantity, and current knowledge
+- a research-frontier explanation and concrete progress targets when open
+- a versioned canonical Lean definition or statement when available
+- zero or more external Lean proof records pinned to immutable commits
+- a stable GitHub Discussion key of the form `capacityatlas:<problem-id>`
+
+No AMS tags are used. The project is entirely within information theory, so its
+facets describe communication models and operational quantities directly.
+
+## Design
+
+The architecture takes explicit inspiration from Google DeepMind's
+[Formal Conjectures](https://github.com/google-deepmind/formal-conjectures)
+project. In particular, Capacity Atlas adapts its statement-first registry,
+structured declaration metadata, external formal-proof links, separation of
+reusable definitions from problem statements, benchmark-oriented versioning,
+and compact browse interface. Capacity Atlas uses a channel-specific taxonomy
+and a stricter no-placeholder policy in the central Lean tree.
+
+See [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md) for the exact attribution and
+citation.
+
+## Lean layout
+
+```text
+lean/
+├── CapacityAtlas/              channel-specific definitions and statements
+├── CapacityAtlasForMathlib/    reusable information-theory infrastructure
+└── CapacityAtlasUtil/          registry metadata attributes and utilities
+```
+
+The central repository accepts only Lean 4 formalizations. It keeps shared API,
+canonical statements, tests, and short illuminating proofs. A proof longer than
+roughly 25–50 lines, or one needing significant problem-specific infrastructure,
+should normally live in a separate repository. External proof repositories
+should import a pinned Capacity Atlas release or commit and prove the registered
+statement rather than restating it independently.
+
+See [docs/lean.md](docs/lean.md) and
+[docs/external-proofs.md](docs/external-proofs.md).
+
+## Discussions
+
+Every problem page contains an inline-discussion section backed by GitHub
+Discussions through giscus. Discussion storage remains in GitHub, so the static
+site needs no accounts, database, or comment server. Until repository and
+category IDs are configured, pages display a setup notice and link to the
+repository Discussions area.
+
+See [docs/discussions.md](docs/discussions.md).
 
 ## Local development
 
@@ -35,53 +90,42 @@ make check
 make serve
 ```
 
-Then open `http://localhost:8000`. Both local development and the production custom domain use root-relative links.
+Open `http://localhost:8000`.
 
-To check the Lean library:
+Build the Lean library with:
 
 ```bash
 cd lean
-lake update
+lake exe cache get
 lake build
 ```
-
-The Lean toolchain and Mathlib release are pinned in `lean/lean-toolchain` and `lean/lakefile.toml`.
 
 ## Repository layout
 
 ```text
-data/problems/       one YAML file per capacity problem
-data/references.yaml shared bibliography records
+data/problems/       one YAML record per capacity problem
+data/tags.yaml       controlled information-theory facets
+data/references.yaml primary bibliography records
 schema/               machine-checkable data schema
-site/templates/       Jinja templates
-site/static/          plain CSS and JavaScript
-src/capacity_atlas/   validator and static-site generator
-lean/CapacityAtlas/   shared Lean definitions and formalizations
-tests/                generator and data tests
-docs/                 contributor and maintainer documentation
+site/                 small static templates, CSS, and JavaScript
+src/capacity_atlas/   loader, validator, and site generator
+lean/                 shared definitions and canonical Lean records
+docs/                 contribution and maintenance guides
 ```
 
-## Add or update a problem
+## Contributing
 
-1. Copy `docs/problem-template.yaml` into `data/problems/<problem-id>.yaml`.
-2. State the model and operational criterion precisely.
-3. Add every bound as a separate record with primary references.
-4. Link only Lean files under `lean/`.
-5. Run `make check` and `make lean`.
-6. Open a focused pull request.
+Start from [docs/problem-template.yaml](docs/problem-template.yaml). Every
+mathematical claim should cite a primary source and state its assumptions. Lean
+contributions must reuse shared definitions, contain no `sorry` or `admit`, and
+identify the stable problem ID. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/data-model.md](docs/data-model.md) for the review standard.
+## Licensing
 
-## Deployment
+- Software, Lean source, schemas, templates, stylesheets, scripts, and CI are
+  licensed under **Apache-2.0**.
+- Curated problem data, bibliographic metadata, and editorial documentation are
+  licensed under **CC-BY-4.0**, unless otherwise noted.
 
-The `ci.yml` workflow builds and deploys the static site from `main`. The repository uses GitHub Pages with **GitHub Actions** as its source. The generated site is rooted at `/`, and `data/site.yaml` sets `https://capacityatlas.org` as the canonical URL. The actual custom-domain binding is configured in **Settings → Pages** on GitHub. No database, server process, or deployment secret is required.
-
-The public site is <https://capacityatlas.org/>.
-
-## Scope
-
-The first version favors a small, auditable classical-information-theory corpus. It does not yet attempt to cover every channel model, quantum channels, or every historical bound. The data model is broad enough to expand, but new entries should be curated rather than scraped.
-
-## License and citation
-
-Code, data, and Lean sources are available under the [MIT License](LICENSE). Citation metadata is in [CITATION.cff](CITATION.cff).
+The root `LICENSE` is Apache-2.0. License notices, legal-text links, and scope details are in
+[LICENSES](LICENSES/) and [NOTICE](NOTICE).

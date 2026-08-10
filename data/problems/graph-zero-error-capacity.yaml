@@ -1,0 +1,78 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: graph-zero-error-capacity
+title: Zero-error capacity of a general confusability graph
+status: open
+featured: true
+updated: '2026-08-10'
+summary: For a finite confusability graph, the regularized independence number defines capacity but is difficult
+  to compute or characterize.
+tags:
+  model:
+  - zero-error
+  features:
+  - finite-alphabet
+  - discrete-memoryless
+  quantity:
+  - zero-error-capacity
+  knowledge:
+  - regularized-characterization
+  - bounds
+model:
+  input: Vertices of a finite graph G.
+  output: Outputs identify which pairs of inputs are confusable.
+  law: Blocklength-n zero-error codes are independent sets in the strong power of G.
+  assumptions:
+  - Error probability is exactly zero.
+  - The confusability graph is finite.
+quantity:
+  name: Shannon graph capacity
+  symbol: \Theta(G)
+  units: multiplicative alphabet growth; log2 gives bits per use
+  criterion: Asymptotic zero-error communication.
+capacity:
+  kind: characterization
+  display: \Theta(G)=\sup_{n\ge1}\alpha(G^{\boxtimes n})^{1/n}
+  notes: No general finite-letter formula or efficient exact algorithm is known.
+bounds:
+- id: independence-lower
+  direction: lower
+  relation: \alpha(G)\le\Theta(G)
+  method: Repeat a one-shot independent set.
+  year: 1956
+  references:
+  - shannon-1956
+- id: lovasz-theta-upper
+  direction: upper
+  relation: \Theta(G)\le\vartheta(G)
+  method: A semidefinite graph parameter that is multiplicative under strong product.
+  year: 1979
+  references:
+  - lovasz-1979
+frontier:
+  question: Compute or sharply characterize Shannon capacity for broad graph classes and explicit unresolved
+    graphs.
+  bottleneck: Strong powers create combinatorial structure across arbitrarily many uses, and standard graph
+    parameters can leave persistent gaps.
+  progress:
+  - Resolve a concrete small graph whose capacity is unknown.
+  - Find a new multiplicative upper bound below Lovász theta.
+  - Formalize graph-channel equivalence and the pentagon theorem.
+formalization:
+  statement:
+    status: none
+    version: 1
+    language: Lean
+    notes: The canonical statement should reuse Mathlib graph products and a shared zero-error code definition.
+    files: []
+  proofs: []
+references:
+- shannon-1956
+- lovasz-1979
+- lavi-sason-2026
+timeline:
+- year: 2026
+  event: Lavi and Sason surveyed recent advances and obtained exact values and new bounds for several graph
+    families.
+  references:
+  - lavi-sason-2026

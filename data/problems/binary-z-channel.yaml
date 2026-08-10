@@ -1,51 +1,73 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
 id: binary-z-channel
 title: Binary Z-channel
 abbreviation: Z-channel
 status: solved
-category: point-to-point
-updated: 2026-08-09
+updated: '2026-08-10'
 summary: One binary symbol is transmitted perfectly while the other can flip in only one direction.
-tags: [binary, discrete-memoryless, asymmetric]
+tags:
+  model:
+  - point-to-point
+  features:
+  - binary
+  - finite-alphabet
+  - discrete-memoryless
+  - asymmetric
+  quantity:
+  - capacity
+  knowledge:
+  - exact
 parameters:
-  - symbol: p
-    description: Probability that input 1 is received as 0.
-    range: '0\le p\le1'
+- symbol: p
+  description: Probability that input 1 is received as 0.
+  range: 0\le p\le1
 model:
-  input: '\(X\in\{0,1\}\)'
-  output: '\(Y\in\{0,1\}\)'
-  law: '\(P(Y=0\mid X=0)=1\) and \(P(Y=0\mid X=1)=p\).'
+  input: \(X\in\{0,1\}\)
+  output: \(Y\in\{0,1\}\)
+  law: \(P(Y=0\mid X=0)=1\) and \(P(Y=0\mid X=1)=p\).
   assumptions:
-    - Channel uses are independent.
-    - Average probability of error vanishes with blocklength.
+  - Channel uses are independent.
+  - Average decoding error vanishes with blocklength.
 quantity:
   name: Shannon capacity
-  symbol: 'C_Z(p)'
+  symbol: C_Z(p)
   units: bits per channel use
   criterion: Average-error capacity.
 capacity:
   kind: exact
-  display: 'C_Z(p)=\log_2\!\left(1+(1-p)p^{p/(1-p)}\right)'
-  conditions: '\(0<p<1\), with the endpoint values \(C_Z(0)=1\) and \(C_Z(1)=0\) obtained by continuity.'
-  notes: Unlike a symmetric channel, the capacity-achieving input is generally not uniform.
+  display: C_Z(p)=\log_2\!\left(1+(1-p)p^{p/(1-p)}\right)
+  conditions: \(0<p<1\), with endpoints by continuity.
+  notes: The optimizing input is generally nonuniform.
 bounds:
-  - id: optimized-input-achievability
-    direction: lower
-    relation: 'C_Z(p)\ge\log_2\!\left(1+(1-p)p^{p/(1-p)}\right)'
-    method: Evaluate mutual information at the optimizing Bernoulli input distribution.
-    year: 1948
-    references: [shannon-1948, cover-thomas-2006]
-  - id: binary-input-converse
-    direction: upper
-    relation: 'C_Z(p)\le\log_2\!\left(1+(1-p)p^{p/(1-p)}\right)'
-    method: The discrete-memoryless channel converse followed by a one-variable maximization.
-    year: 1948
-    references: [shannon-1948, cover-thomas-2006]
+- id: optimized-input-achievability
+  direction: lower
+  relation: C_Z(p)\ge\log_2\!\left(1+(1-p)p^{p/(1-p)}\right)
+  method: Evaluate mutual information at the optimizing Bernoulli input.
+  year: 1948
+  references:
+  - shannon-1948
+  - cover-thomas-2006
+- id: binary-input-converse
+  direction: upper
+  relation: C_Z(p)\le\log_2\!\left(1+(1-p)p^{p/(1-p)}\right)
+  method: Apply the DMC converse and solve the one-variable maximization.
+  year: 1948
+  references:
+  - shannon-1948
+  - cover-thomas-2006
 formalization:
-  status: definitions
-  language: Lean
-  notes: The asymmetric transition kernel is formalized. The closed-form mutual-information maximization is not.
-  files:
+  statement:
+    status: definitions
+    version: 1
+    language: Lean
+    notes: The asymmetric kernel is formalized; the closed-form optimization is not.
+    files:
     - path: lean/CapacityAtlas/Channels/Binary.lean
       declaration: CapacityAtlas.Channel.binaryZ
+      role: definition
       description: Binary Z-channel as a finite stochastic channel.
-references: [shannon-1948, cover-thomas-2006]
+  proofs: []
+references:
+- shannon-1948
+- cover-thomas-2006

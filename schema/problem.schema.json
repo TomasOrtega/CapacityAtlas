@@ -8,9 +8,9 @@
     "id",
     "title",
     "status",
-    "category",
     "updated",
     "summary",
+    "tags",
     "model",
     "quantity",
     "capacity",
@@ -20,85 +20,171 @@
   ],
   "properties": {
     "id": {
+      "$ref": "#/$defs/id"
+    },
+    "title": {
       "type": "string",
-      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+      "minLength": 3
     },
-    "title": { "type": "string", "minLength": 3 },
-    "abbreviation": { "type": "string", "minLength": 1 },
+    "abbreviation": {
+      "type": "string",
+      "minLength": 1
+    },
     "status": {
-      "enum": ["solved", "open", "partially-solved"]
+      "enum": [
+        "open",
+        "partially-solved",
+        "solved"
+      ]
     },
-    "category": { "type": "string", "minLength": 1 },
-    "featured": { "type": "boolean" },
+    "featured": {
+      "type": "boolean"
+    },
     "updated": {
       "type": "string",
       "format": "date"
     },
-    "summary": { "type": "string", "minLength": 20 },
+    "summary": {
+      "type": "string",
+      "minLength": 20
+    },
     "tags": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
-      },
-      "uniqueItems": true
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model",
+        "features",
+        "quantity",
+        "knowledge"
+      ],
+      "properties": {
+        "model": {
+          "$ref": "#/$defs/tagsNonempty"
+        },
+        "features": {
+          "$ref": "#/$defs/tags"
+        },
+        "quantity": {
+          "$ref": "#/$defs/tagsNonempty"
+        },
+        "knowledge": {
+          "$ref": "#/$defs/tagsNonempty"
+        }
+      }
     },
     "parameters": {
       "type": "array",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["symbol", "description"],
+        "required": [
+          "symbol",
+          "description"
+        ],
         "properties": {
-          "symbol": { "type": "string" },
-          "description": { "type": "string" },
-          "range": { "type": "string" }
+          "symbol": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "range": {
+            "type": "string"
+          }
         }
       }
     },
     "model": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["input", "output", "law", "assumptions"],
+      "required": [
+        "input",
+        "output",
+        "law",
+        "assumptions"
+      ],
       "properties": {
-        "input": { "type": "string" },
-        "output": { "type": "string" },
-        "law": { "type": "string", "minLength": 3 },
+        "input": {
+          "type": "string"
+        },
+        "output": {
+          "type": "string"
+        },
+        "law": {
+          "type": "string",
+          "minLength": 3
+        },
         "assumptions": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
     "quantity": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["name", "symbol", "units"],
+      "required": [
+        "name",
+        "symbol",
+        "units"
+      ],
       "properties": {
-        "name": { "type": "string" },
-        "symbol": { "type": "string" },
-        "units": { "type": "string" },
-        "criterion": { "type": "string" }
+        "name": {
+          "type": "string"
+        },
+        "symbol": {
+          "type": "string"
+        },
+        "units": {
+          "type": "string"
+        },
+        "criterion": {
+          "type": "string"
+        }
       }
     },
     "capacity": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["kind", "display"],
+      "required": [
+        "kind",
+        "display"
+      ],
       "properties": {
         "kind": {
-          "enum": ["exact", "characterization", "bounds", "region"]
+          "enum": [
+            "exact",
+            "characterization",
+            "bounds",
+            "region"
+          ]
         },
-        "display": { "type": "string", "minLength": 1 },
-        "conditions": { "type": "string" },
-        "lower": { "type": "string" },
-        "upper": { "type": "string" },
-        "conjectured": { "type": "string" },
-        "notes": { "type": "string" }
+        "display": {
+          "type": "string",
+          "minLength": 1
+        },
+        "conditions": {
+          "type": "string"
+        },
+        "lower": {
+          "type": "string"
+        },
+        "upper": {
+          "type": "string"
+        },
+        "conjectured": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
       }
     },
     "bounds": {
       "type": "array",
+      "minItems": 1,
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -112,8 +198,7 @@
         ],
         "properties": {
           "id": {
-            "type": "string",
-            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            "$ref": "#/$defs/id"
           },
           "direction": {
             "enum": [
@@ -125,16 +210,25 @@
               "linear-exact"
             ]
           },
-          "relation": { "type": "string" },
-          "method": { "type": "string" },
-          "year": { "type": "integer", "minimum": 1900, "maximum": 2100 },
-          "conditions": { "type": "string" },
-          "notes": { "type": "string" },
+          "relation": {
+            "type": "string"
+          },
+          "method": {
+            "type": "string"
+          },
+          "year": {
+            "type": "integer",
+            "minimum": 1900,
+            "maximum": 2100
+          },
+          "conditions": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
           "references": {
-            "type": "array",
-            "items": { "type": "string" },
-            "minItems": 1,
-            "uniqueItems": true
+            "$ref": "#/$defs/references"
           }
         }
       }
@@ -144,13 +238,25 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["year", "event", "references"],
+        "required": [
+          "year",
+          "event",
+          "references"
+        ],
         "properties": {
-          "year": { "type": "integer", "minimum": 1900, "maximum": 2100 },
-          "event": { "type": "string" },
+          "year": {
+            "type": "integer",
+            "minimum": 1900,
+            "maximum": 2100
+          },
+          "event": {
+            "type": "string"
+          },
           "references": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "uniqueItems": true
           }
         }
@@ -159,25 +265,49 @@
     "frontier": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["question", "bottleneck", "progress"],
+      "required": [
+        "question",
+        "bottleneck",
+        "progress"
+      ],
       "properties": {
-        "question": { "type": "string" },
-        "bottleneck": { "type": "string" },
+        "question": {
+          "type": "string"
+        },
+        "bottleneck": {
+          "type": "string"
+        },
         "progress": {
           "type": "array",
-          "items": { "type": "string" },
-          "minItems": 1
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
         },
         "subproblems": {
           "type": "array",
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["title", "status"],
+            "required": [
+              "title",
+              "status"
+            ],
             "properties": {
-              "title": { "type": "string" },
-              "status": { "enum": ["open", "in-progress", "done"] },
-              "url": { "type": "string", "format": "uri" }
+              "title": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "open",
+                  "in-progress",
+                  "done"
+                ]
+              },
+              "url": {
+                "type": "string",
+                "format": "uri"
+              }
             }
           }
         }
@@ -186,39 +316,171 @@
     "formalization": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["status"],
+      "required": [
+        "statement",
+        "proofs"
+      ],
       "properties": {
-        "status": {
-          "enum": ["none", "definitions", "statement", "partial", "complete"]
+        "statement": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "version",
+            "language",
+            "files"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "none",
+                "definitions",
+                "statement"
+              ]
+            },
+            "version": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "language": {
+              "const": "Lean"
+            },
+            "notes": {
+              "type": "string"
+            },
+            "files": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "path",
+                  "declaration",
+                  "role",
+                  "description"
+                ],
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "pattern": "^lean/.+\\.lean$"
+                  },
+                  "declaration": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "role": {
+                    "enum": [
+                      "definition",
+                      "statement",
+                      "short-proof",
+                      "test",
+                      "shared-api"
+                    ]
+                  },
+                  "description": {
+                    "type": "string",
+                    "minLength": 3
+                  }
+                }
+              }
+            }
+          }
         },
-        "language": { "const": "Lean" },
-        "notes": { "type": "string" },
-        "files": {
+        "proofs": {
           "type": "array",
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["path", "declaration", "description"],
+            "required": [
+              "id",
+              "claim",
+              "status",
+              "system",
+              "repository",
+              "commit",
+              "url",
+              "file",
+              "declaration",
+              "statement_version"
+            ],
             "properties": {
-              "path": { "type": "string", "pattern": "^lean/.+\\.lean$" },
-              "declaration": { "type": "string", "minLength": 1 },
-              "description": { "type": "string", "minLength": 3 }
+              "id": {
+                "$ref": "#/$defs/id"
+              },
+              "claim": {
+                "$ref": "#/$defs/id"
+              },
+              "status": {
+                "enum": [
+                  "partial",
+                  "complete"
+                ]
+              },
+              "system": {
+                "const": "Lean"
+              },
+              "repository": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+              },
+              "commit": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{40}$"
+              },
+              "url": {
+                "type": "string",
+                "format": "uri"
+              },
+              "file": {
+                "type": "string",
+                "minLength": 1
+              },
+              "declaration": {
+                "type": "string",
+                "minLength": 1
+              },
+              "statement_version": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "notes": {
+                "type": "string"
+              }
             }
           }
         }
       }
     },
-    "discussion": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "url": { "type": "string", "format": "uri" }
-      }
+    "references": {
+      "$ref": "#/$defs/references"
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/id"
+      },
+      "uniqueItems": true
+    },
+    "tagsNonempty": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/id"
+      },
+      "uniqueItems": true
     },
     "references": {
       "type": "array",
-      "items": { "type": "string" },
       "minItems": 1,
+      "items": {
+        "type": "string"
+      },
       "uniqueItems": true
     }
   }

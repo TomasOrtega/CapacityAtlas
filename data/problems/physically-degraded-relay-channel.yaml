@@ -1,0 +1,60 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: physically-degraded-relay-channel
+title: Physically degraded relay channel
+status: solved
+updated: '2026-08-10'
+summary: When the destination is a degraded version of the relay observation, decode-forward meets the cut-set bound.
+tags:
+  model:
+  - relay
+  features:
+  - finite-alphabet
+  - discrete-memoryless
+  - degraded
+  quantity:
+  - capacity
+  knowledge:
+  - exact
+  - single-letter-characterization
+model:
+  input: Source input \(X\) and relay input \(X_r\).
+  output: Relay observation \(Y_r\) and destination output \(Y\).
+  law: The channel factors as \(p(y_r|x,x_r)p(y|y_r,x_r)\).
+  assumptions:
+  - The relay acts causally.
+  - Average decoding error vanishes.
+quantity:
+  name: Relay-channel capacity
+  symbol: C
+  units: bits per channel use
+  criterion: Average-error source-to-destination capacity.
+capacity:
+  kind: characterization
+  display: C=\max_{p(x,x_r)}\min\{I(X;Y_r|X_r),\ I(X,X_r;Y)\}
+bounds:
+- id: degraded-decode-forward
+  direction: lower
+  relation: C\ge\max\min\{I(X;Y_r|X_r),I(X,X_r;Y)\}
+  method: The relay fully decodes and cooperates with the source.
+  year: 1979
+  references:
+  - cover-elgamal-1979
+- id: degraded-cut-set
+  direction: upper
+  relation: C\le\max\min\{I(X;Y_r|X_r),I(X,X_r;Y)\}
+  method: Degradedness reduces the cut-set observation term.
+  year: 1979
+  references:
+  - cover-elgamal-1979
+formalization:
+  statement:
+    status: none
+    version: 1
+    language: Lean
+    notes: This theorem should live in a dedicated external proof repository once causal relay codes are shared.
+    files: []
+  proofs: []
+references:
+- cover-elgamal-1979
+- elgamal-kim-2011

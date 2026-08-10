@@ -1,0 +1,71 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: multiple-access-channel-with-feedback
+title: Discrete memoryless multiple-access channel with feedback
+status: open
+updated: '2026-08-10'
+summary: Common noiseless output feedback lets distributed encoders cooperate, but the general capacity region is
+  unknown.
+tags:
+  model:
+  - multiple-access
+  features:
+  - finite-alphabet
+  - discrete-memoryless
+  - feedback
+  quantity:
+  - capacity-region
+  knowledge:
+  - bounds
+model:
+  input: Each encoder chooses \(X_{i,t}\) from its message and common past outputs \(Y^{t-1}\).
+  output: A common receiver observes \(Y_t\), which is fed back noiselessly.
+  law: A memoryless law \(p(y|x_1,x_2)\).
+  assumptions:
+  - Messages are independent.
+  - Feedback is causal, common, and noiseless.
+quantity:
+  name: Feedback capacity region
+  symbol: \mathcal C_{\mathrm{MAC,fb}}
+  units: rate pairs in bits per channel use
+  criterion: Vanishing average joint decoding error.
+capacity:
+  kind: bounds
+  display: \mathcal R_{\mathrm{CL}}\subseteq\mathcal C_{\mathrm{MAC,fb}}\subseteq\mathcal R_{\mathrm{DB}}
+  lower: \mathcal R_{\mathrm{CL}}
+  upper: \mathcal R_{\mathrm{DB}}
+bounds:
+- id: cover-leung-inner
+  direction: inner-region
+  relation: \mathcal R_{\mathrm{CL}}\subseteq\mathcal C
+  method: Block-Markov coding turns past messages into cooperative common information.
+  year: 1981
+  references:
+  - cover-leung-1981
+- id: dependence-balance-outer
+  direction: outer-region
+  relation: \mathcal C\subseteq\mathcal R_{\mathrm{DB}}
+  method: Feedback-created encoder dependence must satisfy a dependence-balance constraint.
+  year: 1989
+  references:
+  - hekstra-willems-1989
+frontier:
+  question: Determine the capacity region of the general DM-MAC with common output feedback.
+  bottleneck: Feedback creates useful correlation between independent encoders, but neither block-Markov inner bounds
+    nor dependence-balance converses are universally tight.
+  progress:
+  - Close the gap for a new explicit finite channel.
+  - Strengthen dependence balance without losing computability.
+  - Relate external formal proofs to a versioned canonical feedback-code statement.
+formalization:
+  statement:
+    status: none
+    version: 1
+    language: Lean
+    notes: The Ozarow Gaussian special case is exact, but the general finite model remains an external-proof target.
+    files: []
+  proofs: []
+references:
+- cover-leung-1981
+- hekstra-willems-1989
+- elgamal-kim-2011

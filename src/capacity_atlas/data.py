@@ -1,5 +1,9 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: Apache-2.0
+
 from __future__ import annotations
 
+from dataclasses import asdict, is_dataclass
 from datetime import date, datetime
 from pathlib import Path
 from typing import Any
@@ -9,58 +13,39 @@ import yaml
 from .model import Atlas
 
 
-class AtlasDataError(RuntimeError):
-    """Raised when atlas source data cannot be loaded."""
-
-
 def find_root(start: Path | None = None) -> Path:
     current = (start or Path.cwd()).resolve()
     for candidate in (current, *current.parents):
-        if (candidate / "pyproject.toml").is_file() and (candidate / "data").is_dir():
+        if (candidate / "data" / "site.yaml").is_file() and (
+            candidate / "schema" / "problem.schema.json"
+        ).is_file():
             return candidate
-    raise AtlasDataError("Could not find the repository root from the current directory.")
+    raise FileNotFoundError("could not locate Capacity Atlas repository root")
 
 
 def load_yaml(path: Path) -> Any:
-    try:
-        with path.open("r", encoding="utf-8") as handle:
-            return yaml.safe_load(handle)
-    except (OSError, yaml.YAMLError) as exc:
-        raise AtlasDataError(f"Could not load {path}: {exc}") from exc
+    with path.open(encoding="utf-8") as handle:
+        return yaml.safe_load(handle)
 
 
 def load_atlas(root: Path | None = None) -> Atlas:
-    repo_root = (root or find_root()).resolve()
-    site = load_yaml(repo_root / "data" / "site.yaml")
-    categories_data = load_yaml(repo_root / "data" / "categories.yaml")
-    references = load_yaml(repo_root / "data" / "references.yaml")
+    root = (root or find_root()).resolve()
+    site = load_yaml(root / "data" / "site.yaml")
+    tags = load_yaml(root / "data" / "tags.yaml")
+    references = load_yaml(root / "data" / "references.yaml")
 
-    if not isinstance(site, dict):
-        raise AtlasDataError("data/site.yaml must contain a mapping.")
-    if (
-        not isinstance(categories_data, dict)
-        or not isinstance(categories_data.get("categories"), list)
-    ):
-        raise AtlasDataError("data/categories.yaml must contain a categories list.")
-    if not isinstance(references, dict):
-        raise AtlasDataError("data/references.yaml must contain a mapping.")
-
+    axes = {axis["id"]: axis for axis in tags["axes"]}
     problems: list[dict[str, Any]] = []
     problem_files: dict[str, Path] = {}
-    for path in sorted((repo_root / "data" / "problems").glob("*.yaml")):
+    for path in sorted((root / "data" / "problems").glob("*.yaml")):
         problem = load_yaml(path)
-        if not isinstance(problem, dict):
-            raise AtlasDataError(f"{path} must contain a mapping.")
-        problem_id = problem.get("id")
-        if not isinstance(problem_id, str) or not problem_id:
-            raise AtlasDataError(f"{path} must define a non-empty string id.")
         problems.append(problem)
-        problem_files[problem_id] = path
+        problem_files[str(problem.get("id", path.stem))] = path
 
     return Atlas(
-        root=repo_root,
+        root=root,
         site=site,
-        categories=categories_data["categories"],
+        tag_axes=axes,
         references=references,
         problems=problems,
         problem_files=problem_files,
@@ -68,10 +53,11 @@ def load_atlas(root: Path | None = None) -> Atlas:
 
 
 def json_ready(value: Any) -> Any:
-    """Convert YAML values such as dates into JSON-safe values."""
+    if is_dataclass(value):
+        return json_ready(asdict(value))
     if isinstance(value, dict):
         return {str(key): json_ready(item) for key, item in value.items()}
-    if isinstance(value, list):
+    if isinstance(value, (list, tuple)):
         return [json_ready(item) for item in value]
     if isinstance(value, (date, datetime)):
         return value.isoformat()

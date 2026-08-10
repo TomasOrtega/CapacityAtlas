@@ -1,0 +1,61 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: finite-group-additive-noise-channel
+title: Finite-group additive-noise channel
+status: solved
+updated: '2026-08-10'
+summary: A symbol in a finite group is corrupted by independent additive noise with a known distribution.
+tags:
+  model:
+  - point-to-point
+  features:
+  - finite-alphabet
+  - discrete-memoryless
+  - additive-noise
+  - symmetric
+  quantity:
+  - capacity
+  knowledge:
+  - exact
+model:
+  input: \(X\in G\), where \(G\) is a finite group.
+  output: \(Y\in G\)
+  law: \(Y=X+Z\), with iid noise \(Z\) independent of \(X\).
+  assumptions:
+  - The group operation and noise law are known.
+  - Logarithms use base 2.
+quantity:
+  name: Shannon capacity
+  symbol: C
+  units: bits per channel use
+  criterion: Average-error capacity.
+capacity:
+  kind: exact
+  display: C=\log_2|G|-H(Z)
+  notes: The uniform input achieves capacity.
+bounds:
+- id: uniform-input
+  direction: lower
+  relation: C\ge\log_2|G|-H(Z)
+  method: Uniform input makes the output uniform.
+  year: 1948
+  references:
+  - shannon-1948
+- id: output-entropy-converse
+  direction: upper
+  relation: C\le\log_2|G|-H(Z)
+  method: Bound output entropy by log alphabet size.
+  year: 1948
+  references:
+  - shannon-1948
+formalization:
+  statement:
+    status: none
+    version: 1
+    language: Lean
+    notes: Finite entropy and finite-group channel infrastructure remain to be shared.
+    files: []
+  proofs: []
+references:
+- shannon-1948
+- cover-thomas-2006

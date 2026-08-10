@@ -1,0 +1,62 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: degraded-gaussian-broadcast-channel
+title: Degraded Gaussian broadcast channel
+status: solved
+updated: '2026-08-10'
+summary: A power-constrained Gaussian transmitter serves a strong and a weak receiver by superposition coding.
+tags:
+  model:
+  - broadcast
+  features:
+  - continuous-alphabet
+  - gaussian
+  - degraded
+  - power-constraint
+  quantity:
+  - capacity-region
+  knowledge:
+  - exact
+model:
+  input: \(X\in\mathbb R\) with power \(P\).
+  output: \(Y_1=X+Z_1\), \(Y_2=X+Z_2\).
+  law: Independent Gaussian noises have variances \(N_1\le N_2\).
+  assumptions:
+  - Receiver 1 is stronger.
+  - Each receiver requests a private message.
+quantity:
+  name: Capacity region
+  symbol: \mathcal C
+  units: rate pairs in bits per channel use
+  criterion: Vanishing average error at both receivers.
+capacity:
+  kind: region
+  display: \bigcup_{0\le\alpha\le1}\!\left\{\begin{array}{l}R_1\le\frac12\log_2(1+\alpha P/N_1),\\R_2\le\frac12\log_2\!\left(1+\frac{(1-\alpha)P}{\alpha
+    P+N_2}\right)\end{array}\right\}
+bounds:
+- id: gaussian-superposition
+  direction: inner-region
+  relation: \mathcal R_{\mathrm{sup}}\subseteq\mathcal C
+  method: Gaussian superposition coding.
+  year: 1973
+  references:
+  - bergmans-1973
+- id: gaussian-broadcast-converse
+  direction: outer-region
+  relation: \mathcal C\subseteq\mathcal R_{\mathrm{sup}}
+  method: Entropy-power converse for degraded Gaussian outputs.
+  year: 1974
+  references:
+  - bergmans-1974
+formalization:
+  statement:
+    status: none
+    version: 1
+    language: Lean
+    notes: Entropy power and Gaussian multi-user coding are not yet formalized.
+    files: []
+  proofs: []
+references:
+- bergmans-1973
+- bergmans-1974
+- elgamal-kim-2011

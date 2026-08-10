@@ -1,0 +1,65 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: arbitrarily-varying-discrete-memoryless-channel
+title: Finite arbitrarily varying discrete memoryless channel
+abbreviation: AVC
+status: solved
+featured: true
+updated: '2026-08-10'
+summary: An adversary selects a channel state at every use; deterministic capacity exhibits a symmetrizability dichotomy.
+tags:
+  model:
+  - arbitrarily-varying
+  features:
+  - finite-alphabet
+  - discrete-memoryless
+  - symmetrizability
+  quantity:
+  - deterministic-code-capacity
+  knowledge:
+  - exact
+  - single-letter-characterization
+model:
+  input: \(X_t\in\mathcal X\)
+  output: \(Y_t\in\mathcal Y\)
+  law: At each use an adversary selects \(s_t\in\mathcal S\), producing \(W_{s_t}(y_t|x_t)\).
+  assumptions:
+  - Finite alphabets and no state-cost constraint.
+  - The adversary knows the code but not the message or encoder randomness.
+quantity:
+  name: Deterministic-code capacity
+  symbol: C_{\mathrm{det}}
+  units: bits per channel use
+  criterion: Maximal or average error under every state sequence, in the standard unconstrained finite AVC setting.
+capacity:
+  kind: characterization
+  display: C_{\mathrm{det}}=\begin{cases}0,&\text{if the AVC is symmetrizable},\\\max_{P_X}\min_{q\in\mathcal P(\mathcal
+    S)}I(P_X,W_q),&\text{otherwise.}\end{cases}
+  notes: Here \(W_q=\sum_s q(s)W_s\).
+bounds:
+- id: symmetrizability-zero
+  direction: upper
+  relation: C_{\mathrm{det}}=0\text{ for symmetrizable AVCs}
+  method: The adversary simulates competing codewords and prevents reliable identification.
+  year: 1988
+  references:
+  - csiszar-narayan-1988
+- id: elimination-dichotomy
+  direction: exact
+  relation: C_{\mathrm{det}}=C_{\mathrm{random}}\text{ when nonsymmetrizable}
+  method: Elimination of correlation converts random codes to deterministic codes.
+  year: 1978
+  references:
+  - ahlswede-1978
+  - csiszar-narayan-1988
+formalization:
+  statement:
+    status: none
+    version: 1
+    language: Lean
+    notes: Adversarial state sequences and symmetrizability are high-value shared definitions.
+    files: []
+  proofs: []
+references:
+- ahlswede-1978
+- csiszar-narayan-1988

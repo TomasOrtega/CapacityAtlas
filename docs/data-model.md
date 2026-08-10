@@ -1,59 +1,57 @@
-# Capacity problem data model
+# Capacity Atlas data model
 
-The canonical object in Capacity Atlas is a **capacity problem**, not merely a named channel. The same transition law can induce different problems under different feedback, state-information, cost, code-class, or error assumptions.
+Each file in `data/problems/` represents one operational capacity question. The
+file name and permanent `id` agree.
 
-## Required sections
+## Independent axes
 
-### Identity and status
+`status` records mathematical status: `open`, `partially-solved`, or `solved`.
 
-`id`, `title`, `status`, `category`, `updated`, and `summary` provide stable discovery metadata. Use `solved` only when the displayed operational quantity is completely characterized under the listed assumptions.
+`tags` contains four controlled axes from `data/tags.yaml`:
 
-### Model
+- `model`: communication topology or channel family
+- `features`: structural assumptions and phenomena
+- `quantity`: the rate object to be determined
+- `knowledge`: the form of the current answer
 
-`model` specifies the input alphabet, output alphabet, transition law, and assumptions. Assumptions should include memorylessness, information available to terminals, cost constraints, feedback, common randomness, and code restrictions when relevant.
+These axes are intentionally independent. For example, the Sun–Jafar instance is
+mathematically open, has model `index-coding`, quantity `symmetric-capacity`, and
+knowledge tags `bounds` and `linear-only`.
 
-Write the input, output, and law as readable prose. Wrap only mathematical spans in
-MathJax inline delimiters, for example `The receiver observes \(Y\in\mathcal Y\).`.
+## Operational specification
 
-### Quantity
+The `model` and `quantity` blocks must make the problem reconstructible without
+consulting the literature. State alphabets, transition law, memory, feedback,
+state knowledge, constraints, code class, error criterion, and rate
+normalization.
 
-`quantity` names the object being determined, its symbol, units, and operational criterion. Examples include Shannon capacity, zero-error capacity, symmetric capacity, secrecy capacity, and a capacity region.
+## Bounds
 
-### Capacity display
+Every achievability, converse, exact result, or region bound is a separate object.
+A bound records its direction, relation, method, year, assumptions, and primary
+references. The headline `capacity` block summarizes the current envelope but is
+not a substitute for provenance.
 
-`capacity.kind` is one of:
+## Formalization
 
-- `exact`: a closed expression or exact number
-- `characterization`: a complete optimization formula
-- `bounds`: an unresolved lower/upper gap
-- `region`: a complete capacity-region description
+`formalization.statement` records the local canonical Lean work and its version.
+`formalization.proofs` records substantial external Lean proofs at immutable
+commits. Mathematical status and formal proof status are never inferred from one
+another.
 
-`capacity.display` is the expression shown on the problem page. Open numerical problems should also provide `lower` and `upper` so the page can render the gap.
+## Discussion identity
 
-### Bounds
+The discussion key is derived from the permanent problem ID:
 
-Each bound is a separate, citable record. Its `direction` distinguishes achievability, converse, exactness, inner or outer regions, and linear-only exact results. Do not combine historically or mathematically distinct bounds into one row.
+```text
+capacityatlas:<problem-id>
+```
 
-### Timeline and frontier
+Changing a page title or URL therefore does not detach its GitHub Discussion.
 
-A timeline records substantive changes in knowledge, not every paper that mentioned the problem. An open entry should explain the central question, the actual bottleneck, and concrete results that would count as progress.
+## Compatibility
 
-### Formalization
-
-The formalization record links to Lean declarations and uses the status ladder described in `docs/lean.md`. Non-Lean links are rejected by the validator.
-
-## References
-
-Problem files refer to keys in `data/references.yaml`. Use a durable publisher, DOI, arXiv, or institutional URL. Add each source once and reuse it.
-
-## Validation
-
-Run `capacity-atlas validate`. In addition to JSON Schema validation, it checks:
-
-- unique problem and bound identifiers
-- category and bibliography references
-- filename and identifier agreement
-- Lean-only formalization language
-- Lean paths constrained to `lean/`
-- existence of each linked file
-- existence of each named declaration in its linked file
+The JSON Schema catches structural errors. The Python validator additionally
+checks tag vocabulary, bibliography links, duplicate identifiers, local Lean
+files and declarations, external proof commit links, and statement-version
+matches.

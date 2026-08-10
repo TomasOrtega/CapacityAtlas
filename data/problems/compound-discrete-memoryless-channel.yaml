@@ -1,0 +1,60 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: compound-discrete-memoryless-channel
+title: Finite compound discrete memoryless channel
+status: solved
+updated: '2026-08-10'
+summary: One unknown channel from a known finite family governs the entire transmission block.
+tags:
+  model:
+  - point-to-point
+  features:
+  - finite-alphabet
+  - discrete-memoryless
+  - compound
+  quantity:
+  - capacity
+  knowledge:
+  - exact
+  - single-letter-characterization
+model:
+  input: \(X\in\mathcal X\)
+  output: \(Y\in\mathcal Y\)
+  law: A fixed but unknown \(W_s(y|x)\) is selected from a known finite family \(\{W_s:s\in\mathcal S\}\).
+  assumptions:
+  - The same state s applies throughout the block.
+  - A single code must work uniformly for every channel in the family.
+quantity:
+  name: Compound-channel capacity
+  symbol: C_{\mathrm{cmp}}
+  units: bits per channel use
+  criterion: Uniformly vanishing average error over the channel family.
+capacity:
+  kind: characterization
+  display: C_{\mathrm{cmp}}=\max_{P_X}\inf_{s\in\mathcal S} I(P_X,W_s)
+bounds:
+- id: universal-random-coding
+  direction: lower
+  relation: C_{\mathrm{cmp}}\ge\max_{P_X}\inf_s I(P_X,W_s)
+  method: A common random code and universal decoding over the family.
+  year: 1959
+  references:
+  - blackwell-breiman-thomasian-1959
+- id: worst-channel-converse
+  direction: upper
+  relation: C_{\mathrm{cmp}}\le\max_{P_X}\inf_s I(P_X,W_s)
+  method: Every code must satisfy a converse for each member of the family.
+  year: 1959
+  references:
+  - blackwell-breiman-thomasian-1959
+formalization:
+  statement:
+    status: none
+    version: 1
+    language: Lean
+    notes: Families of finite channels can reuse the shared DMC structure; uniform operational codes are missing.
+    files: []
+  proofs: []
+references:
+- blackwell-breiman-thomasian-1959
+- cover-thomas-2006

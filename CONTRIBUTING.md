@@ -1,76 +1,119 @@
 # Contributing to Capacity Atlas
 
-Capacity Atlas treats a capacity problem as a precise research object. Contributions should make the atlas more reliable, not merely larger.
+Capacity Atlas treats a channel-capacity problem as a precise, versioned research
+object. Contributions should improve reliability rather than merely increase the
+number of entries.
+
+The contribution model is inspired by Google DeepMind's
+[Formal Conjectures](https://github.com/google-deepmind/formal-conjectures),
+particularly its separation of statements from substantial external proofs and
+its structured formal-proof metadata. See [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md).
 
 ## Ways to contribute
 
-A focused contribution can:
+A focused pull request can:
 
-- add a well-specified channel-capacity problem
-- correct a model, bound, date, or citation
-- record a newly published bound
-- improve the explanation of an open gap
-- add or extend a Lean formalization
+- add a precisely specified capacity problem
+- correct a channel model, normalization, bound, date, or citation
+- add a newly published achievability or converse
+- improve controlled tags or research-frontier exposition
+- add a canonical Lean definition or statement
+- register a substantial external Lean proof
 - improve the generator, tests, accessibility, or documentation
 
-Use the GitHub issue forms for preliminary discussion. Small factual corrections may go directly to a pull request.
+Use Discussions for research conversation. Use Issues for actionable corrections,
+missing entries, formalization work, or site bugs. Canonical changes arrive by
+pull request.
 
-## Evidence standard
+## Mathematical evidence
 
-Prefer primary sources. Every mathematical bound must identify:
+Prefer primary sources. Every bound must identify:
 
-- its exact relation
-- whether it is achievability, converse, exact, linear-only, or a region bound
-- all assumptions under which it holds
-- the method at a useful level of specificity
+- its exact relation and direction
+- all assumptions and parameter ranges
+- the code class and error criterion
+- its proof method at a useful level of specificity
 - a primary reference
 
-Do not infer a currently best bound from an uncited plot, a secondary survey, or an unverified AI output. When sources disagree, describe the disagreement in the entry or issue rather than silently choosing one.
+Do not infer a best-known bound from an uncited plot, a secondary survey, or an
+unverified AI output. If sources disagree, record the disagreement rather than
+silently choosing one.
+
+## Controlled tags
+
+Every problem uses four independent axes from `data/tags.yaml`:
+
+- `model`: communication topology or channel family
+- `features`: structural assumptions and phenomena
+- `quantity`: operational rate object
+- `knowledge`: exact, characterized, regularized, bounds-only, or linear-only
+
+Do not add free-form tags to a problem record. Propose a new controlled value only
+when it will distinguish several entries and cannot be expressed by an existing
+value. AMS classifications are intentionally not used.
+
+## Lean policy
+
+Capacity Atlas currently accepts only Lean 4.
+
+- Reuse definitions in `CapacityAtlasForMathlib`.
+- Put channel-specific definitions and statements in `CapacityAtlas`.
+- Put metadata attributes and generator utilities in `CapacityAtlasUtil`.
+- Attach `@[capacity_problem "problem-id"]` to problem-specific declarations.
+- Mark roles with `@[capacity_definition]`, `@[capacity_statement]`,
+  `@[capacity_short_proof]`, or `@[capacity_shared_api]`.
+- Do not use `sorry`, `admit`, or unreviewed axioms.
+- Increment the statement version whenever the proposition changes in a way that
+  can invalidate an external proof.
+
+The central repository should contain canonical statements, reusable API, tests,
+and short illuminating proofs. As in Formal Conjectures' contribution policy, a
+proof longer than roughly 25–50 lines should normally live elsewhere. The same
+rule applies when a proof needs significant problem-specific infrastructure even
+if its final theorem is short.
+
+See [docs/lean.md](docs/lean.md) and
+[docs/external-proofs.md](docs/external-proofs.md).
+
+## External proofs
+
+An external proof record must:
+
+- use Lean 4
+- identify the exact claim proved
+- name a repository, file, and declaration
+- pin a 40-character commit hash
+- link to that immutable commit
+- name the Capacity Atlas statement version it targets
+
+The external repository should import a pinned Capacity Atlas commit or release
+and prove the canonical proposition directly whenever possible.
 
 ## Problem files
 
-Each problem lives in `data/problems/<id>.yaml`. Start from `docs/problem-template.yaml`. The identifier is permanent, lowercase, and hyphenated. The filename must match it.
+Each problem lives at `data/problems/<id>.yaml`. The identifier is permanent,
+lowercase, and hyphenated. Start from `docs/problem-template.yaml`.
 
 Run:
 
 ```bash
 make validate
 make test
+make lint
 make build
+make lean
 ```
 
-The JSON Schema catches structure errors. The Python validator additionally checks cross-references, duplicate bound identifiers, Lean paths, and named Lean declarations.
+Generated `dist/` files are not committed.
 
-## Lean policy
+## Licensing contributions
 
-Capacity Atlas currently accepts only Lean 4 formalizations.
+By submitting a contribution, you agree that:
 
-- Reuse definitions under `lean/CapacityAtlas` instead of redeclaring channel models.
-- Put generally useful objects in shared modules.
-- Put problem-specific definitions in a channel or network module.
-- Do not use `sorry`, `admit`, or unreviewed axioms.
-- Do not mark a problem `complete` unless the operational theorem represented on the page is proved.
-- A compiled transition kernel normally merits `definitions`, not `statement` or `complete`.
-- Record every public declaration in the problem YAML.
+- software and Lean contributions are provided under Apache-2.0
+- atlas data and editorial prose are provided under CC-BY-4.0
+- third-party material remains subject to its source license and must be clearly
+  identified
 
-See `docs/lean.md` for the module design and status criteria.
-
-## Writing style
-
-Write for an information-theory researcher who has not read the source paper recently. Define the channel before introducing notation. State assumptions explicitly. Explain the mechanism behind a bound, not only its theorem number. Keep the prose direct and avoid unnecessary notation.
-
-## Pull requests
-
-Keep pull requests narrow. The description should state:
-
-- what changed
-- which claims were checked
-- which source supports each mathematical update
-- what local checks passed
-- whether the formalization status changed
-
-A maintainer may ask for a smaller change, a primary citation, or a more exact model before merging.
-
-## Generated files
-
-Do not commit `dist/`. CI rebuilds it from the source data and templates.
+Do not paste copyrighted paper text. State results in original prose and cite the
+primary source.

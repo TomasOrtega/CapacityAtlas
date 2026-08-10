@@ -1,0 +1,61 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: discrete-memoryless-channel-with-feedback
+title: Finite discrete memoryless channel with noiseless feedback
+status: solved
+updated: '2026-08-10'
+summary: Causal noiseless output feedback changes coding strategies and reliability but not ordinary DMC capacity.
+tags:
+  model:
+  - point-to-point
+  features:
+  - finite-alphabet
+  - discrete-memoryless
+  - feedback
+  quantity:
+  - capacity
+  knowledge:
+  - exact
+  - single-letter-characterization
+model:
+  input: At time \(t\), the encoder chooses \(X_t\) from the message and \(Y^{t-1}\).
+  output: \(Y_t\) is fed back noiselessly after each use.
+  law: \(W(y_t|x_t)\) is memoryless in the forward direction.
+  assumptions:
+  - Feedback is causal, noiseless, and unlimited.
+  - The criterion is vanishing average error, not zero error.
+quantity:
+  name: Feedback capacity
+  symbol: C_{\mathrm{fb}}(W)
+  units: bits per channel use
+  criterion: Average-error capacity with causal feedback.
+capacity:
+  kind: exact
+  display: C_{\mathrm{fb}}(W)=C(W)=\max_{P_X}I(X;Y)
+bounds:
+- id: ignore-feedback
+  direction: lower
+  relation: C_{\mathrm{fb}}\ge C
+  method: Use any capacity-achieving no-feedback code.
+  year: 1956
+  references:
+  - shannon-1956
+- id: feedback-converse
+  direction: upper
+  relation: C_{\mathrm{fb}}\le\max_{P_X}I(X;Y)
+  method: Directed dependence through feedback does not exceed the per-use mutual-information maximum for a memoryless
+    channel.
+  year: 1956
+  references:
+  - shannon-1956
+formalization:
+  statement:
+    status: none
+    version: 1
+    language: Lean
+    notes: Causal feedback encoders and block codes are not yet in the Lean API.
+    files: []
+  proofs: []
+references:
+- shannon-1956
+- cover-thomas-2006

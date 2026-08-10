@@ -1,0 +1,63 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: costa-dirty-paper-channel
+title: Gaussian dirty-paper channel
+status: solved
+featured: true
+updated: '2026-08-10'
+summary: Additive Gaussian interference known noncausally to the encoder causes no capacity loss.
+tags:
+  model:
+  - point-to-point
+  features:
+  - continuous-alphabet
+  - gaussian
+  - additive-noise
+  - noncausal-state
+  - side-information
+  - power-constraint
+  quantity:
+  - capacity
+  knowledge:
+  - exact
+model:
+  input: \(X\in\mathbb R\), with average power \(P\).
+  output: \(Y=X+S+Z\).
+  law: Gaussian state \(S\) is known noncausally to the encoder; \(Z\sim\mathcal N(0,N)\) is independent.
+  assumptions:
+  - The decoder does not know S.
+  - State and noise are iid Gaussian.
+quantity:
+  name: Dirty-paper capacity
+  symbol: C_{\mathrm{DPC}}
+  units: bits per channel use
+  criterion: Average-error capacity.
+capacity:
+  kind: exact
+  display: C_{\mathrm{DPC}}=\frac12\log_2\!\left(1+\frac PN\right)
+  notes: The value is independent of the state variance.
+bounds:
+- id: dirty-paper-achievability
+  direction: lower
+  relation: C_{\mathrm{DPC}}\ge\frac12\log_2(1+P/N)
+  method: Gaussian Gel'fand-Pinsker coding pre-cancels the known interference.
+  year: 1983
+  references:
+  - costa-1983
+- id: genie-converse
+  direction: upper
+  relation: C_{\mathrm{DPC}}\le\frac12\log_2(1+P/N)
+  method: Reveal the interference to the decoder and apply the AWGN converse.
+  year: 1983
+  references:
+  - costa-1983
+formalization:
+  statement:
+    status: none
+    version: 1
+    language: Lean
+    notes: A faithful proof needs Gaussian conditional distributions and the Gel'fand-Pinsker theorem.
+    files: []
+  proofs: []
+references:
+- costa-1983

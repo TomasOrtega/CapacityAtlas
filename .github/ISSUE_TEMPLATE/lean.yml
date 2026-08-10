@@ -1,0 +1,57 @@
+name: Propose a Lean statement or proof
+description: Coordinate a local statement or an external proof repository.
+title: "[Lean] "
+body:
+  - type: input
+    id: problem
+    attributes:
+      label: Capacity Atlas problem ID
+      placeholder: sun-jafar-11-message-index-coding
+    validations:
+      required: true
+  - type: dropdown
+    id: contribution
+    attributes:
+      label: Contribution type
+      options:
+        - Shared API or definition
+        - Canonical statement
+        - Short central proof or test
+        - Substantial external proof repository
+    validations:
+      required: true
+  - type: textarea
+    id: declarations
+    attributes:
+      label: Proposed declarations
+      description: Name declarations, module paths, and metadata attributes.
+    validations:
+      required: true
+  - type: textarea
+    id: faithfulness
+    attributes:
+      label: Faithfulness argument
+      description: Explain why the Lean proposition matches the model, criterion, and normalization on the page.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Statement version
+      placeholder: "1"
+    validations:
+      required: true
+  - type: textarea
+    id: external
+    attributes:
+      label: External proof metadata
+      description: For substantial proofs, give repository, immutable commit, file, declaration, and public CI.
+  - type: checkboxes
+    id: policy
+    attributes:
+      label: Policy
+      options:
+        - label: The proposed Lean code contains no sorry, admit, or unreviewed axioms.
+          required: true
+        - label: I agree that submitted software and Lean source are contributed under Apache-2.0.
+          required: true

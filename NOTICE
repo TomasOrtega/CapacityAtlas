@@ -1,0 +1,16 @@
+Capacity Atlas
+Copyright 2026 The Capacity Atlas Authors
+
+Software, Lean source, schemas, templates, stylesheets, scripts, and CI
+configuration are licensed under the Apache License, Version 2.0.
+
+Curated problem data, bibliographic metadata, and editorial documentation are
+licensed under the Creative Commons Attribution 4.0 International license
+unless a file or source notice states otherwise.
+
+Capacity Atlas takes design inspiration from Google DeepMind's Formal
+Conjectures project, especially its statement-first registry, structured
+metadata, external formal-proof links, separation of reusable definitions from
+problem statements, and compact browse interface. Capacity Atlas is an
+independent project and is not affiliated with or endorsed by Google DeepMind.
+See ACKNOWLEDGEMENTS.md for the full citation and adopted design elements.

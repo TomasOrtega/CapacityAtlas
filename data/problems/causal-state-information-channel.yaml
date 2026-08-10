@@ -1,0 +1,62 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: causal-state-information-channel
+title: DMC with causal state information at the encoder
+status: solved
+updated: '2026-08-10'
+summary: An iid channel state is revealed causally to the encoder but not to the decoder.
+tags:
+  model:
+  - point-to-point
+  features:
+  - finite-alphabet
+  - discrete-memoryless
+  - causal-state
+  - side-information
+  quantity:
+  - capacity
+  knowledge:
+  - exact
+  - single-letter-characterization
+model:
+  input: The encoder chooses \(X_t=f_t(M,S^t)\).
+  output: \(Y_t\) is generated from \(W(y_t|x_t,s_t)\).
+  law: States \(S_t\) are iid and revealed to the encoder before choosing \(X_t\).
+  assumptions:
+  - The decoder does not know the state sequence.
+  - The state distribution and channel law are known.
+quantity:
+  name: Shannon-strategy capacity
+  symbol: C_{\mathrm{causal}}
+  units: bits per channel use
+  criterion: Average-error capacity.
+capacity:
+  kind: characterization
+  display: C_{\mathrm{causal}}=\max_{P_U,\,x=f(U,S)} I(U;Y)
+  notes: U indexes a distribution over state-dependent input strategies.
+bounds:
+- id: shannon-strategy-achievability
+  direction: lower
+  relation: C\ge\max I(U;Y)
+  method: Random coding over deterministic state-response strategies.
+  year: 1958
+  references:
+  - shannon-1958
+- id: strategy-converse
+  direction: upper
+  relation: C\le\max I(U;Y)
+  method: Absorb message and past states into a single auxiliary strategy variable.
+  year: 1958
+  references:
+  - shannon-1958
+formalization:
+  statement:
+    status: none
+    version: 1
+    language: Lean
+    notes: State processes and causal encoder strategies need a shared operational layer.
+    files: []
+  proofs: []
+references:
+- shannon-1958
+- elgamal-kim-2011

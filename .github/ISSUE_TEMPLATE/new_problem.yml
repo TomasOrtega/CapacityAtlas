@@ -1,0 +1,56 @@
+name: Propose a capacity problem
+description: Add a precisely specified channel-capacity question.
+title: "[Problem] "
+body:
+  - type: markdown
+    attributes:
+      value: Use primary sources and distinguish the communication model from the operational quantity.
+  - type: input
+    id: title
+    attributes:
+      label: Problem title
+      placeholder: Binary deletion channel capacity
+    validations:
+      required: true
+  - type: textarea
+    id: model
+    attributes:
+      label: Exact channel model
+      description: Include alphabets, transition law, memory, feedback, state information, constraints, and code class.
+    validations:
+      required: true
+  - type: textarea
+    id: quantity
+    attributes:
+      label: Operational quantity and criterion
+      description: State the error criterion, rate normalization, and whether the object is a capacity or region.
+    validations:
+      required: true
+  - type: textarea
+    id: status
+    attributes:
+      label: Exact result or best known bounds
+      description: Separate achievability and converse claims and state all assumptions.
+    validations:
+      required: true
+  - type: textarea
+    id: tags
+    attributes:
+      label: Proposed controlled tags
+      description: Choose model, features, quantity, and knowledge values from data/tags.yaml.
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Primary sources
+      description: Provide durable links and theorem, proposition, or section identifiers.
+    validations:
+      required: true
+  - type: checkboxes
+    id: license
+    attributes:
+      label: Contribution license
+      options:
+        - label: I agree that submitted atlas data and prose are contributed under CC-BY-4.0.
+          required: true

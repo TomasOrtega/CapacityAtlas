@@ -1,0 +1,62 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: two-user-gaussian-mac-with-feedback
+title: Two-user Gaussian multiple-access channel with feedback
+status: solved
+featured: true
+updated: '2026-08-10'
+summary: Ozarow's feedback scheme and converse determine the full two-user Gaussian MAC feedback region.
+tags:
+  model:
+  - multiple-access
+  features:
+  - continuous-alphabet
+  - gaussian
+  - additive-noise
+  - feedback
+  - power-constraint
+  quantity:
+  - capacity-region
+  knowledge:
+  - exact
+model:
+  input: At time \(t\), each encoder uses its message and common past outputs \(Y^{t-1}\).
+  output: \(Y=X_1+X_2+Z\), returned noiselessly to both encoders.
+  law: \(Z\sim\mathcal N(0,N)\) iid, with powers \(P_1,P_2\).
+  assumptions:
+  - Feedback is causal and noiseless.
+  - Messages are independent.
+quantity:
+  name: Feedback capacity region
+  symbol: \mathcal C_{\mathrm{GMAC,fb}}
+  units: rate pairs in bits per channel use
+  criterion: Vanishing average joint decoding error.
+capacity:
+  kind: region
+  display: \bigcup_{0\le\rho\le1}\!\left\{\begin{array}{l}R_1\le\frac12\log_2(1+P_1(1-\rho^2)/N),\\R_2\le\frac12\log_2(1+P_2(1-\rho^2)/N),\\R_1+R_2\le\frac12\log_2(1+(P_1+P_2+2\rho\sqrt{P_1P_2})/N)\end{array}\right\}
+bounds:
+- id: ozarow-achievability
+  direction: inner-region
+  relation: \mathcal R_{\mathrm{Ozarow}}\subseteq\mathcal C_{\mathrm{fb}}
+  method: Linear feedback creates controlled correlation between users.
+  year: 1984
+  references:
+  - ozarow-1984
+- id: ozarow-converse
+  direction: outer-region
+  relation: \mathcal C_{\mathrm{fb}}\subseteq\mathcal R_{\mathrm{Ozarow}}
+  method: A dependence constraint and Gaussian extremality.
+  year: 1984
+  references:
+  - ozarow-1984
+formalization:
+  statement:
+    status: none
+    version: 1
+    language: Lean
+    notes: The exact feedback region is a substantial external formalization target.
+    files: []
+  proofs: []
+references:
+- ozarow-1984
+- elgamal-kim-2011
