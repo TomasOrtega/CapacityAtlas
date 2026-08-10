@@ -16,11 +16,11 @@
   <a class="skip-link" href="#main-content">Skip to content</a>
   <header class="site-header">
     <div class="container site-header__inner">
-      <a class="brand" href="{{ site_url() }}"><span class="brand__mark">C</span><span><strong>{{ site.name }}</strong><small>Channel-capacity registry</small></span></a>
+      <a class="brand" href="{{ site_url() }}"><span class="brand__mark">C</span><strong>{{ site.name }}</strong></a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>Menu</button>
       <nav id="site-nav" class="site-nav" aria-label="Primary" data-site-nav>
         <a {% if page_id in ['problems','problem'] %}aria-current="page"{% endif %} href="{{ site_url('problems/') }}">Browse</a>
-        <a {% if page_id == 'formalizations' %}aria-current="page"{% endif %} href="{{ site_url('formalizations/') }}">Lean</a>
+        <a href="{{ site.social.discussions_url }}">Discussions</a>
         <a {% if page_id == 'contribute' %}aria-current="page"{% endif %} href="{{ site_url('contribute/') }}">Contribute</a>
         <a {% if page_id == 'about' %}aria-current="page"{% endif %} href="{{ site_url('about/') }}">About</a>
         <a href="{{ site.repository_url }}">GitHub</a>
@@ -31,7 +31,7 @@
   <footer class="site-footer">
     <div class="container site-footer__inner">
       <span>Software and Lean: {{ site.licenses.software }} · Atlas data and prose: {{ site.licenses.content }}</span>
-      <span><a href="{{ site_url('api/') }}">API</a> · <a href="{{ site.repository_url }}/discussions">Discussions</a> · <a href="{{ site.repository_url }}/issues">Issues</a></span>
+      <span><a href="{{ site_url('api/') }}">API</a> · <a href="{{ site.social.discussions_url }}">Discussions</a> · <a href="{{ site.repository_url }}/issues">Issues</a></span>
     </div>
   </footer>
 </body>
