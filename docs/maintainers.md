@@ -4,7 +4,7 @@
 
 In repository settings, choose **Pages → Build and deployment → Source: GitHub Actions**. The `Site, Lean, and Pages` workflow validates and tests the site, builds Lean, uploads `dist/`, and deploys only after both jobs succeed on `main`.
 
-The production site is rooted at `https://capacityatlas.org/`. `data/site.yaml` records both the canonical URL and the custom domain. The static-site generator writes `dist/CNAME` from that configuration, and the deployment workflow builds with no project subpath.
+The production site is rooted at `https://capacityatlas.org/`. `data/site.yaml` records both the canonical URL and the custom domain. The deployment workflow builds with no project subpath and writes the configured domain to `dist/CNAME` before uploading the Pages artifact.
 
 If the domain changes later, update `canonical_url` and `custom_domain` in `data/site.yaml`, update public metadata such as `CITATION.cff`, and change the custom domain in **Settings → Pages**.
 
