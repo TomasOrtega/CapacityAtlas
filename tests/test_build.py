@@ -6,7 +6,7 @@ from pathlib import Path
 
 from bs4 import BeautifulSoup
 
-from capacity_atlas.build import _browse_statuses, build_site
+from capacity_atlas.build import _browse_formalization, build_site
 
 
 def test_build_writes_pages_and_api(tmp_path: Path) -> None:
@@ -20,7 +20,7 @@ def test_build_writes_pages_and_api(tmp_path: Path) -> None:
     assert len(problems) == 32
     assert all(problem["url"].startswith("/problems/") for problem in problems)
     assert all("tags" in problem for problem in problems)
-    assert all("browse_statuses" not in problem for problem in problems)
+    assert all("browse_formalization" not in problem for problem in problems)
 
 
 def test_production_urls_use_custom_domain_root(tmp_path: Path) -> None:
@@ -76,25 +76,45 @@ def test_navigation_has_discussions_without_a_lean_tab(tmp_path: Path) -> None:
     assert not soup.select('a[href="/formalizations/"]')
 
 
-def test_browse_status_filter_includes_formal_verification(tmp_path: Path) -> None:
+def test_browse_filters_keep_status_and_formalization_separate(tmp_path: Path) -> None:
     output = build_site(output=tmp_path / "site")
     page = (output / "problems" / "index.html").read_text(encoding="utf-8")
     soup = BeautifulSoup(page, "html.parser")
     status_filter = soup.select_one('select[name="status"]')
+    formalization_filter = soup.select_one('select[name="formalization"]')
 
     assert status_filter is not None
-    groups = [group.get("label") for group in status_filter.select("optgroup")]
-    assert groups == ["Mathematical status", "Lean formalization"]
-    options = {
+    assert formalization_filter is not None
+    assert [option.get("value", "") for option in status_filter.select("option")] == [
+        "",
+        "open",
+        "partially-solved",
+        "solved",
+    ]
+    formalization_options = {
         option.get("value", ""): option.get_text(" ", strip=True)
-        for option in status_filter.select("option")
+        for option in formalization_filter.select("option")
     }
-    assert options["lean-available"].startswith("Lean formalization available")
-    assert options["formally-verified"].startswith("Formally verified claim")
-    assert soup.select_one('[data-problem-row][data-status~="lean-available"]') is not None
+    assert formalization_options["lean-available"].startswith(
+        "Lean formalization available"
+    )
+    assert formalization_options["formally-verified"].startswith(
+        "Formally verified claim"
+    )
+
+    formalized_row = soup.select_one(
+        '[data-problem-row][data-formalization~="lean-available"]'
+    )
+    assert formalized_row is not None
+    assert formalized_row.get("data-status") in {
+        "open",
+        "partially-solved",
+        "solved",
+    }
+    assert "lean-available" not in formalized_row.get("data-status", "")
 
 
-def test_browse_statuses_keep_math_and_formal_status_independent() -> None:
+def test_browse_formalization_tracks_lean_status_only() -> None:
     problem = {
         "status": "open",
         "formalization": {
@@ -103,8 +123,7 @@ def test_browse_statuses_keep_math_and_formal_status_independent() -> None:
         },
     }
 
-    assert _browse_statuses(problem) == [
-        "open",
+    assert _browse_formalization(problem) == [
         "lean-available",
         "formally-verified",
     ]

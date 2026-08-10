@@ -22,7 +22,8 @@
 <article class="problem-row"
   data-problem-row
   data-search="{{ problem.search_text }}"
-  data-status="{{ problem.browse_statuses|join(' ') }}"
+  data-status="{{ problem.status }}"
+  data-formalization="{{ problem.browse_formalization|join(' ') }}"
   {% for axis, selected in problem.tags.items() %}data-{{ axis }}="{{ selected|join(' ') }}" {% endfor %}>
   <div class="problem-row__main">
     <div class="problem-row__title">

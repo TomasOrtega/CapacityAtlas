@@ -87,7 +87,7 @@ mjx-container { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
 .problem-header aside { border-left: 1px solid var(--line); padding-left: 1.5rem; }
 .problem-header aside p { font-size: .9rem; }
 
-.filters { display: grid; grid-template-columns: minmax(14rem, 2fr) repeat(5, minmax(8rem, 1fr)) auto; gap: .65rem; align-items: end; padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--soft); }
+.filters { display: grid; grid-template-columns: minmax(14rem, 2fr) repeat(6, minmax(7rem, 1fr)) auto; gap: .65rem; align-items: end; padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--soft); }
 .filters label span { display: block; margin-bottom: .3rem; color: var(--muted); font-size: .82rem; font-weight: 700; }
 .filters input, .filters select { width: 100%; min-height: 2.6rem; padding: .5rem .65rem; border: 1px solid #bfc7d4; border-radius: .35rem; background: #fff; color: var(--ink); font: inherit; font-size: .94rem; }
 .result-count { color: var(--muted); }
