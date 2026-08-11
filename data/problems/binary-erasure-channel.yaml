@@ -4,7 +4,7 @@ id: binary-erasure-channel
 title: Binary erasure channel
 abbreviation: BEC
 status: solved
-updated: '2026-08-10'
+updated: '2026-08-11'
 summary: Each transmitted bit is received correctly or replaced by a visible erasure symbol.
 tags:
   model:
@@ -56,15 +56,36 @@ bounds:
   - shannon-1948
 formalization:
   statement:
-    status: definitions
+    status: statement
     version: 1
     language: Lean
-    notes: The transition kernel is formalized; the operational theorem is not.
+    notes: The information-capacity formula is proved from explicit output and conditional-entropy identities. The
+      operational average-error formula follows from the formal finite-channel coding theorem.
     files:
     - path: lean/CapacityAtlas/Channels/Binary.lean
       declaration: CapacityAtlas.Channel.binaryErasure
       role: definition
       description: Binary erasure channel as a finite stochastic channel.
+    - path: lean/CapacityAtlasForMathlib/InformationTheory/OperationalCapacity.lean
+      declaration: CapacityAtlas.FiniteChannel.operationalCapacityBits
+      role: shared-api
+      description: Operational average-error capacity defined through block codes and vanishing error.
+    - path: lean/CapacityAtlas/Channels/Binary.lean
+      declaration: CapacityAtlas.Channel.binaryErasure_informationCapacity
+      role: statement
+      description: Exact single-letter information capacity in bits per channel use.
+    - path: lean/CapacityAtlas/Channels/Binary.lean
+      declaration: CapacityAtlas.Channel.binaryErasureCapacityStatement
+      role: statement
+      description: Canonical operational average-error capacity proposition.
+    - path: lean/CapacityAtlas/Channels/Binary.lean
+      declaration: CapacityAtlas.Channel.binaryErasure_operationalCapacity
+      role: short-proof
+      description: Unconditional operational BEC capacity formula from the finite-channel coding theorem.
+    - path: lean/CapacityAtlas/Channels/Binary.lean
+      declaration: CapacityAtlas.Channel.binaryErasureCapacityStatement_proof
+      role: short-proof
+      description: Direct proof of the registered BEC proposition.
   proofs: []
 references:
 - shannon-1948
