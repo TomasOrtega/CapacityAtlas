@@ -94,6 +94,7 @@ def test_browse_filters_keep_status_and_formalization_separate(tmp_path: Path) -
     }
     assert formalization_options["lean-available"].startswith("Lean formalization available")
     assert formalization_options["formally-verified"].startswith("Formally verified claim")
+    assert not formalization_options["formally-verified"].endswith("(0)")
 
     formalized_row = soup.select_one('[data-problem-row][data-formalization~="lean-available"]')
     assert formalized_row is not None
@@ -104,13 +105,37 @@ def test_browse_filters_keep_status_and_formalization_separate(tmp_path: Path) -
     }
     assert "lean-available" not in formalized_row.get("data-status", "")
 
+    bsc_link = soup.select_one('a[href="/problems/binary-symmetric-channel/"]')
+    assert bsc_link is not None
+    bsc_row = bsc_link.find_parent(attrs={"data-problem-row": True})
+    assert bsc_row is not None
+    assert "formally-verified" in bsc_row.get("data-formalization", "").split()
 
-def test_browse_formalization_tracks_lean_status_only() -> None:
+
+def test_browse_formalization_includes_complete_external_proof() -> None:
     problem = {
         "status": "open",
         "formalization": {
             "statement": {"status": "statement"},
             "proofs": [{"status": "partial"}, {"status": "complete"}],
+        },
+    }
+
+    assert _browse_formalization(problem) == [
+        "lean-available",
+        "formally-verified",
+    ]
+
+
+def test_browse_formalization_includes_local_short_proof() -> None:
+    problem = {
+        "status": "solved",
+        "formalization": {
+            "statement": {
+                "status": "statement",
+                "files": [{"role": "statement"}, {"role": "short-proof"}],
+            },
+            "proofs": [],
         },
     }
 
