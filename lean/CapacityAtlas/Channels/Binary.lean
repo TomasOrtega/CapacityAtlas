@@ -137,6 +137,116 @@ def binaryErasure (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) :
   row_sum input := by
     cases input <;> simp [binaryErasureTransition]
 
+/-- An erasure has probability `e` under every BEC input distribution. -/
+theorem binaryErasure_outputDistribution_none
+    (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) (input : FiniteDistribution Bool) :
+    (binaryErasure e he0 he1).outputDistribution input none = e := by
+  change (∑ symbol, input symbol * e) = e
+  rw [← Finset.sum_mul, show (∑ symbol, input symbol) = 1 from input.sum_probability,
+    one_mul]
+
+/-- An unerased BEC output retains its input mass, scaled by `1 - e`. -/
+theorem binaryErasure_outputDistribution_some
+    (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1)
+    (input : FiniteDistribution Bool) (output : Bool) :
+    (binaryErasure e he0 he1).outputDistribution input (some output) =
+      (1 - e) * input output := by
+  cases output <;>
+    simp [FiniteChannel.outputDistribution_apply, binaryErasure,
+      binaryErasureTransition, input.bool_probability_false] <;> ring
+
+/-- Every BEC row has binary entropy `h(e)`. -/
+theorem binaryErasure_rowDistribution_entropy
+    (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) (input : Bool) :
+    ((binaryErasure e he0 he1).rowDistribution input).entropy =
+      Real.binEntropy e := by
+  change (∑ output : Option Bool, Real.negMulLog (binaryErasureTransition e input output)) =
+    Real.binEntropy e
+  rw [Fintype.sum_option]
+  cases input <;>
+    simp [binaryErasureTransition, Real.binEntropy_eq_negMulLog_add_negMulLog_one_sub]
+
+/-- The BEC conditional output entropy is independent of the input distribution. -/
+theorem binaryErasure_conditionalOutputEntropy
+    (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) (input : FiniteDistribution Bool) :
+    (binaryErasure e he0 he1).conditionalOutputEntropy input =
+      Real.binEntropy e := by
+  unfold FiniteChannel.conditionalOutputEntropy
+  simp_rw [binaryErasure_rowDistribution_entropy]
+  rw [← Finset.sum_mul, show (∑ symbol, input symbol) = 1 from input.sum_probability,
+    one_mul]
+
+/-- The BEC output entropy splits into erasure entropy and retained input entropy. -/
+theorem binaryErasure_outputEntropy
+    (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) (input : FiniteDistribution Bool) :
+    ((binaryErasure e he0 he1).outputDistribution input).entropy =
+      Real.binEntropy e + (1 - e) * input.entropy := by
+  unfold FiniteDistribution.entropy
+  rw [Fintype.sum_option, binaryErasure_outputDistribution_none]
+  simp_rw [binaryErasure_outputDistribution_some, Real.negMulLog_mul]
+  rw [Finset.sum_add_distrib, ← Finset.sum_mul,
+    show (∑ symbol, input symbol) = 1 from input.sum_probability, one_mul, ← Finset.mul_sum]
+  rw [Real.binEntropy_eq_negMulLog_add_negMulLog_one_sub]
+  ring
+
+/-- The BEC retains the fraction `1 - e` of the input entropy. -/
+theorem binaryErasure_mutualInformation
+    (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) (input : FiniteDistribution Bool) :
+    (binaryErasure e he0 he1).mutualInformation input =
+      (1 - e) * input.entropy := by
+  rw [FiniteChannel.mutualInformation, binaryErasure_outputEntropy,
+    binaryErasure_conditionalOutputEntropy]
+  ring
+
+/-- The single-letter information capacity of the binary erasure channel. -/
+@[capacity_problem "binary-erasure-channel", capacity_statement]
+theorem binaryErasure_informationCapacity (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) :
+    (binaryErasure e he0 he1).informationCapacityBits = 1 - e := by
+  let uniform := FiniteDistribution.uniform Bool
+  apply FiniteChannel.informationCapacityBits_eq_of_upper_bound_attained
+    (binaryErasure e he0 he1) (1 - e) uniform
+  · intro input
+    rw [FiniteChannel.mutualInformationBits, binaryErasure_mutualInformation]
+    have hlogTwo : 0 < Real.log 2 := Real.log_pos (by norm_num)
+    have hentropy : input.entropy ≤ Real.log 2 := by
+      simpa using input.entropy_le_log_card
+    apply (div_le_iff₀ hlogTwo).2
+    nlinarith
+  · rw [FiniteChannel.mutualInformationBits, binaryErasure_mutualInformation,
+      FiniteDistribution.entropy_uniform]
+    norm_num
+
+/-- The operational average-error capacity claim for the binary erasure channel. -/
+@[capacity_problem "binary-erasure-channel", capacity_statement]
+def binaryErasureCapacityStatement (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) : Prop :=
+  (binaryErasure e he0 he1).operationalCapacityBits = 1 - e
+
+/-- The operational BEC formula follows from the finite-channel coding theorem. -/
+@[capacity_problem "binary-erasure-channel", capacity_short_proof]
+theorem binaryErasure_operationalCapacity_of_codingTheorem
+    (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1)
+    (codingTheorem : (binaryErasure e he0 he1).SatisfiesCodingTheorem) :
+    binaryErasureCapacityStatement e he0 he1 :=
+  FiniteChannel.operationalCapacityBits_eq_of_satisfiesCodingTheorem _ _ codingTheorem
+    (binaryErasure_informationCapacity e he0 he1)
+
+/-- The operational average-error capacity of the binary erasure channel. -/
+@[capacity_problem "binary-erasure-channel", capacity_short_proof]
+theorem binaryErasure_operationalCapacity (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) :
+    (binaryErasure e he0 he1).operationalCapacityBits = 1 - e := by
+  calc
+    (binaryErasure e he0 he1).operationalCapacityBits =
+        (binaryErasure e he0 he1).informationCapacityBits :=
+      FiniteChannel.codingTheorem (binaryErasure e he0 he1)
+    _ = 1 - e := binaryErasure_informationCapacity e he0 he1
+
+/-- The registered BEC capacity proposition holds unconditionally. -/
+@[capacity_problem "binary-erasure-channel", capacity_short_proof]
+theorem binaryErasureCapacityStatement_proof
+    (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) :
+    binaryErasureCapacityStatement e he0 he1 :=
+  binaryErasure_operationalCapacity e he0 he1
+
 /-- Transition probabilities of the binary Z-channel.
 
 Input `false` is transmitted without error. Input `true` changes to `false`

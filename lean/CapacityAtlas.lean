@@ -7,3 +7,4 @@ See https://www.apache.org/licenses/LICENSE-2.0
 import CapacityAtlasUtil
 import CapacityAtlasForMathlib
 import CapacityAtlas.Channels.Binary
+import CapacityAtlas.Channels.Noiseless
