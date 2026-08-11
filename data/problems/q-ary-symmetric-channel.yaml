@@ -4,7 +4,7 @@ id: q-ary-symmetric-channel
 title: q-ary symmetric channel
 abbreviation: q-SC
 status: solved
-updated: '2026-08-10'
+updated: '2026-08-11'
 summary: A q-ary symbol is correct with probability 1-p and otherwise changes uniformly to another symbol.
 tags:
   model:
@@ -59,11 +59,44 @@ bounds:
   - cover-thomas-2006
 formalization:
   statement:
-    status: none
+    status: statement
     version: 1
     language: Lean
-    notes: A generic weakly symmetric channel theorem needs the finite entropy layer.
-    files: []
+    notes: The channel is constructed as additive noise on ZMod q. Its noise entropy is proved to be binary entropy plus
+      p times log(q-1), and the operational formula follows from the finite-group result and coding theorem.
+    files:
+    - path: lean/CapacityAtlas/Channels/QarySymmetric.lean
+      declaration: CapacityAtlas.Channel.qarySymmetricNoise
+      role: definition
+      description: Symmetric noise distribution on the cyclic q-symbol alphabet.
+    - path: lean/CapacityAtlas/Channels/QarySymmetric.lean
+      declaration: CapacityAtlas.Channel.qarySymmetric
+      role: definition
+      description: q-ary symmetric channel as a finite additive-noise channel.
+    - path: lean/CapacityAtlas/Channels/QarySymmetric.lean
+      declaration: CapacityAtlas.Channel.qarySymmetric_transition
+      role: test
+      description: The additive construction has the registered q-ary symmetric transition probabilities.
+    - path: lean/CapacityAtlasForMathlib/InformationTheory/OperationalCapacity.lean
+      declaration: CapacityAtlas.FiniteChannel.operationalCapacityBits
+      role: shared-api
+      description: Operational average-error capacity defined through block codes and vanishing error.
+    - path: lean/CapacityAtlas/Channels/QarySymmetric.lean
+      declaration: CapacityAtlas.Channel.qarySymmetric_informationCapacity
+      role: statement
+      description: Exact single-letter information capacity in bits per channel use.
+    - path: lean/CapacityAtlas/Channels/QarySymmetric.lean
+      declaration: CapacityAtlas.Channel.qarySymmetricCapacityStatement
+      role: statement
+      description: Canonical operational capacity proposition on the atlas parameter range.
+    - path: lean/CapacityAtlas/Channels/QarySymmetric.lean
+      declaration: CapacityAtlas.Channel.qarySymmetric_operationalCapacity
+      role: short-proof
+      description: Operational capacity formula from the finite-channel coding theorem.
+    - path: lean/CapacityAtlas/Channels/QarySymmetric.lean
+      declaration: CapacityAtlas.Channel.qarySymmetricCapacityStatement_proof
+      role: short-proof
+      description: Direct proof of the registered q-ary symmetric proposition.
   proofs: []
 references:
 - shannon-1948
