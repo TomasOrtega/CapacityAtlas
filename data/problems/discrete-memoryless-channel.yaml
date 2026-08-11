@@ -5,7 +5,7 @@ title: Finite discrete memoryless channel
 abbreviation: DMC
 status: solved
 featured: true
-updated: '2026-08-10'
+updated: '2026-08-11'
 summary: The general finite memoryless point-to-point channel has a single-letter mutual-information capacity formula.
 tags:
   model:
@@ -56,12 +56,11 @@ timeline:
   - shannon-1948
 formalization:
   statement:
-    status: definitions
+    status: statement
     version: 1
     language: Lean
-    notes: Shared finite stochastic channels, finite distributions, information capacity, memoryless block
-      channels, block codes, achievable rates, and operational average-error capacity are formalized. The general
-      finite-channel coding theorem is not yet proved.
+    notes: The finite-channel coding theorem is proved locally from a threshold random-coding argument and a weak
+      Fano converse. The proof covers every finite channel, including the repository's empty-input convention.
     files:
     - path: lean/CapacityAtlasForMathlib/InformationTheory/FiniteChannel.lean
       declaration: CapacityAtlas.FiniteChannel
@@ -87,6 +86,26 @@ formalization:
       declaration: CapacityAtlas.FiniteChannel.operationalCapacityBits
       role: shared-api
       description: Operational capacity through achievable rates and vanishing average error.
+    - path: lean/CapacityAtlasForMathlib/InformationTheory/InformationDensity.lean
+      declaration: CapacityAtlas.FiniteChannel.blockInformationDensity_lowerTail_le
+      role: shared-api
+      description: Product information-density variance and the finite Chebyshev lower-tail estimate.
+    - path: lean/CapacityAtlasForMathlib/InformationTheory/RandomCoding.lean
+      declaration: CapacityAtlas.FiniteChannel.exists_blockCode_averageErrorProbability_le
+      role: shared-api
+      description: Deterministic finite-block random-coding estimate selected from the codebook ensemble.
+    - path: lean/CapacityAtlasForMathlib/InformationTheory/FiniteEntropy.lean
+      declaration: CapacityAtlas.FiniteChannel.block_mutualInformation_le_informationCapacityBits_mul_log_two
+      role: shared-api
+      description: Subadditive block mutual-information bound in terms of single-letter capacity.
+    - path: lean/CapacityAtlasForMathlib/InformationTheory/CodingConverse.lean
+      declaration: CapacityAtlas.FiniteChannel.AchievableRate.le_informationCapacityBits
+      role: shared-api
+      description: Weak Fano converse for every achievable rate.
+    - path: lean/CapacityAtlasForMathlib/InformationTheory/CodingConverse.lean
+      declaration: CapacityAtlas.FiniteChannel.codingTheorem
+      role: shared-api
+      description: Equality of operational average-error capacity and information capacity.
   proofs: []
 references:
 - shannon-1948

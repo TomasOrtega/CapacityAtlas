@@ -5,7 +5,7 @@ title: Binary symmetric channel
 abbreviation: BSC
 status: solved
 featured: true
-updated: '2026-08-10'
+updated: '2026-08-11'
 summary: Each bit is independently flipped with probability p, giving the canonical finite noisy channel.
 tags:
   model:
@@ -61,8 +61,7 @@ formalization:
     version: 2
     language: Lean
     notes: The single-letter information capacity is proved from reusable finite-distribution and entropy APIs. The
-      operational average-error formula is a canonical statement whose proof reduces to the finite-channel coding
-      theorem.
+      operational average-error formula is proved locally by applying the formal finite-channel coding theorem.
     files:
     - path: lean/CapacityAtlasForMathlib/InformationTheory/BinarySymmetric.lean
       declaration: CapacityAtlas.FiniteChannel.informationCapacityBits_eq_binarySymmetric
@@ -84,6 +83,14 @@ formalization:
       declaration: CapacityAtlas.Channel.binarySymmetricCapacityStatement
       role: statement
       description: Canonical operational average-error capacity proposition.
+    - path: lean/CapacityAtlas/Channels/Binary.lean
+      declaration: CapacityAtlas.Channel.binarySymmetric_operationalCapacity
+      role: short-proof
+      description: Unconditional operational BSC capacity formula from the finite-channel coding theorem.
+    - path: lean/CapacityAtlas/Channels/Binary.lean
+      declaration: CapacityAtlas.Channel.binarySymmetricCapacityStatement_proof
+      role: short-proof
+      description: Direct proof of the registered BSC proposition.
     - path: lean/CapacityAtlas/Channels/Binary.lean
       declaration: CapacityAtlas.Channel.binarySymmetric_zero
       role: test

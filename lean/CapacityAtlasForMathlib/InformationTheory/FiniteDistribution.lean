@@ -53,6 +53,16 @@ theorem probability_le_one (distribution : FiniteDistribution X) (x : X) :
   rw [← distribution.sum_probability]
   exact Finset.single_le_sum (fun y _ ↦ distribution.nonnegative y) (Finset.mem_univ x)
 
+/-- The carrier of a finite probability distribution is nonempty. -/
+@[capacity_shared_api]
+theorem nonempty (distribution : FiniteDistribution X) : Nonempty X := by
+  cases isEmpty_or_nonempty X with
+  | inl hX =>
+      letI : IsEmpty X := hX
+      have hsum := distribution.sum_probability
+      simp at hsum
+  | inr hX => exact hX
+
 /-- The entropy of a finite distribution, measured in nats. -/
 @[capacity_shared_api]
 noncomputable def entropy (distribution : FiniteDistribution X) : ℝ :=
@@ -81,6 +91,11 @@ noncomputable def uniform (X : Type*) [Fintype X] [Nonempty X] : FiniteDistribut
   sum_probability := by
     rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
     field_simp
+
+@[simp, capacity_shared_api]
+theorem uniform_apply (X : Type*) [Fintype X] [Nonempty X] (x : X) :
+    uniform X x = (Fintype.card X : ℝ)⁻¹ :=
+  rfl
 
 /-- A Bernoulli distribution on `Bool`, with `true` having probability `q`. -/
 @[capacity_shared_api]

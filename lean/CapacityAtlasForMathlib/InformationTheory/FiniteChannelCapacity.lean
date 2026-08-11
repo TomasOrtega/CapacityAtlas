@@ -94,6 +94,37 @@ theorem informationCapacityBits_eq_of_upper_bound_attained
   · rw [← attained]
     exact le_csSup hbdd (Set.mem_range_self witness)
 
+/-- A strict lower bound on information capacity is exceeded by some input distribution. -/
+@[capacity_shared_api]
+theorem exists_input_of_lt_informationCapacityBits [Nonempty X]
+    (channel : FiniteChannel X Y) {rate : ℝ}
+    (hrate : rate < channel.informationCapacityBits) :
+    ∃ input : FiniteDistribution X, rate < channel.mutualInformationBits input := by
+  by_contra hwitness
+  simp only [not_exists, not_lt] at hwitness
+  have hcapacity : channel.informationCapacityBits ≤ rate := by
+    unfold informationCapacityBits
+    apply csSup_le
+    · exact ⟨channel.mutualInformationBits (FiniteDistribution.uniform X),
+        Set.mem_range_self (FiniteDistribution.uniform X)⟩
+    · rintro value ⟨input, rfl⟩
+      exact hwitness input
+  exact (not_lt_of_ge hcapacity) hrate
+
+/-- An empty input alphabet has no information values, hence zero information capacity. -/
+@[capacity_shared_api]
+theorem informationCapacityBits_eq_zero_of_isEmpty [IsEmpty X]
+    (channel : FiniteChannel X Y) : channel.informationCapacityBits = 0 := by
+  have hvalues : Set.range channel.mutualInformationBits = ∅ := by
+    ext value
+    constructor
+    · rintro ⟨input, rfl⟩
+      have hsum := input.sum_probability
+      simp at hsum
+    · simp
+  unfold informationCapacityBits
+  rw [hvalues, Real.sSup_empty]
+
 end FiniteChannel
 
 end CapacityAtlas

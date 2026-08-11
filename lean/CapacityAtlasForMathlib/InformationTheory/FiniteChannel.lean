@@ -64,6 +64,17 @@ theorem sum_transition (W : FiniteChannel X Y) (x : X) :
     ∑ y, W.transition x y = 1 :=
   W.row_sum x
 
+/-- A stochastic channel with a nonempty input alphabet has a nonempty output alphabet. -/
+@[capacity_shared_api]
+theorem output_nonempty [Nonempty X] (W : FiniteChannel X Y) : Nonempty Y := by
+  cases isEmpty_or_nonempty Y with
+  | inr hY => exact hY
+  | inl hY =>
+      letI : IsEmpty Y := hY
+      obtain ⟨x⟩ := ‹Nonempty X›
+      have hrow := W.row_sum x
+      simp at hrow
+
 /-- The noiseless channel on a finite alphabet. -/
 @[capacity_problem "noiseless-q-ary-channel", capacity_shared_api]
 def identity (X : Type*) [Fintype X] [DecidableEq X] : FiniteChannel X X where
