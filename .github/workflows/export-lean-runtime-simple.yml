@@ -1,0 +1,86 @@
+name: Export dereferenced Lean runtime with manifest
+
+on:
+  push:
+    branches:
+      - agent/audit-and-complete-bsc
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    if: ${{ !contains(github.event.head_commit.message, '[runtime-export]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: agent/audit-and-complete-bsc
+      - uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: lean
+          build: false
+          use-mathlib-cache: false
+      - name: Package dereferenced runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          LEAN_BIN="$(elan which lean)"
+          LEAN_REAL="$(readlink -f "$LEAN_BIN")"
+          TOOLCHAIN_ROOT="$(cd "$(dirname "$LEAN_REAL")/.." && pwd -P)"
+          mkdir -p "$RUNNER_TEMP/runtime"
+          cp -aL "$TOOLCHAIN_ROOT/." "$RUNNER_TEMP/runtime/"
+          tar --zstd -cf "$RUNNER_TEMP/lean-runtime.tar.zst" -C "$RUNNER_TEMP" runtime
+          split -b 400M -d -a 2 "$RUNNER_TEMP/lean-runtime.tar.zst" "$RUNNER_TEMP/lean-runtime.part-"
+          ls -lh "$RUNNER_TEMP"/lean-runtime.part-*
+      - id: p0
+        uses: actions/upload-artifact@v4
+        with:
+          name: lean-runtime-simple-00
+          path: ${{ runner.temp }}/lean-runtime.part-00
+          compression-level: 0
+          retention-days: 1
+      - id: p1
+        uses: actions/upload-artifact@v4
+        with:
+          name: lean-runtime-simple-01
+          path: ${{ runner.temp }}/lean-runtime.part-01
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: ignore
+      - id: p2
+        uses: actions/upload-artifact@v4
+        with:
+          name: lean-runtime-simple-02
+          path: ${{ runner.temp }}/lean-runtime.part-02
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: ignore
+      - id: p3
+        uses: actions/upload-artifact@v4
+        with:
+          name: lean-runtime-simple-03
+          path: ${{ runner.temp }}/lean-runtime.part-03
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: ignore
+      - name: Commit artifact manifest
+        shell: bash
+        env:
+          P0: ${{ steps.p0.outputs.artifact-id }}
+          P1: ${{ steps.p1.outputs.artifact-id }}
+          P2: ${{ steps.p2.outputs.artifact-id }}
+          P3: ${{ steps.p3.outputs.artifact-id }}
+        run: |
+          set -euo pipefail
+          {
+            printf 'P0=%s\n' "$P0"
+            printf 'P1=%s\n' "$P1"
+            printf 'P2=%s\n' "$P2"
+            printf 'P3=%s\n' "$P3"
+          } > .ci-runtime-manifest
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add .ci-runtime-manifest
+          git commit -m '[runtime-export] record Lean runtime artifacts'
+          git push origin HEAD:agent/audit-and-complete-bsc
