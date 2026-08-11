@@ -15,7 +15,7 @@ limitations under the License.
 -/
 
 import CapacityAtlasForMathlib.InformationTheory.BinarySymmetric
-import CapacityAtlasForMathlib.InformationTheory.OperationalCapacity
+import CapacityAtlasForMathlib.InformationTheory.CodingConverse
 
 namespace CapacityAtlas.Channel
 
@@ -83,6 +83,26 @@ theorem binarySymmetric_operationalCapacity_of_codingTheorem
     binarySymmetricCapacityStatement p hp0 hpHalf :=
   FiniteChannel.operationalCapacityBits_eq_of_satisfiesCodingTheorem _ _ codingTheorem
     (binarySymmetric_informationCapacity p hp0 (hpHalf.trans (by norm_num)))
+
+/-- The operational average-error capacity of the binary symmetric channel. -/
+@[capacity_problem "binary-symmetric-channel", capacity_short_proof]
+theorem binarySymmetric_operationalCapacity
+    (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    (binarySymmetric p hp0 hp1).operationalCapacityBits =
+      1 - Real.binEntropy p / Real.log 2 := by
+  calc
+    (binarySymmetric p hp0 hp1).operationalCapacityBits =
+        (binarySymmetric p hp0 hp1).informationCapacityBits :=
+      FiniteChannel.codingTheorem (binarySymmetric p hp0 hp1)
+    _ = 1 - Real.binEntropy p / Real.log 2 :=
+      binarySymmetric_informationCapacity p hp0 hp1
+
+/-- The registered BSC capacity proposition holds unconditionally. -/
+@[capacity_problem "binary-symmetric-channel", capacity_short_proof]
+theorem binarySymmetricCapacityStatement_proof
+    (p : ℝ) (hp0 : 0 ≤ p) (hpHalf : p ≤ 2⁻¹) :
+    binarySymmetricCapacityStatement p hp0 hpHalf :=
+  binarySymmetric_operationalCapacity p hp0 (hpHalf.trans (by norm_num))
 
 /-- At crossover probability zero, the binary symmetric channel is noiseless. -/
 @[capacity_problem "binary-symmetric-channel", capacity_short_proof]

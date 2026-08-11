@@ -1,0 +1,28 @@
+name: Test branch workflow write
+
+on:
+  push:
+    branches:
+      - agent/audit-and-complete-bsc
+
+permissions:
+  contents: write
+
+jobs:
+  write-marker:
+    if: ${{ !contains(github.event.head_commit.message, '[workflow-marker]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: agent/audit-and-complete-bsc
+      - name: Commit marker
+        shell: bash
+        run: |
+          set -euo pipefail
+          date -u +%FT%TZ > .ci-workflow-marker
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add .ci-workflow-marker
+          git commit -m '[workflow-marker] prove branch workflow ran'
+          git push origin HEAD:agent/audit-and-complete-bsc

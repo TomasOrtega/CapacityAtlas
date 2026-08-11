@@ -57,6 +57,30 @@ noncomputable def averageSuccessProbability [Nonempty M] (code : OneShotCode W M
 noncomputable def averageErrorProbability [Nonempty M] (code : OneShotCode W M) : ℝ :=
   1 - code.averageSuccessProbability
 
+/-- Conditional error is the channel mass of the outputs decoded incorrectly. -/
+@[capacity_shared_api]
+theorem errorProbability_eq_sum_decode_ne (code : OneShotCode W M) (message : M) :
+    code.errorProbability message =
+      ∑ output, if code.decode output ≠ message then
+        W.transition (code.encode message) output
+      else 0 := by
+  unfold errorProbability successProbability
+  rw [← W.row_sum (code.encode message), ← Finset.sum_sub_distrib]
+  apply Fintype.sum_congr
+  intro output
+  by_cases hdecode : code.decode output = message <;> simp [hdecode]
+
+/-- Average error is the uniform average of the conditional errors. -/
+@[capacity_shared_api]
+theorem averageErrorProbability_eq [Nonempty M] (code : OneShotCode W M) :
+    code.averageErrorProbability =
+      (Fintype.card M : ℝ)⁻¹ * ∑ message, code.errorProbability message := by
+  have hcard : (Fintype.card M : ℝ) ≠ 0 := by
+    exact_mod_cast Fintype.card_ne_zero
+  unfold averageErrorProbability averageSuccessProbability errorProbability
+  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+  field_simp
+
 end OneShotCode
 
 end CapacityAtlas
