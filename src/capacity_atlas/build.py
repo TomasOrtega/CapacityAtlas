@@ -41,7 +41,13 @@ def _browse_formalization(problem: dict[str, Any]) -> list[str]:
     formalization = problem["formalization"]
     if formalization["statement"]["status"] != "none":
         statuses.append("lean-available")
-    if any(proof["status"] == "complete" for proof in formalization.get("proofs", [])):
+    has_local_proof = any(
+        entry["role"] == "short-proof" for entry in formalization["statement"].get("files", [])
+    )
+    has_complete_external_proof = any(
+        proof["status"] == "complete" for proof in formalization.get("proofs", [])
+    )
+    if has_local_proof or has_complete_external_proof:
         statuses.append("formally-verified")
     return statuses
 

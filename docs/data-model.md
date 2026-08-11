@@ -42,9 +42,9 @@ another.
 The Browse page reflects this independence with separate **Status** and
 **Formalization** controls. `Lean formalization available` means the local
 statement status is not `none`. `Formally verified claim` means at least one
-registered Lean proof has status `complete`. A formally verified claim may
-establish a bound or another component of an open problem rather than solve the
-entire capacity problem.
+local file has role `short-proof` or one registered external Lean proof has
+status `complete`. A formally verified claim may establish a bound or another
+component of an open problem rather than solve the entire capacity problem.
 
 ## Discussion identity
 
