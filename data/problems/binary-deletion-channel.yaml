@@ -58,7 +58,7 @@ bounds:
   year: 2026
   references:
   - pinto-ribeiro-2026
-  conditions: d\ge0.64
+  conditions: \(d\ge0.64\)
 frontier:
   question: Determine \(C_{\mathrm{del}}(d)\), even at a benchmark value such as \(d=1/2\), or substantially narrow
     the gap.
