@@ -1,0 +1,50 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: gaussian-mimo-channel
+title: Point-to-point Gaussian MIMO channel
+status: solved
+featured: true
+updated: '2026-08-12'
+summary: A point-to-point Gaussian vector channel under a total covariance trace constraint has a log-determinant water-filling capacity formula.
+tags:
+  model: [point-to-point]
+  features: [continuous-alphabet, gaussian, power-constraint]
+  quantity: [capacity]
+  knowledge: [exact, single-letter-characterization]
+model:
+  input: A real transmit vector \(X\in\mathbb R^{n_t}\) with covariance \(Q\succeq0\) and \(\operatorname{tr}Q\le P\).
+  output: \(Y=HX+Z\in\mathbb R^{n_r}\), where \(Z\sim\mathcal N(0,\sigma^2I)\).
+  law: A fixed real channel matrix \(H\) is known at encoder and decoder.
+  assumptions:
+  - Total average transmit power is at most \(P\).
+  - Average decoding error vanishes.
+  - Real-channel normalization contributes a factor one half.
+quantity:
+  name: Gaussian MIMO capacity
+  symbol: C(H,P)
+  units: bits per channel use
+  criterion: Arbitrary blocklength vector codes under the total average power constraint.
+capacity:
+  kind: characterization
+  display: C(H,P)=\max_{Q\succeq0,\,\operatorname{tr}Q\le P}\frac12\log_2\det\!\left(I+\sigma^{-2}HQH^{\mathsf T}\right)
+  notes: The maximizing covariance is obtained by water-filling over the eigenmodes of \(H^{\mathsf T}H\).
+bounds:
+- id: water-filling-capacity
+  direction: exact
+  relation: C(H,P)=\max_{Q\succeq0,\operatorname{tr}Q\le P}\frac12\log_2\det(I+\sigma^{-2}HQH^{\mathsf T})
+  method: Gaussian extremality and eigenmode water-filling.
+  year: 1999
+  references: [telatar-1999]
+formalization:
+  statement:
+    status: statement
+    version: 1
+    language: Lean
+    notes: The real-valued model fixes the one-half normalization; matrix optimization infrastructure remains an external proof task.
+    files:
+    - path: lean/CapacityAtlas/ReportedTargets.lean
+      declaration: CapacityAtlas.ReportedTargets.gaussianMIMOCapacityStatement
+      role: statement
+      description: Operational real Gaussian MIMO capacity equals the water-filling log-determinant value.
+  proofs: []
+references: [telatar-1999]

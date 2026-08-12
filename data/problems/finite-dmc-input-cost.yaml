@@ -1,0 +1,48 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: finite-dmc-input-cost
+title: Finite discrete memoryless channel with input cost
+status: solved
+updated: '2026-08-12'
+summary: A finite DMC under a feasible maximum-codeword average-cost constraint has a constrained mutual-information capacity formula.
+tags:
+  model: [point-to-point]
+  features: [finite-alphabet, discrete-memoryless]
+  quantity: [capacity]
+  knowledge: [exact, single-letter-characterization]
+model:
+  input: Symbols in a finite alphabet \(\mathcal X\), with cost \(c(x)\ge0\).
+  output: Symbols in a finite alphabet \(\mathcal Y\).
+  law: A stationary memoryless transition law \(W(y\mid x)\).
+  assumptions:
+  - Every codeword has average input cost at most \(\Gamma\).
+  - At least one input symbol has cost at most \(\Gamma\).
+  - Messages are uniform and average decoding error vanishes.
+quantity:
+  name: Cost-constrained capacity
+  symbol: C(\Gamma)
+  units: bits per channel use
+  criterion: Arbitrary blocklength deterministic codes with maximum-codeword cost and vanishing average error.
+capacity:
+  kind: characterization
+  display: C(\Gamma)=\max_{P_X:\,\mathbb E[c(X)]\le\Gamma} I(X;Y)
+bounds:
+- id: constrained-coding-theorem
+  direction: exact
+  relation: C(\Gamma)=\max_{P_X:\,\mathbb E[c(X)]\le\Gamma}I(X;Y)
+  method: Cost-constrained channel coding theorem and convex optimization.
+  year: 2015
+  references: [sutter-et-al-2015]
+formalization:
+  statement:
+    status: statement
+    version: 1
+    language: Lean
+    notes: The model fixes maximum codeword cost separately from admissible one-letter input distributions.
+    files:
+    - path: lean/CapacityAtlas/Channels/InputCost.lean
+      declaration: CapacityAtlas.FiniteChannel.finiteDMCInputCostCapacityStatement
+      role: statement
+      description: Cost-constrained operational and mutual-information capacity identity.
+  proofs: []
+references: [sutter-et-al-2015]

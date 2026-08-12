@@ -1,0 +1,47 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: trapdoor-channel-with-feedback
+title: Trapdoor channel with feedback
+status: solved
+updated: '2026-08-12'
+summary: With causal noiseless output feedback and a known initial state, the binary trapdoor channel has capacity equal to the logarithm of the golden ratio.
+tags:
+  model: [point-to-point]
+  features: [finite-alphabet, binary, memory, feedback]
+  quantity: [capacity]
+  knowledge: [exact]
+model:
+  input: A binary symbol inserted into a box already containing one binary state symbol.
+  output: One of the two symbols is selected uniformly as output; the other becomes the next state.
+  law: A unifilar finite-state channel with causal noiseless output feedback to the encoder.
+  assumptions:
+  - The initial state is fixed and known to encoder and decoder.
+  - Average decoding error vanishes.
+quantity:
+  name: Feedback capacity
+  symbol: C_{\mathrm{fb}}
+  units: bits per channel use
+  criterion: Causal encoding using past channel outputs.
+capacity:
+  kind: exact
+  display: C_{\mathrm{fb}}=\log_2\varphi
+bounds:
+- id: dynamic-programming-solution
+  direction: exact
+  relation: C_{\mathrm{fb}}=\log_2\frac{1+\sqrt5}{2}
+  method: Feedback dynamic program and an explicit capacity-achieving scheme.
+  year: 2006
+  references: [permuter-et-al-2006]
+formalization:
+  statement:
+    status: statement
+    version: 1
+    language: Lean
+    notes: The finite-state transition and real-valued logarithmic identity are explicit.
+    files:
+    - path: lean/CapacityAtlas/ReportedTargets.lean
+      declaration: CapacityAtlas.ReportedTargets.trapdoorFeedbackCapacityStatement
+      role: statement
+      description: Feedback capacity equals log base two of the golden ratio.
+  proofs: []
+references: [permuter-et-al-2006]

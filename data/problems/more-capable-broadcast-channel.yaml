@@ -1,0 +1,47 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: more-capable-broadcast-channel
+title: More-capable two-receiver broadcast channel
+status: solved
+updated: '2026-08-12'
+summary: A more-capable ordering compares the receivers for every input distribution and yields an exact superposition-coding capacity region.
+tags:
+  model: [broadcast]
+  features: [finite-alphabet, discrete-memoryless]
+  quantity: [capacity-region]
+  knowledge: [exact, single-letter-characterization]
+model:
+  input: A finite common channel input \(X\).
+  output: Finite receiver outputs \(Y_1\) and \(Y_2\).
+  law: Receiver 1 is more capable when \(I(X;Y_1)\ge I(X;Y_2)\) for every input distribution.
+  assumptions:
+  - Independent private messages and vanishing average error.
+  - Arbitrary finite superposition auxiliary alphabets are allowed.
+quantity:
+  name: Private-message capacity region
+  symbol: \mathcal C_{\mathrm{MC}}
+  units: ordered pairs of bits per channel use
+  criterion: Closure of achievable private-message rate pairs.
+capacity:
+  kind: region
+  display: \mathcal C_{\mathrm{MC}}=\bigcup_{P_U P_{X|U}}\{R_2\le I(U;Y_2),\ R_1+R_2\le\min[I(X;Y_1),I(X;Y_1\mid U)+I(U;Y_2)]\}
+bounds:
+- id: superposition-region
+  direction: exact
+  relation: R_2\le I(U;Y_2),\quad R_1+R_2\le\min\{I(X;Y_1),I(X;Y_1\mid U)+I(U;Y_2)\}
+  method: Superposition coding and a more-capable converse.
+  year: 1979
+  references: [elgamal-1979]
+formalization:
+  statement:
+    status: statement
+    version: 1
+    language: Lean
+    notes: More capable is defined by input-law dominance, separately from less noisy.
+    files:
+    - path: lean/CapacityAtlas/ReportedTargets.lean
+      declaration: CapacityAtlas.ReportedTargets.moreCapableBroadcastCapacityStatement
+      role: statement
+      description: More-capable capacity region equals the superposition region.
+  proofs: []
+references: [elgamal-1979]

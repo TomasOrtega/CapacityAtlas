@@ -1,0 +1,74 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: sun-jafar-six-message-groupcast-index-coding
+title: Sun-Jafar six-message groupcast index-coding instance
+abbreviation: SJ6-GC
+status: open
+featured: true
+updated: '2026-08-12'
+summary: A six-message, ten-receiver groupcast instance has linear capacity 5/13 and a non-Shannon nonlinear upper bound 11/28.
+tags:
+  model: [index-coding]
+  features: [finite-alphabet, non-shannon, nonlinear-coding]
+  quantity: [symmetric-capacity]
+  knowledge: [bounds, linear-only]
+model:
+  input: Six independent equal-length messages held by one broadcaster.
+  output: Ten receivers demand messages \((1,1,2,3,4,5,6,6,6,6)\) in source order.
+  law: The one-based interference rows are \(\{2,4\},\{4,5\},\{5\},\varnothing,\varnothing,\{2\},\{1,3\},\{2,3\},\{3,4\},\{3,5\}\).
+  assumptions:
+  - Messages are uniform, independent, and use one common finite alphabet.
+  - Decoding error is exactly zero and arbitrary blocklength nonlinear codes are allowed.
+quantity:
+  name: Zero-error nonlinear symmetric capacity
+  symbol: C_{\mathrm{sym}}
+  units: message symbols per broadcast symbol
+  criterion: Zero error for every message tuple and receiver, with arbitrary finite alphabet and blocklength.
+capacity:
+  kind: bounds
+  display: \frac5{13}\le C_{\mathrm{sym}}\le\frac{11}{28}
+  lower: \frac5{13}
+  upper: \frac{11}{28}
+  conjectured: \frac5{13}
+  notes: Global vector-linear symmetric capacity is exactly 5/13; Shannon inequalities alone stop at 2/5.
+bounds:
+- id: vector-linear-code
+  direction: lower
+  relation: C_{\mathrm{sym}}\ge\frac5{13}
+  method: Explicit vector-linear subspace alignment.
+  year: 2015
+  references: [sun-jafar-2015]
+- id: zhang-yeung-converse
+  direction: upper
+  relation: C_{\mathrm{sym}}\le\frac{11}{28}
+  method: Zhang-Yeung non-Shannon information inequality.
+  year: 2015
+  references: [sun-jafar-2015, zhang-yeung-1998]
+- id: linear-capacity
+  direction: linear-exact
+  relation: C_{\mathrm{sym}}^{\mathrm{linear}}=\frac5{13}
+  method: Vector-linear construction and Ingleton converse.
+  year: 2015
+  references: [sun-jafar-2015]
+frontier:
+  question: Prove the nonlinear capacity is 5/13 or construct a zero-error nonlinear code above it.
+  bottleneck: Known non-Shannon inequalities improve the converse but do not meet the linear construction.
+  progress:
+  - Improve either endpoint with an auditable certificate.
+formalization:
+  statement:
+    status: statement
+    version: 1
+    language: Lean
+    notes: Demands and interference rows are machine-checked translations of the one-based primary-source figure.
+    files:
+    - path: lean/CapacityAtlas/Network/SunJafarGroupcast.lean
+      declaration: CapacityAtlas.IndexCoding.sunJafarGroupcast_exact_capacity_conjecture
+      role: statement
+      description: Exact nonlinear symmetric-capacity conjecture.
+    - path: lean/CapacityAtlas/Network/SunJafarGroupcast.lean
+      declaration: CapacityAtlas.IndexCoding.sunJafarGroupcast_interference_translation
+      role: short-proof
+      description: Checked translation of all ten source interference rows.
+  proofs: []
+references: [sun-jafar-2015, zhang-yeung-1998]

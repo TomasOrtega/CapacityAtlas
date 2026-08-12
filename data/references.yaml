@@ -238,3 +238,110 @@ zhang-yeung-1998:
   venue: IEEE Transactions on Information Theory
   doi: 10.1109/18.681320
   url: https://doi.org/10.1109/18.681320
+
+sutter-et-al-2015:
+  title: Efficient Approximation of Channel Capacities
+  authors: [Tobias Sutter, David Sutter, Peyman Mohajerin Esfahani, John Lygeros]
+  year: 2015
+  venue: IEEE Transactions on Information Theory
+  doi: 10.1109/TIT.2015.2401002
+  arxiv: '1407.7629'
+  url: https://arxiv.org/abs/1407.7629
+
+csiszar-korner-1978:
+  title: Broadcast Channels with Confidential Messages
+  authors: [Imre Csiszár, János Körner]
+  year: 1978
+  venue: IEEE Transactions on Information Theory
+  doi: 10.1109/TIT.1978.1055892
+  url: https://doi.org/10.1109/TIT.1978.1055892
+
+sreekumar-et-al-2020:
+  title: The Secrecy Capacity of Cost-Constrained Wiretap Channels
+  authors: [Sreejith Sreekumar, Alexander Bunin, Ziv Goldfeld, Haim H. Permuter, Shlomo Shamai]
+  year: 2020
+  venue: arXiv preprint
+  arxiv: '2004.04330'
+  url: https://arxiv.org/abs/2004.04330
+
+gelfand-pinsker-broadcast-1980:
+  title: Capacity of a Broadcast Channel with One Deterministic Component
+  authors: [Sergei I. Gel'fand, Mark S. Pinsker]
+  year: 1980
+  venue: Problems of Information Transmission
+  url: https://www.mathnet.ru/eng/ppi1427
+
+carleial-1975:
+  title: A Case Where Interference Does Not Reduce Capacity
+  authors: [A. B. Carleial]
+  year: 1975
+  venue: IEEE Transactions on Information Theory
+  doi: 10.1109/TIT.1975.1055352
+  url: https://doi.org/10.1109/TIT.1975.1055352
+
+elgamal-1979:
+  title: The Capacity of a Class of Broadcast Channels
+  authors: [Abbas El Gamal]
+  year: 1979
+  venue: IEEE Transactions on Information Theory
+  doi: 10.1109/TIT.1979.1056014
+  url: https://doi.org/10.1109/TIT.1979.1056014
+
+geng-et-al-2010:
+  title: On Broadcast Channels with Binary Inputs and Symmetric Outputs
+  authors: [Yanlin Geng, Chandra Nair, Shlomo Shamai, Zizhou Vincent Wang]
+  year: 2010
+  venue: arXiv preprint
+  arxiv: '1001.2062'
+  url: https://arxiv.org/abs/1001.2062
+
+tandon-ulukus-2008:
+  title: A New Upper Bound on the Capacity of a Class of Primitive Relay Channels
+  authors: [Ravi Tandon, Sennur Ulukus]
+  year: 2008
+  venue: Allerton Conference on Communication, Control, and Computing
+  arxiv: '0810.0747'
+  url: https://arxiv.org/abs/0810.0747
+
+polak-schrijver-2019:
+  title: New Lower Bound on the Shannon Capacity of C7 from Circular Graphs
+  authors: [Sven Polak, Alexander Schrijver]
+  year: 2019
+  venue: Information Processing Letters
+  doi: 10.1016/j.ipl.2018.11.006
+  arxiv: '1808.07438'
+  url: https://arxiv.org/abs/1808.07438
+
+permuter-et-al-2006:
+  title: Capacity of the Trapdoor Channel with Feedback
+  authors: [Haim H. Permuter, Paul Cuff, Benjamin Van Roy, Tsachy Weissman]
+  year: 2006
+  venue: arXiv preprint
+  arxiv: cs/0610047
+  url: https://arxiv.org/abs/cs/0610047
+
+tegin-duman-2025:
+  title: Capacity Approximations for Insertion Channels with Small Insertion Probabilities
+  authors: [Busra Tegin, Tolga M. Duman]
+  year: 2025
+  venue: IEEE Transactions on Information Theory
+  doi: 10.1109/TIT.2025.3644665
+  arxiv: '2411.14771'
+  url: https://arxiv.org/abs/2411.14771
+
+arbabjolfaei-et-al-2013:
+  title: On the Capacity Region for Index Coding
+  authors: [Fatemeh Arbabjolfaei, Bernd Bandemer, Young-Han Kim, Eren Sasoglu, Lele Wang]
+  year: 2013
+  venue: IEEE International Symposium on Information Theory
+  doi: 10.1109/ISIT.2013.6620369
+  arxiv: '1302.1601'
+  url: https://arxiv.org/abs/1302.1601
+
+telatar-1999:
+  title: Capacity of Multi-antenna Gaussian Channels
+  authors: [Emre Telatar]
+  year: 1999
+  venue: European Transactions on Telecommunications
+  doi: 10.1002/ett.4460100604
+  url: https://doi.org/10.1002/ett.4460100604

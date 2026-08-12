@@ -1,0 +1,48 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: blackwell-broadcast-channel
+title: Blackwell deterministic broadcast channel
+status: solved
+updated: '2026-08-12'
+summary: The three-input Blackwell channel is a concrete nondegraded deterministic broadcast channel with an exact entropy capacity region.
+tags:
+  model: [broadcast]
+  features: [finite-alphabet, discrete-memoryless, asymmetric]
+  quantity: [capacity-region]
+  knowledge: [exact, single-letter-characterization]
+model:
+  input: One of three symbols \(x\in\{0,1,2\}\).
+  output: Two binary outputs with pairs \((Y_1,Y_2)=(0,0),(0,1),(1,1)\), respectively.
+  law: Both receiver outputs are deterministic functions of the input.
+  assumptions:
+  - Independent private messages are sent to the two receivers.
+  - Average probability that either receiver errs vanishes.
+quantity:
+  name: Private-message capacity region
+  symbol: \mathcal C_{\mathrm B}
+  units: ordered pairs of bits per channel use
+  criterion: Closure of achievable nonnegative private-message rate pairs.
+capacity:
+  kind: region
+  display: R_1\le H(Y_1),\quad R_2\le H(Y_2),\quad R_1+R_2\le H(Y_1,Y_2)
+  conditions: Union over all input distributions on the three symbols.
+bounds:
+- id: deterministic-region
+  direction: exact
+  relation: \mathcal C_{\mathrm B}=\bigcup_{P_X}\{R_1\le H(Y_1),R_2\le H(Y_2),R_1+R_2\le H(Y_1,Y_2)\}
+  method: Deterministic broadcast coding theorem.
+  year: 1980
+  references: [gelfand-pinsker-broadcast-1980]
+formalization:
+  statement:
+    status: statement
+    version: 1
+    language: Lean
+    notes: The concrete maps and entropy region are fixed in the central statement.
+    files:
+    - path: lean/CapacityAtlas/ReportedTargets.lean
+      declaration: CapacityAtlas.ReportedTargets.blackwellBroadcastCapacityStatement
+      role: statement
+      description: Operational capacity region equals the deterministic entropy region.
+  proofs: []
+references: [gelfand-pinsker-broadcast-1980]

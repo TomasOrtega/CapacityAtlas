@@ -1,0 +1,61 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: binary-skew-symmetric-broadcast-channel
+title: Binary skew-symmetric broadcast channel
+abbreviation: BSSC
+status: open
+featured: true
+updated: '2026-08-12'
+summary: This minimal binary-input broadcast channel isolates a persistent gap between Marton-type inner bounds and UV-type outer bounds.
+tags:
+  model: [broadcast]
+  features: [finite-alphabet, discrete-memoryless, binary, asymmetric]
+  quantity: [capacity-region]
+  knowledge: [bounds]
+model:
+  input: A binary symbol \(X\).
+  output: Binary outputs \(Y_1,Y_2\).
+  law: For \(X=0\), \(Y_1=0\) and \(Y_2\) is fair; for \(X=1\), \(Y_1\) is fair and \(Y_2=1\).
+  assumptions:
+  - Independent private messages are sent to the receivers.
+  - Average probability that either receiver errs vanishes.
+quantity:
+  name: Private-message capacity region
+  symbol: \mathcal C_{\mathrm{BSSC}}
+  units: ordered pairs of bits per channel use
+  criterion: Closure of achievable private-message rate pairs.
+capacity:
+  kind: bounds
+  display: \mathcal R_{\mathrm{Marton}}\subseteq\mathcal C_{\mathrm{BSSC}}\subseteq\mathcal R_{\mathrm{UV}}
+  notes: Equality of the named inner and outer descriptions is the canonical formal target.
+bounds:
+- id: marton-inner
+  direction: inner-region
+  relation: \mathcal R_{\mathrm{Marton}}\subseteq\mathcal C_{\mathrm{BSSC}}
+  method: Marton coding specialized to binary input and symmetric outputs.
+  year: 1979
+  references: [marton-1979]
+- id: uv-outer
+  direction: outer-region
+  relation: \mathcal C_{\mathrm{BSSC}}\subseteq\mathcal R_{\mathrm{UV}}
+  method: Auxiliary-variable broadcast outer bound.
+  year: 2007
+  references: [nair-elgamal-2007, geng-et-al-2010]
+frontier:
+  question: Close the gap between the best Marton-type inner region and UV-type outer region for the fixed BSSC law.
+  bottleneck: Known auxiliary-variable optimizations do not coincide on all supporting hyperplanes.
+  progress:
+  - Certify a strict separating rate pair or prove the two optimized descriptions equal.
+formalization:
+  statement:
+    status: statement
+    version: 1
+    language: Lean
+    notes: The transition law is concrete; the proposition interface fixes the inner-versus-outer equality target without supplying a proof.
+    files:
+    - path: lean/CapacityAtlas/ReportedTargets.lean
+      declaration: CapacityAtlas.ReportedTargets.binarySkewSymmetricBroadcastCapacityStatement
+      role: statement
+      description: Equality target for the Marton inner and UV outer regions.
+  proofs: []
+references: [marton-1979, nair-elgamal-2007, geng-et-al-2010]

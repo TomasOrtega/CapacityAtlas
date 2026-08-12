@@ -5,7 +5,7 @@ title: Sun-Jafar 11-message multiple-unicast index-coding instance
 abbreviation: SJ11
 status: open
 featured: true
-updated: '2026-08-10'
+updated: '2026-08-12'
 summary: A multiple-unicast instance where the exact nonlinear symmetric capacity is separated from the known linear
   answer.
 tags:
@@ -26,13 +26,14 @@ model:
   output: Receiver \(j\) recovers \(W_j\) from the broadcast and its side information.
   law: The unknown interferer sets are \(\{4,5\},\{5\},\varnothing,\varnothing,\{2\},\{2,3\},\{1,3\},\{2,4\},\{3,4\},\{3,5\},\{4,6\}\).
   assumptions:
-  - Messages have equal rate.
-  - Arbitrary blocklength and nonlinear codes are allowed.
+  - Messages are uniform, independent, equal-length words over one common finite alphabet.
+  - Decoding error is exactly zero for every message tuple and receiver.
+  - Arbitrary finite alphabets, blocklengths, and nonlinear encoders and decoders are allowed.
 quantity:
   name: Nonlinear symmetric capacity
   symbol: C_{\mathrm{sym}}
   units: message symbols per broadcast symbol
-  criterion: Symmetric multiple-unicast index-coding capacity.
+  criterion: Zero-error symmetric multiple-unicast capacity in message symbols per broadcast symbol.
 capacity:
   kind: bounds
   display: \frac5{13}\le C_{\mathrm{sym}}\le\frac{11}{28}
@@ -63,6 +64,14 @@ bounds:
   year: 2015
   references:
   - sun-jafar-2015
+- id: shannon-polymatroid-limit
+  direction: upper
+  relation: C_{\mathrm{sym}}\le\frac25
+  method: Best outer bound obtainable from normalized Shannon polymatroid constraints.
+  year: 2015
+  notes: The Zhang-Yeung inequality strictly improves this relaxation value.
+  references:
+  - sun-jafar-2015
 frontier:
   question: Prove \(C_{\mathrm{sym}}=5/13\), or construct a nonlinear code above \(5/13\).
   bottleneck: Linear-rank inequalities close the linear problem, while known entropic inequalities do not close
@@ -72,7 +81,9 @@ frontier:
   - Rule out a concrete nonlinear code family.
   - Formalize the linear code or entropic converse.
   subproblems:
-  - title: Formalize the exact receiver interference sets.
+  - title: Formalize the operational zero-error and vector-linear capacity quantities.
+    status: done
+  - title: Machine-check the one-based table, alignment graph, inner diamond, and internal conflict distance.
     status: done
   - title: Formalize the 5/13 vector-linear code.
     status: open
@@ -80,15 +91,35 @@ frontier:
     status: open
 formalization:
   statement:
-    status: definitions
-    version: 1
+    status: statement
+    version: 2
     language: Lean
-    notes: The shared multiple-unicast model and exact interference sets are formalized.
+    notes: The canonical proposition now fixes zero error, alphabet scope, arbitrary blocklength, nonlinear capacity, and global vector-linear capacity.
     files:
-    - path: lean/CapacityAtlasForMathlib/Network/IndexCoding.lean
-      declaration: CapacityAtlas.IndexCoding.sunJafar11
-      role: definition
-      description: Exact 11-message instance.
+    - path: lean/CapacityAtlas/Network/SunJafar11.lean
+      declaration: CapacityAtlas.IndexCoding.sunJafar11_exact_capacity_conjecture
+      role: statement
+      description: Exact nonlinear zero-error symmetric-capacity conjecture.
+    - path: lean/CapacityAtlas/Network/SunJafar11.lean
+      declaration: CapacityAtlas.IndexCoding.sunJafar11_linear_achievability
+      role: statement
+      description: Published 5/13 vector-linear achievability claim.
+    - path: lean/CapacityAtlas/Network/SunJafar11.lean
+      declaration: CapacityAtlas.IndexCoding.sunJafar11_linear_converse
+      role: statement
+      description: Global finite-field vector-linear converse.
+    - path: lean/CapacityAtlas/Network/SunJafar11.lean
+      declaration: CapacityAtlas.IndexCoding.sunJafar11_nonlinear_converse
+      role: statement
+      description: Zhang-Yeung nonlinear upper bound.
+    - path: lean/CapacityAtlas/Network/SunJafar11.lean
+      declaration: CapacityAtlas.IndexCoding.sunJafar11_shannon_outer_bound_limit
+      role: statement
+      description: Exact limitation of Shannon polymatroid inequalities.
+    - path: lean/CapacityAtlas/Network/SunJafar11.lean
+      declaration: CapacityAtlas.IndexCoding.sunJafar11_internalConflictDistance_two
+      role: short-proof
+      description: Finite verification that every listed internal conflict has alignment distance two.
   proofs: []
 references:
 - sun-jafar-2015

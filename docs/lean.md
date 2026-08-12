@@ -32,8 +32,9 @@ uses its channel-specific YAML facets for subject classification.
 Reusable information-theory infrastructure that is useful across several
 capacity problems and may eventually be proposed to Mathlib. Current modules
 cover finite distributions, finite channels, one-shot and block codes,
-information and operational capacity, and multiple-unicast index-coding
-instances.
+information and operational capacity, and general finite index coding with
+separate message and receiver types, zero- and vanishing-error criteria, and
+fixed-field vector-linear capacity.
 
 ### `CapacityAtlas`
 

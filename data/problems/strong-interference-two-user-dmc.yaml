@@ -1,0 +1,48 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: strong-interference-two-user-dmc
+title: Two-user DMC in the strong-interference regime
+status: solved
+updated: '2026-08-12'
+summary: Under the two strong-interference information inequalities, both receivers decode both messages and the capacity region is a MAC-region intersection.
+tags:
+  model: [interference]
+  features: [finite-alphabet, discrete-memoryless]
+  quantity: [capacity-region]
+  knowledge: [exact, single-letter-characterization]
+model:
+  input: Independent finite-alphabet inputs \(X_1\) and \(X_2\).
+  output: Finite receiver outputs \(Y_1\) and \(Y_2\).
+  law: A memoryless two-user interference channel satisfying the strong-interference inequalities for every product input law.
+  assumptions:
+  - Transmitters carry independent private messages.
+  - Average probability that either receiver errs vanishes.
+quantity:
+  name: Strong-interference capacity region
+  symbol: \mathcal C_{\mathrm{SI}}
+  units: ordered pairs of bits per channel use
+  criterion: Closure of achievable independent-message rate pairs.
+capacity:
+  kind: region
+  display: \mathcal C_{\mathrm{SI}}=\mathcal C_{\mathrm{MAC},1}\cap\mathcal C_{\mathrm{MAC},2}
+  conditions: The strong-interference inequalities hold for every product input distribution.
+bounds:
+- id: decode-both-region
+  direction: exact
+  relation: \mathcal C_{\mathrm{SI}}=\mathcal C_{\mathrm{MAC},1}\cap\mathcal C_{\mathrm{MAC},2}
+  method: Both receivers decode both messages without a rate penalty.
+  year: 1975
+  references: [carleial-1975]
+formalization:
+  statement:
+    status: statement
+    version: 1
+    language: Lean
+    notes: The two channel-order inequalities are quantified over every product input law.
+    files:
+    - path: lean/CapacityAtlas/ReportedTargets.lean
+      declaration: CapacityAtlas.ReportedTargets.strongInterferenceCapacityStatement
+      role: statement
+      description: Strong-interference operational region equals the two MAC-region intersection.
+  proofs: []
+references: [carleial-1975, han-kobayashi-1981]

@@ -1,0 +1,60 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: primitive-relay-channel
+title: Primitive relay channel
+status: open
+featured: true
+updated: '2026-08-12'
+summary: A relay observes a noisy channel output and sends information over a separate noiseless finite-capacity link, but capacity is unknown in general.
+tags:
+  model: [relay]
+  features: [finite-alphabet, discrete-memoryless]
+  quantity: [capacity]
+  knowledge: [bounds]
+model:
+  input: A finite source input \(X\).
+  output: Destination observation \(Y\), relay observation \(Z\), and a relay-to-destination bit-pipe of capacity \(R_0\).
+  law: A finite memoryless broadcast law \(P_{Y,Z|X}\) followed by an orthogonal noiseless relay link.
+  assumptions:
+  - The relay encoder is causal in its observations.
+  - Average destination decoding error vanishes.
+quantity:
+  name: Primitive-relay capacity
+  symbol: C(R_0)
+  units: bits per channel use
+  criterion: Arbitrary blocklength causal relay codes with vanishing average error.
+capacity:
+  kind: bounds
+  display: R_{\mathrm{CF}}\le C(R_0)\le C_{\mathrm{cut}}
+  notes: The cut-set bound is not tight for every known subclass.
+bounds:
+- id: compress-forward
+  direction: lower
+  relation: R_{\mathrm{CF}}\le C(R_0)
+  method: Compress-and-forward relay coding.
+  year: 1979
+  references: [cover-elgamal-1979]
+- id: improved-converse
+  direction: upper
+  relation: C(R_0)\le C_{\mathrm{TU}}\le C_{\mathrm{cut}}
+  method: Primitive-relay auxiliary-variable converse.
+  year: 2008
+  references: [tandon-ulukus-2008]
+frontier:
+  question: Determine capacity for the general primitive relay channel and characterize when the cut-set bound is tight.
+  bottleneck: Relay compression and destination side information interact beyond the standard cut-set constraints.
+  progress:
+  - Close the inner-outer gap for a concrete finite subclass.
+formalization:
+  statement:
+    status: statement
+    version: 1
+    language: Lean
+    notes: The physical broadcast observation and orthogonal bit-pipe are separate fields; no cut-set-tightness conjecture is assumed.
+    files:
+    - path: lean/CapacityAtlas/ReportedTargets.lean
+      declaration: CapacityAtlas.ReportedTargets.primitiveRelayCapacityBoundsStatement
+      role: statement
+      description: Compress-forward, improved-converse, and cut-set bound chain for a fixed model.
+  proofs: []
+references: [cover-elgamal-1979, tandon-ulukus-2008]

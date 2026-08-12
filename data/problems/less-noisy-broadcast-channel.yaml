@@ -1,0 +1,47 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: less-noisy-broadcast-channel
+title: Less-noisy two-receiver broadcast channel
+status: solved
+updated: '2026-08-12'
+summary: A less-noisy ordering compares every finite stochastic prefix and yields the exact superposition-coding capacity region.
+tags:
+  model: [broadcast]
+  features: [finite-alphabet, discrete-memoryless]
+  quantity: [capacity-region]
+  knowledge: [exact, single-letter-characterization]
+model:
+  input: A finite common channel input \(X\).
+  output: Finite receiver outputs \(Y_1\) and \(Y_2\).
+  law: Receiver 1 is less noisy than receiver 2 when \(I(U;Y_1)\ge I(U;Y_2)\) for every finite \(U-X-(Y_1,Y_2)\).
+  assumptions:
+  - Independent private messages and vanishing average error.
+  - Arbitrary finite superposition auxiliary alphabets are allowed.
+quantity:
+  name: Private-message capacity region
+  symbol: \mathcal C_{\mathrm{LN}}
+  units: ordered pairs of bits per channel use
+  criterion: Closure of achievable private-message rate pairs.
+capacity:
+  kind: region
+  display: \mathcal C_{\mathrm{LN}}=\bigcup_{P_U P_{X|U}}\{R_1\le I(X;Y_1\mid U),\ R_2\le I(U;Y_2)\}
+bounds:
+- id: superposition-region
+  direction: exact
+  relation: \mathcal C_{\mathrm{LN}}=\mathcal R_{\mathrm{superposition}}
+  method: Superposition coding and a less-noisy converse.
+  year: 1979
+  references: [elgamal-1979]
+formalization:
+  statement:
+    status: statement
+    version: 1
+    language: Lean
+    notes: Less noisy is defined by auxiliary-variable dominance, separately from more capable.
+    files:
+    - path: lean/CapacityAtlas/ReportedTargets.lean
+      declaration: CapacityAtlas.ReportedTargets.lessNoisyBroadcastCapacityStatement
+      role: statement
+      description: Less-noisy capacity region equals the superposition region.
+  proofs: []
+references: [elgamal-1979]

@@ -1,0 +1,47 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: index-coding-at-most-five-messages
+title: Index coding with at most five messages
+status: solved
+updated: '2026-08-12'
+summary: The capacity regions of all 9,846 nonisomorphic index-coding instances with at most five messages are covered by a finite classification.
+tags:
+  model: [index-coding]
+  features: [finite-alphabet, multiple-unicast, side-information]
+  quantity: [capacity-region]
+  knowledge: [exact, single-letter-characterization]
+model:
+  input: Up to five independent messages held by one broadcaster.
+  output: One receiver per message, each with an arbitrary subset of the other messages as side information.
+  law: All nonisomorphic multiple-unicast side-information patterns on at most five messages.
+  assumptions:
+  - Zero-error index coding over arbitrary finite alphabets and blocklengths.
+  - Rate vectors use one coordinate per demanded message.
+quantity:
+  name: Complete small-instance capacity-region classification
+  symbol: \{\mathcal C(G):|V(G)|\le5\}
+  units: message symbols per broadcast symbol for each rate coordinate
+  criterion: Exact capacity region for every isomorphism class.
+capacity:
+  kind: characterization
+  display: \mathcal C(G)=\mathcal R_{\mathrm{composite}}(G)\quad\text{for }|V(G)|\le5
+bounds:
+- id: complete-classification
+  direction: exact
+  relation: \mathcal C(G)=\mathcal R_{\mathrm{composite}}(G)\text{ for all }|V(G)|\le5
+  method: Composite coding inner bound matched to the polymatroidal converse over all 9,846 nonisomorphic instances.
+  year: 2013
+  references: [arbabjolfaei-et-al-2013]
+formalization:
+  statement:
+    status: statement
+    version: 1
+    language: Lean
+    notes: The family-level proposition avoids assigning thousands of hand-written permanent problem IDs.
+    files:
+    - path: lean/CapacityAtlas/ReportedTargets.lean
+      declaration: CapacityAtlas.ReportedTargets.indexCodingAtMostFiveMessagesCapacityRegions
+      role: statement
+      description: Family statement equating every small operational capacity region with the composite-coding formula.
+  proofs: []
+references: [arbabjolfaei-et-al-2013]

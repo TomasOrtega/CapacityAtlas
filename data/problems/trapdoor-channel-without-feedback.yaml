@@ -1,0 +1,63 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: trapdoor-channel-without-feedback
+title: Trapdoor channel without feedback
+status: open
+updated: '2026-08-12'
+summary: Removing output feedback from the same binary finite-state trapdoor channel leaves its exact feedforward capacity unresolved.
+tags:
+  model: [point-to-point]
+  features: [finite-alphabet, binary, memory]
+  quantity: [capacity]
+  knowledge: [bounds]
+model:
+  input: A binary symbol inserted into a box already containing one binary state symbol.
+  output: One of the two symbols is selected uniformly as output; the other becomes the next state.
+  law: The same trapdoor state transition as the feedback entry, but the encoder observes no channel outputs.
+  assumptions:
+  - The initial state is fixed and known.
+  - Average decoding error vanishes.
+quantity:
+  name: Feedforward capacity
+  symbol: C
+  units: bits per channel use
+  criterion: Nonfeedback encoding over arbitrary blocklengths.
+capacity:
+  kind: bounds
+  display: 0\le C\le1
+  notes: The exact value is not identified with the solved feedback capacity.
+bounds:
+- id: alphabet-bound
+  direction: upper
+  relation: C\le1
+  method: Binary input alphabet bound.
+  year: 2006
+  references: [permuter-et-al-2006]
+- id: nonnegative-rate
+  direction: lower
+  relation: C\ge0
+  method: One-message code.
+  year: 2006
+  references: [permuter-et-al-2006]
+frontier:
+  question: Determine the exact capacity without encoder access to past outputs.
+  bottleneck: Channel state depends on the unobserved output history and creates input-dependent memory.
+  progress:
+  - Improve finite-state achievability and converse bounds under a fixed initial-state convention.
+  subproblems:
+  - title: Keep the solved feedback capacity as a separate operational statement.
+    status: done
+    url: https://capacityatlas.org/problems/trapdoor-channel-with-feedback/
+formalization:
+  statement:
+    status: statement
+    version: 1
+    language: Lean
+    notes: A separate feedforward operational interface prevents accidental reuse of the feedback theorem.
+    files:
+    - path: lean/CapacityAtlas/ReportedTargets.lean
+      declaration: CapacityAtlas.ReportedTargets.trapdoorWithoutFeedbackCapacityBounds
+      role: statement
+      description: Basic feedforward-capacity bounds for the fixed trapdoor transition.
+  proofs: []
+references: [permuter-et-al-2006]

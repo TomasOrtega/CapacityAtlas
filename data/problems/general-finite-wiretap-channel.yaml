@@ -1,0 +1,49 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: general-finite-wiretap-channel
+title: General finite wiretap channel
+status: solved
+updated: '2026-08-12'
+summary: The unconstrained finite wiretap channel has a single-auxiliary secrecy-capacity characterization without a degradedness assumption.
+tags:
+  model: [wiretap]
+  features: [finite-alphabet, discrete-memoryless, secrecy]
+  quantity: [secrecy-capacity]
+  knowledge: [exact, single-letter-characterization]
+model:
+  input: Symbols in a finite alphabet \(\mathcal X\), encoded using private randomness.
+  output: Legitimate output \(Y\) and eavesdropper output \(Z\) from two DMC marginals with common input.
+  law: Arbitrary finite transition laws \(W_Y(y\mid x)\) and \(W_Z(z\mid x)\).
+  assumptions:
+  - Messages are uniform and the stochastic encoder randomness is private.
+  - Legitimate average decoding error vanishes.
+  - Strong secrecy means unnormalized leakage \(I(M;Z^n)\) tends to zero.
+quantity:
+  name: Strong-secrecy capacity
+  symbol: C_s
+  units: secret bits per channel use
+  criterion: Vanishing legitimate average error and strong information-theoretic secrecy.
+capacity:
+  kind: characterization
+  display: C_s=\max_{V-X-(Y,Z)}\bigl[I(V;Y)-I(V;Z)\bigr]
+  conditions: Finite alphabets and no input-cost constraint.
+bounds:
+- id: auxiliary-characterization
+  direction: exact
+  relation: C_s=\max_{V-X-(Y,Z)}[I(V;Y)-I(V;Z)]
+  method: Random binning and an auxiliary-random-variable converse.
+  year: 1978
+  references: [csiszar-korner-1978]
+formalization:
+  statement:
+    status: statement
+    version: 1
+    language: Lean
+    notes: Strong and weak secrecy predicates and capacities are separate; the statement uses the unconstrained one-auxiliary value.
+    files:
+    - path: lean/CapacityAtlas/ReportedTargets.lean
+      declaration: CapacityAtlas.ReportedTargets.generalFiniteWiretapCapacityStatement
+      role: statement
+      description: Strong-secrecy capacity identity for a general finite wiretap channel.
+  proofs: []
+references: [csiszar-korner-1978, sreekumar-et-al-2020]

@@ -1,0 +1,64 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: binary-insertion-channel
+title: Binary random-insertion channel
+status: open
+updated: '2026-08-12'
+summary: In the fixed iid random-insertion model, each transmitted bit may be followed by one independent fair inserted bit and exact capacity is unknown.
+tags:
+  model: [point-to-point]
+  features: [finite-alphabet, binary, memory]
+  quantity: [capacity]
+  knowledge: [bounds]
+parameters:
+- symbol: p
+  description: Probability that one fair bit is inserted after a transmitted bit.
+  range: 0\le p\le1
+model:
+  input: A binary input string.
+  output: The concatenation of each transmitted bit and, independently with probability \(p\), one fair inserted bit.
+  law: Random insertions occur after transmitted bits; transmitted bits are never deleted or replaced.
+  assumptions:
+  - Inserted bits are independent Bernoulli one-half symbols.
+  - The decoder observes only the resulting variable-length output string.
+  - This is not the Gallager replacement-by-two-bits model.
+quantity:
+  name: Random-insertion capacity
+  symbol: C_{\mathrm{ins}}(p)
+  units: bits per transmitted input bit
+  criterion: Vanishing average decoding error under the fixed iid insertion law.
+capacity:
+  kind: bounds
+  display: 0\le C_{\mathrm{ins}}(p)\le1
+  notes: Small-insertion asymptotics are known, but no exact all-p formula is known.
+bounds:
+- id: binary-input-upper
+  direction: upper
+  relation: C_{\mathrm{ins}}(p)\le1
+  method: Binary input entropy bound.
+  year: 2025
+  references: [tegin-duman-2025]
+- id: nonnegative-rate
+  direction: lower
+  relation: C_{\mathrm{ins}}(p)\ge0
+  method: One-message code.
+  year: 2025
+  references: [tegin-duman-2025]
+frontier:
+  question: Determine capacity or sharper finite-p bounds for this random-after-each-bit insertion model.
+  bottleneck: Random output length and synchronization ambiguity create memory in the induced channel.
+  progress:
+  - Extend rigorous small-p expansions and finite-block certificates.
+formalization:
+  statement:
+    status: statement
+    version: 1
+    language: Lean
+    notes: The one-step finite-support law fixes the insertion convention and excludes the Gallager model.
+    files:
+    - path: lean/CapacityAtlas/ReportedTargets.lean
+      declaration: CapacityAtlas.ReportedTargets.binaryInsertionCapacityBounds
+      role: statement
+      description: Basic capacity bounds for the explicitly defined random-insertion law.
+  proofs: []
+references: [tegin-duman-2025]
