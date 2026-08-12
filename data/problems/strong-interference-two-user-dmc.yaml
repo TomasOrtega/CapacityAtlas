@@ -40,8 +40,8 @@ formalization:
     language: Lean
     notes: The two channel-order inequalities are quantified over every product input law.
     files:
-    - path: lean/CapacityAtlas/ReportedTargets.lean
-      declaration: CapacityAtlas.ReportedTargets.strongInterferenceCapacityStatement
+    - path: lean/CapacityAtlas/Channels/Interference.lean
+      declaration: CapacityAtlas.Channel.strongInterferenceCapacityStatement
       role: statement
       description: Strong-interference operational region equals the two MAC-region intersection.
   proofs: []

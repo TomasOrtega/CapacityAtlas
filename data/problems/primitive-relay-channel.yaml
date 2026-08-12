@@ -52,8 +52,8 @@ formalization:
     language: Lean
     notes: The physical broadcast observation and orthogonal bit-pipe are separate fields; no cut-set-tightness conjecture is assumed.
     files:
-    - path: lean/CapacityAtlas/ReportedTargets.lean
-      declaration: CapacityAtlas.ReportedTargets.primitiveRelayCapacityBoundsStatement
+    - path: lean/CapacityAtlas/Network/PrimitiveRelay.lean
+      declaration: CapacityAtlas.Network.primitiveRelayCapacityBoundsStatement
       role: statement
       description: Compress-forward, improved-converse, and cut-set bound chain for a fixed model.
   proofs: []

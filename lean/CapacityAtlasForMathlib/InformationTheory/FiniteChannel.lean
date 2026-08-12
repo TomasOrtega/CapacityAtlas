@@ -75,6 +75,13 @@ theorem output_nonempty [Nonempty X] (W : FiniteChannel X Y) : Nonempty Y := by
       have hrow := W.row_sum x
       simp at hrow
 
+/-- A deterministic finite channel induced by a map of alphabets. -/
+@[capacity_shared_api]
+def deterministic [DecidableEq Y] (output : X → Y) : FiniteChannel X Y where
+  transition input received := if received = output input then 1 else 0
+  nonnegative input received := by split <;> positivity
+  row_sum input := by simp
+
 /-- The noiseless channel on a finite alphabet. -/
 @[capacity_problem "noiseless-q-ary-channel", capacity_shared_api]
 def identity (X : Type*) [Fintype X] [DecidableEq X] : FiniteChannel X X where

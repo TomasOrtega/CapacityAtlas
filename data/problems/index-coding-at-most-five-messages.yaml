@@ -39,8 +39,8 @@ formalization:
     language: Lean
     notes: The family-level proposition avoids assigning thousands of hand-written permanent problem IDs.
     files:
-    - path: lean/CapacityAtlas/ReportedTargets.lean
-      declaration: CapacityAtlas.ReportedTargets.indexCodingAtMostFiveMessagesCapacityRegions
+    - path: lean/CapacityAtlas/Network/SmallIndexCoding.lean
+      declaration: CapacityAtlas.IndexCoding.indexCodingAtMostFiveMessagesCapacityRegions
       role: statement
       description: Family statement equating every small operational capacity region with the composite-coding formula.
   proofs: []

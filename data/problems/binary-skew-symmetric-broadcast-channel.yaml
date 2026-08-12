@@ -53,8 +53,8 @@ formalization:
     language: Lean
     notes: The transition law is concrete; the proposition interface fixes the inner-versus-outer equality target without supplying a proof.
     files:
-    - path: lean/CapacityAtlas/ReportedTargets.lean
-      declaration: CapacityAtlas.ReportedTargets.binarySkewSymmetricBroadcastCapacityStatement
+    - path: lean/CapacityAtlas/Channels/Broadcast.lean
+      declaration: CapacityAtlas.Channel.binarySkewSymmetricBroadcastCapacityStatement
       role: statement
       description: Equality target for the Marton inner and UV outer regions.
   proofs: []

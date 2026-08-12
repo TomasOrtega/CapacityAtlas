@@ -39,8 +39,8 @@ formalization:
     language: Lean
     notes: More capable is defined by input-law dominance, separately from less noisy.
     files:
-    - path: lean/CapacityAtlas/ReportedTargets.lean
-      declaration: CapacityAtlas.ReportedTargets.moreCapableBroadcastCapacityStatement
+    - path: lean/CapacityAtlas/Channels/Broadcast.lean
+      declaration: CapacityAtlas.Channel.moreCapableBroadcastCapacityStatement
       role: statement
       description: More-capable capacity region equals the superposition region.
   proofs: []

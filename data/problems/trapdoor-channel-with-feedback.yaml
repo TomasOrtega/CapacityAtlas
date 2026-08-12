@@ -39,8 +39,8 @@ formalization:
     language: Lean
     notes: The finite-state transition and real-valued logarithmic identity are explicit.
     files:
-    - path: lean/CapacityAtlas/ReportedTargets.lean
-      declaration: CapacityAtlas.ReportedTargets.trapdoorFeedbackCapacityStatement
+    - path: lean/CapacityAtlas/Channels/Trapdoor.lean
+      declaration: CapacityAtlas.Channel.trapdoorFeedbackCapacityStatement
       role: statement
       description: Feedback capacity equals log base two of the golden ratio.
   proofs: []

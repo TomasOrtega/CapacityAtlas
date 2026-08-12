@@ -55,8 +55,8 @@ formalization:
     language: Lean
     notes: Decimal approximations are omitted; the proposition records exact symbolic endpoints.
     files:
-    - path: lean/CapacityAtlas/ReportedTargets.lean
-      declaration: CapacityAtlas.ReportedTargets.sevenCycleKnownBounds
+    - path: lean/CapacityAtlas/ZeroError/SevenCycle.lean
+      declaration: CapacityAtlas.ZeroError.sevenCycleKnownBounds
       role: statement
       description: Exact symbolic lower and upper bounds for the seven-cycle.
   proofs: []

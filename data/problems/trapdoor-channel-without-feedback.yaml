@@ -55,8 +55,8 @@ formalization:
     language: Lean
     notes: A separate feedforward operational interface prevents accidental reuse of the feedback theorem.
     files:
-    - path: lean/CapacityAtlas/ReportedTargets.lean
-      declaration: CapacityAtlas.ReportedTargets.trapdoorWithoutFeedbackCapacityBounds
+    - path: lean/CapacityAtlas/Channels/Trapdoor.lean
+      declaration: CapacityAtlas.Channel.trapdoorWithoutFeedbackCapacityBounds
       role: statement
       description: Basic feedforward-capacity bounds for the fixed trapdoor transition.
   proofs: []

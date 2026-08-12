@@ -56,8 +56,8 @@ formalization:
     language: Lean
     notes: The one-step finite-support law fixes the insertion convention and excludes the Gallager model.
     files:
-    - path: lean/CapacityAtlas/ReportedTargets.lean
-      declaration: CapacityAtlas.ReportedTargets.binaryInsertionCapacityBounds
+    - path: lean/CapacityAtlas/Channels/Insertion.lean
+      declaration: CapacityAtlas.Channel.binaryInsertionCapacityBounds
       role: statement
       description: Basic capacity bounds for the explicitly defined random-insertion law.
   proofs: []

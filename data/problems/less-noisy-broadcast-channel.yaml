@@ -39,8 +39,8 @@ formalization:
     language: Lean
     notes: Less noisy is defined by auxiliary-variable dominance, separately from more capable.
     files:
-    - path: lean/CapacityAtlas/ReportedTargets.lean
-      declaration: CapacityAtlas.ReportedTargets.lessNoisyBroadcastCapacityStatement
+    - path: lean/CapacityAtlas/Channels/Broadcast.lean
+      declaration: CapacityAtlas.Channel.lessNoisyBroadcastCapacityStatement
       role: statement
       description: Less-noisy capacity region equals the superposition region.
   proofs: []

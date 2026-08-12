@@ -41,8 +41,8 @@ formalization:
     language: Lean
     notes: Strong and weak secrecy predicates and capacities are separate; the statement uses the unconstrained one-auxiliary value.
     files:
-    - path: lean/CapacityAtlas/ReportedTargets.lean
-      declaration: CapacityAtlas.ReportedTargets.generalFiniteWiretapCapacityStatement
+    - path: lean/CapacityAtlas/Channels/FiniteWiretap.lean
+      declaration: CapacityAtlas.Channel.generalFiniteWiretapCapacityStatement
       role: statement
       description: Strong-secrecy capacity identity for a general finite wiretap channel.
   proofs: []

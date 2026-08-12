@@ -42,8 +42,8 @@ formalization:
     language: Lean
     notes: The real-valued model fixes the one-half normalization; matrix optimization infrastructure remains an external proof task.
     files:
-    - path: lean/CapacityAtlas/ReportedTargets.lean
-      declaration: CapacityAtlas.ReportedTargets.gaussianMIMOCapacityStatement
+    - path: lean/CapacityAtlas/Channels/GaussianMIMO.lean
+      declaration: CapacityAtlas.Channel.gaussianMIMOCapacityStatement
       role: statement
       description: Operational real Gaussian MIMO capacity equals the water-filling log-determinant value.
   proofs: []

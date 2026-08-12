@@ -40,8 +40,8 @@ formalization:
     language: Lean
     notes: The concrete maps and entropy region are fixed in the central statement.
     files:
-    - path: lean/CapacityAtlas/ReportedTargets.lean
-      declaration: CapacityAtlas.ReportedTargets.blackwellBroadcastCapacityStatement
+    - path: lean/CapacityAtlas/Channels/Broadcast.lean
+      declaration: CapacityAtlas.Channel.blackwellBroadcastCapacityStatement
       role: statement
       description: Operational capacity region equals the deterministic entropy region.
   proofs: []
