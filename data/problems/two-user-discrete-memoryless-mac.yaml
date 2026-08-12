@@ -54,8 +54,8 @@ bounds:
 formalization:
   statement:
     status: none
-    version: 1
     language: Lean
+    claims: []
     notes: Product distributions, rate regions, and the MAC coding theorem are not yet formalized.
     files: []
   proofs: []

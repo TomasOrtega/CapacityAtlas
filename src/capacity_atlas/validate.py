@@ -86,19 +86,67 @@ def validate_atlas(atlas: Atlas | None = None) -> list[ValidationIssue]:
         formalization = problem.get("formalization", {})
         statement = formalization.get("statement", {})
         statement_status = statement.get("status", "none")
+        claims = statement.get("claims", [])
         files = statement.get("files", [])
         if statement.get("language") != "Lean":
             issues.append(ValidationIssue(source, "formalization language must be Lean"))
-        if statement_status == "none" and files:
-            issues.append(ValidationIssue(source, "a missing statement cannot list Lean files"))
+        if statement_status == "none" and (files or claims):
+            issues.append(
+                ValidationIssue(source, "a missing formalization cannot list claims or Lean files")
+            )
         if statement_status != "none" and not files:
             issues.append(
                 ValidationIssue(source, "formalized definitions/statements need a Lean file")
             )
+        if statement_status == "statement" and not claims:
+            issues.append(ValidationIssue(source, "a formalized statement needs a claim record"))
 
+        claim_by_id: dict[str, dict[str, Any]] = {}
+        for claim in claims:
+            claim_id = claim.get("id")
+            if claim_id in claim_by_id:
+                issues.append(ValidationIssue(source, f"duplicate formal claim id {claim_id!r}"))
+            if isinstance(claim_id, str):
+                claim_by_id[claim_id] = claim
+            kind = claim.get("kind")
+            claim_status = claim.get("status")
+            if kind == "definition" and claim_status != "stated":
+                issues.append(
+                    ValidationIssue(source, f"definition claim {claim_id!r} must be stated")
+                )
+            if kind != "definition" and claim_status == "stated":
+                issues.append(
+                    ValidationIssue(source, f"non-definition claim {claim_id!r} cannot be stated")
+                )
+            if statement_status == "definitions" and kind != "definition":
+                issues.append(
+                    ValidationIssue(
+                        source,
+                        "definitions-only formalization cannot register "
+                        f"{kind!r} claim {claim_id!r}",
+                    )
+                )
+
+        claim_links: dict[str, list[tuple[str, str, bool]]] = {}
         for entry in files:
             relative = entry.get("path", "")
             declaration = entry.get("declaration", "")
+            role = str(entry.get("role", ""))
+            claim_id = entry.get("claim_id")
+            if role in {"statement", "short-proof"} and not isinstance(claim_id, str):
+                issues.append(
+                    ValidationIssue(
+                        source,
+                        f"{role} declaration {declaration!r} must identify a formal claim",
+                    )
+                )
+            if isinstance(claim_id, str) and claim_id not in claim_by_id:
+                issues.append(
+                    ValidationIssue(
+                        source,
+                        f"declaration {declaration!r} targets unknown formal claim {claim_id!r}",
+                    )
+                )
             if not isinstance(relative, str) or not relative.startswith("lean/"):
                 issues.append(
                     ValidationIssue(source, f"Lean path must be under lean/: {relative!r}")
@@ -110,7 +158,7 @@ def validate_atlas(atlas: Atlas | None = None) -> list[ValidationIssue]:
                 continue
             contents = lean_path.read_text(encoding="utf-8")
             token = _declaration_token(str(declaration))
-            kinds = r"(?:def|theorem|lemma|structure|inductive|abbrev)"
+            kinds = r"(?P<kind>def|theorem|lemma|structure|inductive|abbrev)"
             declaration_match = (
                 re.search(rf"\b{kinds}\s+{re.escape(token)}\b", contents) if declaration else None
             )
@@ -122,6 +170,20 @@ def validate_atlas(atlas: Atlas | None = None) -> list[ValidationIssue]:
                 )
                 continue
             if declaration_match is not None:
+                declaration_kind = declaration_match.group("kind")
+                declaration_end = contents.find(":=", declaration_match.end())
+                declaration_header = contents[
+                    declaration_match.start() : declaration_end + 2
+                    if declaration_end >= 0
+                    else declaration_match.end()
+                ]
+                is_named_prop = declaration_kind == "def" and bool(
+                    re.search(r":\s*Prop\s*:=", declaration_header, flags=re.DOTALL)
+                )
+                if isinstance(claim_id, str) and claim_id in claim_by_id:
+                    claim_links.setdefault(claim_id, []).append(
+                        (role, declaration_kind, is_named_prop)
+                    )
                 metadata = contents[
                     max(0, declaration_match.start() - 800) : declaration_match.start()
                 ]
@@ -139,7 +201,7 @@ def validate_atlas(atlas: Atlas | None = None) -> list[ValidationIssue]:
                             f"declaration {declaration!r} lacks [{role_attribute}] metadata",
                         )
                     )
-                if entry.get("role") != "shared-api":
+                if role != "shared-api":
                     problem_marker = f'capacity_problem "{problem_id}"'
                     if problem_marker not in metadata:
                         issues.append(
@@ -149,35 +211,47 @@ def validate_atlas(atlas: Atlas | None = None) -> list[ValidationIssue]:
                             )
                         )
 
-        version = statement.get("version")
         proofs = formalization.get("proofs", [])
         if proofs and statement_status != "statement":
             issues.append(
                 ValidationIssue(
                     source,
-                    "external proofs require a canonical Lean statement, not definitions only",
+                    "external proofs require a canonical Lean claim, not definitions only",
                 )
             )
         proof_ids: set[str] = set()
+        complete_external_claims: set[str] = set()
         for proof in proofs:
             proof_id = proof.get("id")
-            claim = proof.get("claim")
+            claim_id = proof.get("claim_id")
             if proof_id in proof_ids:
                 issues.append(ValidationIssue(source, f"duplicate external proof id {proof_id!r}"))
             if isinstance(proof_id, str):
                 proof_ids.add(proof_id)
-            if proof.get("statement_version") != version:
+            claim = claim_by_id.get(str(claim_id))
+            if claim is None:
                 issues.append(
                     ValidationIssue(
                         source,
-                        f"external proof {claim!r} targets statement version "
-                        f"{proof.get('statement_version')}, expected {version}",
+                        f"external proof targets unknown formal claim {claim_id!r}",
                     )
                 )
+            elif proof.get("claim_version") != claim.get("version"):
+                issues.append(
+                    ValidationIssue(
+                        source,
+                        f"external proof for {claim_id!r} targets claim version "
+                        f"{proof.get('claim_version')}, expected {claim.get('version')}",
+                    )
+                )
+            if proof.get("status") == "complete" and isinstance(claim_id, str):
+                complete_external_claims.add(claim_id)
             commit = str(proof.get("commit", ""))
             if not re.fullmatch(r"[0-9a-f]{40}", commit):
                 issues.append(
-                    ValidationIssue(source, f"external proof {claim!r} needs a 40-character commit")
+                    ValidationIssue(
+                        source, f"external proof for {claim_id!r} needs a 40-character commit"
+                    )
                 )
             repository = str(proof.get("repository", ""))
             expected_prefix = f"https://github.com/{repository}/commit/{commit}"
@@ -185,7 +259,48 @@ def validate_atlas(atlas: Atlas | None = None) -> list[ValidationIssue]:
                 issues.append(
                     ValidationIssue(
                         source,
-                        f"external proof {claim!r} must link to its immutable commit",
+                        f"external proof for {claim_id!r} must link to its immutable commit",
+                    )
+                )
+
+        for claim_id, claim in claim_by_id.items():
+            links = claim_links.get(claim_id, [])
+            claim_status = claim.get("status")
+            has_local_proof = any(
+                role == "short-proof" or declaration_kind in {"theorem", "lemma"}
+                for role, declaration_kind, _ in links
+            )
+            has_complete_proof = has_local_proof or claim_id in complete_external_claims
+            if claim_status == "open":
+                has_open_prop = any(
+                    role == "statement" and is_named_prop for role, _, is_named_prop in links
+                )
+                if not has_open_prop:
+                    issues.append(
+                        ValidationIssue(
+                            source,
+                            f"open formal claim {claim_id!r} needs a named Prop definition",
+                        )
+                    )
+                if has_complete_proof:
+                    issues.append(
+                        ValidationIssue(
+                            source,
+                            f"open formal claim {claim_id!r} has a complete proof",
+                        )
+                    )
+            elif claim_status == "proved" and not has_complete_proof:
+                issues.append(
+                    ValidationIssue(
+                        source,
+                        f"proved formal claim {claim_id!r} needs a complete local "
+                        "or external proof",
+                    )
+                )
+            elif claim_status == "stated" and not any(role == "definition" for role, _, _ in links):
+                issues.append(
+                    ValidationIssue(
+                        source, f"definition claim {claim_id!r} needs a linked definition"
                     )
                 )
 

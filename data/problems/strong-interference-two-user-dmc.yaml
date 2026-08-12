@@ -36,13 +36,19 @@ bounds:
 formalization:
   statement:
     status: statement
-    version: 1
     language: Lean
+    claims:
+    - id: exact-capacity-region
+      kind: exact-capacity
+      status: open
+      version: 1
+      description: Exact capacity region under the strong-interference conditions.
     notes: The two channel-order inequalities are quantified over every product input law.
     files:
     - path: lean/CapacityAtlas/Channels/Interference.lean
       declaration: CapacityAtlas.Channel.strongInterferenceCapacityStatement
       role: statement
       description: Strong-interference operational region equals the two MAC-region intersection.
+      claim_id: exact-capacity-region
   proofs: []
 references: [carleial-1975, han-kobayashi-1981]

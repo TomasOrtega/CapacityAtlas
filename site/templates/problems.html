@@ -6,7 +6,7 @@
   <form class="filters" data-problem-filters>
     <label class="search-field"><span>Search</span><input type="search" name="q" placeholder="deletion, feedback, index coding…" autocomplete="off"></label>
     <label><span>Status</span><select name="status"><option value="">All</option><option value="open">Open</option><option value="partially-solved">Partially solved</option><option value="solved">Solved</option></select></label>
-    <label><span>Formalization</span><select name="formalization"><option value="">All</option><option value="lean-available">Lean formalization available ({{ stats.statements }})</option><option value="formally-verified">Formally verified claim ({{ stats.verified }})</option></select></label>
+    <label><span>Formalization</span><select name="formalization"><option value="">All</option><option value="formally-stated">Formally stated ({{ stats.statements }})</option><option value="formally-proved">Capacity claim formally proved ({{ stats.proved }})</option></select></label>
     {% for axis_id in ['model','features','quantity','knowledge'] %}<label><span>{{ tag_axes[axis_id].label }}</span><select name="{{ axis_id }}"><option value="">All</option>{% for item in facets[axis_id] %}<option value="{{ item.id }}">{{ item.label }} ({{ item.count }})</option>{% endfor %}</select></label>{% endfor %}
     <button class="button button--quiet" type="reset">Reset</button>
   </form>

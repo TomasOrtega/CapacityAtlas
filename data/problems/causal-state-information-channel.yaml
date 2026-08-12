@@ -52,8 +52,8 @@ bounds:
 formalization:
   statement:
     status: none
-    version: 1
     language: Lean
+    claims: []
     notes: State processes and causal encoder strategies need a shared operational layer.
     files: []
   proofs: []

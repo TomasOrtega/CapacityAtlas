@@ -44,8 +44,15 @@ frontier:
 formalization:
   statement:
     status: none
-    version: 1
     language: Lean
+    # For formal claims, add stable id, kind, status, version, and description records.
+    # Link statement and short-proof declarations to them with claim_id.
+    # - id: example-lower
+    #   kind: achievability
+    #   status: open
+    #   version: 1
+    #   description: Formal statement of the example lower bound.
+    claims: []
     notes: Explain missing shared infrastructure.
     files: []
   proofs: []

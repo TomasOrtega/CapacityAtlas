@@ -38,13 +38,19 @@ bounds:
 formalization:
   statement:
     status: statement
-    version: 1
     language: Lean
+    claims:
+    - id: exact-capacity
+      kind: exact-capacity
+      status: open
+      version: 1
+      description: Exact real Gaussian MIMO capacity formula.
     notes: The real-valued model fixes the one-half normalization; matrix optimization infrastructure remains an external proof task.
     files:
     - path: lean/CapacityAtlas/Channels/GaussianMIMO.lean
       declaration: CapacityAtlas.Channel.gaussianMIMOCapacityStatement
       role: statement
       description: Operational real Gaussian MIMO capacity equals the water-filling log-determinant value.
+      claim_id: exact-capacity
   proofs: []
 references: [telatar-1999]

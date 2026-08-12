@@ -32,7 +32,7 @@ Capacity Atlas adapts the following ideas from Formal Conjectures:
    mature locally before being proposed upstream.
 6. **Simple generated browsing.** The public interface prioritizes counts,
    facets, compact result lists, and direct access to source records.
-7. **Stable benchmark snapshots.** Statement versions and immutable releases
+7. **Stable benchmark snapshots.** Claim versions and immutable releases
    make later AI evaluations reproducible.
 
 Capacity Atlas does not copy Formal Conjectures' AMS taxonomy because all entries

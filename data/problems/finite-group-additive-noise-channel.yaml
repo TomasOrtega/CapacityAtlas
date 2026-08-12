@@ -51,8 +51,18 @@ bounds:
 formalization:
   statement:
     status: statement
-    version: 1
     language: Lean
+    claims:
+    - id: information-capacity
+      kind: exact-capacity
+      status: proved
+      version: 1
+      description: Exact single-letter information-capacity formula.
+    - id: operational-capacity
+      kind: exact-capacity
+      status: proved
+      version: 1
+      description: Exact operational average-error capacity formula.
     notes: Translation equivalences prove that every row has the noise entropy and that uniform input produces uniform
       output. The operational formula follows from the formal finite-channel coding theorem.
     files:
@@ -68,18 +78,22 @@ formalization:
       declaration: CapacityAtlas.Channel.additiveNoise_informationCapacity
       role: statement
       description: Exact single-letter information capacity in bits per channel use.
+      claim_id: information-capacity
     - path: lean/CapacityAtlas/Channels/AdditiveNoise.lean
       declaration: CapacityAtlas.Channel.finiteGroupAdditiveNoiseCapacityStatement
       role: statement
       description: Canonical operational average-error capacity proposition.
+      claim_id: operational-capacity
     - path: lean/CapacityAtlas/Channels/AdditiveNoise.lean
       declaration: CapacityAtlas.Channel.additiveNoise_operationalCapacity
       role: short-proof
       description: Operational capacity formula from the finite-channel coding theorem.
+      claim_id: operational-capacity
     - path: lean/CapacityAtlas/Channels/AdditiveNoise.lean
       declaration: CapacityAtlas.Channel.finiteGroupAdditiveNoiseCapacityStatement_proof
       role: short-proof
       description: Direct proof of the registered additive-noise proposition.
+      claim_id: operational-capacity
   proofs: []
 references:
 - shannon-1948

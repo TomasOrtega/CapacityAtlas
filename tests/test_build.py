@@ -38,7 +38,7 @@ def test_production_urls_use_custom_domain_root(tmp_path: Path) -> None:
     assert 'src="/CapacityAtlas/' not in home
 
 
-def test_problem_page_exposes_versioned_lean_and_active_giscus(tmp_path: Path) -> None:
+def test_problem_page_exposes_versioned_claims_and_active_giscus(tmp_path: Path) -> None:
     output = build_site(output=tmp_path / "site")
     page = (output / "problems" / "binary-symmetric-channel" / "index.html").read_text(
         encoding="utf-8"
@@ -46,7 +46,8 @@ def test_problem_page_exposes_versioned_lean_and_active_giscus(tmp_path: Path) -
     soup = BeautifulSoup(page, "html.parser")
     giscus = soup.select_one('script[src="https://giscus.app/client.js"]')
 
-    assert "Version 2" in soup.get_text(" ", strip=True)
+    assert "operational-capacity" in soup.get_text(" ", strip=True)
+    assert "v2" in soup.get_text(" ", strip=True)
     assert "capacityatlas:binary-symmetric-channel" in page
     assert "discussions/new?category=general" in page
     assert giscus is not None
@@ -92,56 +93,72 @@ def test_browse_filters_keep_status_and_formalization_separate(tmp_path: Path) -
         option.get("value", ""): option.get_text(" ", strip=True)
         for option in formalization_filter.select("option")
     }
-    assert formalization_options["lean-available"].startswith("Lean formalization available")
-    assert formalization_options["formally-verified"].startswith("Formally verified claim")
-    assert not formalization_options["formally-verified"].endswith("(0)")
+    assert formalization_options["formally-stated"].startswith("Formally stated")
+    assert formalization_options["formally-proved"].startswith("Capacity claim formally proved")
+    assert not formalization_options["formally-proved"].endswith("(0)")
 
-    formalized_row = soup.select_one('[data-problem-row][data-formalization~="lean-available"]')
+    formalized_row = soup.select_one('[data-problem-row][data-formalization~="formally-stated"]')
     assert formalized_row is not None
     assert formalized_row.get("data-status") in {
         "open",
         "partially-solved",
         "solved",
     }
-    assert "lean-available" not in formalized_row.get("data-status", "")
+    assert "formally-stated" not in formalized_row.get("data-status", "")
 
     bsc_link = soup.select_one('a[href="/problems/binary-symmetric-channel/"]')
     assert bsc_link is not None
     bsc_row = bsc_link.find_parent(attrs={"data-problem-row": True})
     assert bsc_row is not None
-    assert "formally-verified" in bsc_row.get("data-formalization", "").split()
+    assert "formally-proved" in bsc_row.get("data-formalization", "").split()
+
+    sun_jafar_link = soup.select_one('a[href="/problems/sun-jafar-11-message-index-coding/"]')
+    assert sun_jafar_link is not None
+    sun_jafar_row = sun_jafar_link.find_parent(attrs={"data-problem-row": True})
+    assert sun_jafar_row is not None
+    assert "formally-proved" not in sun_jafar_row.get("data-formalization", "").split()
 
 
-def test_browse_formalization_includes_complete_external_proof() -> None:
+def test_browse_formalization_includes_proved_capacity_claim() -> None:
     problem = {
         "status": "open",
         "formalization": {
-            "statement": {"status": "statement"},
-            "proofs": [{"status": "partial"}, {"status": "complete"}],
+            "statement": {
+                "status": "statement",
+                "claims": [
+                    {
+                        "kind": "converse",
+                        "status": "proved",
+                    }
+                ],
+            },
         },
     }
 
     assert _browse_formalization(problem) == [
-        "lean-available",
-        "formally-verified",
+        "formally-stated",
+        "formally-proved",
     ]
 
 
-def test_browse_formalization_includes_local_short_proof() -> None:
+def test_browse_formalization_excludes_structural_proof() -> None:
     problem = {
         "status": "solved",
         "formalization": {
             "statement": {
                 "status": "statement",
-                "files": [{"role": "statement"}, {"role": "short-proof"}],
+                "claims": [
+                    {
+                        "kind": "structural",
+                        "status": "proved",
+                    }
+                ],
             },
-            "proofs": [],
         },
     }
 
     assert _browse_formalization(problem) == [
-        "lean-available",
-        "formally-verified",
+        "formally-stated",
     ]
 
 
@@ -155,6 +172,9 @@ def test_home_is_compact_faceted_registry(tmp_path: Path) -> None:
     headings = {heading.get_text(" ", strip=True) for heading in soup.select(".browse-group h3")}
     assert headings == {"Channel model", "Features", "Quantity", "Current knowledge"}
     assert "Formal Conjectures" in soup.get_text(" ", strip=True)
+    assert "lean" not in page.lower()
+    assert "Formally stated" in soup.get_text(" ", strip=True)
+    assert "Formally proved" in soup.get_text(" ", strip=True)
 
 
 def test_typography_uses_a_balanced_scale() -> None:

@@ -71,8 +71,8 @@ frontier:
 formalization:
   statement:
     status: none
-    version: 1
     language: Lean
+    claims: []
     notes: Variable-length outputs and synchronization errors are not yet modeled.
     files: []
   proofs: []

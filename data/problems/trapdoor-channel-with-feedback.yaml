@@ -35,13 +35,19 @@ bounds:
 formalization:
   statement:
     status: statement
-    version: 1
     language: Lean
+    claims:
+    - id: exact-capacity
+      kind: exact-capacity
+      status: open
+      version: 1
+      description: Exact feedback-capacity formula.
     notes: The finite-state transition and real-valued logarithmic identity are explicit.
     files:
     - path: lean/CapacityAtlas/Channels/Trapdoor.lean
       declaration: CapacityAtlas.Channel.trapdoorFeedbackCapacityStatement
       role: statement
       description: Feedback capacity equals log base two of the golden ratio.
+      claim_id: exact-capacity
   proofs: []
 references: [permuter-et-al-2006]

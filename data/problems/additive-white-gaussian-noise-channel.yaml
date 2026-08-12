@@ -60,8 +60,8 @@ bounds:
 formalization:
   statement:
     status: none
-    version: 1
     language: Lean
+    claims: []
     notes: Continuous probability and differential entropy are not yet in the shared Lean layer.
     files: []
   proofs: []

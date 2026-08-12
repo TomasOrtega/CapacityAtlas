@@ -46,7 +46,7 @@ Every problem uses four independent axes from `data/tags.yaml`:
 - `model`: communication topology or channel family
 - `features`: structural assumptions and phenomena
 - `quantity`: operational rate object
-- `knowledge`: exact, characterized, regularized, bounds-only, or linear-only
+- `knowledge`: exact, characterized, regularized, bounds-only, or linear-encoder-only
 
 Do not add free-form tags to a problem record. Propose a new controlled value only
 when it will distinguish several entries and cannot be expressed by an existing
@@ -62,11 +62,14 @@ Capacity Atlas currently accepts only Lean 4.
 - Attach `@[capacity_problem "problem-id"]` to problem-specific declarations.
 - Mark roles with `@[capacity_definition]`, `@[capacity_statement]`,
   `@[capacity_short_proof]`, or `@[capacity_shared_api]`.
+- Give each canonical proposition a stable claim ID, kind, status, and version in
+  the problem record; link its declarations with `claim_id`.
+- Keep unproved claims as named `Prop` definitions with status `open`.
 - Do not use `sorry`, `admit`, or unreviewed axioms.
-- Increment the statement version whenever the proposition changes in a way that
+- Increment that claim's version whenever its proposition changes in a way that
   can invalidate an external proof.
 
-The central repository should contain canonical statements, reusable API, tests,
+The central repository should contain canonical claims, reusable API, tests,
 and short illuminating proofs. As in Formal Conjectures' contribution policy, a
 proof longer than roughly 25–50 lines should normally live elsewhere. The same
 rule applies when a proof needs significant problem-specific infrastructure even
@@ -84,7 +87,7 @@ An external proof record must:
 - name a repository, file, and declaration
 - pin a 40-character commit hash
 - link to that immutable commit
-- name the Capacity Atlas statement version it targets
+- name the Capacity Atlas claim identifier and version it targets
 
 The external repository should import a pinned Capacity Atlas commit or release
 and prove the canonical proposition directly whenever possible.

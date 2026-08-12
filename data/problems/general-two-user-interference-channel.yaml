@@ -61,8 +61,8 @@ frontier:
 formalization:
   statement:
     status: none
-    version: 1
     language: Lean
+    claims: []
     notes: This needs a shared interference-network model and independent-message code definitions.
     files: []
   proofs: []

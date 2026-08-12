@@ -60,8 +60,18 @@ bounds:
 formalization:
   statement:
     status: statement
-    version: 1
     language: Lean
+    claims:
+    - id: information-capacity
+      kind: exact-capacity
+      status: proved
+      version: 1
+      description: Exact single-letter information-capacity formula.
+    - id: operational-capacity
+      kind: exact-capacity
+      status: proved
+      version: 1
+      description: Exact operational average-error capacity formula.
     notes: The channel is constructed as additive noise on ZMod q. Its noise entropy is proved to be binary entropy plus
       p times log(q-1), and the operational formula follows from the finite-group result and coding theorem.
     files:
@@ -85,18 +95,22 @@ formalization:
       declaration: CapacityAtlas.Channel.qarySymmetric_informationCapacity
       role: statement
       description: Exact single-letter information capacity in bits per channel use.
+      claim_id: information-capacity
     - path: lean/CapacityAtlas/Channels/QarySymmetric.lean
       declaration: CapacityAtlas.Channel.qarySymmetricCapacityStatement
       role: statement
       description: Canonical operational capacity proposition on the atlas parameter range.
+      claim_id: operational-capacity
     - path: lean/CapacityAtlas/Channels/QarySymmetric.lean
       declaration: CapacityAtlas.Channel.qarySymmetric_operationalCapacity
       role: short-proof
       description: Operational capacity formula from the finite-channel coding theorem.
+      claim_id: operational-capacity
     - path: lean/CapacityAtlas/Channels/QarySymmetric.lean
       declaration: CapacityAtlas.Channel.qarySymmetricCapacityStatement_proof
       role: short-proof
       description: Direct proof of the registered q-ary symmetric proposition.
+      claim_id: operational-capacity
   proofs: []
 references:
 - shannon-1948

@@ -9,8 +9,8 @@ List the primary sources checked and the exact claims they support. Write “not
 ## Tags and formalization
 
 - State which controlled tag axes changed and why.
-- State whether the canonical Lean statement or its version changed.
-- For external proofs, include the immutable commit, declaration, statement version, and CI status.
+- State which canonical Lean claim identifiers or versions changed.
+- For external proofs, include the immutable commit, declaration, claim identifier and version, and CI status.
 
 ## Licensing
 

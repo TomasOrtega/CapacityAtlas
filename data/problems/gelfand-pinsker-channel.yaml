@@ -52,8 +52,8 @@ bounds:
 formalization:
   statement:
     status: none
-    version: 1
     language: Lean
+    claims: []
     notes: This theorem is a natural substantial external-proof repository once state and entropy APIs exist.
     files: []
   proofs: []

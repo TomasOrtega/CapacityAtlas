@@ -58,8 +58,8 @@ frontier:
 formalization:
   statement:
     status: none
-    version: 1
     language: Lean
+    claims: []
     notes: Interactive causal encoders are not yet in the shared Lean layer.
     files: []
   proofs: []

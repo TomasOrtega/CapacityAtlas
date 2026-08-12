@@ -57,8 +57,18 @@ bounds:
 formalization:
   statement:
     status: statement
-    version: 1
     language: Lean
+    claims:
+    - id: information-capacity
+      kind: exact-capacity
+      status: proved
+      version: 1
+      description: Exact single-letter information-capacity formula.
+    - id: operational-capacity
+      kind: exact-capacity
+      status: proved
+      version: 1
+      description: Exact operational average-error capacity formula.
     notes: The information-capacity formula is proved from explicit output and conditional-entropy identities. The
       operational average-error formula follows from the formal finite-channel coding theorem.
     files:
@@ -74,18 +84,22 @@ formalization:
       declaration: CapacityAtlas.Channel.binaryErasure_informationCapacity
       role: statement
       description: Exact single-letter information capacity in bits per channel use.
+      claim_id: information-capacity
     - path: lean/CapacityAtlas/Channels/Binary.lean
       declaration: CapacityAtlas.Channel.binaryErasureCapacityStatement
       role: statement
       description: Canonical operational average-error capacity proposition.
+      claim_id: operational-capacity
     - path: lean/CapacityAtlas/Channels/Binary.lean
       declaration: CapacityAtlas.Channel.binaryErasure_operationalCapacity
       role: short-proof
       description: Unconditional operational BEC capacity formula from the finite-channel coding theorem.
+      claim_id: operational-capacity
     - path: lean/CapacityAtlas/Channels/Binary.lean
       declaration: CapacityAtlas.Channel.binaryErasureCapacityStatement_proof
       role: short-proof
       description: Direct proof of the registered BEC proposition.
+      claim_id: operational-capacity
   proofs: []
 references:
 - shannon-1948

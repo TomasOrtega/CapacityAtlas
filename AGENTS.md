@@ -8,9 +8,9 @@ matter more than coverage.
    theorem number, DOI, or attribution.
 3. Preserve permanent problem IDs and discussion terms.
 4. Use only values declared in `data/tags.yaml`. Do not add AMS tags.
-5. Treat mathematical status, statement status, and external proof status as
+5. Treat mathematical status, formal claim status, and external proof status as
    independent fields.
-6. Increment a statement version only when the proposition changes materially.
+6. Increment a claim version only when its proposition changes materially.
 7. Keep substantial Lean proofs in external repositories. Link immutable commits.
 8. Do not introduce `sorry`, `admit`, unreviewed axioms, hidden network calls, or
    generated artifacts.

@@ -35,13 +35,19 @@ bounds:
 formalization:
   statement:
     status: statement
-    version: 1
     language: Lean
+    claims:
+    - id: exact-capacity-region
+      kind: exact-capacity
+      status: open
+      version: 1
+      description: Exact more-capable broadcast capacity region.
     notes: More capable is defined by input-law dominance, separately from less noisy.
     files:
     - path: lean/CapacityAtlas/Channels/Broadcast.lean
       declaration: CapacityAtlas.Channel.moreCapableBroadcastCapacityStatement
       role: statement
       description: More-capable capacity region equals the superposition region.
+      claim_id: exact-capacity-region
   proofs: []
 references: [elgamal-1979]

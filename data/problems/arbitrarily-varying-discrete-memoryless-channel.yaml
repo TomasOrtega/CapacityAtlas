@@ -55,8 +55,8 @@ bounds:
 formalization:
   statement:
     status: none
-    version: 1
     language: Lean
+    claims: []
     notes: Adversarial state sequences and symmetrizability are high-value shared definitions.
     files: []
   proofs: []

@@ -1,5 +1,5 @@
-name: Propose a Lean statement or proof
-description: Coordinate a local statement or an external proof repository.
+name: Propose a Lean claim or proof
+description: Coordinate a local claim or an external proof repository.
 title: "[Lean] "
 body:
   - type: input
@@ -15,7 +15,7 @@ body:
       label: Contribution type
       options:
         - Shared API or definition
-        - Canonical statement
+        - Canonical claim
         - Short central proof or test
         - Substantial external proof repository
     validations:
@@ -35,10 +35,11 @@ body:
     validations:
       required: true
   - type: input
-    id: version
+    id: claim
     attributes:
-      label: Statement version
-      placeholder: "1"
+      label: Claim ID and version
+      description: Give the stable claim ID and its integer version.
+      placeholder: nonlinear-converse v1
     validations:
       required: true
   - type: textarea

@@ -35,13 +35,19 @@ bounds:
 formalization:
   statement:
     status: statement
-    version: 1
     language: Lean
+    claims:
+    - id: exact-capacity-regions
+      kind: exact-capacity
+      status: open
+      version: 1
+      description: Exact operational capacity regions for all instances with at most five messages.
     notes: The family-level proposition avoids assigning thousands of hand-written permanent problem IDs.
     files:
     - path: lean/CapacityAtlas/Network/SmallIndexCoding.lean
       declaration: CapacityAtlas.IndexCoding.indexCodingAtMostFiveMessagesCapacityRegions
       role: statement
       description: Family statement equating every small operational capacity region with the composite-coding formula.
+      claim_id: exact-capacity-regions
   proofs: []
 references: [arbabjolfaei-et-al-2013]

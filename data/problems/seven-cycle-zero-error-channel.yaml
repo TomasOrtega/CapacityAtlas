@@ -51,13 +51,19 @@ frontier:
 formalization:
   statement:
     status: statement
-    version: 1
     language: Lean
+    claims:
+    - id: capacity-bounds
+      kind: capacity-bounds
+      status: open
+      version: 1
+      description: Registered exact symbolic lower and upper bounds.
     notes: Decimal approximations are omitted; the proposition records exact symbolic endpoints.
     files:
     - path: lean/CapacityAtlas/ZeroError/SevenCycle.lean
       declaration: CapacityAtlas.ZeroError.sevenCycleKnownBounds
       role: statement
       description: Exact symbolic lower and upper bounds for the seven-cycle.
+      claim_id: capacity-bounds
   proofs: []
 references: [shannon-1956, lovasz-1979, polak-schrijver-2019]

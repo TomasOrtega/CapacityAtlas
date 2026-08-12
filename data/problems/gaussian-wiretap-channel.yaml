@@ -51,8 +51,8 @@ bounds:
 formalization:
   statement:
     status: none
-    version: 1
     language: Lean
+    claims: []
     notes: A future continuous secrecy layer should share definitions with the discrete wiretap channel.
     files: []
   proofs: []

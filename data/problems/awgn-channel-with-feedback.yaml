@@ -59,8 +59,8 @@ bounds:
 formalization:
   statement:
     status: none
-    version: 1
     language: Lean
+    claims: []
     notes: Continuous feedback codes are outside the current finite Lean core.
     files: []
   proofs: []

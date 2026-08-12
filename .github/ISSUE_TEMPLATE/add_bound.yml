@@ -19,7 +19,7 @@ body:
         - Exact result
         - Inner region
         - Outer region
-        - Linear-only exact result
+        - Linear-encoder-only exact result
     validations:
       required: true
   - type: textarea
