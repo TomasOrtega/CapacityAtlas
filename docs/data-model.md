@@ -16,7 +16,11 @@ file name and permanent `id` agree.
 
 These axes are intentionally independent. For example, the Sun–Jafar instance is
 mathematically open, has model `index-coding`, quantity `symmetric-capacity`, and
-knowledge tags `bounds` and `linear-only`.
+knowledge tags `bounds` and `linear-encoder-only`.
+
+`linear-encoder-only` is deliberately conservative: it says the encoder is
+linear over a finite field while decoders may be arbitrary zero-error maps. It
+does not assert that equivalent linear decoders have been constructed.
 
 ## Operational specification
 
@@ -34,17 +38,25 @@ not a substitute for provenance.
 
 ## Formalization
 
-`formalization.statement` records the local canonical Lean work and its version.
+`formalization.statement` records local Lean coverage. Its `claims` list gives
+each proposition or definition a stable identifier, a kind, its own version, and
+an explicit status. Claim kinds distinguish definitions, achievability,
+converse, exact-capacity, combined capacity-bound, and structural results.
+Definitions are `stated`; unproved named `Prop` definitions are `open`; and only
+claims with complete local or registered external evidence are `proved`.
+
+Declaration entries use `claim_id` when they state or prove a claim.
 `formalization.proofs` records substantial external Lean proofs at immutable
-commits. Mathematical status and formal proof status are never inferred from one
-another.
+commits and targets one exact claim identifier and version. Mathematical status
+and formal proof status are never inferred from one another.
 
 The Browse page reflects this independence with separate **Status** and
-**Formalization** controls. `Lean formalization available` means the local
-statement status is not `none`. `Formally verified claim` means at least one
-local file has role `short-proof` or one registered external Lean proof has
-status `complete`. A formally verified claim may establish a bound or another
-component of an open problem rather than solve the entire capacity problem.
+**Formalization** controls. `Formally stated` means at least one non-definition
+claim has a local formal declaration. `Capacity claim formally proved` means an
+achievability, converse, exact-capacity, or combined capacity-bound claim is
+explicitly marked `proved`. A proved structural claim does not trigger that
+capacity-proof filter. A formally proved bound may still belong to a
+mathematically open problem.
 
 ## Discussion identity
 
@@ -60,5 +72,10 @@ Changing a page title or URL therefore does not detach its GitHub Discussion.
 
 The JSON Schema catches structural errors. The Python validator additionally
 checks tag vocabulary, bibliography links, duplicate identifiers, local Lean
-files and declarations, external proof commit links, and statement-version
-matches.
+files and declarations, claim links and statuses, external proof commit links,
+and claim-version matches.
+
+The claim-level format replaces the former problem-wide `statement.version`.
+External proof records now use `claim_id` and `claim_version` instead of `claim`
+and `statement_version`; there is no implicit fallback because silently mapping
+a proof to the wrong proposition would overstate formal coverage.

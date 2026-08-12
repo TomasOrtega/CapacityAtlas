@@ -100,11 +100,21 @@ theorem sunJafarGroupcast_alignmentEdge_count :
 
 @[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement]
 def sunJafarGroupcast_linear_achievability : Prop :=
+  (5 : ℝ) / 13 ≤ linearEncoderSymmetricCapacity sunJafarGroupcast
+
+@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement]
+def sunJafarGroupcast_unrestricted_achievability : Prop :=
   (5 : ℝ) / 13 ≤ symmetricCapacity sunJafarGroupcast
+
+@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_short_proof]
+theorem sunJafarGroupcast_linear_achievability_implies_unrestricted_achievability
+    (h : sunJafarGroupcast_linear_achievability) :
+    sunJafarGroupcast_unrestricted_achievability := by
+  exact h.trans (linearEncoderSymmetricCapacity_le_symmetricCapacity sunJafarGroupcast)
 
 @[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement]
 def sunJafarGroupcast_linear_converse : Prop :=
-  linearSymmetricCapacity sunJafarGroupcast ≤ (5 : ℝ) / 13
+  linearEncoderSymmetricCapacity sunJafarGroupcast ≤ (5 : ℝ) / 13
 
 @[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement]
 def sunJafarGroupcast_nonlinear_converse : Prop :=
@@ -117,5 +127,15 @@ def sunJafarGroupcast_exact_capacity_conjecture : Prop :=
 @[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement]
 def sunJafarGroupcast_shannon_outer_bound_limit : Prop :=
   shannonPolymatroidOuterBound sunJafarGroupcast = (2 : ℝ) / 5
+
+@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement]
+def sunJafarGroupcast_shannon_outer_bound : Prop :=
+  symmetricCapacity sunJafarGroupcast ≤ (2 : ℝ) / 5
+
+@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_short_proof]
+theorem sunJafarGroupcast_shannon_relaxation_value_implies_outer_bound
+    (h : sunJafarGroupcast_shannon_outer_bound_limit) :
+    sunJafarGroupcast_shannon_outer_bound := by
+  exact (symmetricCapacity_le_shannonPolymatroidOuterBound sunJafarGroupcast).trans_eq h
 
 end CapacityAtlas.IndexCoding

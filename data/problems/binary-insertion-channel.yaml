@@ -52,13 +52,19 @@ frontier:
 formalization:
   statement:
     status: statement
-    version: 1
     language: Lean
+    claims:
+    - id: capacity-bounds
+      kind: capacity-bounds
+      status: open
+      version: 1
+      description: Registered lower and upper capacity bounds.
     notes: The one-step finite-support law fixes the insertion convention and excludes the Gallager model.
     files:
     - path: lean/CapacityAtlas/Channels/Insertion.lean
       declaration: CapacityAtlas.Channel.binaryInsertionCapacityBounds
       role: statement
       description: Basic capacity bounds for the explicitly defined random-insertion law.
+      claim_id: capacity-bounds
   proofs: []
 references: [tegin-duman-2025]

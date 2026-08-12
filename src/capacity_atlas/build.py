@@ -36,19 +36,23 @@ def _tag_overlap(left: dict[str, Any], right: dict[str, Any], axes: dict[str, An
 
 
 def _browse_formalization(problem: dict[str, Any]) -> list[str]:
-    """Return the Lean-related filters available for a problem."""
+    """Return the claim-aware formalization filters available for a problem."""
     statuses: list[str] = []
-    formalization = problem["formalization"]
-    if formalization["statement"]["status"] != "none":
-        statuses.append("lean-available")
-    has_local_proof = any(
-        entry["role"] == "short-proof" for entry in formalization["statement"].get("files", [])
+    statement = problem["formalization"]["statement"]
+    if any(claim["kind"] != "definition" for claim in statement.get("claims", [])):
+        statuses.append("formally-stated")
+    capacity_claim_kinds = {
+        "achievability",
+        "converse",
+        "exact-capacity",
+        "capacity-bounds",
+    }
+    has_proved_capacity_claim = any(
+        claim["kind"] in capacity_claim_kinds and claim["status"] == "proved"
+        for claim in statement.get("claims", [])
     )
-    has_complete_external_proof = any(
-        proof["status"] == "complete" for proof in formalization.get("proofs", [])
-    )
-    if has_local_proof or has_complete_external_proof:
-        statuses.append("formally-verified")
+    if has_proved_capacity_claim:
+        statuses.append("formally-proved")
     return statuses
 
 
@@ -132,6 +136,7 @@ def build_site(
         problem["formalization"].setdefault("proofs", [])
         statement = problem["formalization"]["statement"]
         statement.setdefault("notes", "")
+        statement.setdefault("claims", [])
         statement.setdefault("files", [])
         problem["browse_formalization"] = _browse_formalization(problem)
         for bound in problem["bounds"]:
@@ -165,11 +170,13 @@ def build_site(
         "partial": status_counts["partially-solved"],
         "solved": status_counts["solved"],
         "statements": sum(
-            problem["formalization"]["statement"]["status"] != "none" for problem in problems
+            any(
+                claim["kind"] != "definition"
+                for claim in problem["formalization"]["statement"]["claims"]
+            )
+            for problem in problems
         ),
-        "verified": sum(
-            "formally-verified" in problem["browse_formalization"] for problem in problems
-        ),
+        "proved": sum("formally-proved" in problem["browse_formalization"] for problem in problems),
         "proofs": sum(len(problem["formalization"]["proofs"]) for problem in problems),
     }
     facets: dict[str, list[dict[str, Any]]] = {}

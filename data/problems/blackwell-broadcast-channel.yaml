@@ -36,13 +36,19 @@ bounds:
 formalization:
   statement:
     status: statement
-    version: 1
     language: Lean
+    claims:
+    - id: exact-capacity-region
+      kind: exact-capacity
+      status: open
+      version: 1
+      description: Equality of the operational and deterministic entropy regions.
     notes: The concrete maps and entropy region are fixed in the central statement.
     files:
     - path: lean/CapacityAtlas/Channels/Broadcast.lean
       declaration: CapacityAtlas.Channel.blackwellBroadcastCapacityStatement
       role: statement
       description: Operational capacity region equals the deterministic entropy region.
+      claim_id: exact-capacity-region
   proofs: []
 references: [gelfand-pinsker-broadcast-1980]

@@ -59,8 +59,8 @@ bounds:
 formalization:
   statement:
     status: none
-    version: 1
     language: Lean
+    claims: []
     notes: Gaussian random variables and multi-user regions are not yet formalized.
     files: []
   proofs: []

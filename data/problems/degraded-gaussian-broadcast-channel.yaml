@@ -51,8 +51,8 @@ bounds:
 formalization:
   statement:
     status: none
-    version: 1
     language: Lean
+    claims: []
     notes: Entropy power and Gaussian multi-user coding are not yet formalized.
     files: []
   proofs: []

@@ -54,8 +54,8 @@ bounds:
 formalization:
   statement:
     status: none
-    version: 1
     language: Lean
+    claims: []
     notes: A faithful proof needs Gaussian conditional distributions and the Gel'fand-Pinsker theorem.
     files: []
   proofs: []

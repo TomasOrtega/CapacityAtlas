@@ -60,8 +60,8 @@ frontier:
 formalization:
   statement:
     status: none
-    version: 1
     language: Lean
+    claims: []
     notes: A reusable causal network-code layer is required.
     files: []
   proofs: []

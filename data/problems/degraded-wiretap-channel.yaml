@@ -52,8 +52,8 @@ bounds:
 formalization:
   statement:
     status: none
-    version: 1
     language: Lean
+    claims: []
     notes: Secrecy criteria and mutual-information converses are not yet formalized.
     files: []
   proofs: []

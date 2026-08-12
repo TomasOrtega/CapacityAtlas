@@ -61,8 +61,8 @@ frontier:
 formalization:
   statement:
     status: none
-    version: 1
     language: Lean
+    claims: []
     notes: The canonical statement should reuse Mathlib graph products and a shared zero-error code definition.
     files: []
   proofs: []

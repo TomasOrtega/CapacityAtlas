@@ -50,8 +50,8 @@ bounds:
 formalization:
   statement:
     status: none
-    version: 1
     language: Lean
+    claims: []
     notes: This theorem should live in a dedicated external proof repository once causal relay codes are shared.
     files: []
   proofs: []

@@ -6,7 +6,7 @@ abbreviation: SJ11
 status: open
 featured: true
 updated: '2026-08-12'
-summary: A multiple-unicast instance where the exact nonlinear symmetric capacity is separated from the known linear
+summary: A multiple-unicast instance where the exact nonlinear symmetric capacity is separated from the known linear-encoder
   answer.
 tags:
   model:
@@ -20,7 +20,7 @@ tags:
   - symmetric-capacity
   knowledge:
   - bounds
-  - linear-only
+  - linear-encoder-only
 model:
   input: Eleven independent messages \(W_1,\ldots,W_{11}\) held by one broadcaster.
   output: Receiver \(j\) recovers \(W_j\) from the broadcast and its side information.
@@ -40,7 +40,8 @@ capacity:
   lower: \frac5{13}
   upper: \frac{11}{28}
   conjectured: \frac5{13}
-  notes: The linear symmetric capacity is exactly 5/13.
+  notes: The linear-encoder symmetric capacity is exactly 5/13. The formal quantity constrains the encoder to be linear
+    and permits arbitrary zero-error decoders; equivalence with a definition requiring linear decoders is not yet established.
 bounds:
 - id: vector-linear-code
   direction: lower
@@ -57,10 +58,10 @@ bounds:
   references:
   - sun-jafar-2015
   - zhang-yeung-1998
-- id: linear-capacity
-  direction: linear-exact
-  relation: C_{\mathrm{sym}}^{\mathrm{linear}}=\frac5{13}
-  method: Achievability plus an Ingleton linear-rank converse.
+- id: linear-encoder-capacity
+  direction: linear-encoder-exact
+  relation: C_{\mathrm{sym}}^{\mathrm{linear\text{-}enc}}=\frac5{13}
+  method: Linear-encoder achievability plus an Ingleton linear-rank converse.
   year: 2015
   references:
   - sun-jafar-2015
@@ -74,14 +75,14 @@ bounds:
   - sun-jafar-2015
 frontier:
   question: Prove \(C_{\mathrm{sym}}=5/13\), or construct a nonlinear code above \(5/13\).
-  bottleneck: Linear-rank inequalities close the linear problem, while known entropic inequalities do not close
+  bottleneck: Linear-rank inequalities close the linear-encoder problem, while known entropic inequalities do not close
     the nonlinear gap.
   progress:
   - Improve either endpoint with an auditable certificate.
   - Rule out a concrete nonlinear code family.
   - Formalize the linear code or entropic converse.
   subproblems:
-  - title: Formalize the operational zero-error and vector-linear capacity quantities.
+  - title: Formalize the operational zero-error and linear-encoder capacity quantities.
     status: done
   - title: Machine-check the one-based table, alignment graph, inner diamond, and internal conflict distance.
     status: done
@@ -92,34 +93,101 @@ frontier:
 formalization:
   statement:
     status: statement
-    version: 2
     language: Lean
-    notes: The canonical proposition now fixes zero error, alphabet scope, arbitrary blocklength, nonlinear capacity, and global vector-linear capacity.
+    claims:
+    - id: exact-capacity
+      kind: exact-capacity
+      status: open
+      version: 2
+      description: Exact unrestricted nonlinear zero-error symmetric capacity.
+    - id: linear-achievability
+      kind: achievability
+      status: open
+      version: 3
+      description: Published 5/13 linear-encoder achievability bound.
+    - id: unrestricted-achievability
+      kind: achievability
+      status: open
+      version: 1
+      description: Unrestricted 5/13 lower bound derived from linear-encoder achievability.
+    - id: linear-converse
+      kind: converse
+      status: open
+      version: 2
+      description: Global finite-field linear-encoder converse.
+    - id: nonlinear-converse
+      kind: converse
+      status: open
+      version: 2
+      description: Zhang-Yeung nonlinear upper bound.
+    - id: shannon-relaxation-value
+      kind: converse
+      status: open
+      version: 2
+      description: Exact value of the Shannon polymatroid relaxation.
+    - id: shannon-outer-bound
+      kind: converse
+      status: open
+      version: 1
+      description: Operational 2/5 outer bound derived from the Shannon relaxation.
+    - id: internal-conflicts-exact
+      kind: structural
+      status: proved
+      version: 1
+      description: Exact enumeration of the abstractly defined internal conflicts.
+    - id: internal-conflict-distance
+      kind: structural
+      status: proved
+      version: 1
+      description: Every internal conflict has alignment-graph distance two.
+    notes: The canonical propositions fix zero error, alphabet scope, arbitrary blocklength, nonlinear capacity, and
+      global linear-encoder capacity. Linear decoders are not required by the current formal quantity.
     files:
     - path: lean/CapacityAtlas/Network/SunJafar11.lean
       declaration: CapacityAtlas.IndexCoding.sunJafar11_exact_capacity_conjecture
       role: statement
       description: Exact nonlinear zero-error symmetric-capacity conjecture.
+      claim_id: exact-capacity
     - path: lean/CapacityAtlas/Network/SunJafar11.lean
       declaration: CapacityAtlas.IndexCoding.sunJafar11_linear_achievability
       role: statement
-      description: Published 5/13 vector-linear achievability claim.
+      description: Published 5/13 linear-encoder achievability claim.
+      claim_id: linear-achievability
+    - path: lean/CapacityAtlas/Network/SunJafar11.lean
+      declaration: CapacityAtlas.IndexCoding.sunJafar11_unrestricted_achievability
+      role: statement
+      description: Unrestricted 5/13 lower-bound claim.
+      claim_id: unrestricted-achievability
     - path: lean/CapacityAtlas/Network/SunJafar11.lean
       declaration: CapacityAtlas.IndexCoding.sunJafar11_linear_converse
       role: statement
-      description: Global finite-field vector-linear converse.
+      description: Global finite-field linear-encoder converse.
+      claim_id: linear-converse
     - path: lean/CapacityAtlas/Network/SunJafar11.lean
       declaration: CapacityAtlas.IndexCoding.sunJafar11_nonlinear_converse
       role: statement
       description: Zhang-Yeung nonlinear upper bound.
+      claim_id: nonlinear-converse
     - path: lean/CapacityAtlas/Network/SunJafar11.lean
       declaration: CapacityAtlas.IndexCoding.sunJafar11_shannon_outer_bound_limit
       role: statement
       description: Exact limitation of Shannon polymatroid inequalities.
+      claim_id: shannon-relaxation-value
+    - path: lean/CapacityAtlas/Network/SunJafar11.lean
+      declaration: CapacityAtlas.IndexCoding.sunJafar11_shannon_outer_bound
+      role: statement
+      description: Operational 2/5 Shannon-polymatroid outer-bound claim.
+      claim_id: shannon-outer-bound
+    - path: lean/CapacityAtlas/Network/SunJafar11.lean
+      declaration: CapacityAtlas.IndexCoding.sunJafar11_internalConflicts_exact
+      role: short-proof
+      description: Finite verification that the listed internal conflicts are exact.
+      claim_id: internal-conflicts-exact
     - path: lean/CapacityAtlas/Network/SunJafar11.lean
       declaration: CapacityAtlas.IndexCoding.sunJafar11_internalConflictDistance_two
       role: short-proof
-      description: Finite verification that every listed internal conflict has alignment distance two.
+      description: Finite verification that every internal conflict has alignment distance two.
+      claim_id: internal-conflict-distance
   proofs: []
 references:
 - sun-jafar-2015

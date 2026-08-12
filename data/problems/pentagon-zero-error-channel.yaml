@@ -52,8 +52,8 @@ bounds:
 formalization:
   statement:
     status: none
-    version: 1
     language: Lean
+    claims: []
     notes: This is a good first substantial external proof after graph products and Lovász theta are available.
     files: []
   proofs: []

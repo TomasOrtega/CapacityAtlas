@@ -51,8 +51,8 @@ bounds:
 formalization:
   statement:
     status: none
-    version: 1
     language: Lean
+    claims: []
     notes: Multi-user rate regions and auxiliary variables are not yet in the Lean core.
     files: []
   proofs: []

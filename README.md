@@ -6,12 +6,12 @@
 [![Content: CC-BY-4.0](https://img.shields.io/badge/content-CC--BY--4.0-lightgrey)](LICENSES/CC-BY-4.0.txt)
 
 **Capacity Atlas** is a community-maintained registry of channel capacities,
-known bounds, open gaps, canonical Lean statements, and external machine-checked
+known bounds, open gaps, canonical Lean claims, and external machine-checked
 proofs. The public site is [capacityatlas.org](https://capacityatlas.org/).
 
 The repository is deliberately a registry rather than a proof monorepo. It owns
 stable problem identifiers, precise communication models, controlled
-information-theory tags, primary references, and versioned Lean statements.
+information-theory tags, primary references, and versioned formal claims.
 Substantial formal proofs live in dedicated repositories and are linked by an
 immutable commit.
 
@@ -19,7 +19,7 @@ immutable commit.
 
 The architecture takes explicit inspiration from Google DeepMind's
 [Formal Conjectures](https://github.com/google-deepmind/formal-conjectures)
-project. Capacity Atlas adapts its statement-first registry, structured
+project. Capacity Atlas adapts its claim-level registry, structured
 declaration metadata, external formal-proof links, separation of reusable
 definitions from problem statements, benchmark-oriented versioning, and compact
 browse interface. Capacity Atlas uses a channel-specific taxonomy and a stricter

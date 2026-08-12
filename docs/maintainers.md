@@ -14,11 +14,11 @@ GitHub Discussions and the giscus embed are enabled. The repository and
 with the configured repository and category, and verify both the inline widget
 and the direct GitHub links after any change. See `docs/discussions.md`.
 
-## Statement versions
+## Claim versions
 
-Review every Lean statement change for semantic compatibility. Increment the
-problem's statement version whenever an existing external proof might no longer
-apply. Do not accept a proof record whose version differs from the statement.
+Review every Lean claim change for semantic compatibility. Increment the
+affected claim's version whenever an existing external proof might no longer
+apply. Do not accept a proof record whose version differs from its target claim.
 
 ## External proofs
 
@@ -34,7 +34,7 @@ immutable tag such as:
 benchmark-v1-lean4.32.0
 ```
 
-Increment the benchmark version when problems are added or removed, a statement
+Increment the benchmark version when problems are added or removed, a claim
 changes materially, or a misformalization is corrected. Do not rewrite existing
 snapshot tags.
 

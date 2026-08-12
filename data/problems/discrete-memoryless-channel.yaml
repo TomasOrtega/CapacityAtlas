@@ -57,8 +57,13 @@ timeline:
 formalization:
   statement:
     status: statement
-    version: 1
     language: Lean
+    claims:
+    - id: exact-capacity
+      kind: exact-capacity
+      status: proved
+      version: 1
+      description: Equality of operational average-error and single-letter information capacity.
     notes: The finite-channel coding theorem is proved locally from a threshold random-coding argument and a weak
       Fano converse. The proof covers every finite channel, including the repository's empty-input convention.
     files:
@@ -106,6 +111,7 @@ formalization:
       declaration: CapacityAtlas.FiniteChannel.codingTheorem
       role: shared-api
       description: Equality of operational average-error capacity and information capacity.
+      claim_id: exact-capacity
   proofs: []
 references:
 - shannon-1948

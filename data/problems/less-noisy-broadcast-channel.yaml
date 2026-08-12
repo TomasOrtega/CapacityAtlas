@@ -35,13 +35,19 @@ bounds:
 formalization:
   statement:
     status: statement
-    version: 1
     language: Lean
+    claims:
+    - id: exact-capacity-region
+      kind: exact-capacity
+      status: open
+      version: 1
+      description: Exact less-noisy broadcast capacity region.
     notes: Less noisy is defined by auxiliary-variable dominance, separately from more capable.
     files:
     - path: lean/CapacityAtlas/Channels/Broadcast.lean
       declaration: CapacityAtlas.Channel.lessNoisyBroadcastCapacityStatement
       role: statement
       description: Less-noisy capacity region equals the superposition region.
+      claim_id: exact-capacity-region
   proofs: []
 references: [elgamal-1979]

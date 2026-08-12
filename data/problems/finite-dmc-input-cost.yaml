@@ -36,13 +36,19 @@ bounds:
 formalization:
   statement:
     status: statement
-    version: 1
     language: Lean
+    claims:
+    - id: exact-capacity
+      kind: exact-capacity
+      status: open
+      version: 1
+      description: Exact cost-constrained operational capacity formula.
     notes: The model fixes maximum codeword cost separately from admissible one-letter input distributions.
     files:
     - path: lean/CapacityAtlas/Channels/InputCost.lean
       declaration: CapacityAtlas.FiniteChannel.finiteDMCInputCostCapacityStatement
       role: statement
       description: Cost-constrained operational and mutual-information capacity identity.
+      claim_id: exact-capacity
   proofs: []
 references: [sutter-et-al-2015]

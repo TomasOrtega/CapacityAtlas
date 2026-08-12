@@ -50,8 +50,8 @@ bounds:
 formalization:
   statement:
     status: none
-    version: 1
     language: Lean
+    claims: []
     notes: Families of finite channels can reuse the shared DMC structure; uniform operational codes are missing.
     files: []
   proofs: []

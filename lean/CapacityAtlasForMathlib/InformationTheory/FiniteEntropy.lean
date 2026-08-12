@@ -210,6 +210,306 @@ theorem le_map_apply [DecidableEq B] (distribution : FiniteDistribution A)
   change distribution a ≤ ∑ other with mapFunction other = mapFunction a, distribution other
   exact Finset.single_le_sum (fun other _ ↦ distribution.nonnegative other) (by simp)
 
+/-- Consecutive pushforwards agree with pushforward along the composite map. -/
+@[simp, capacity_shared_api]
+theorem map_map {C : Type*} [Fintype C] [DecidableEq B] [DecidableEq C]
+    (distribution : FiniteDistribution A) (first : A → B) (second : B → C) :
+    (distribution.map first).map second = distribution.map (second ∘ first) := by
+  ext c
+  change (∑ b with second b = c, distribution.map first b) =
+    ∑ a with second (first a) = c, distribution a
+  rw [Finset.sum_filter, Finset.sum_filter]
+  simpa only [mul_ite, mul_one, mul_zero] using
+    distribution.sum_map_mul first (fun b ↦ if second b = c then 1 else 0)
+
+private theorem negMulLog_sum_le_sum_negMulLog
+    (weight : A → ℝ) (hweight : ∀ a, 0 ≤ weight a) (set : Finset A) :
+    Real.negMulLog (∑ a ∈ set, weight a) ≤ ∑ a ∈ set, Real.negMulLog (weight a) := by
+  classical
+  let total := ∑ a ∈ set, weight a
+  have htotal : 0 ≤ total := Finset.sum_nonneg fun a ha ↦ hweight a
+  by_cases htotalZero : total = 0
+  · have hweightZero {a : A} (ha : a ∈ set) : weight a = 0 := by
+      apply le_antisymm
+      · calc
+          weight a ≤ ∑ other ∈ set, weight other := by
+            exact Finset.single_le_sum (fun other hother ↦ hweight other) ha
+          _ = 0 := htotalZero
+      · exact hweight a
+    simp only [show (∑ a ∈ set, weight a) = 0 from htotalZero, Real.negMulLog_zero]
+    exact Finset.sum_nonneg fun a ha ↦ by simp [hweightZero ha]
+  · have htotalPositive : 0 < total := lt_of_le_of_ne htotal (Ne.symm htotalZero)
+    let normalized : FiniteDistribution A :=
+      { probability := fun a ↦ if a ∈ set then weight a / total else 0
+        nonnegative := fun a ↦ by
+          split_ifs
+          · exact div_nonneg (hweight a) htotal
+          · exact le_rfl
+        sum_probability := by
+          change (∑ a, if a ∈ set then weight a / total else 0) = 1
+          rw [← Finset.sum_filter, ← Finset.sum_div]
+          have hfiltered : (∑ i with i ∈ set, weight i) = total := by
+            rw [show Finset.univ.filter (fun i ↦ i ∈ set) = set by ext; simp]
+          rw [hfiltered]
+          exact div_self htotalZero }
+    have hnormalizedSet : ∑ a ∈ set, normalized a = 1 := by
+      rw [← normalized.sum_probability]
+      change (∑ a ∈ set, if a ∈ set then weight a / total else 0) =
+        ∑ a, if a ∈ set then weight a / total else 0
+      simp
+    have hnormalizedEntropy :
+        ∑ a ∈ set, Real.negMulLog (normalized a) = normalized.entropy := by
+      unfold entropy
+      calc
+        ∑ a ∈ set, Real.negMulLog (normalized a) =
+            ∑ a ∈ set, Real.negMulLog (weight a / total) := by
+          apply Finset.sum_congr rfl
+          intro a ha
+          change Real.negMulLog (if a ∈ set then weight a / total else 0) = _
+          simp [ha]
+        _ = ∑ a, if a ∈ set then Real.negMulLog (weight a / total) else 0 := by
+          rw [← Finset.sum_filter]
+          rw [show Finset.univ.filter (fun a ↦ a ∈ set) = set by ext; simp]
+        _ = ∑ a, Real.negMulLog (normalized a) := by
+          apply Fintype.sum_congr
+          intro a
+          change (if a ∈ set then Real.negMulLog (weight a / total) else 0) =
+            Real.negMulLog (if a ∈ set then weight a / total else 0)
+          split_ifs <;> simp
+    have hdecomposition :
+        (∑ a ∈ set, Real.negMulLog (weight a)) =
+          Real.negMulLog total + total * normalized.entropy := by
+      calc
+        ∑ a ∈ set, Real.negMulLog (weight a) =
+            ∑ a ∈ set, Real.negMulLog (total * normalized a) := by
+          apply Finset.sum_congr rfl
+          intro a ha
+          congr 1
+          change weight a = total * (if a ∈ set then weight a / total else 0)
+          simp only [ha, if_true]
+          field_simp
+        _ = ∑ a ∈ set, (normalized a * Real.negMulLog total +
+            total * Real.negMulLog (normalized a)) := by
+          apply Finset.sum_congr rfl
+          intro a _
+          exact Real.negMulLog_mul total (normalized a)
+        _ = Real.negMulLog total + total * normalized.entropy := by
+          rw [Finset.sum_add_distrib, ← Finset.sum_mul, hnormalizedSet,
+            one_mul, ← Finset.mul_sum, hnormalizedEntropy]
+    rw [hdecomposition]
+    exact le_add_of_nonneg_right (mul_nonneg htotal normalized.entropy_nonnegative)
+
+/-- A deterministic observation cannot have more entropy than its source. -/
+@[capacity_shared_api]
+theorem entropy_map_le [DecidableEq B] (distribution : FiniteDistribution A)
+    (mapFunction : A → B) :
+    (distribution.map mapFunction).entropy ≤ distribution.entropy := by
+  unfold entropy map
+  calc
+    ∑ b, Real.negMulLog (∑ a with mapFunction a = b, distribution a) ≤
+        ∑ b, ∑ a with mapFunction a = b, Real.negMulLog (distribution a) := by
+      apply Finset.sum_le_sum
+      intro b _
+      simpa only [Finset.sum_filter] using
+        negMulLog_sum_le_sum_negMulLog distribution distribution.nonnegative
+          (Finset.univ.filter fun a ↦ mapFunction a = b)
+    _ = ∑ a, Real.negMulLog (distribution a) := by
+      rw [Finset.sum_fiberwise]
+
+private theorem sum_prod_fiber_snd {C : Type*} [Fintype C] [DecidableEq C]
+    (mass : A × C → ℝ) (c : C) :
+    (∑ a, mass (a, c)) = ∑ pair with pair.2 = c, mass pair := by
+  rw [Finset.sum_filter, Fintype.sum_prod_type]
+  simp
+
+/-- Strong subadditivity of entropy for three finite random variables. -/
+@[capacity_shared_api]
+theorem entropy_strong_subadditivity {C : Type*} [Fintype C]
+    [DecidableEq A] [DecidableEq B] [DecidableEq C]
+    (distribution : FiniteDistribution (A × (B × C))) :
+    distribution.entropy + (distribution.map fun x ↦ x.2.2).entropy ≤
+      (distribution.map fun x ↦ (x.1, x.2.2)).entropy +
+        (distribution.map fun x ↦ (x.2.1, x.2.2)).entropy := by
+  let acMap : A × (B × C) → A × C := fun x ↦ (x.1, x.2.2)
+  let bcMap : A × (B × C) → B × C := fun x ↦ (x.2.1, x.2.2)
+  let cMap : A × (B × C) → C := fun x ↦ x.2.2
+  let ac := distribution.map acMap
+  let bc := distribution.map bcMap
+  let cDistribution := distribution.map cMap
+  have hacMap : ac.map Prod.snd = cDistribution := by
+    calc
+      ac.map Prod.snd = distribution.map (Prod.snd ∘ acMap) :=
+        distribution.map_map acMap Prod.snd
+      _ = cDistribution := by rfl
+  have hbcMap : bc.map Prod.snd = cDistribution := by
+    calc
+      bc.map Prod.snd = distribution.map (Prod.snd ∘ bcMap) :=
+        distribution.map_map bcMap Prod.snd
+      _ = cDistribution := by rfl
+  have hacSum (c : C) : ∑ a, ac (a, c) = cDistribution c := by
+    calc
+      ∑ a, ac (a, c) = ∑ pair with pair.2 = c, ac pair :=
+        sum_prod_fiber_snd ac c
+      _ = ac.map Prod.snd c := rfl
+      _ = cDistribution c := by rw [hacMap]
+  have hbcSum (c : C) : ∑ b, bc (b, c) = cDistribution c := by
+    calc
+      ∑ b, bc (b, c) = ∑ pair with pair.2 = c, bc pair :=
+        sum_prod_fiber_snd bc c
+      _ = bc.map Prod.snd c := rfl
+      _ = cDistribution c := by rw [hbcMap]
+  let productMass : A × (B × C) → ℝ := fun x ↦
+    if cDistribution x.2.2 = 0 then 0
+    else ac (x.1, x.2.2) * bc (x.2.1, x.2.2) / cDistribution x.2.2
+  have hproductNonnegative : ∀ x, 0 ≤ productMass x := by
+    intro x
+    dsimp [productMass]
+    split_ifs
+    · exact le_rfl
+    · exact div_nonneg (mul_nonneg (ac.nonnegative _) (bc.nonnegative _))
+        (cDistribution.nonnegative _)
+  have hproductSum : ∑ x, productMass x = 1 := by
+    calc
+      ∑ x : A × (B × C), productMass x =
+          ∑ a : A, ∑ b : B, ∑ c : C, productMass (a, (b, c)) := by
+        rw [Fintype.sum_prod_type]
+        simp_rw [Fintype.sum_prod_type]
+      _ = ∑ a : A, ∑ c : C, ∑ b : B, productMass (a, (b, c)) := by
+        apply Fintype.sum_congr
+        intro a
+        rw [Finset.sum_comm]
+      _ = ∑ c : C, ∑ a : A, ∑ b : B, productMass (a, (b, c)) := by
+        rw [Finset.sum_comm]
+      _ = ∑ c : C, cDistribution c := by
+        apply Fintype.sum_congr
+        intro c
+        by_cases hc : cDistribution c = 0
+        · simp [productMass, hc]
+        · calc
+            ∑ a : A, ∑ b : B, productMass (a, (b, c)) =
+                ∑ a : A, ∑ b : B,
+                  ac (a, c) * bc (b, c) / cDistribution c := by
+              simp only [productMass, hc, if_false]
+            _ = ∑ a : A,
+                ac (a, c) * (∑ b : B, bc (b, c)) / cDistribution c := by
+              apply Fintype.sum_congr
+              intro a
+              rw [← Finset.sum_div, ← Finset.mul_sum]
+            _ = (∑ a : A, ac (a, c)) * (∑ b : B, bc (b, c)) /
+                cDistribution c := by
+              rw [← Finset.sum_div, ← Finset.sum_mul]
+            _ = cDistribution c * cDistribution c / cDistribution c := by
+              rw [hacSum, hbcSum]
+            _ = cDistribution c := by field_simp
+      _ = 1 := cDistribution.sum_probability
+  have hacPositive {x : A × (B × C)} (hx : distribution x ≠ 0) :
+      0 < ac (x.1, x.2.2) := by
+    have hxPositive : 0 < distribution x :=
+      lt_of_le_of_ne (distribution.nonnegative x) (Ne.symm hx)
+    exact hxPositive.trans_le (distribution.le_map_apply acMap x)
+  have hbcPositive {x : A × (B × C)} (hx : distribution x ≠ 0) :
+      0 < bc (x.2.1, x.2.2) := by
+    have hxPositive : 0 < distribution x :=
+      lt_of_le_of_ne (distribution.nonnegative x) (Ne.symm hx)
+    exact hxPositive.trans_le (distribution.le_map_apply bcMap x)
+  have hcPositive {x : A × (B × C)} (hx : distribution x ≠ 0) :
+      0 < cDistribution x.2.2 := by
+    have hxPositive : 0 < distribution x :=
+      lt_of_le_of_ne (distribution.nonnegative x) (Ne.symm hx)
+    exact hxPositive.trans_le (distribution.le_map_apply cMap x)
+  have hsupport : ∀ x, distribution x ≠ 0 → productMass x ≠ 0 := by
+    intro x hx
+    have hac := hacPositive hx
+    have hbc := hbcPositive hx
+    have hc := hcPositive hx
+    dsimp [productMass]
+    rw [if_neg hc.ne']
+    exact (div_pos (mul_pos hac hbc) hc).ne'
+  have hkl := sum_mul_log_div_nonnegative distribution productMass
+    distribution.nonnegative hproductNonnegative distribution.sum_probability hproductSum hsupport
+  have hpoint (x : A × (B × C)) :
+      distribution x * Real.log (distribution x / productMass x) =
+        ((distribution x * Real.log (distribution x) +
+          distribution x * Real.log (cDistribution x.2.2)) -
+          distribution x * Real.log (ac (x.1, x.2.2))) -
+          distribution x * Real.log (bc (x.2.1, x.2.2)) := by
+    by_cases hx : distribution x = 0
+    · simp [hx]
+    have hac := hacPositive hx
+    have hbc := hbcPositive hx
+    have hc := hcPositive hx
+    have hproduct : productMass x ≠ 0 := hsupport x hx
+    have hproductFormula : productMass x =
+        ac (x.1, x.2.2) * bc (x.2.1, x.2.2) / cDistribution x.2.2 := by
+      simp [productMass, hc.ne']
+    rw [Real.log_div hx hproduct, hproductFormula,
+      Real.log_div (mul_ne_zero hac.ne' hbc.ne') hc.ne',
+      Real.log_mul hac.ne' hbc.ne']
+    ring
+  have hacExpectation :
+      (∑ x : A × (B × C),
+        distribution x * Real.log (ac (x.1, x.2.2))) =
+        ∑ pair : A × C, ac pair * Real.log (ac pair) := by
+    simpa [acMap, ac] using
+      (distribution.sum_map_mul acMap (fun pair ↦ Real.log (ac pair))).symm
+  have hbcExpectation :
+      (∑ x : A × (B × C),
+        distribution x * Real.log (bc (x.2.1, x.2.2))) =
+        ∑ pair : B × C, bc pair * Real.log (bc pair) := by
+    simpa [bcMap, bc] using
+      (distribution.sum_map_mul bcMap (fun pair ↦ Real.log (bc pair))).symm
+  have hcExpectation :
+      (∑ x : A × (B × C),
+        distribution x * Real.log (cDistribution x.2.2)) =
+        ∑ c : C, cDistribution c * Real.log (cDistribution c) := by
+    simpa [cMap, cDistribution] using
+      (distribution.sum_map_mul cMap (fun c ↦ Real.log (cDistribution c))).symm
+  have hidentity :
+      (∑ x : A × (B × C),
+        distribution x * Real.log (distribution x / productMass x)) =
+        -distribution.entropy - cDistribution.entropy + ac.entropy + bc.entropy := by
+    calc
+      ∑ x : A × (B × C),
+          distribution x * Real.log (distribution x / productMass x) =
+          ∑ x : A × (B × C),
+            (((distribution x * Real.log (distribution x) +
+              distribution x * Real.log (cDistribution x.2.2)) -
+              distribution x * Real.log (ac (x.1, x.2.2))) -
+              distribution x * Real.log (bc (x.2.1, x.2.2))) := by
+        apply Fintype.sum_congr
+        exact hpoint
+      _ = ( ∑ x : A × (B × C), distribution x * Real.log (distribution x)) +
+          (∑ x : A × (B × C),
+            distribution x * Real.log (cDistribution x.2.2)) -
+          (∑ x : A × (B × C),
+            distribution x * Real.log (ac (x.1, x.2.2))) -
+          (∑ x : A × (B × C),
+            distribution x * Real.log (bc (x.2.1, x.2.2))) := by
+        rw [Finset.sum_sub_distrib, Finset.sum_sub_distrib, Finset.sum_add_distrib]
+      _ = -distribution.entropy - cDistribution.entropy + ac.entropy + bc.entropy := by
+        rw [hacExpectation, hbcExpectation, hcExpectation,
+          distribution.entropy_eq_neg_sum_mul_log,
+          cDistribution.entropy_eq_neg_sum_mul_log,
+          ac.entropy_eq_neg_sum_mul_log, bc.entropy_eq_neg_sum_mul_log]
+        ring
+  rw [hidentity] at hkl
+  simpa [ac, bc, cDistribution, acMap, bcMap, cMap] using
+    (show distribution.entropy + cDistribution.entropy ≤ ac.entropy + bc.entropy by linarith)
+
+/-- Strong subadditivity for three deterministic observations of a common source. -/
+@[capacity_shared_api]
+theorem entropy_map_strong_subadditivity {X C : Type*} [Fintype X] [Fintype C]
+    [DecidableEq A] [DecidableEq B] [DecidableEq C]
+    (distribution : FiniteDistribution X) (first : X → A) (second : X → B)
+    (third : X → C) :
+    (distribution.map fun x ↦ (first x, (second x, third x))).entropy +
+        (distribution.map third).entropy ≤
+      (distribution.map fun x ↦ (first x, third x)).entropy +
+        (distribution.map fun x ↦ (second x, third x)).entropy := by
+  let joint := distribution.map fun x ↦ (first x, (second x, third x))
+  simpa [joint, Function.comp_def] using
+    joint.entropy_strong_subadditivity
+
 /-- The marginal distribution of one coordinate of a finite random vector. -/
 @[capacity_shared_api]
 noncomputable def coordinateMarginal {ι : Type*} [Fintype ι] [DecidableEq ι]

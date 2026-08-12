@@ -61,4 +61,4 @@ axes:
       - {id: single-letter-characterization, label: Single-letter characterization}
       - {id: regularized-characterization, label: Regularized characterization}
       - {id: bounds, label: Bounds only}
-      - {id: linear-only, label: Linear-only result}
+      - {id: linear-encoder-only, label: Linear-encoder-only result}
