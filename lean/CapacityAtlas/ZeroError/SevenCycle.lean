@@ -23,7 +23,8 @@ noncomputable def sevenCycleShannonCapacity : ℝ :=
   graphShannonCapacity sevenCycleAdjacent
 
 /-- The sourced finite-power lower certificate and Lovasz-theta upper bound. -/
-@[capacity_problem "seven-cycle-zero-error-channel", capacity_statement, capacity_solved]
+@[capacity_problem "seven-cycle-zero-error-channel", capacity_statement, capacity_solved,
+  capacity_claim "capacity-bounds" 1]
 theorem sevenCycleKnownBounds :
   Real.rpow 367 ((5 : ℝ)⁻¹) ≤ sevenCycleShannonCapacity ∧
     sevenCycleShannonCapacity ≤

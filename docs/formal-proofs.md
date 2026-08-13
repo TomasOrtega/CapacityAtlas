@@ -32,7 +32,7 @@ The proof repository should:
 2. import the canonical claim declaration when one exists
 3. build without `sorry`, `admit`, or unreviewed axioms
 4. expose the named declaration from its root library
-5. run `lake build` in public CI
+5. run its complete Lean build and transitive axiom checks in public CI
 6. preserve the registered commit permanently
 
 ## Atlas record

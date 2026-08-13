@@ -42,7 +42,7 @@ private theorem identity_mutualInformation {X : Type*} [Fintype X] [DecidableEq 
 
 /-- The single-letter information capacity of a noiseless finite channel. -/
 @[capacity_problem "noiseless-q-ary-channel", capacity_statement, capacity_solved,
-  capacity_formal_proof]
+  capacity_formal_proof, capacity_claim "information-capacity" 1]
 theorem noiseless_informationCapacity (q : ℕ) (hq : 2 ≤ q) :
     (FiniteChannel.identity (Fin q)).informationCapacityBits = Real.log q / Real.log 2 := by
   have hq0 : 0 < q := lt_of_lt_of_le (by norm_num) hq
@@ -59,7 +59,7 @@ theorem noiseless_informationCapacity (q : ℕ) (hq : 2 ≤ q) :
 
 /-- The operational average-error capacity of a noiseless finite channel. -/
 @[capacity_problem "noiseless-q-ary-channel", capacity_statement, capacity_solved,
-  capacity_formal_proof]
+  capacity_formal_proof, capacity_claim "operational-capacity" 1]
 theorem noiseless_operationalCapacity (q : ℕ) (hq : 2 ≤ q) :
     (FiniteChannel.identity (Fin q)).operationalCapacityBits = Real.log q / Real.log 2 := by
   have hq0 : 0 < q := lt_of_lt_of_le (by norm_num) hq

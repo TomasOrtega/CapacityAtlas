@@ -35,6 +35,7 @@ def additiveNoise (noise : FiniteDistribution G) : FiniteChannel G G where
     exact noise.sum_probability
 
 /-- Every row of an additive-noise channel has the noise entropy. -/
+@[capacity_api]
 theorem additiveNoise_rowDistribution_entropy (noise : FiniteDistribution G) (input : G) :
     ((additiveNoise noise).rowDistribution input).entropy = noise.entropy := by
   unfold FiniteDistribution.entropy
@@ -42,6 +43,7 @@ theorem additiveNoise_rowDistribution_entropy (noise : FiniteDistribution G) (in
   rw [Equiv.sum_comp (Equiv.addLeft (-input)) (fun z => Real.negMulLog (noise z))]
 
 /-- Additive-noise conditional output entropy is independent of the input distribution. -/
+@[capacity_api]
 theorem additiveNoise_conditionalOutputEntropy
     (noise : FiniteDistribution G) (input : FiniteDistribution G) :
     (additiveNoise noise).conditionalOutputEntropy input = noise.entropy := by
@@ -54,6 +56,7 @@ private def negAddRightEquiv (output : G) : G ≃ G :=
   (Equiv.neg G).trans (Equiv.addRight output)
 
 /-- Uniform input produces uniform output through an additive-noise channel. -/
+@[capacity_api]
 theorem additiveNoise_outputDistribution_uniform (noise : FiniteDistribution G) :
     (additiveNoise noise).outputDistribution (FiniteDistribution.uniform G) =
       FiniteDistribution.uniform G := by
@@ -85,7 +88,7 @@ private theorem additiveNoise_informationCapacity_nats (noise : FiniteDistributi
 
 /-- The single-letter information capacity of a finite-group additive-noise channel. -/
 @[capacity_problem "finite-group-additive-noise-channel", capacity_statement, capacity_solved,
-  capacity_formal_proof]
+  capacity_formal_proof, capacity_claim "information-capacity" 1]
 theorem additiveNoise_informationCapacity (noise : FiniteDistribution G) :
     (additiveNoise noise).informationCapacityBits =
       Real.log (Fintype.card G) / Real.log 2 - noise.entropyBits := by
@@ -94,7 +97,7 @@ theorem additiveNoise_informationCapacity (noise : FiniteDistribution G) :
 
 /-- The operational capacity of a finite-group additive-noise channel. -/
 @[capacity_problem "finite-group-additive-noise-channel", capacity_statement, capacity_solved,
-  capacity_formal_proof]
+  capacity_formal_proof, capacity_claim "operational-capacity" 1]
 theorem additiveNoise_operationalCapacity (noise : FiniteDistribution G) :
     (additiveNoise noise).operationalCapacityBits =
       Real.log (Fintype.card G) / Real.log 2 - noise.entropyBits := by

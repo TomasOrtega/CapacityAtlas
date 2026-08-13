@@ -57,19 +57,19 @@ theorem sunJafar11_oneBased_translation (receiver : SunJafar11Receiver) :
     (sunJafar11Interference receiver).image (fun message ↦ message.val + 1) =
       sunJafar11InterferenceOneBased receiver := by
   fin_cases receiver <;>
-    native_decide
+    decide
 
-@[simp] theorem sunJafar11_receiver1 : sunJafar11Interference 0 = {3, 4} := rfl
-@[simp] theorem sunJafar11_receiver2 : sunJafar11Interference 1 = {4} := rfl
-@[simp] theorem sunJafar11_receiver3 : sunJafar11Interference 2 = ∅ := rfl
-@[simp] theorem sunJafar11_receiver4 : sunJafar11Interference 3 = ∅ := rfl
-@[simp] theorem sunJafar11_receiver5 : sunJafar11Interference 4 = {1} := rfl
-@[simp] theorem sunJafar11_receiver6 : sunJafar11Interference 5 = {1, 2} := rfl
-@[simp] theorem sunJafar11_receiver7 : sunJafar11Interference 6 = {0, 2} := rfl
-@[simp] theorem sunJafar11_receiver8 : sunJafar11Interference 7 = {1, 3} := rfl
-@[simp] theorem sunJafar11_receiver9 : sunJafar11Interference 8 = {2, 3} := rfl
-@[simp] theorem sunJafar11_receiver10 : sunJafar11Interference 9 = {2, 4} := rfl
-@[simp] theorem sunJafar11_receiver11 : sunJafar11Interference 10 = {3, 5} := rfl
+@[simp, capacity_api] theorem sunJafar11_receiver1 : sunJafar11Interference 0 = {3, 4} := rfl
+@[simp, capacity_api] theorem sunJafar11_receiver2 : sunJafar11Interference 1 = {4} := rfl
+@[simp, capacity_api] theorem sunJafar11_receiver3 : sunJafar11Interference 2 = ∅ := rfl
+@[simp, capacity_api] theorem sunJafar11_receiver4 : sunJafar11Interference 3 = ∅ := rfl
+@[simp, capacity_api] theorem sunJafar11_receiver5 : sunJafar11Interference 4 = {1} := rfl
+@[simp, capacity_api] theorem sunJafar11_receiver6 : sunJafar11Interference 5 = {1, 2} := rfl
+@[simp, capacity_api] theorem sunJafar11_receiver7 : sunJafar11Interference 6 = {0, 2} := rfl
+@[simp, capacity_api] theorem sunJafar11_receiver8 : sunJafar11Interference 7 = {1, 3} := rfl
+@[simp, capacity_api] theorem sunJafar11_receiver9 : sunJafar11Interference 8 = {2, 3} := rfl
+@[simp, capacity_api] theorem sunJafar11_receiver10 : sunJafar11Interference 9 = {2, 4} := rfl
+@[simp, capacity_api] theorem sunJafar11_receiver11 : sunJafar11Interference 10 = {3, 5} := rfl
 
 /-- The operational side-information table is exactly the complement of the source table. -/
 @[capacity_problem "sun-jafar-11-message-index-coding", capacity_test]
@@ -79,11 +79,13 @@ theorem sunJafar11_sideInformation_complement (receiver : SunJafar11Receiver) :
         sunJafar11Interference receiver :=
   rfl
 
-@[simp] theorem sunJafar11_demand (receiver : SunJafar11Receiver) :
+@[simp, capacity_api]
+theorem sunJafar11_demand (receiver : SunJafar11Receiver) :
     sunJafar11.demand receiver = receiver :=
   rfl
 
-@[simp] theorem sunJafar11_interference (receiver : SunJafar11Receiver) :
+@[simp, capacity_api]
+theorem sunJafar11_interference (receiver : SunJafar11Receiver) :
     sunJafar11.interference receiver = sunJafar11Interference receiver := by
   apply Instance.interference_fromInterference
   intro sourceReceiver
@@ -103,16 +105,16 @@ def sunJafar11ExpectedAlignmentEdges : Finset SunJafar11Edge :=
 @[capacity_problem "sun-jafar-11-message-index-coding", capacity_test]
 theorem sunJafar11_alignmentEdges_exact :
     sunJafar11AlignmentEdges = sunJafar11ExpectedAlignmentEdges := by
-  native_decide
+  decide
 
 @[capacity_problem "sun-jafar-11-message-index-coding", capacity_test]
 theorem sunJafar11_alignmentEdge_count : sunJafar11AlignmentEdges.card = 7 := by
-  native_decide
+  decide
 
 @[capacity_problem "sun-jafar-11-message-index-coding", capacity_test]
 theorem sunJafar11_atMostTwoInterferers (receiver : SunJafar11Receiver) :
     (sunJafar11Interference receiver).card ≤ 2 := by
-  fin_cases receiver <;> native_decide
+  fin_cases receiver <;> decide
 
 def sunJafar11InnerDiamond : Finset SunJafar11Message := {1, 2, 3, 4}
 
@@ -124,7 +126,7 @@ theorem sunJafar11_innerDiamond_exact :
     sunJafar11AlignmentEdges.filter
         (fun edge ↦ edge.1 ∈ sunJafar11InnerDiamond ∧ edge.2 ∈ sunJafar11InnerDiamond) =
       sunJafar11ExpectedDiamondEdges := by
-  native_decide
+  decide
 
 /-- Internal conflict pairs shown in the source alignment/conflict graph. -/
 def sunJafar11ExpectedInternalConflicts : Finset SunJafar11Edge :=
@@ -152,15 +154,16 @@ private theorem sunJafar11_reachable_two_of_lt_six
     (message : SunJafar11Message) (hmessage : message.val < 6) :
     (alignmentGraph sunJafar11).Reachable message 2 := by
   fin_cases message
-  · exact (by native_decide : (alignmentGraph sunJafar11).Adj 0 2).reachable
-  · exact (by native_decide : (alignmentGraph sunJafar11).Adj 1 2).reachable
+  · exact (by decide : (alignmentGraph sunJafar11).Adj 0 2).reachable
+  · exact (by decide : (alignmentGraph sunJafar11).Adj 1 2).reachable
   · exact .refl _
-  · exact (by native_decide : (alignmentGraph sunJafar11).Adj 3 2).reachable
-  · exact (by native_decide : (alignmentGraph sunJafar11).Adj 4 2).reachable
-  · exact ((by native_decide : (alignmentGraph sunJafar11).Adj 5 3).reachable).trans
-      (by native_decide : (alignmentGraph sunJafar11).Adj 3 2).reachable
+  · exact (by decide : (alignmentGraph sunJafar11).Adj 3 2).reachable
+  · exact (by decide : (alignmentGraph sunJafar11).Adj 4 2).reachable
+  · exact ((by decide : (alignmentGraph sunJafar11).Adj 5 3).reachable).trans
+      (by decide : (alignmentGraph sunJafar11).Adj 3 2).reachable
   all_goals simp at hmessage
 
+@[capacity_api]
 theorem sunJafar11_alignment_reachable_iff (left right : SunJafar11Message) :
     (alignmentGraph sunJafar11).Reachable left right ↔
       (left.val < 6 ∧ right.val < 6) ∨ left = right := by
@@ -183,7 +186,7 @@ theorem sunJafar11_alignment_reachable_iff (left right : SunJafar11Message) :
 
 /-- The listed pairs are exactly the internal conflicts, with endpoints ordered. -/
 @[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_test,
-  capacity_formal_proof]
+  capacity_formal_proof, capacity_claim "internal-conflicts-exact" 1]
 theorem sunJafar11_internalConflicts_exact :
     {edge : SunJafar11Edge |
       edge.1 < edge.2 ∧ IsInternalConflict sunJafar11 edge.1 edge.2} =
@@ -192,7 +195,7 @@ theorem sunJafar11_internalConflicts_exact :
   rcases edge with ⟨left, right⟩
   simp only [Set.mem_setOf_eq, Finset.mem_coe, IsInternalConflict]
   rw [sunJafar11_alignment_reachable_iff]
-  fin_cases left <;> fin_cases right <;> native_decide
+  fin_cases left <;> fin_cases right <;> decide
 
 def sunJafar11AreAligned (left right : SunJafar11Message) : Bool :=
   decide ((left, right) ∈ sunJafar11AlignmentEdges ∨
@@ -204,54 +207,65 @@ def sunJafar11HasAlignmentPathTwo (left right : SunJafar11Message) : Bool :=
 
 /-- Every listed internal conflict has alignment-graph distance exactly two. -/
 @[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_test,
-  capacity_formal_proof]
+  capacity_formal_proof, capacity_claim "internal-conflict-distance" 1]
 theorem sunJafar11_internalConflictDistance_two :
     sunJafar11ExpectedInternalConflicts.filter (fun edge ↦
       !sunJafar11AreAligned edge.1 edge.2 &&
         sunJafar11HasAlignmentPathTwo edge.1 edge.2) =
       sunJafar11ExpectedInternalConflicts := by
-  native_decide
+  decide
 
 /-- The published construction has a linear encoder and achieves symmetric rate `5/13`. -/
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_solved]
+@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_solved,
+  capacity_claim "linear-achievability" 3]
 theorem sunJafar11_linear_achievability :
     (5 : ℝ) / 13 ≤ linearEncoderSymmetricCapacity sunJafar11 := by
   sorry
 
 /-- The published code gives the same lower bound without a linearity restriction. -/
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_solved]
+@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_solved,
+  capacity_claim "unrestricted-achievability" 1]
 theorem sunJafar11_unrestricted_achievability :
     (5 : ℝ) / 13 ≤ symmetricCapacity sunJafar11 := by
-  sorry
+  exact sunJafar11_linear_achievability.trans
+    (linearEncoderSymmetricCapacity_le_symmetricCapacity sunJafar11)
 
 /-- No zero-error code with a linear encoder exceeds symmetric rate `5/13`. -/
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_solved]
+@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_solved,
+  capacity_claim "linear-converse" 2]
 theorem sunJafar11_linear_converse :
     linearEncoderSymmetricCapacity sunJafar11 ≤ (5 : ℝ) / 13 := by
   sorry
 
 /-- The Zhang--Yeung converse for unrestricted nonlinear zero-error codes. -/
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_solved]
+@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_solved,
+  capacity_claim "nonlinear-converse" 2]
 theorem sunJafar11_nonlinear_converse :
     symmetricCapacity sunJafar11 ≤ (11 : ℝ) / 28 := by
   sorry
 
 /-- The open exact nonlinear symmetric-capacity claim. -/
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_open]
+@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_open,
+  capacity_claim "exact-capacity" 2]
 theorem sunJafar11_exact_capacity_conjecture :
     symmetricCapacity sunJafar11 = (5 : ℝ) / 13 := by
   sorry
 
 /-- Shannon polymatroid inequalities alone stop at the outer value `2/5`. -/
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_solved]
+@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_solved,
+  capacity_claim "shannon-relaxation-value" 2]
 theorem sunJafar11_shannon_outer_bound_limit :
     shannonPolymatroidOuterBound sunJafar11 = (2 : ℝ) / 5 := by
   sorry
 
 /-- The operational symmetric capacity is at most the Shannon relaxation value `2/5`. -/
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_solved]
+@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_solved,
+  capacity_claim "shannon-outer-bound" 1]
 theorem sunJafar11_shannon_outer_bound :
     symmetricCapacity sunJafar11 ≤ (2 : ℝ) / 5 := by
-  sorry
+  calc
+    symmetricCapacity sunJafar11 ≤ shannonPolymatroidOuterBound sunJafar11 :=
+      symmetricCapacity_le_shannonPolymatroidOuterBound sunJafar11
+    _ = (2 : ℝ) / 5 := sunJafar11_shannon_outer_bound_limit
 
 end CapacityAtlas.IndexCoding

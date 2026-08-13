@@ -46,6 +46,7 @@ private theorem sum_ite_zero (q : ℕ) [NeZero q] (a b : ℝ) :
       ring
 
 /-- The atlas q-ary noise range is contained in the probability interval. -/
+@[capacity_api]
 theorem qarySymmetric_p_le_one (q : ℕ) (hq : 2 ≤ q) {p : ℝ}
     (hp : p ≤ ((q - 1 : ℕ) : ℝ) / q) : p ≤ 1 := by
   have hqpos : (0 : ℝ) < q := by exact_mod_cast (lt_of_lt_of_le (by norm_num) hq)
@@ -99,6 +100,7 @@ theorem qarySymmetric_transition (q : ℕ) [NeZero q] (hq : 2 ≤ q)
     simp [h, hn]
 
 /-- Entropy of q-ary symmetric noise in nats. -/
+@[capacity_api]
 theorem qarySymmetricNoise_entropy (q : ℕ) [NeZero q] (hq : 2 ≤ q)
     (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
     (qarySymmetricNoise q hq p hp0 hp1).entropy =
@@ -125,7 +127,7 @@ theorem qarySymmetricNoise_entropy (q : ℕ) [NeZero q] (hq : 2 ≤ q)
 
 /-- The single-letter information capacity of the q-ary symmetric channel. -/
 @[capacity_problem "q-ary-symmetric-channel", capacity_statement, capacity_solved,
-  capacity_formal_proof]
+  capacity_formal_proof, capacity_claim "information-capacity" 1]
 theorem qarySymmetric_informationCapacity (q : ℕ) [NeZero q] (hq : 2 ≤ q)
     (p : ℝ) (hp0 : 0 ≤ p) (hpMax : p ≤ ((q - 1 : ℕ) : ℝ) / q) :
     (qarySymmetric q hq p hp0 (qarySymmetric_p_le_one q hq hpMax)).informationCapacityBits =
@@ -137,7 +139,7 @@ theorem qarySymmetric_informationCapacity (q : ℕ) [NeZero q] (hq : 2 ≤ q)
 
 /-- The operational average-error capacity of the q-ary symmetric channel. -/
 @[capacity_problem "q-ary-symmetric-channel", capacity_statement, capacity_solved,
-  capacity_formal_proof]
+  capacity_formal_proof, capacity_claim "operational-capacity" 1]
 theorem qarySymmetric_operationalCapacity (q : ℕ) [NeZero q] (hq : 2 ≤ q)
     (p : ℝ) (hp0 : 0 ≤ p) (hpMax : p ≤ ((q - 1 : ℕ) : ℝ) / q) :
     (qarySymmetric q hq p hp0 (qarySymmetric_p_le_one q hq hpMax)).operationalCapacityBits =

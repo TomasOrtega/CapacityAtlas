@@ -44,7 +44,8 @@ frontier:
 formalization:
   status: none
   # For formal claims, add stable id, kind, category, formal_status, version,
-  # and description records. Link claim declarations with claim_id.
+  # and description records. Link claim declarations with claim_id and attach
+  # @[capacity_claim "claim-id" version] to each claim theorem.
   # - id: example-lower
   #   kind: achievability
   #   category: open

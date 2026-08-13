@@ -23,4 +23,8 @@ serve: build
 
 lean:
 	cd lean && lake --wfail build CapacityAtlasForMathlib CapacityAtlasUtil
-	cd lean && lake build
+	cd lean && lake --wfail build CapacityAtlas
+	@set -e; audit_report=$$(mktemp /tmp/capacity-atlas-audit.XXXXXX); \
+	trap 'rm -f "$$audit_report"' EXIT; \
+	cd lean; lake exe capacity_audit > "$$audit_report"; cd ..; \
+	uv run --locked capacity-atlas validate --lean-report "$$audit_report"

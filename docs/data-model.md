@@ -51,12 +51,18 @@ Each item in `formalization.claims` has:
 - a precise description
 
 Files identify a declaration and its role: `definition`, `claim`, `test`, or
-`API`. Claim declarations link through `claim_id`.
+`API`. Claim declarations link through `claim_id`. Each claim theorem carries
+the same identity and version in `@[capacity_claim "claim-id" version]` metadata.
 
 `formalization.proofs` records formal proof provenance at immutable commits and
 targets one exact claim identifier and version. A complete local proof or linked
 proof is required before a claim may be marked `proved`. Mathematical status,
 claim category, and formal-proof status are never inferred from one another.
+A locally proved claim is marked `capacity_formal_proof` and has no transitive
+`sorryAx` dependency. A locally stated claim may contain `sorry` directly or
+derive from an admitted research premise; either way, its compiled declaration
+transitively depends on `sorryAx` unless a complete linked proof supplies its
+provenance.
 
 The Browse page reflects this independence with separate **Status** and
 **Formalization** controls. **Formally stated** means at least one
@@ -79,5 +85,7 @@ Changing a page title or URL therefore does not detach its GitHub Discussion.
 
 The JSON Schema catches structural errors. The Python validator additionally
 checks tag vocabulary, bibliography links, duplicate identifiers, local files
-and declarations, category attributes, claim links and versions, proof links,
-and the local-proof trust boundary.
+and declarations, category attributes, proof links, and the local-proof trust
+boundary. With the compiled Lean report, it also enforces a one-to-one mapping
+between YAML claims and tagged declarations and compares problem ID, claim ID,
+category, and version. Duplicate and orphan claims fail validation.

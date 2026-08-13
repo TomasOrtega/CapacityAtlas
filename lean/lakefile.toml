@@ -13,6 +13,13 @@ name = "CapacityAtlasForMathlib"
 
 [[lean_lib]]
 name = "CapacityAtlas"
+[lean_lib.leanOptions]
+warn.sorry = false
+
+[[lean_exe]]
+name = "capacity_audit"
+root = "CapacityAtlasAudit"
+supportInterpreter = true
 
 [[require]]
 name = "mathlib"
