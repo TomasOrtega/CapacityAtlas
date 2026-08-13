@@ -49,12 +49,10 @@ bounds:
   references:
   - bergmans-1974
 formalization:
-  statement:
-    status: none
-    language: Lean
-    claims: []
-    notes: Entropy power and Gaussian multi-user coding are not yet formalized.
-    files: []
+  status: none
+  claims: []
+  notes: Entropy power and Gaussian multi-user coding are not yet formalized.
+  files: []
   proofs: []
 references:
 - bergmans-1973

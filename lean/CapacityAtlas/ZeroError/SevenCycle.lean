@@ -23,10 +23,11 @@ noncomputable def sevenCycleShannonCapacity : ℝ :=
   graphShannonCapacity sevenCycleAdjacent
 
 /-- The sourced finite-power lower certificate and Lovasz-theta upper bound. -/
-@[capacity_problem "seven-cycle-zero-error-channel", capacity_statement]
-def sevenCycleKnownBounds : Prop :=
+@[capacity_problem "seven-cycle-zero-error-channel", capacity_statement, capacity_solved]
+theorem sevenCycleKnownBounds :
   Real.rpow 367 ((5 : ℝ)⁻¹) ≤ sevenCycleShannonCapacity ∧
     sevenCycleShannonCapacity ≤
-      7 * Real.cos (Real.pi / 7) / (1 + Real.cos (Real.pi / 7))
+      7 * Real.cos (Real.pi / 7) / (1 + Real.cos (Real.pi / 7)) := by
+  sorry
 
 end CapacityAtlas.ZeroError

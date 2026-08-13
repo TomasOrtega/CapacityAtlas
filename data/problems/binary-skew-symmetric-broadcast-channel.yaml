@@ -5,7 +5,7 @@ title: Binary skew-symmetric broadcast channel
 abbreviation: BSSC
 status: open
 featured: true
-updated: '2026-08-12'
+updated: '2026-08-13'
 summary: This minimal binary-input broadcast channel isolates a persistent gap between Marton-type inner bounds and UV-type outer bounds.
 tags:
   model: [broadcast]
@@ -47,21 +47,13 @@ frontier:
   progress:
   - Certify a strict separating rate pair or prove the two optimized descriptions equal.
 formalization:
-  statement:
-    status: statement
-    language: Lean
-    claims:
-    - id: exact-capacity-region
-      kind: exact-capacity
-      status: open
-      version: 1
-      description: Equality of the operational capacity region and the registered single-letter regions.
-    notes: The transition law is concrete; the proposition interface fixes the inner-versus-outer equality target without supplying a proof.
-    files:
-    - path: lean/CapacityAtlas/Channels/Broadcast.lean
-      declaration: CapacityAtlas.Channel.binarySkewSymmetricBroadcastCapacityStatement
-      role: statement
-      description: Equality target for the Marton inner and UV outer regions.
-      claim_id: exact-capacity-region
+  status: definitions
+  claims: []
+  notes: Concrete definitions are retained; no capacity or bound claim is formally stated.
+  files:
+  - path: lean/CapacityAtlas/Channels/Broadcast.lean
+    declaration: CapacityAtlas.Channel.binarySkewSymmetricBroadcastChannel
+    role: definition
+    description: Concrete binary skew-symmetric broadcast channel.
   proofs: []
 references: [marton-1979, nair-elgamal-2007, geng-et-al-2010]

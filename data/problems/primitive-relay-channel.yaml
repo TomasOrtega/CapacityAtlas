@@ -4,7 +4,7 @@ id: primitive-relay-channel
 title: Primitive relay channel
 status: open
 featured: true
-updated: '2026-08-12'
+updated: '2026-08-13'
 summary: A relay observes a noisy channel output and sends information over a separate noiseless finite-capacity link, but capacity is unknown in general.
 tags:
   model: [relay]
@@ -46,21 +46,13 @@ frontier:
   progress:
   - Close the inner-outer gap for a concrete finite subclass.
 formalization:
-  statement:
-    status: statement
-    language: Lean
-    claims:
-    - id: capacity-bounds
-      kind: capacity-bounds
-      status: open
-      version: 1
-      description: Registered compress-forward and converse bound chain.
-    notes: The physical broadcast observation and orthogonal bit-pipe are separate fields; no cut-set-tightness conjecture is assumed.
-    files:
-    - path: lean/CapacityAtlas/Network/PrimitiveRelay.lean
-      declaration: CapacityAtlas.Network.primitiveRelayCapacityBoundsStatement
-      role: statement
-      description: Compress-forward, improved-converse, and cut-set bound chain for a fixed model.
-      claim_id: capacity-bounds
+  status: definitions
+  claims: []
+  notes: Concrete definitions are retained; no capacity or bound claim is formally stated.
+  files:
+  - path: lean/CapacityAtlas/Network/PrimitiveRelay.lean
+    declaration: CapacityAtlas.Network.PrimitiveRelayChannel
+    role: definition
+    description: Finite broadcast observation and orthogonal relay bit-pipe.
   proofs: []
 references: [cover-elgamal-1979, tandon-ulukus-2008]

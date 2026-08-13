@@ -5,8 +5,6 @@ See https://www.apache.org/licenses/LICENSE-2.0
 -/
 
 import CapacityAtlasForMathlib.InformationTheory.FiniteStateChannel
-import CapacityAtlasForMathlib.InformationTheory.OperationalTheory
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 open scoped BigOperators
 
@@ -39,19 +37,5 @@ noncomputable def trapdoorFeedbackModel : FiniteStateChannel Bool Bool Bool :=
 @[capacity_problem "trapdoor-channel-without-feedback", capacity_definition]
 noncomputable def trapdoorFeedforwardModel : FiniteStateChannel Bool Bool Bool :=
   trapdoorChannel
-
-/-- Feedback permits causal dependence on past outputs; the initial state is fixed and known. -/
-@[capacity_problem "trapdoor-channel-with-feedback", capacity_statement]
-def trapdoorFeedbackCapacityStatement
-  (feedbackTheory : ScalarOperationalTheory (FiniteStateChannel Bool Bool Bool)) : Prop :=
-  feedbackTheory.capacity trapdoorFeedbackModel =
-    Real.log ((1 + Real.sqrt 5) / 2) / Real.log 2
-
-/-- Feedforward capacity remains distinct from the solved feedback quantity. -/
-@[capacity_problem "trapdoor-channel-without-feedback", capacity_statement]
-def trapdoorWithoutFeedbackCapacityBounds
-  (feedforwardTheory : ScalarOperationalTheory (FiniteStateChannel Bool Bool Bool)) : Prop :=
-  0 ≤ feedforwardTheory.capacity trapdoorFeedforwardModel ∧
-    feedforwardTheory.capacity trapdoorFeedforwardModel ≤ 1
 
 end CapacityAtlas.Channel

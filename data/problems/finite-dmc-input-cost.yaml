@@ -3,7 +3,7 @@
 id: finite-dmc-input-cost
 title: Finite discrete memoryless channel with input cost
 status: solved
-updated: '2026-08-12'
+updated: '2026-08-13'
 summary: A finite DMC under a feasible maximum-codeword average-cost constraint has a constrained mutual-information capacity formula.
 tags:
   model: [point-to-point]
@@ -34,21 +34,22 @@ bounds:
   year: 2015
   references: [sutter-et-al-2015]
 formalization:
-  statement:
-    status: statement
-    language: Lean
-    claims:
-    - id: exact-capacity
-      kind: exact-capacity
-      status: open
-      version: 1
-      description: Exact cost-constrained operational capacity formula.
-    notes: The model fixes maximum codeword cost separately from admissible one-letter input distributions.
-    files:
-    - path: lean/CapacityAtlas/Channels/InputCost.lean
-      declaration: CapacityAtlas.FiniteChannel.finiteDMCInputCostCapacityStatement
-      role: statement
-      description: Cost-constrained operational and mutual-information capacity identity.
-      claim_id: exact-capacity
+  status: stated
+  claims:
+  - id: exact-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: For nonnegative cost with a feasible symbol, maximum-codeword-cost operational capacity
+      equals constrained information capacity.
+  notes: The model fixes maximum codeword cost separately from admissible one-letter input distributions.
+  files:
+  - path: lean/CapacityAtlas/Channels/InputCost.lean
+    declaration: CapacityAtlas.FiniteChannel.finiteDMCInputCostCapacityStatement
+    role: claim
+    description: For nonnegative cost with a feasible symbol, maximum-codeword-cost operational capacity
+      equals constrained information capacity.
+    claim_id: exact-capacity
   proofs: []
 references: [sutter-et-al-2015]

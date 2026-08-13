@@ -6,8 +6,8 @@
 [![Content: CC-BY-4.0](https://img.shields.io/badge/content-CC--BY--4.0-lightgrey)](LICENSES/CC-BY-4.0.txt)
 
 **Capacity Atlas** is a community-maintained registry of channel capacities,
-known bounds, open gaps, canonical Lean claims, and external machine-checked
-proofs. The public site is [capacityatlas.org](https://capacityatlas.org/).
+known bounds, open gaps, formally stated claims, and machine-checked proofs. The
+public site is [capacityatlas.org](https://capacityatlas.org/).
 
 The repository is deliberately a registry rather than a proof monorepo. It owns
 stable problem identifiers, precise communication models, controlled
@@ -20,10 +20,11 @@ immutable commit.
 The architecture takes explicit inspiration from Google DeepMind's
 [Formal Conjectures](https://github.com/google-deepmind/formal-conjectures)
 project. Capacity Atlas adapts its claim-level registry, structured
-declaration metadata, external formal-proof links, separation of reusable
+declaration metadata, linked formal-proof provenance, separation of reusable
 definitions from problem statements, benchmark-oriented versioning, and compact
-browse interface. Capacity Atlas uses a channel-specific taxonomy and a stricter
-no-placeholder policy in the central Lean tree.
+browse interface. Capacity Atlas uses a channel-specific taxonomy and the same
+statement-first trust boundary: research claims may be admitted, while reusable
+infrastructure and locally proved claims may not.
 
 See [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md) for the exact attribution and
 citation.
@@ -37,16 +38,16 @@ lean/
 └── CapacityAtlasUtil/          registry metadata attributes and utilities
 ```
 
-The central repository accepts only Lean 4 formalizations. It keeps shared API,
-canonical statements, tests, and short illuminating proofs. A proof longer than
+The central repository uses Lean 4 for formal verification. It keeps shared API,
+canonical formal claims, tests, and short illuminating proofs. A proof longer than
 roughly 25–50 lines, or one needing significant problem-specific infrastructure,
-should normally live in a separate repository. External proof repositories
+should normally live in a separate repository. Linked proof repositories
 should import a pinned Capacity Atlas release or commit and prove the registered
 statement rather than restating it independently.
 
-Lean status is shown on each problem page rather than in a separate site tab.
+Formal status is shown on each problem page rather than in a separate site tab.
 See [docs/lean.md](docs/lean.md) and
-[docs/external-proofs.md](docs/external-proofs.md).
+[docs/formal-proofs.md](docs/formal-proofs.md).
 
 ## Discussions
 
@@ -96,16 +97,17 @@ data/references.yaml primary bibliography records
 schema/               machine-checkable data schema
 site/                 small static templates, CSS, and JavaScript
 src/capacity_atlas/   loader, validator, and site generator
-lean/                 shared definitions and canonical Lean records
+lean/                 shared definitions and canonical formal records
 docs/                 contribution and maintenance guides
 ```
 
 ## Contributing
 
 Start from [docs/problem-template.yaml](docs/problem-template.yaml). Every
-mathematical claim should cite a primary source and state its assumptions. Lean
-contributions must reuse shared definitions, contain no `sorry` or `admit`, and
-identify the stable problem ID. See [CONTRIBUTING.md](CONTRIBUTING.md).
+mathematical claim should cite a primary source and state its assumptions.
+Formal contributions must reuse shared definitions and identify the stable
+problem ID. Placeholders are allowed only for research claims that are marked
+formally stated. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Licensing
 

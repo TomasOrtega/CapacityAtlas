@@ -16,11 +16,11 @@ and the direct GitHub links after any change. See `docs/discussions.md`.
 
 ## Claim versions
 
-Review every Lean claim change for semantic compatibility. Increment the
-affected claim's version whenever an existing external proof might no longer
+Review every formal claim change for semantic compatibility. Increment the
+affected claim's version whenever an existing formal proof might no longer
 apply. Do not accept a proof record whose version differs from its target claim.
 
-## External proofs
+## Formal proof provenance
 
 Require immutable commit URLs and public CI. Do not merge a branch name such as
 `main` as proof evidence. Large developments remain in their own repositories.

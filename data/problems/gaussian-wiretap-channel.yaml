@@ -49,12 +49,10 @@ bounds:
   references:
   - leung-yan-cheong-hellman-1978
 formalization:
-  statement:
-    status: none
-    language: Lean
-    claims: []
-    notes: A future continuous secrecy layer should share definitions with the discrete wiretap channel.
-    files: []
+  status: none
+  claims: []
+  notes: A future continuous secrecy layer should share definitions with the discrete wiretap channel.
+  files: []
   proofs: []
 references:
 - leung-yan-cheong-hellman-1978

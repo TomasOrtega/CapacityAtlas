@@ -16,17 +16,18 @@ Project repository:
 
 Capacity Atlas adapts the following ideas from Formal Conjectures:
 
-1. **Statement-first curation.** A central repository can make precise formal
-   statements useful even before complete proofs exist.
+1. **Statement-first curation.** Open and solved-but-unproved claims are theorem
+   declarations with `by sorry`, so precise statements remain useful before
+   complete formal proofs exist.
 2. **Independent mathematical and formal-proof status.** A problem may be
    mathematically solved without a formal proof, or have partial formal results
    without being mathematically closed.
-3. **External substantial proofs.** Longer proofs live in dedicated repositories
+3. **Linked substantial proofs.** Longer proofs live in dedicated repositories
    and are linked through immutable commit URLs rather than copied into the
    central registry.
 4. **Structured declaration metadata.** Lean attributes connect declarations to
-   registry records and distinguish definitions, canonical statements, short
-   proofs, and shared API.
+   registry records and distinguish open, solved, API, test, and locally proved
+   claims.
 5. **A reusable pre-upstream layer.** `CapacityAtlasForMathlib` mirrors the role
    of `FormalConjecturesForMathlib`: definitions needed to state problems can
    mature locally before being proposed upstream.

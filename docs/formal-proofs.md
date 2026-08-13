@@ -1,15 +1,14 @@
-# External Lean proof contract
+# Formal proof provenance
 
 Substantial proofs should live in dedicated repositories. Capacity Atlas records
 them as evidence for a stable, versioned claim rather than vendoring their
-source.
-
-This design is adapted from the `formal_proof` mechanism and long-proof policy of
-Google DeepMind's Formal Conjectures project.
+source. This design is adapted from the `formal_proof` mechanism and long-proof
+policy of Google DeepMind's
+[Formal Conjectures](https://github.com/google-deepmind/formal-conjectures).
 
 ## Required repository contract
 
-An external repository should contain a small manifest named
+A proof repository should contain a small manifest named
 `capacity-atlas-proof.yaml`:
 
 ```yaml
@@ -42,21 +41,20 @@ The corresponding problem YAML stores:
 
 ```yaml
 formalization:
-  statement:
-    status: statement
-    language: Lean
-    claims:
-      - id: nonlinear-converse
-        kind: converse
-        status: proved
-        version: 1
-        description: Nonlinear zero-error symmetric-capacity upper bound.
-    files:
-      - path: lean/CapacityAtlas/Network/SunJafar11.lean
-        declaration: CapacityAtlas.IndexCoding.sunJafar11_nonlinear_converse
-        role: statement
-        description: Canonical nonlinear converse claim.
-        claim_id: nonlinear-converse
+  status: stated
+  claims:
+    - id: nonlinear-converse
+      kind: converse
+      category: solved
+      formal_status: proved
+      version: 1
+      description: Nonlinear zero-error symmetric-capacity upper bound.
+  files:
+    - path: lean/CapacityAtlas/Network/SunJafar11.lean
+      declaration: CapacityAtlas.IndexCoding.sunJafar11_nonlinear_converse
+      role: claim
+      description: Canonical nonlinear converse claim.
+      claim_id: nonlinear-converse
   proofs:
     - id: nonlinear-converse-proof-a
       claim_id: nonlinear-converse
@@ -71,20 +69,18 @@ formalization:
 ```
 
 Capacity Atlas validates the immutable link and claim-version match. It does not
-currently clone and rebuild every external repository, which keeps central CI
-bounded. A future verifier may consume the manifest and surface external CI
-status.
+currently clone and rebuild every linked repository, which keeps central CI
+bounded.
 
 ## Claim changes
 
 When a canonical proposition changes materially, increment that claim's version.
-Existing proof records then fail validation until they are rechecked or
-explicitly moved to the new version. Unrelated claims retain their versions.
-This makes stale proofs visible rather than silently treating them as proofs of
-a revised problem.
+Existing proof records then fail validation until they are rechecked or moved to
+the new version. Unrelated claims retain their versions. This makes stale proof
+evidence visible instead of silently applying it to a revised problem.
 
 ## Multiple proofs
 
 Capacity Atlas permits several independent proofs of the same claim. Distinct
 proof strategies, human and AI formalizations, and later Mathlib proofs may all
-coexist. No external repository is privileged merely by being first.
+coexist. No proof repository is privileged merely by being first.

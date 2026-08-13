@@ -3,7 +3,7 @@
 id: more-capable-broadcast-channel
 title: More-capable two-receiver broadcast channel
 status: solved
-updated: '2026-08-12'
+updated: '2026-08-13'
 summary: A more-capable ordering compares the receivers for every input distribution and yields an exact superposition-coding capacity region.
 tags:
   model: [broadcast]
@@ -33,21 +33,13 @@ bounds:
   year: 1979
   references: [elgamal-1979]
 formalization:
-  statement:
-    status: statement
-    language: Lean
-    claims:
-    - id: exact-capacity-region
-      kind: exact-capacity
-      status: open
-      version: 1
-      description: Exact more-capable broadcast capacity region.
-    notes: More capable is defined by input-law dominance, separately from less noisy.
-    files:
-    - path: lean/CapacityAtlas/Channels/Broadcast.lean
-      declaration: CapacityAtlas.Channel.moreCapableBroadcastCapacityStatement
-      role: statement
-      description: More-capable capacity region equals the superposition region.
-      claim_id: exact-capacity-region
+  status: definitions
+  claims: []
+  notes: Concrete definitions are retained; no capacity or bound claim is formally stated.
+  files:
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/FiniteBroadcastChannel.lean
+    declaration: CapacityAtlas.FiniteBroadcastChannel.IsMoreCapable
+    role: definition
+    description: More-capable ordering for every input distribution.
   proofs: []
 references: [elgamal-1979]

@@ -80,7 +80,7 @@ noncomputable def qarySymmetric (q : ℕ) [NeZero q] (hq : 2 ≤ q)
   additiveNoise (qarySymmetricNoise q hq p hp0 hp1)
 
 /-- The additive construction has the q-ary symmetric transition law. -/
-@[capacity_problem "q-ary-symmetric-channel", capacity_short_proof]
+@[capacity_problem "q-ary-symmetric-channel", capacity_test]
 theorem qarySymmetric_transition (q : ℕ) [NeZero q] (hq : 2 ≤ q)
     (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) (input output : ZMod q) :
     (qarySymmetric q hq p hp0 hp1).transition input output =
@@ -124,50 +124,33 @@ theorem qarySymmetricNoise_entropy (q : ℕ) [NeZero q] (hq : 2 ≤ q)
   ring
 
 /-- The single-letter information capacity of the q-ary symmetric channel. -/
-@[capacity_problem "q-ary-symmetric-channel", capacity_statement]
+@[capacity_problem "q-ary-symmetric-channel", capacity_statement, capacity_solved,
+  capacity_formal_proof]
 theorem qarySymmetric_informationCapacity (q : ℕ) [NeZero q] (hq : 2 ≤ q)
-    (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
-    (qarySymmetric q hq p hp0 hp1).informationCapacityBits =
+    (p : ℝ) (hp0 : 0 ≤ p) (hpMax : p ≤ ((q - 1 : ℕ) : ℝ) / q) :
+    (qarySymmetric q hq p hp0 (qarySymmetric_p_le_one q hq hpMax)).informationCapacityBits =
       Real.log q / Real.log 2 - Real.binEntropy p / Real.log 2 -
         p * Real.log ((q - 1 : ℕ) : ℝ) / Real.log 2 := by
   rw [qarySymmetric, additiveNoise_informationCapacity, ZMod.card,
     FiniteDistribution.entropyBits, qarySymmetricNoise_entropy]
   ring
 
-/-- The operational q-ary symmetric capacity claim on the atlas parameter range. -/
-@[capacity_problem "q-ary-symmetric-channel", capacity_statement]
-def qarySymmetricCapacityStatement (q : ℕ) (hq : 2 ≤ q) (p : ℝ) (hp0 : 0 ≤ p)
-    (hpMax : p ≤ ((q - 1 : ℕ) : ℝ) / q) : Prop :=
-  letI : NeZero q := ⟨Nat.ne_of_gt (lt_of_lt_of_le (by norm_num) hq)⟩
-  let hp1 := qarySymmetric_p_le_one q hq hpMax
-  (qarySymmetric q hq p hp0 hp1).operationalCapacityBits =
-    Real.log q / Real.log 2 - Real.binEntropy p / Real.log 2 -
-      p * Real.log ((q - 1 : ℕ) : ℝ) / Real.log 2
-
 /-- The operational average-error capacity of the q-ary symmetric channel. -/
-@[capacity_problem "q-ary-symmetric-channel", capacity_short_proof]
+@[capacity_problem "q-ary-symmetric-channel", capacity_statement, capacity_solved,
+  capacity_formal_proof]
 theorem qarySymmetric_operationalCapacity (q : ℕ) [NeZero q] (hq : 2 ≤ q)
-    (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
-    (qarySymmetric q hq p hp0 hp1).operationalCapacityBits =
+    (p : ℝ) (hp0 : 0 ≤ p) (hpMax : p ≤ ((q - 1 : ℕ) : ℝ) / q) :
+    (qarySymmetric q hq p hp0 (qarySymmetric_p_le_one q hq hpMax)).operationalCapacityBits =
       Real.log q / Real.log 2 - Real.binEntropy p / Real.log 2 -
         p * Real.log ((q - 1 : ℕ) : ℝ) / Real.log 2 := by
   calc
-    (qarySymmetric q hq p hp0 hp1).operationalCapacityBits =
-        (qarySymmetric q hq p hp0 hp1).informationCapacityBits :=
-      FiniteChannel.codingTheorem (qarySymmetric q hq p hp0 hp1)
+    (qarySymmetric q hq p hp0 (qarySymmetric_p_le_one q hq hpMax)).operationalCapacityBits =
+        (qarySymmetric q hq p hp0
+          (qarySymmetric_p_le_one q hq hpMax)).informationCapacityBits :=
+      FiniteChannel.codingTheorem
+        (qarySymmetric q hq p hp0 (qarySymmetric_p_le_one q hq hpMax))
     _ = Real.log q / Real.log 2 - Real.binEntropy p / Real.log 2 -
         p * Real.log ((q - 1 : ℕ) : ℝ) / Real.log 2 :=
-      qarySymmetric_informationCapacity q hq p hp0 hp1
-
-/-- The registered q-ary symmetric capacity proposition holds unconditionally. -/
-@[capacity_problem "q-ary-symmetric-channel", capacity_short_proof]
-theorem qarySymmetricCapacityStatement_proof
-    (q : ℕ) (hq : 2 ≤ q) (p : ℝ) (hp0 : 0 ≤ p)
-    (hpMax : p ≤ ((q - 1 : ℕ) : ℝ) / q) :
-    qarySymmetricCapacityStatement q hq p hp0 hpMax := by
-  letI : NeZero q := ⟨Nat.ne_of_gt (lt_of_lt_of_le (by norm_num) hq)⟩
-  unfold qarySymmetricCapacityStatement
-  exact qarySymmetric_operationalCapacity q hq p hp0
-    (qarySymmetric_p_le_one q hq hpMax)
+      qarySymmetric_informationCapacity q hq p hp0 hpMax
 
 end CapacityAtlas.Channel

@@ -49,12 +49,10 @@ bounds:
   references:
   - shannon-1956
 formalization:
-  statement:
-    status: none
-    language: Lean
-    claims: []
-    notes: Causal feedback encoders and block codes are not yet in the Lean API.
-    files: []
+  status: none
+  claims: []
+  notes: Causal feedback encoders and block codes are not yet in the Lean API.
+  files: []
   proofs: []
 references:
 - shannon-1956

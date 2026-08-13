@@ -69,12 +69,10 @@ frontier:
   - Prove structure of capacity-achieving stationary inputs.
   - Develop compact certificates suitable for formal checking.
 formalization:
-  statement:
-    status: none
-    language: Lean
-    claims: []
-    notes: Variable-length outputs and synchronization errors are not yet modeled.
-    files: []
+  status: none
+  claims: []
+  notes: Variable-length outputs and synchronization errors are not yet modeled.
+  files: []
   proofs: []
 references:
 - rubinstein-con-2023

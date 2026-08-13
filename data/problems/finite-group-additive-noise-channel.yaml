@@ -3,7 +3,7 @@
 id: finite-group-additive-noise-channel
 title: Finite-group additive-noise channel
 status: solved
-updated: '2026-08-11'
+updated: '2026-08-13'
 summary: A symbol in a finite group is corrupted by independent additive noise with a known distribution.
 tags:
   model:
@@ -49,51 +49,41 @@ bounds:
   references:
   - shannon-1948
 formalization:
-  statement:
-    status: statement
-    language: Lean
-    claims:
-    - id: information-capacity
-      kind: exact-capacity
-      status: proved
-      version: 1
-      description: Exact single-letter information-capacity formula.
-    - id: operational-capacity
-      kind: exact-capacity
-      status: proved
-      version: 1
-      description: Exact operational average-error capacity formula.
-    notes: Translation equivalences prove that every row has the noise entropy and that uniform input produces uniform
-      output. The operational formula follows from the formal finite-channel coding theorem.
-    files:
-    - path: lean/CapacityAtlas/Channels/AdditiveNoise.lean
-      declaration: CapacityAtlas.Channel.additiveNoise
-      role: definition
-      description: Additive-noise channel on an arbitrary finite additive group.
-    - path: lean/CapacityAtlasForMathlib/InformationTheory/OperationalCapacity.lean
-      declaration: CapacityAtlas.FiniteChannel.operationalCapacityBits
-      role: shared-api
-      description: Operational average-error capacity defined through block codes and vanishing error.
-    - path: lean/CapacityAtlas/Channels/AdditiveNoise.lean
-      declaration: CapacityAtlas.Channel.additiveNoise_informationCapacity
-      role: statement
-      description: Exact single-letter information capacity in bits per channel use.
-      claim_id: information-capacity
-    - path: lean/CapacityAtlas/Channels/AdditiveNoise.lean
-      declaration: CapacityAtlas.Channel.finiteGroupAdditiveNoiseCapacityStatement
-      role: statement
-      description: Canonical operational average-error capacity proposition.
-      claim_id: operational-capacity
-    - path: lean/CapacityAtlas/Channels/AdditiveNoise.lean
-      declaration: CapacityAtlas.Channel.additiveNoise_operationalCapacity
-      role: short-proof
-      description: Operational capacity formula from the finite-channel coding theorem.
-      claim_id: operational-capacity
-    - path: lean/CapacityAtlas/Channels/AdditiveNoise.lean
-      declaration: CapacityAtlas.Channel.finiteGroupAdditiveNoiseCapacityStatement_proof
-      role: short-proof
-      description: Direct proof of the registered additive-noise proposition.
-      claim_id: operational-capacity
+  status: stated
+  claims:
+  - id: information-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: proved
+    version: 1
+    description: For any finite additive group and noise law, information capacity is log₂|G|-H(Z).
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: proved
+    version: 1
+    description: For any finite additive group and noise law, operational capacity is log₂|G|-H(Z).
+  notes: Translation equivalences prove that every row has the noise entropy and that uniform input produces
+    uniform output. The operational formula follows from the formal finite-channel coding theorem.
+  files:
+  - path: lean/CapacityAtlas/Channels/AdditiveNoise.lean
+    declaration: CapacityAtlas.Channel.additiveNoise
+    role: definition
+    description: Additive-noise channel on an arbitrary finite additive group.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/OperationalCapacity.lean
+    declaration: CapacityAtlas.FiniteChannel.operationalCapacityBits
+    role: API
+    description: Operational average-error capacity defined through block codes and vanishing error.
+  - path: lean/CapacityAtlas/Channels/AdditiveNoise.lean
+    declaration: CapacityAtlas.Channel.additiveNoise_informationCapacity
+    role: claim
+    description: For any finite additive group and noise law, information capacity is log₂|G|-H(Z).
+    claim_id: information-capacity
+  - path: lean/CapacityAtlas/Channels/AdditiveNoise.lean
+    declaration: CapacityAtlas.Channel.additiveNoise_operationalCapacity
+    role: claim
+    description: For any finite additive group and noise law, operational capacity is log₂|G|-H(Z).
+    claim_id: operational-capacity
   proofs: []
 references:
 - shannon-1948

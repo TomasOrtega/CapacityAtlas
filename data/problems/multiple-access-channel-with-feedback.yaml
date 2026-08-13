@@ -58,12 +58,11 @@ frontier:
   - Strengthen dependence balance without losing computability.
   - Relate external formal proofs to a versioned canonical feedback-code claim.
 formalization:
-  statement:
-    status: none
-    language: Lean
-    claims: []
-    notes: The Ozarow Gaussian special case is exact, but the general finite model remains an external-proof target.
-    files: []
+  status: none
+  claims: []
+  notes: The Ozarow Gaussian special case is exact, but the general finite model remains an external-proof
+    target.
+  files: []
   proofs: []
 references:
 - cover-leung-1981

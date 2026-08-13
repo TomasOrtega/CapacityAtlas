@@ -5,7 +5,7 @@ title: Binary symmetric channel
 abbreviation: BSC
 status: solved
 featured: true
-updated: '2026-08-11'
+updated: '2026-08-13'
 summary: Each bit is independently flipped with probability p, giving the canonical finite noisy channel.
 tags:
   model:
@@ -56,59 +56,50 @@ bounds:
   references:
   - shannon-1948
 formalization:
-  statement:
-    status: statement
-    language: Lean
-    claims:
-    - id: information-capacity
-      kind: exact-capacity
-      status: proved
-      version: 2
-      description: Exact single-letter information-capacity formula.
-    - id: operational-capacity
-      kind: exact-capacity
-      status: proved
-      version: 2
-      description: Exact operational average-error capacity formula.
-    notes: The single-letter information capacity is proved from reusable finite-distribution and entropy APIs. The
-      operational average-error formula is proved locally by applying the formal finite-channel coding theorem.
-    files:
-    - path: lean/CapacityAtlasForMathlib/InformationTheory/BinarySymmetric.lean
-      declaration: CapacityAtlas.FiniteChannel.informationCapacityBits_eq_binarySymmetric
-      role: shared-api
-      description: Information capacity of any finite channel with binary-symmetric transition rows.
-    - path: lean/CapacityAtlasForMathlib/InformationTheory/OperationalCapacity.lean
-      declaration: CapacityAtlas.FiniteChannel.operationalCapacityBits
-      role: shared-api
-      description: Operational average-error capacity defined through block codes and vanishing error.
-    - path: lean/CapacityAtlas/Channels/Binary.lean
-      declaration: CapacityAtlas.Channel.binarySymmetric
-      role: definition
-      description: Binary symmetric channel as a finite stochastic channel.
-    - path: lean/CapacityAtlas/Channels/Binary.lean
-      declaration: CapacityAtlas.Channel.binarySymmetric_informationCapacity
-      role: statement
-      description: Exact single-letter information capacity in bits per channel use.
-      claim_id: information-capacity
-    - path: lean/CapacityAtlas/Channels/Binary.lean
-      declaration: CapacityAtlas.Channel.binarySymmetricCapacityStatement
-      role: statement
-      description: Canonical operational average-error capacity proposition.
-      claim_id: operational-capacity
-    - path: lean/CapacityAtlas/Channels/Binary.lean
-      declaration: CapacityAtlas.Channel.binarySymmetric_operationalCapacity
-      role: short-proof
-      description: Unconditional operational BSC capacity formula from the finite-channel coding theorem.
-      claim_id: operational-capacity
-    - path: lean/CapacityAtlas/Channels/Binary.lean
-      declaration: CapacityAtlas.Channel.binarySymmetricCapacityStatement_proof
-      role: short-proof
-      description: Direct proof of the registered BSC proposition.
-      claim_id: operational-capacity
-    - path: lean/CapacityAtlas/Channels/Binary.lean
-      declaration: CapacityAtlas.Channel.binarySymmetric_zero
-      role: test
-      description: At p=0 the channel is the identity.
+  status: stated
+  claims:
+  - id: information-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: proved
+    version: 2
+    description: For 0 ≤ p ≤ 1/2, the single-letter information capacity is 1-h₂(p) bits per use.
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: proved
+    version: 2
+    description: For 0 ≤ p ≤ 1/2, operational vanishing-average-error capacity is 1-h₂(p) bits per use.
+  notes: The single-letter information capacity is proved from reusable finite-distribution and entropy
+    APIs. The operational average-error formula is proved locally by applying the formal finite-channel
+    coding theorem.
+  files:
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/BinarySymmetric.lean
+    declaration: CapacityAtlas.FiniteChannel.informationCapacityBits_eq_binarySymmetric
+    role: API
+    description: Information capacity of any finite channel with binary-symmetric transition rows.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/OperationalCapacity.lean
+    declaration: CapacityAtlas.FiniteChannel.operationalCapacityBits
+    role: API
+    description: Operational average-error capacity defined through block codes and vanishing error.
+  - path: lean/CapacityAtlas/Channels/Binary.lean
+    declaration: CapacityAtlas.Channel.binarySymmetric
+    role: definition
+    description: Binary symmetric channel as a finite stochastic channel.
+  - path: lean/CapacityAtlas/Channels/Binary.lean
+    declaration: CapacityAtlas.Channel.binarySymmetric_zero
+    role: test
+    description: At p=0 the channel is the identity.
+  - path: lean/CapacityAtlas/Channels/Binary.lean
+    declaration: CapacityAtlas.Channel.binarySymmetric_informationCapacity
+    role: claim
+    description: For 0 ≤ p ≤ 1/2, the single-letter information capacity is 1-h₂(p) bits per use.
+    claim_id: information-capacity
+  - path: lean/CapacityAtlas/Channels/Binary.lean
+    declaration: CapacityAtlas.Channel.binarySymmetric_operationalCapacity
+    role: claim
+    description: For 0 ≤ p ≤ 1/2, operational vanishing-average-error capacity is 1-h₂(p) bits per use.
+    claim_id: operational-capacity
   proofs: []
 references:
 - shannon-1948

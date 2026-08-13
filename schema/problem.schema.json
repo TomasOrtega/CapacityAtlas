@@ -317,136 +317,126 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "statement",
+        "status",
+        "claims",
+        "files",
         "proofs"
       ],
       "properties": {
-        "statement": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "status",
-            "language",
-            "claims",
-            "files"
-          ],
-          "properties": {
-            "status": {
-              "enum": [
-                "none",
-                "definitions",
-                "statement"
-              ]
-            },
-            "language": {
-              "const": "Lean"
-            },
-            "claims": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "additionalProperties": false,
-                "required": [
-                  "id",
-                  "kind",
-                  "status",
-                  "version",
-                  "description"
-                ],
-                "properties": {
-                  "id": {
-                    "$ref": "#/$defs/id"
+        "status": {
+          "enum": [
+            "none",
+            "definitions",
+            "stated"
+          ]
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "kind",
+              "category",
+              "formal_status",
+              "version",
+              "description"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/id"
+              },
+              "kind": {
+                "enum": [
+                  "achievability",
+                  "converse",
+                  "exact-capacity",
+                  "capacity-bounds",
+                  "structural"
+                ]
+              },
+              "category": {
+                "enum": [
+                  "open",
+                  "solved",
+                  "API",
+                  "test"
+                ]
+              },
+              "formal_status": {
+                "enum": [
+                  "stated",
+                  "proved"
+                ]
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "description": {
+                "type": "string",
+                "minLength": 3
+              }
+            }
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "role": {
+                      "const": "claim"
+                    }
                   },
-                  "kind": {
-                    "enum": [
-                      "definition",
-                      "achievability",
-                      "converse",
-                      "exact-capacity",
-                      "capacity-bounds",
-                      "structural"
-                    ]
-                  },
-                  "status": {
-                    "enum": [
-                      "stated",
-                      "open",
-                      "proved"
-                    ]
-                  },
-                  "version": {
-                    "type": "integer",
-                    "minimum": 1
-                  },
-                  "description": {
-                    "type": "string",
-                    "minLength": 3
-                  }
+                  "required": [
+                    "role"
+                  ]
+                },
+                "then": {
+                  "required": [
+                    "claim_id"
+                  ]
                 }
               }
-            },
-            "notes": {
-              "type": "string"
-            },
-            "files": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "additionalProperties": false,
-                "allOf": [
-                  {
-                    "if": {
-                      "properties": {
-                        "role": {
-                          "enum": [
-                            "statement",
-                            "short-proof"
-                          ]
-                        }
-                      },
-                      "required": [
-                        "role"
-                      ]
-                    },
-                    "then": {
-                      "required": [
-                        "claim_id"
-                      ]
-                    }
-                  }
-                ],
-                "required": [
-                  "path",
-                  "declaration",
-                  "role",
-                  "description"
-                ],
-                "properties": {
-                  "path": {
-                    "type": "string",
-                    "pattern": "^lean/.+\\.lean$"
-                  },
-                  "declaration": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "role": {
-                    "enum": [
-                      "definition",
-                      "statement",
-                      "short-proof",
-                      "test",
-                      "shared-api"
-                    ]
-                  },
-                  "description": {
-                    "type": "string",
-                    "minLength": 3
-                  },
-                  "claim_id": {
-                    "$ref": "#/$defs/id"
-                  }
-                }
+            ],
+            "required": [
+              "path",
+              "declaration",
+              "role",
+              "description"
+            ],
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^lean/.+\\.lean$"
+              },
+              "declaration": {
+                "type": "string",
+                "minLength": 1
+              },
+              "role": {
+                "enum": [
+                  "definition",
+                  "claim",
+                  "test",
+                  "API"
+                ]
+              },
+              "description": {
+                "type": "string",
+                "minLength": 3
+              },
+              "claim_id": {
+                "$ref": "#/$defs/id"
               }
             }
           }

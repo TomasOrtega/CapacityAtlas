@@ -58,12 +58,10 @@ frontier:
   - Strengthen the converse using relay causality.
   - Formalize the causal relay code model and cut-set theorem.
 formalization:
-  statement:
-    status: none
-    language: Lean
-    claims: []
-    notes: A reusable causal network-code layer is required.
-    files: []
+  status: none
+  claims: []
+  notes: A reusable causal network-code layer is required.
+  files: []
   proofs: []
 references:
 - cover-elgamal-1979

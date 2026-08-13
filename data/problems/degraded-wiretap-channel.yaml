@@ -50,12 +50,10 @@ bounds:
   references:
   - wyner-1975
 formalization:
-  statement:
-    status: none
-    language: Lean
-    claims: []
-    notes: Secrecy criteria and mutual-information converses are not yet formalized.
-    files: []
+  status: none
+  claims: []
+  notes: Secrecy criteria and mutual-information converses are not yet formalized.
+  files: []
   proofs: []
 references:
 - wyner-1975

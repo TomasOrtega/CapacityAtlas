@@ -48,12 +48,11 @@ bounds:
   references:
   - cover-elgamal-1979
 formalization:
-  statement:
-    status: none
-    language: Lean
-    claims: []
-    notes: This theorem should live in a dedicated external proof repository once causal relay codes are shared.
-    files: []
+  status: none
+  claims: []
+  notes: This theorem should live in a dedicated formal proof repository once causal relay codes are
+    shared.
+  files: []
   proofs: []
 references:
 - cover-elgamal-1979

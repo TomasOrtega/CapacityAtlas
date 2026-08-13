@@ -3,7 +3,7 @@
 id: blackwell-broadcast-channel
 title: Blackwell deterministic broadcast channel
 status: solved
-updated: '2026-08-12'
+updated: '2026-08-13'
 summary: The three-input Blackwell channel is a concrete nondegraded deterministic broadcast channel with an exact entropy capacity region.
 tags:
   model: [broadcast]
@@ -34,21 +34,17 @@ bounds:
   year: 1980
   references: [gelfand-pinsker-broadcast-1980]
 formalization:
-  statement:
-    status: statement
-    language: Lean
-    claims:
-    - id: exact-capacity-region
-      kind: exact-capacity
-      status: open
-      version: 1
-      description: Equality of the operational and deterministic entropy regions.
-    notes: The concrete maps and entropy region are fixed in the central statement.
-    files:
-    - path: lean/CapacityAtlas/Channels/Broadcast.lean
-      declaration: CapacityAtlas.Channel.blackwellBroadcastCapacityStatement
-      role: statement
-      description: Operational capacity region equals the deterministic entropy region.
-      claim_id: exact-capacity-region
+  status: definitions
+  claims: []
+  notes: Concrete definitions are retained; no capacity or bound claim is formally stated.
+  files:
+  - path: lean/CapacityAtlas/Channels/Broadcast.lean
+    declaration: CapacityAtlas.Channel.blackwellBroadcastChannel
+    role: definition
+    description: Concrete deterministic Blackwell broadcast channel.
+  - path: lean/CapacityAtlas/Channels/Broadcast.lean
+    declaration: CapacityAtlas.Channel.blackwellCapacityRegion
+    role: definition
+    description: Deterministic single-letter private-message region.
   proofs: []
 references: [gelfand-pinsker-broadcast-1980]

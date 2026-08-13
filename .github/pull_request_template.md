@@ -6,11 +6,11 @@ Describe the focused change.
 
 List the primary sources checked and the exact claims they support. Write “not applicable” for site-only changes.
 
-## Tags and formalization
+## Tags and formal verification
 
 - State which controlled tag axes changed and why.
-- State which canonical Lean claim identifiers or versions changed.
-- For external proofs, include the immutable commit, declaration, claim identifier and version, and CI status.
+- State which canonical formal claim identifiers or versions changed.
+- For linked formal proofs, include the immutable commit, declaration, claim identifier and version, and CI status.
 
 ## Licensing
 

@@ -4,8 +4,9 @@ Licensed under the Apache License, Version 2.0 (the "License").
 See https://www.apache.org/licenses/LICENSE-2.0
 -/
 
-import CapacityAtlasForMathlib.InformationTheory.OperationalTheory
+import CapacityAtlasUtil.Metadata
 import Mathlib.Data.Matrix.Basic
+import Mathlib.Data.Real.Basic
 
 namespace CapacityAtlas.Channel
 
@@ -19,15 +20,5 @@ structure RealGaussianMIMOModel (transmitAntennas receiveAntennas : ℕ) where
   noiseVariance_pos : 0 < noiseVariance
   totalPower : ℝ
   totalPower_nonnegative : 0 ≤ totalPower
-
-/-- Real-channel normalization uses `1/2 log₂ det`; the value argument is the water-filling optimum. -/
-@[capacity_problem "gaussian-mimo-channel", capacity_statement]
-def gaussianMIMOCapacityStatement (transmitAntennas receiveAntennas : ℕ)
-    (theory : ScalarOperationalTheory
-      (RealGaussianMIMOModel transmitAntennas receiveAntennas))
-    (waterFillingLogDetValue :
-      RealGaussianMIMOModel transmitAntennas receiveAntennas → ℝ)
-    (channel : RealGaussianMIMOModel transmitAntennas receiveAntennas) : Prop :=
-  theory.capacity channel = waterFillingLogDetValue channel
 
 end CapacityAtlas.Channel

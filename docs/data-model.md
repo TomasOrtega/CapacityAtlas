@@ -14,13 +14,12 @@ file name and permanent `id` agree.
 - `quantity`: the rate object to be determined
 - `knowledge`: the form of the current answer
 
-These axes are intentionally independent. For example, the Sun–Jafar instance is
-mathematically open, has model `index-coding`, quantity `symmetric-capacity`, and
-knowledge tags `bounds` and `linear-encoder-only`.
+These axes are intentionally independent. A problem can be mathematically open
+while having formally proved partial bounds.
 
-`linear-encoder-only` is deliberately conservative: it says the encoder is
-linear over a finite field while decoders may be arbitrary zero-error maps. It
-does not assert that equivalent linear decoders have been constructed.
+`linear-encoder-only` is deliberately conservative: the encoder is linear over
+a finite field while decoders may be arbitrary zero-error maps. It does not
+assert that equivalent linear decoders have been constructed.
 
 ## Operational specification
 
@@ -31,32 +30,40 @@ normalization.
 
 ## Bounds
 
-Every achievability, converse, exact result, or region bound is a separate object.
-A bound records its direction, relation, method, year, assumptions, and primary
-references. The headline `capacity` block summarizes the current envelope but is
-not a substitute for provenance.
+Every achievability, converse, exact result, or region bound is a separate
+object. A bound records its direction, relation, method, year, assumptions, and
+primary references. The headline `capacity` block summarizes the current
+envelope but is not a substitute for provenance.
 
 ## Formalization
 
-`formalization.statement` records local Lean coverage. Its `claims` list gives
-each proposition or definition a stable identifier, a kind, its own version, and
-an explicit status. Claim kinds distinguish definitions, achievability,
-converse, exact-capacity, combined capacity-bound, and structural results.
-Definitions are `stated`; unproved named `Prop` definitions are `open`; and only
-claims with complete local or registered external evidence are `proved`.
+`formalization.status` is `none`, `definitions`, or `stated`. Definitions-only
+records keep concrete models and shared infrastructure without presenting an
+unfaithful problem claim.
 
-Declaration entries use `claim_id` when they state or prove a claim.
-`formalization.proofs` records substantial external Lean proofs at immutable
-commits and targets one exact claim identifier and version. Mathematical status
-and formal proof status are never inferred from one another.
+Each item in `formalization.claims` has:
+
+- a stable `id` and integer `version`
+- a `kind`: `achievability`, `converse`, `exact-capacity`, `capacity-bounds`, or
+  `structural`
+- a `category`: `open`, `solved`, `API`, or `test`
+- an independent `formal_status`: `stated` or `proved`
+- a precise description
+
+Files identify a declaration and its role: `definition`, `claim`, `test`, or
+`API`. Claim declarations link through `claim_id`.
+
+`formalization.proofs` records formal proof provenance at immutable commits and
+targets one exact claim identifier and version. A complete local proof or linked
+proof is required before a claim may be marked `proved`. Mathematical status,
+claim category, and formal-proof status are never inferred from one another.
 
 The Browse page reflects this independence with separate **Status** and
-**Formalization** controls. `Formally stated` means at least one non-definition
-claim has a local formal declaration. `Capacity claim formally proved` means an
+**Formalization** controls. **Formally stated** means at least one
+non-definition claim has a local declaration. **Formally proved** means an
 achievability, converse, exact-capacity, or combined capacity-bound claim is
 explicitly marked `proved`. A proved structural claim does not trigger that
-capacity-proof filter. A formally proved bound may still belong to a
-mathematically open problem.
+filter.
 
 ## Discussion identity
 
@@ -68,14 +75,9 @@ capacityatlas:<problem-id>
 
 Changing a page title or URL therefore does not detach its GitHub Discussion.
 
-## Compatibility
+## Validation
 
 The JSON Schema catches structural errors. The Python validator additionally
-checks tag vocabulary, bibliography links, duplicate identifiers, local Lean
-files and declarations, claim links and statuses, external proof commit links,
-and claim-version matches.
-
-The claim-level format replaces the former problem-wide `statement.version`.
-External proof records now use `claim_id` and `claim_version` instead of `claim`
-and `statement_version`; there is no implicit fallback because silently mapping
-a proof to the wrong proposition would overstate formal coverage.
+checks tag vocabulary, bibliography links, duplicate identifiers, local files
+and declarations, category attributes, claim links and versions, proof links,
+and the local-proof trust boundary.

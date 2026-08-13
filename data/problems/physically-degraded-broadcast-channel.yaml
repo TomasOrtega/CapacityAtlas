@@ -49,12 +49,10 @@ bounds:
   references:
   - bergmans-1973
 formalization:
-  statement:
-    status: none
-    language: Lean
-    claims: []
-    notes: Multi-user rate regions and auxiliary variables are not yet in the Lean core.
-    files: []
+  status: none
+  claims: []
+  notes: Multi-user rate regions and auxiliary variables are not yet in the Lean core.
+  files: []
   proofs: []
 references:
 - bergmans-1973

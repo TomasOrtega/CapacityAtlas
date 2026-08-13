@@ -57,22 +57,14 @@ bounds:
   - shannon-1948
   - cover-thomas-2006
 formalization:
-  statement:
-    status: definitions
-    language: Lean
-    claims:
-    - id: channel-definition
-      kind: definition
-      status: stated
-      version: 1
-      description: Binary Z-channel transition kernel.
-    notes: The asymmetric kernel is formalized; the closed-form optimization is not.
-    files:
-    - path: lean/CapacityAtlas/Channels/Binary.lean
-      declaration: CapacityAtlas.Channel.binaryZ
-      role: definition
-      description: Binary Z-channel as a finite stochastic channel.
-      claim_id: channel-definition
+  status: definitions
+  claims: []
+  notes: The asymmetric kernel is formalized; the closed-form optimization is not.
+  files:
+  - path: lean/CapacityAtlas/Channels/Binary.lean
+    declaration: CapacityAtlas.Channel.binaryZ
+    role: definition
+    description: Binary Z-channel as a finite stochastic channel.
   proofs: []
 references:
 - shannon-1948

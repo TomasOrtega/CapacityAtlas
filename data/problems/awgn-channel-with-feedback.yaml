@@ -57,12 +57,10 @@ bounds:
   - shannon-1956
   - cover-thomas-2006
 formalization:
-  statement:
-    status: none
-    language: Lean
-    claims: []
-    notes: Continuous feedback codes are outside the current finite Lean core.
-    files: []
+  status: none
+  claims: []
+  notes: Continuous feedback codes are outside the current finite Lean core.
+  files: []
   proofs: []
 references:
 - shannon-1956

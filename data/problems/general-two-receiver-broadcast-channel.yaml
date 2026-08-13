@@ -58,12 +58,10 @@ frontier:
   - Discover a tighter computable outer region.
   - Formalize a sharply stated benchmark subclass.
 formalization:
-  statement:
-    status: none
-    language: Lean
-    claims: []
-    notes: The canonical statement should follow a shared broadcast-code and rate-region API.
-    files: []
+  status: none
+  claims: []
+  notes: The canonical statement should follow a shared broadcast-code and rate-region API.
+  files: []
   proofs: []
 references:
 - marton-1979

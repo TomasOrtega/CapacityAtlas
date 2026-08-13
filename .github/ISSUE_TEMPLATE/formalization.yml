@@ -1,6 +1,6 @@
-name: Propose a Lean claim or proof
-description: Coordinate a local claim or an external proof repository.
-title: "[Lean] "
+name: Propose a formal claim or proof
+description: Coordinate a formal claim or proof repository.
+title: "[Formal] "
 body:
   - type: input
     id: problem
@@ -15,9 +15,9 @@ body:
       label: Contribution type
       options:
         - Shared API or definition
-        - Canonical claim
-        - Short central proof or test
-        - Substantial external proof repository
+        - Formally stated claim
+        - Local proof or test
+        - Linked proof repository
     validations:
       required: true
   - type: textarea
@@ -31,7 +31,7 @@ body:
     id: faithfulness
     attributes:
       label: Faithfulness argument
-      description: Explain why the Lean proposition matches the model, criterion, and normalization on the page.
+      description: Explain why the proposition matches the model, criterion, and normalization on the page.
     validations:
       required: true
   - type: input
@@ -43,16 +43,16 @@ body:
     validations:
       required: true
   - type: textarea
-    id: external
+    id: proof
     attributes:
-      label: External proof metadata
+      label: Formal proof provenance
       description: For substantial proofs, give repository, immutable commit, file, declaration, and public CI.
   - type: checkboxes
     id: policy
     attributes:
       label: Policy
       options:
-        - label: The proposed Lean code contains no sorry, admit, or unreviewed axioms.
+        - label: Any sorry is confined to a research claim; APIs, tests, and locally proved code contain no sorry or admit.
           required: true
         - label: I agree that submitted software and Lean source are contributed under Apache-2.0.
           required: true

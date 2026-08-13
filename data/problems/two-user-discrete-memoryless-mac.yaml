@@ -52,12 +52,10 @@ bounds:
   - ahlswede-1971
   - liao-1972
 formalization:
-  statement:
-    status: none
-    language: Lean
-    claims: []
-    notes: Product distributions, rate regions, and the MAC coding theorem are not yet formalized.
-    files: []
+  status: none
+  claims: []
+  notes: Product distributions, rate regions, and the MAC coding theorem are not yet formalized.
+  files: []
   proofs: []
 references:
 - ahlswede-1971

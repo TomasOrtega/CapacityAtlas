@@ -59,12 +59,10 @@ frontier:
   - Separate Han-Kobayashi from a known outer bound on an explicit channel.
   - Formalize one exact-capacity regime before the general problem.
 formalization:
-  statement:
-    status: none
-    language: Lean
-    claims: []
-    notes: This needs a shared interference-network model and independent-message code definitions.
-    files: []
+  status: none
+  claims: []
+  notes: This needs a shared interference-network model and independent-message code definitions.
+  files: []
   proofs: []
 references:
 - han-kobayashi-1981

@@ -22,4 +22,5 @@ serve: build
 	uv run --locked python -m http.server --directory dist 8000
 
 lean:
+	cd lean && lake --wfail build CapacityAtlasForMathlib CapacityAtlasUtil
 	cd lean && lake build

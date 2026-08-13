@@ -5,7 +5,7 @@ title: Seven-cycle zero-error channel
 abbreviation: C7
 status: open
 featured: true
-updated: '2026-08-12'
+updated: '2026-08-13'
 summary: The exact Shannon capacity of the seven-cycle remains unknown between a finite fifth-power certificate and the Lovász theta bound.
 tags:
   model: [zero-error]
@@ -49,21 +49,20 @@ frontier:
   - Verify larger strong-power independent-set certificates.
   - Find an upper parameter below Lovász theta for this graph.
 formalization:
-  statement:
-    status: statement
-    language: Lean
-    claims:
-    - id: capacity-bounds
-      kind: capacity-bounds
-      status: open
-      version: 1
-      description: Registered exact symbolic lower and upper bounds.
-    notes: Decimal approximations are omitted; the proposition records exact symbolic endpoints.
-    files:
-    - path: lean/CapacityAtlas/ZeroError/SevenCycle.lean
-      declaration: CapacityAtlas.ZeroError.sevenCycleKnownBounds
-      role: statement
-      description: Exact symbolic lower and upper bounds for the seven-cycle.
-      claim_id: capacity-bounds
+  status: stated
+  claims:
+  - id: capacity-bounds
+    kind: capacity-bounds
+    category: solved
+    formal_status: stated
+    version: 1
+    description: The seven-cycle Shannon capacity lies between 367^(1/5) and 7 cos(π/7)/(1+cos(π/7)).
+  notes: Decimal approximations are omitted; the proposition records exact symbolic endpoints.
+  files:
+  - path: lean/CapacityAtlas/ZeroError/SevenCycle.lean
+    declaration: CapacityAtlas.ZeroError.sevenCycleKnownBounds
+    role: claim
+    description: The seven-cycle Shannon capacity lies between 367^(1/5) and 7 cos(π/7)/(1+cos(π/7)).
+    claim_id: capacity-bounds
   proofs: []
 references: [shannon-1956, lovasz-1979, polak-schrijver-2019]

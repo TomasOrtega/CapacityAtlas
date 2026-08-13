@@ -1,14 +1,17 @@
-# Lean formalization guide
+# Formal verification guide
 
-Capacity Atlas is a formal specification registry. It keeps shared definitions,
-canonical statements, and short proofs in one small Lean project while allowing
-substantial proofs to develop independently.
+Capacity Atlas uses Lean 4 to keep shared definitions, precise research claims,
+and compact proofs in one project while allowing substantial proofs to develop
+independently. The policy follows Google DeepMind's
+[Formal Conjectures](https://github.com/google-deepmind/formal-conjectures): an
+open claim is still valuable as a theorem declaration even when its body is
+`by sorry`.
 
 ## Package layers
 
 ### `CapacityAtlasUtil`
 
-Metadata attributes and tooling used to connect Lean declarations to atlas
+This layer defines metadata attributes that connect declarations to registry
 records:
 
 ```lean
@@ -16,92 +19,81 @@ records:
 def binarySymmetric ...
 ```
 
-Available role attributes are:
-
-- `capacity_definition`
-- `capacity_statement`
-- `capacity_short_proof`
-- `capacity_shared_api`
-
-The attribute system is inspired by the category and `formal_proof` metadata in
-Google DeepMind's Formal Conjectures project. Capacity Atlas omits AMS tags and
-uses its channel-specific YAML facets for subject classification.
+Declaration roles use `capacity_definition`, `capacity_statement`, and
+`capacity_shared_api`. Claim categories use `capacity_open`,
+`capacity_solved`, `capacity_api`, and `capacity_test`. A declaration with a
+complete local proof also carries `capacity_formal_proof`.
 
 ### `CapacityAtlasForMathlib`
 
-Reusable information-theory infrastructure that is useful across several
-capacity problems and may eventually be proposed to Mathlib. Current modules
-cover finite distributions, finite channels, one-shot and block codes,
-information and operational capacity, broadcast, wiretap, interference, and
-finite-state channel models, graph zero-error capacity, and general finite index
-coding with separate message and receiver types, zero- and vanishing-error
-criteria, and fixed-field linear-encoder capacity. The latter constrains the
-encoder to be linear while allowing arbitrary zero-error decoders. It is not
-called linear capacity unless equivalence with linear decoders is established.
-The canonical declarations use `linearEncoderSymmetricCapacity*`. Deprecated
-`linearSymmetricCapacity*` aliases remain for source compatibility and do not
-assert decoder linearity.
+This is reusable information-theory infrastructure that may eventually be
+proposed to Mathlib. It contains finite distributions and channels, code and
+capacity definitions, network models, graph zero-error capacity, and finite
+index coding. It is part of the trusted layer and may not contain `sorry` or
+`admit`.
 
 ### `CapacityAtlas`
 
-Channel-specific definitions, canonical problem claims, tests, and compact
-proofs. Compatibility imports preserve the original module paths while new code
-should import the `CapacityAtlasForMathlib` modules directly.
+This layer contains concrete channel definitions, problem claims, and focused
+tests. Every problem claim must fix the physical channel, code class,
+operational criterion, rate normalization, and claimed capacity or bound.
+Statements parameterized by an arbitrary operational theory, capacity function,
+region, or bound do not qualify.
 
-## Formal coverage and claim status
+## Claim metadata
 
-Each problem records a local coverage status:
+Each problem records one coverage status:
 
-- `none`: no local Lean declaration exists
-- `definitions`: the model or reusable API is formalized
-- `statement`: one or more page claims have canonical declarations
+- `none`: no linked formal declaration
+- `definitions`: concrete definitions or reusable API only
+- `stated`: at least one research or structural claim is formally stated
 
-Each formal claim then records:
+Each claim has a stable `id`, mathematical `kind`, `category`, independent
+`formal_status`, integer `version`, and description. Categories are:
 
-- a stable `id`
-- a `kind`: `definition`, `achievability`, `converse`, `exact-capacity`,
-  `capacity-bounds`, or `structural`
-- a `status`: `stated` for definitions, `open` for an unproved named `Prop`
-  definition, or `proved` when complete proof evidence is linked
-- its own integer `version`
+- `open`: an open research claim
+- `solved`: a mathematically solved research claim
+- `API`: a reusable interface property
+- `test`: a structural or computational check
 
-Declaration entries identify their claim with `claim_id`. Increment only the
-affected claim's version when its proposition changes in a way that can
-invalidate a proof. Editorial changes and API refactors that preserve the
-proposition do not require an increment. This separation prevents a proved
-translation or graph lemma from being presented as a proved capacity claim.
+The formal status is `stated` or `proved`. It records proof coverage, not the
+mathematical status of the problem. In particular, a proved structural test does
+not make a capacity claim formally proved.
 
-## Proof status
+Open claims are theorem declarations with `by sorry`. Solved claims without a
+local proof may use the same form while their proof provenance is recorded
+separately. A locally proved declaration carries `capacity_formal_proof` and may
+not contain `sorry` or `admit`.
 
-Proof records are independent of local coverage status and live in problem YAML.
-A registered proof is either `partial` or `complete`. It must point to an
-immutable Lean repository commit and identify the declaration, claim identifier,
-and claim version.
+Increment a claim version only when its proposition changes materially.
+Editorial changes and API refactors that preserve the proposition do not require
+an increment.
+
+## Formal proof provenance
+
+Proof records are independent of both mathematical status and local statement
+coverage. A linked proof is `partial` or `complete` and identifies an immutable
+repository commit, file, declaration, claim identifier, and claim version. See
+[formal-proofs.md](formal-proofs.md).
 
 ## What belongs here
 
-Keep these in the central repository:
+Keep neutral shared definitions, concrete models, canonical claims, tests, and
+short illuminating proofs in the central repository. A proof longer than about
+25–50 lines, or one requiring substantial problem-specific infrastructure,
+should normally live in a dedicated repository.
 
-- neutral shared definitions
-- canonical channel and code models
-- the proposition that constitutes the capacity problem
-- tests of definitions
-- short, illuminating proofs
-
-A proof longer than approximately 25–50 lines, or one requiring meaningful
-problem-specific infrastructure, should normally live in a dedicated repository.
-This threshold follows the successful contribution model used by Formal
-Conjectures.
-
-## Build and review
+## Build and trust boundary
 
 ```bash
 cd lean
 lake exe cache get
+lake --wfail build CapacityAtlasForMathlib CapacityAtlasUtil
 lake build
 ```
 
-CI rejects `sorry` and `admit` tokens in all three package layers and compiles the
-library against the pinned Lean and Mathlib versions. Compilation does not by
-itself establish that a statement faithfully represents the informal problem,
-so every claim change also needs mathematical review.
+The first build treats every warning as an error in reusable infrastructure and
+metadata utilities. The complete build admits open and solved-but-unproved
+problem claims. The validator separately rejects `sorry` and `admit` in locally
+proved declarations, APIs, and tests. Compilation does not establish statement
+faithfulness, so every claim change also needs mathematical review.

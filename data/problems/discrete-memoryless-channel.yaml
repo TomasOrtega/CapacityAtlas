@@ -5,7 +5,7 @@ title: Finite discrete memoryless channel
 abbreviation: DMC
 status: solved
 featured: true
-updated: '2026-08-11'
+updated: '2026-08-13'
 summary: The general finite memoryless point-to-point channel has a single-letter mutual-information capacity formula.
 tags:
   model:
@@ -55,63 +55,69 @@ timeline:
   references:
   - shannon-1948
 formalization:
-  statement:
-    status: statement
-    language: Lean
-    claims:
-    - id: exact-capacity
-      kind: exact-capacity
-      status: proved
-      version: 1
-      description: Equality of operational average-error and single-letter information capacity.
-    notes: The finite-channel coding theorem is proved locally from a threshold random-coding argument and a weak
-      Fano converse. The proof covers every finite channel, including the repository's empty-input convention.
-    files:
-    - path: lean/CapacityAtlasForMathlib/InformationTheory/FiniteChannel.lean
-      declaration: CapacityAtlas.FiniteChannel
-      role: shared-api
-      description: Finite stochastic-channel structure.
-    - path: lean/CapacityAtlasForMathlib/InformationTheory/Code.lean
-      declaration: CapacityAtlas.OneShotCode
-      role: shared-api
-      description: One-shot encoder, decoder, and error definitions.
-    - path: lean/CapacityAtlasForMathlib/InformationTheory/FiniteDistribution.lean
-      declaration: CapacityAtlas.FiniteDistribution
-      role: shared-api
-      description: Finite probability distributions and entropy in nats and bits.
-    - path: lean/CapacityAtlasForMathlib/InformationTheory/FiniteChannelCapacity.lean
-      declaration: CapacityAtlas.FiniteChannel.informationCapacityBits
-      role: shared-api
-      description: Mutual information and single-letter information capacity.
-    - path: lean/CapacityAtlasForMathlib/InformationTheory/OperationalCapacity.lean
-      declaration: CapacityAtlas.FiniteChannel.BlockCode
-      role: shared-api
-      description: Deterministic block codes for memoryless product channels.
-    - path: lean/CapacityAtlasForMathlib/InformationTheory/OperationalCapacity.lean
-      declaration: CapacityAtlas.FiniteChannel.operationalCapacityBits
-      role: shared-api
-      description: Operational capacity through achievable rates and vanishing average error.
-    - path: lean/CapacityAtlasForMathlib/InformationTheory/InformationDensity.lean
-      declaration: CapacityAtlas.FiniteChannel.blockInformationDensity_lowerTail_le
-      role: shared-api
-      description: Product information-density variance and the finite Chebyshev lower-tail estimate.
-    - path: lean/CapacityAtlasForMathlib/InformationTheory/RandomCoding.lean
-      declaration: CapacityAtlas.FiniteChannel.exists_blockCode_averageErrorProbability_le
-      role: shared-api
-      description: Deterministic finite-block random-coding estimate selected from the codebook ensemble.
-    - path: lean/CapacityAtlasForMathlib/InformationTheory/FiniteEntropy.lean
-      declaration: CapacityAtlas.FiniteChannel.block_mutualInformation_le_informationCapacityBits_mul_log_two
-      role: shared-api
-      description: Subadditive block mutual-information bound in terms of single-letter capacity.
-    - path: lean/CapacityAtlasForMathlib/InformationTheory/CodingConverse.lean
-      declaration: CapacityAtlas.FiniteChannel.AchievableRate.le_informationCapacityBits
-      role: shared-api
-      description: Weak Fano converse for every achievable rate.
-    - path: lean/CapacityAtlasForMathlib/InformationTheory/CodingConverse.lean
-      declaration: CapacityAtlas.FiniteChannel.codingTheorem
-      role: shared-api
-      description: Equality of operational average-error capacity and information capacity.
-      claim_id: exact-capacity
+  status: stated
+  claims:
+  - id: exact-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: proved
+    version: 1
+    description: For every finite channel, operational vanishing-average-error capacity equals single-letter
+      information capacity.
+  notes: The finite-channel coding theorem is proved locally from a threshold random-coding argument and
+    a weak Fano converse. The proof covers every finite channel, including the repository's empty-input
+    convention.
+  files:
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/FiniteChannel.lean
+    declaration: CapacityAtlas.FiniteChannel
+    role: API
+    description: Finite stochastic-channel structure.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/Code.lean
+    declaration: CapacityAtlas.OneShotCode
+    role: API
+    description: One-shot encoder, decoder, and error definitions.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/FiniteDistribution.lean
+    declaration: CapacityAtlas.FiniteDistribution
+    role: API
+    description: Finite probability distributions and entropy in nats and bits.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/FiniteChannelCapacity.lean
+    declaration: CapacityAtlas.FiniteChannel.informationCapacityBits
+    role: API
+    description: Mutual information and single-letter information capacity.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/OperationalCapacity.lean
+    declaration: CapacityAtlas.FiniteChannel.BlockCode
+    role: API
+    description: Deterministic block codes for memoryless product channels.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/OperationalCapacity.lean
+    declaration: CapacityAtlas.FiniteChannel.operationalCapacityBits
+    role: API
+    description: Operational capacity through achievable rates and vanishing average error.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/InformationDensity.lean
+    declaration: CapacityAtlas.FiniteChannel.blockInformationDensity_lowerTail_le
+    role: API
+    description: Product information-density variance and the finite Chebyshev lower-tail estimate.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/RandomCoding.lean
+    declaration: CapacityAtlas.FiniteChannel.exists_blockCode_averageErrorProbability_le
+    role: API
+    description: Deterministic finite-block random-coding estimate selected from the codebook ensemble.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/FiniteEntropy.lean
+    declaration: CapacityAtlas.FiniteChannel.block_mutualInformation_le_informationCapacityBits_mul_log_two
+    role: API
+    description: Subadditive block mutual-information bound in terms of single-letter capacity.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/CodingConverse.lean
+    declaration: CapacityAtlas.FiniteChannel.AchievableRate.le_informationCapacityBits
+    role: API
+    description: Weak Fano converse for every achievable rate.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/CodingConverse.lean
+    declaration: CapacityAtlas.FiniteChannel.codingTheorem
+    role: API
+    description: Equality of operational average-error capacity and information capacity.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/CodingConverse.lean
+    declaration: CapacityAtlas.FiniteChannel.codingTheorem_all
+    role: claim
+    description: For every finite channel, operational vanishing-average-error capacity equals single-letter
+      information capacity.
+    claim_id: exact-capacity
   proofs: []
 references:
 - shannon-1948
