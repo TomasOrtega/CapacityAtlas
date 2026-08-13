@@ -9,8 +9,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages-${{ github.ref }}
@@ -20,8 +18,11 @@ jobs:
   site:
     name: Validate and build site
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
       - name: Install uv
         uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
         with:
@@ -36,42 +37,53 @@ jobs:
         run: uv run --locked pytest
       - name: Build production site
         run: uv run --locked capacity-atlas build
-      - name: Configure GitHub Pages
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: actions/configure-pages@v5
       - name: Upload Pages artifact
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
         with:
           path: dist
 
   lean:
     name: Compile Lean
     runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v6
-      - uses: leanprover/lean-action@v1
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9 # v1.5.0
         with:
           lake-package-directory: lean
           auto-config: false
           build: false
           use-mathlib-cache: true
+      - name: Install uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
       - name: Build trusted Lean layers
         working-directory: lean
         run: lake --wfail build CapacityAtlasForMathlib CapacityAtlasUtil
       - name: Build all Lean declarations
         working-directory: lean
-        run: lake build
+        run: lake --wfail build CapacityAtlas
+      - name: Audit transitive Lean trust
+        working-directory: lean
+        run: lake exe capacity_audit > "$RUNNER_TEMP/capacity-audit.json"
+      - name: Validate compiled claim registry
+        run: uv run --locked capacity-atlas validate --lean-report "$RUNNER_TEMP/capacity-audit.json"
 
   deploy:
     name: Deploy GitHub Pages
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [site, lean]
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4

@@ -63,16 +63,17 @@ def sunJafarGroupcast :
 theorem sunJafarGroupcast_demand_translation (receiver : SunJafarGroupcastReceiver) :
     (sunJafarGroupcastDemand receiver).val + 1 =
       sunJafarGroupcastDemandOneBased receiver := by
-  fin_cases receiver <;> native_decide
+  fin_cases receiver <;> decide
 
 @[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement,
-  capacity_test, capacity_formal_proof]
+  capacity_test, capacity_formal_proof, capacity_claim "interference-translation" 1]
 theorem sunJafarGroupcast_interference_translation (receiver : SunJafarGroupcastReceiver) :
     (sunJafarGroupcastInterference receiver).image (fun message ↦ message.val + 1) =
       sunJafarGroupcastInterferenceOneBased receiver := by
-  fin_cases receiver <;> native_decide
+  fin_cases receiver <;> decide
 
-@[simp] theorem sunJafarGroupcast_interference (receiver : SunJafarGroupcastReceiver) :
+@[simp, capacity_api]
+theorem sunJafarGroupcast_interference (receiver : SunJafarGroupcastReceiver) :
     sunJafarGroupcast.interference receiver = sunJafarGroupcastInterference receiver := by
   apply Instance.interference_fromInterference
   intro sourceReceiver
@@ -92,53 +93,57 @@ def sunJafarGroupcastExpectedAlignmentEdges : Finset SunJafarGroupcastEdge :=
 @[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_test]
 theorem sunJafarGroupcast_alignmentEdges_exact :
     sunJafarGroupcastAlignmentEdges = sunJafarGroupcastExpectedAlignmentEdges := by
-  native_decide
+  decide
 
 @[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_test]
 theorem sunJafarGroupcast_alignmentEdge_count :
     sunJafarGroupcastAlignmentEdges.card = 6 := by
-  native_decide
+  decide
 
 @[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement,
-  capacity_solved]
+  capacity_solved, capacity_claim "linear-achievability" 2]
 theorem sunJafarGroupcast_linear_achievability :
     (5 : ℝ) / 13 ≤ linearEncoderSymmetricCapacity sunJafarGroupcast := by
   sorry
 
 @[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement,
-  capacity_solved]
+  capacity_solved, capacity_claim "unrestricted-achievability" 1]
 theorem sunJafarGroupcast_unrestricted_achievability :
     (5 : ℝ) / 13 ≤ symmetricCapacity sunJafarGroupcast := by
-  sorry
+  exact sunJafarGroupcast_linear_achievability.trans
+    (linearEncoderSymmetricCapacity_le_symmetricCapacity sunJafarGroupcast)
 
 @[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement,
-  capacity_solved]
+  capacity_solved, capacity_claim "linear-converse" 1]
 theorem sunJafarGroupcast_linear_converse :
     linearEncoderSymmetricCapacity sunJafarGroupcast ≤ (5 : ℝ) / 13 := by
   sorry
 
 @[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement,
-  capacity_solved]
+  capacity_solved, capacity_claim "nonlinear-converse" 1]
 theorem sunJafarGroupcast_nonlinear_converse :
     symmetricCapacity sunJafarGroupcast ≤ (11 : ℝ) / 28 := by
   sorry
 
 @[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement,
-  capacity_open]
+  capacity_open, capacity_claim "exact-capacity" 1]
 theorem sunJafarGroupcast_exact_capacity_conjecture :
     symmetricCapacity sunJafarGroupcast = (5 : ℝ) / 13 := by
   sorry
 
 @[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement,
-  capacity_solved]
+  capacity_solved, capacity_claim "shannon-relaxation-value" 1]
 theorem sunJafarGroupcast_shannon_outer_bound_limit :
     shannonPolymatroidOuterBound sunJafarGroupcast = (2 : ℝ) / 5 := by
   sorry
 
 @[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement,
-  capacity_solved]
+  capacity_solved, capacity_claim "shannon-outer-bound" 1]
 theorem sunJafarGroupcast_shannon_outer_bound :
     symmetricCapacity sunJafarGroupcast ≤ (2 : ℝ) / 5 := by
-  sorry
+  calc
+    symmetricCapacity sunJafarGroupcast ≤ shannonPolymatroidOuterBound sunJafarGroupcast :=
+      symmetricCapacity_le_shannonPolymatroidOuterBound sunJafarGroupcast
+    _ = (2 : ℝ) / 5 := sunJafarGroupcast_shannon_outer_bound_limit
 
 end CapacityAtlas.IndexCoding

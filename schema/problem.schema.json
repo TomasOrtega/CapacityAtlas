@@ -345,7 +345,8 @@
             ],
             "properties": {
               "id": {
-                "$ref": "#/$defs/id"
+                "$ref": "#/$defs/id",
+                "description": "Stable claim identifier mirrored by Lean capacity_claim metadata."
               },
               "kind": {
                 "enum": [
@@ -372,7 +373,8 @@
               },
               "version": {
                 "type": "integer",
-                "minimum": 1
+                "minimum": 1,
+                "description": "Proposition version mirrored by Lean metadata; increment for a material proposition change."
               },
               "description": {
                 "type": "string",
@@ -436,7 +438,8 @@
                 "minLength": 3
               },
               "claim_id": {
-                "$ref": "#/$defs/id"
+                "$ref": "#/$defs/id",
+                "description": "Claim identifier matched one-to-one with the tagged Lean declaration."
               }
             }
           }

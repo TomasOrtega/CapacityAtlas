@@ -4,9 +4,39 @@
 import re
 from copy import deepcopy
 from pathlib import Path
+from typing import Any
 
 from capacity_atlas.data import load_atlas
 from capacity_atlas.validate import validate_atlas
+
+
+def _lean_report() -> dict[str, Any]:
+    atlas = load_atlas()
+    declarations = []
+    for problem in atlas.problems:
+        formalization = problem.get("formalization", {})
+        files = formalization.get("files", [])
+        for claim in formalization.get("claims", []):
+            declaration = next(
+                entry["declaration"]
+                for entry in files
+                if entry.get("role") == "claim" and entry.get("claim_id") == claim["id"]
+            )
+            locally_proved = claim["formal_status"] == "proved"
+            declarations.append(
+                {
+                    "declaration": declaration,
+                    "module": "test",
+                    "problemId": problem["id"],
+                    "claimId": claim["id"],
+                    "claimVersion": claim["version"],
+                    "category": claim["category"],
+                    "formalProof": locally_proved,
+                    "test": claim["category"] == "test",
+                    "axioms": [] if locally_proved else ["sorryAx"],
+                }
+            )
+    return {"declarations": declarations, "errors": []}
 
 
 def test_registry_is_valid() -> None:
@@ -211,7 +241,7 @@ def test_open_claim_cannot_be_formally_proved() -> None:
     )
 
 
-def test_formally_stated_claim_uses_sorry() -> None:
+def test_formally_stated_claim_requires_transitive_sorry() -> None:
     atlas = deepcopy(load_atlas())
     problem = atlas.problems_by_id["binary-symmetric-channel"]
     claim = next(
@@ -221,10 +251,11 @@ def test_formally_stated_claim_uses_sorry() -> None:
     )
     claim["formal_status"] = "stated"
 
-    messages = [issue.message for issue in validate_atlas(atlas)]
+    messages = [issue.message for issue in validate_atlas(atlas, _lean_report())]
 
     assert any(
-        "formally stated claim 'operational-capacity' must use `sorry`" in message
+        "formally stated claim 'operational-capacity' must transitively depend on sorryAx"
+        in message
         for message in messages
     )
 
@@ -234,13 +265,84 @@ def test_reusable_api_claim_cannot_contain_placeholder() -> None:
     problem = atlas.problems_by_id["seven-cycle-zero-error-channel"]
     claim = problem["formalization"]["claims"][0]
     claim["category"] = "API"
+    report = _lean_report()
+    declaration = next(
+        item
+        for item in report["declarations"]
+        if item["problemId"] == problem["id"] and item["claimId"] == claim["id"]
+    )
+    declaration["category"] = "API"
 
-    messages = [issue.message for issue in validate_atlas(atlas)]
+    messages = [issue.message for issue in validate_atlas(atlas, report)]
 
     assert any(
-        "reusable API claim 'capacity-bounds' contains a placeholder" in message
+        "reusable API claim 'capacity-bounds' transitively depends on sorryAx" in message
         for message in messages
     )
+
+
+def test_lean_claim_version_must_match_yaml() -> None:
+    report = _lean_report()
+    declaration = next(
+        item
+        for item in report["declarations"]
+        if item["problemId"] == "binary-symmetric-channel"
+        and item["claimId"] == "information-capacity"
+    )
+    declaration["claimVersion"] = 1
+
+    messages = [issue.message for issue in validate_atlas(lean_report=report)]
+
+    assert any("Lean version 1 does not match YAML version 2" in message for message in messages)
+
+
+def test_orphan_tagged_lean_claim_fails_validation() -> None:
+    report = _lean_report()
+    report["declarations"].append(
+        {
+            "declaration": "CapacityAtlas.Orphan.claim",
+            "module": "CapacityAtlas.Orphan",
+            "problemId": "missing-problem",
+            "claimId": "orphan",
+            "claimVersion": 1,
+            "category": "open",
+            "formalProof": False,
+            "test": False,
+            "axioms": ["sorryAx"],
+        }
+    )
+
+    messages = [issue.message for issue in validate_atlas(lean_report=report)]
+
+    assert any("tagged Lean claim has no YAML record" in message for message in messages)
+
+
+def test_duplicate_tagged_lean_claim_fails_validation() -> None:
+    report = _lean_report()
+    report["declarations"].append(dict(report["declarations"][0]))
+
+    messages = [issue.message for issue in validate_atlas(lean_report=report)]
+
+    assert any("duplicate tagged Lean claim" in message for message in messages)
+
+
+def test_derived_sun_jafar_claims_do_not_need_direct_sorry() -> None:
+    for relative, theorem_names in {
+        "lean/CapacityAtlas/Network/SunJafar11.lean": (
+            "sunJafar11_unrestricted_achievability",
+            "sunJafar11_shannon_outer_bound",
+        ),
+        "lean/CapacityAtlas/Network/SunJafarGroupcast.lean": (
+            "sunJafarGroupcast_unrestricted_achievability",
+            "sunJafarGroupcast_shannon_outer_bound",
+        ),
+    }.items():
+        contents = Path(relative).read_text(encoding="utf-8")
+        for theorem_name in theorem_names:
+            body = contents.split(f"theorem {theorem_name} :", 1)[1].split("\n\n", 1)[0]
+            assert "sorry" not in body
+
+    assert validate_atlas(lean_report=_lean_report()) == []
 
 
 def test_structural_proof_does_not_prove_capacity_claim() -> None:

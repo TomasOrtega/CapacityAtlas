@@ -30,10 +30,17 @@ open Lean
 namespace Lean.Parser.Attr
 
 syntax (name := capacityProblem) "capacity_problem" str : attr
+syntax (name := capacityClaim) "capacity_claim" str num : attr
 
 end Lean.Parser.Attr
 
 namespace CapacityAtlas.Metadata
+
+/-- Stable identity and proposition version for a registered claim. -/
+structure Claim where
+  id : String
+  version : Nat
+  deriving Inhabited
 
 /-- The stable Capacity Atlas identifier attached to a declaration. -/
 initialize capacityProblemAttr : ParametricAttribute String ←
@@ -44,6 +51,18 @@ initialize capacityProblemAttr : ParametricAttribute String ←
       match stx with
       | `(attr| capacity_problem $problemId:str) => pure problemId.getString
       | _ => throwError "invalid `capacity_problem` attribute syntax"
+  }
+
+/-- The stable claim identifier and proposition version attached to a theorem. -/
+initialize capacityClaimAttr : ParametricAttribute Claim ←
+  registerParametricAttribute {
+    name := `capacityClaim
+    descr := "Stable Capacity Atlas claim identifier and proposition version."
+    getParam := fun _ stx =>
+      match stx with
+      | `(attr| capacity_claim $claimId:str $version:num) =>
+          pure { id := claimId.getString, version := version.getNat }
+      | _ => throwError "invalid `capacity_claim` attribute syntax"
   }
 
 /-- Marks a channel- or problem-specific definition. -/

@@ -36,7 +36,10 @@ def _declaration_token(declaration: str) -> str:
     return declaration.rsplit(".", maxsplit=1)[-1]
 
 
-def validate_atlas(atlas: Atlas | None = None) -> list[ValidationIssue]:
+def validate_atlas(
+    atlas: Atlas | None = None,
+    lean_report: dict[str, Any] | None = None,
+) -> list[ValidationIssue]:
     atlas = atlas or load_atlas()
     issues: list[ValidationIssue] = []
     schema = load_yaml(atlas.root / "schema" / "problem.schema.json")
@@ -44,6 +47,7 @@ def validate_atlas(atlas: Atlas | None = None) -> list[ValidationIssue]:
     tag_values = atlas.tag_values
     reference_ids = set(atlas.references)
     seen_ids: set[str] = set()
+    yaml_claims: list[tuple[str, str, dict[str, Any], str, bool]] = []
 
     for problem in atlas.problems:
         problem_id = str(problem.get("id", "<missing-id>"))
@@ -194,15 +198,6 @@ def validate_atlas(atlas: Atlas | None = None) -> list[ValidationIssue]:
                             f"declaration {declaration!r} lacks [{role_attribute}] metadata",
                         )
                     )
-                if role == "API" and re.search(
-                    r"(^|[^A-Za-z])(sorry|admit)([^A-Za-z]|$)", declaration_body
-                ):
-                    issues.append(
-                        ValidationIssue(
-                            source,
-                            f"reusable API declaration {declaration!r} contains a placeholder",
-                        )
-                    )
                 if role != "API":
                     problem_marker = f'capacity_problem "{problem_id}"'
                     if problem_marker not in metadata:
@@ -285,7 +280,6 @@ def validate_atlas(atlas: Atlas | None = None) -> list[ValidationIssue]:
                 continue
 
             metadata = claim_declarations[0][1]
-            body = claim_declarations[0][2]
             category_attribute = {
                 "open": "capacity_open",
                 "solved": "capacity_solved",
@@ -303,8 +297,6 @@ def validate_atlas(atlas: Atlas | None = None) -> list[ValidationIssue]:
             has_local_proof = "capacity_formal_proof" in metadata
             has_linked_proof = claim_id in complete_linked_claims
             formal_status = claim.get("formal_status")
-            contains_sorry = re.search(r"(^|[^A-Za-z])sorry([^A-Za-z]|$)", body) is not None
-            contains_admit = re.search(r"(^|[^A-Za-z])admit([^A-Za-z]|$)", body) is not None
             if formal_status == "proved" and not (has_local_proof or has_linked_proof):
                 issues.append(
                     ValidationIssue(
@@ -319,30 +311,140 @@ def validate_atlas(atlas: Atlas | None = None) -> list[ValidationIssue]:
                         f"formally stated claim {claim_id!r} has complete proof metadata",
                     )
                 )
-            if formal_status == "stated" and not contains_sorry:
+            declarations = [
+                str(entry.get("declaration", ""))
+                for entry in files
+                if entry.get("role") == "claim" and entry.get("claim_id") == claim_id
+            ]
+            if len(declarations) == 1:
+                yaml_claims.append((source, problem_id, claim, declarations[0], has_linked_proof))
+
+    if lean_report is not None:
+        for error in lean_report.get("errors", []):
+            issues.append(ValidationIssue("lean/environment", str(error)))
+
+        lean_claims = [
+            declaration
+            for declaration in lean_report.get("declarations", [])
+            if isinstance(declaration, dict) and declaration.get("claimId") is not None
+        ]
+        yaml_by_declaration: dict[str, list[tuple[str, str, dict[str, Any], bool]]] = {}
+        for source, problem_id, claim, declaration, linked in yaml_claims:
+            yaml_by_declaration.setdefault(declaration, []).append(
+                (source, problem_id, claim, linked)
+            )
+        lean_by_declaration: dict[str, list[dict[str, Any]]] = {}
+        for declaration in lean_claims:
+            name = str(declaration.get("declaration", ""))
+            lean_by_declaration.setdefault(name, []).append(declaration)
+
+        for declaration, records in yaml_by_declaration.items():
+            if len(records) > 1:
+                for source, _, _, _ in records:
+                    issues.append(
+                        ValidationIssue(
+                            source,
+                            f"duplicate YAML claim declaration {declaration!r}",
+                        )
+                    )
+
+        for declaration, records in lean_by_declaration.items():
+            if len(records) > 1:
+                issues.append(
+                    ValidationIssue(
+                        "lean/environment",
+                        f"duplicate tagged Lean claim declaration {declaration!r}",
+                    )
+                )
+                first = records[0]
+                issues.append(
+                    ValidationIssue(
+                        "lean/environment",
+                        "duplicate tagged Lean claim "
+                        f"{first.get('problemId')!r}/{first.get('claimId')!r}",
+                    )
+                )
+
+        for source, problem_id, claim, declaration, has_linked_proof in yaml_claims:
+            matches = lean_by_declaration.get(declaration, [])
+            claim_id = str(claim.get("id"))
+            if len(matches) != 1:
                 issues.append(
                     ValidationIssue(
                         source,
-                        f"formally stated claim {claim_id!r} must use `sorry`",
+                        f"formal claim {claim_id!r} needs exactly one matching tagged "
+                        f"Lean declaration, found {len(matches)}",
                     )
                 )
-            if contains_admit:
+                continue
+            lean_claim = matches[0]
+            comparisons = (
+                ("problem ID", lean_claim.get("problemId"), problem_id),
+                ("claim ID", lean_claim.get("claimId"), claim.get("id")),
+                ("category", lean_claim.get("category"), claim.get("category")),
+                ("version", lean_claim.get("claimVersion"), claim.get("version")),
+            )
+            for field, actual, expected in comparisons:
+                if actual != expected:
+                    issues.append(
+                        ValidationIssue(
+                            source,
+                            f"formal claim {claim_id!r} Lean {field} {actual!r} "
+                            f"does not match YAML {field} {expected!r}",
+                        )
+                    )
+
+            axioms = {str(axiom) for axiom in lean_claim.get("axioms", [])}
+            has_local_proof = lean_claim.get("formalProof") is True
+            formal_status = claim.get("formal_status")
+            if has_local_proof and "sorryAx" in axioms:
                 issues.append(
                     ValidationIssue(
                         source,
-                        f"formal claim {claim_id!r} uses `admit` instead of `sorry`",
+                        f"locally proved claim {claim_id!r} transitively depends on sorryAx",
                     )
                 )
-            if (has_local_proof or claim.get("category") == "API") and (
-                contains_sorry or contains_admit
-            ):
-                trust_role = "locally proved claim" if has_local_proof else "reusable API claim"
+            if claim.get("category") in {"API", "test"} and "sorryAx" in axioms:
+                trust_role = "reusable API" if claim.get("category") == "API" else "test"
                 issues.append(
                     ValidationIssue(
                         source,
-                        f"{trust_role} {claim_id!r} contains a placeholder",
+                        f"{trust_role} claim {claim_id!r} transitively depends on sorryAx",
                     )
                 )
+            if formal_status == "proved" and not (has_local_proof or has_linked_proof):
+                issues.append(
+                    ValidationIssue(
+                        source,
+                        f"formally proved claim {claim_id!r} needs local or linked proof metadata",
+                    )
+                )
+            if formal_status == "stated" and (has_local_proof or has_linked_proof):
+                issues.append(
+                    ValidationIssue(
+                        source,
+                        f"formally stated claim {claim_id!r} has complete proof metadata",
+                    )
+                )
+            if formal_status == "stated" and not has_linked_proof and "sorryAx" not in axioms:
+                issues.append(
+                    ValidationIssue(
+                        source,
+                        f"formally stated claim {claim_id!r} must transitively depend on sorryAx",
+                    )
+                )
+
+        for declaration, records in lean_by_declaration.items():
+            yaml_records = yaml_by_declaration.get(declaration, [])
+            if len(yaml_records) != 1:
+                for record in records:
+                    issues.append(
+                        ValidationIssue(
+                            "lean/environment",
+                            "tagged Lean claim has no YAML record: "
+                            f"{record.get('problemId')!r}/{record.get('claimId')!r}",
+                        )
+                    )
 
     if not atlas.problems:
         issues.append(ValidationIssue("data/problems", "at least one problem is required"))

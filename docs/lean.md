@@ -4,8 +4,8 @@ Capacity Atlas uses Lean 4 to keep shared definitions, precise research claims,
 and compact proofs in one project while allowing substantial proofs to develop
 independently. The policy follows Google DeepMind's
 [Formal Conjectures](https://github.com/google-deepmind/formal-conjectures): an
-open claim is still valuable as a theorem declaration even when its body is
-`by sorry`.
+open claim is still valuable as a precise theorem declaration even when its
+central proof is intentionally admitted.
 
 ## Package layers
 
@@ -17,6 +17,11 @@ records:
 ```lean
 @[capacity_problem "binary-symmetric-channel", capacity_definition]
 def binarySymmetric ...
+
+@[capacity_problem "binary-symmetric-channel",
+  capacity_claim "operational-capacity" 2,
+  capacity_statement, capacity_solved, capacity_formal_proof]
+theorem binarySymmetric_operational_capacity ... := ...
 ```
 
 Declaration roles use `capacity_definition`, `capacity_statement`, and
@@ -60,10 +65,19 @@ The formal status is `stated` or `proved`. It records proof coverage, not the
 mathematical status of the problem. In particular, a proved structural test does
 not make a capacity claim formally proved.
 
-Open claims are theorem declarations with `by sorry`. Solved claims without a
-local proof may use the same form while their proof provenance is recorded
-separately. A locally proved declaration carries `capacity_formal_proof` and may
-not contain `sorry` or `admit`.
+Every claim theorem carries `@[capacity_claim "claim-id" version]`. Its problem
+ID, claim ID, category, and version must agree with exactly one YAML record.
+Every public theorem or lemma in the problem layer is classified as open
+research, solved research, API, or test; a complete local research proof also
+carries `capacity_formal_proof`.
+
+Formal status follows compiled, transitive proof dependencies. A stated claim
+may contain `sorry` directly or prove an implication from another admitted
+research claim. Both forms depend transitively on `sorryAx`. A local proof, API,
+or test must not depend on `sorryAx`, `Lean.trustCompiler`, `Lean.ofReduceBool`,
+or an unreviewed axiom. Consequently, registered local results use
+kernel-checked tools such as `decide`, `norm_num`, and `omega`, not
+`native_decide`.
 
 Increment a claim version only when its proposition changes materially.
 Editorial changes and API refactors that preserve the proposition do not require
@@ -89,11 +103,26 @@ should normally live in a dedicated repository.
 cd lean
 lake exe cache get
 lake --wfail build CapacityAtlasForMathlib CapacityAtlasUtil
-lake build
+lake --wfail build CapacityAtlas
+lake exe capacity_audit > /tmp/capacity-audit.json
+cd ..
+uv run --locked capacity-atlas validate --lean-report /tmp/capacity-audit.json
 ```
 
 The first build treats every warning as an error in reusable infrastructure and
-metadata utilities. The complete build admits open and solved-but-unproved
-problem claims. The validator separately rejects `sorry` and `admit` in locally
-proved declarations, APIs, and tests. Compilation does not establish statement
-faithfulness, so every claim change also needs mathematical review.
+metadata utilities. Only the `CapacityAtlas` library disables the individual
+`warn.sorry` diagnostic; `--wfail` remains enabled for every build. The audit
+loads the compiled environment, computes each checked declaration's transitive
+axioms as `#print axioms` does, and permits only `propext`, `Quot.sound`, and
+`Classical.choice`, plus `sorryAx` for a registered admitted research claim.
+It checks every declaration in the reusable libraries, all tagged tests and
+local proofs, and every public problem-layer theorem or lemma.
+
+Comparator is reserved for a future untrusted proof-submission or external-proof
+ingestion service. The curated central repository uses the environment-level
+axiom audit and does not run Comparator, `lean4export`, or Landrun in CI.
+
+Compilation and the audit do not establish statement faithfulness, so every
+claim change also needs mathematical review. A materially changed proposition
+must increment its claim version; a proposition diff without the corresponding
+metadata change is intentionally visible during review.

@@ -62,15 +62,19 @@ Capacity Atlas uses Lean 4 for formal verification.
 - Attach `@[capacity_problem "problem-id"]` to problem-specific declarations.
 - Mark declaration roles with `@[capacity_definition]`,
   `@[capacity_statement]`, or `@[capacity_shared_api]`.
+- Attach `@[capacity_claim "claim-id" version]` to every registered claim
+  theorem. The problem ID, claim ID, category, and version must match YAML.
 - Classify formal claims independently as `open`, `solved`, `API`, or `test` and
   as formally `stated` or `proved`.
-- Write open research claims as theorem declarations with `by sorry`. A solved
-  claim may also use `sorry` when its proof provenance is recorded separately.
+- Classify every public theorem or lemma in the problem layer as open research,
+  solved research, API, test, or local formal proof. Research claims may be
+  stated directly with `sorry` or proved from another admitted research claim.
 - Mark a complete local proof with `@[capacity_formal_proof]` and use
   `@[capacity_test]` for tested structural claims.
-- Do not use `sorry` or `admit` in `CapacityAtlasForMathlib`, reusable APIs,
-  tests, or declarations marked as locally proved. Unreviewed axioms are never
-  accepted.
+- Do not introduce `sorryAx`, native-evaluation trust, or unreviewed axioms into
+  `CapacityAtlasForMathlib`, `CapacityAtlasUtil`, reusable APIs, tests, or local
+  formal proofs. The environment audit checks transitive dependencies, not just
+  the theorem's source text.
 - Increment that claim's version whenever its proposition changes in a way that
   can invalidate a formal proof.
 
@@ -117,6 +121,9 @@ make test
 make build
 make lean
 ```
+
+`make lean` builds the trusted libraries and problem library with warnings as
+errors, then validates the compiled declaration registry and transitive axioms.
 
 Generated `dist/` files are not committed.
 

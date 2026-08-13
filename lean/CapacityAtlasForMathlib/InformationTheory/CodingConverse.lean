@@ -363,7 +363,7 @@ theorem codingTheorem [Nonempty X]
 
 /-- The finite-channel coding theorem, including the empty-input convention. -/
 @[capacity_problem "discrete-memoryless-channel", capacity_shared_api, capacity_statement,
-  capacity_solved, capacity_formal_proof]
+  capacity_solved, capacity_formal_proof, capacity_claim "exact-capacity" 1]
 theorem codingTheorem_all
     (channel : FiniteChannel X Y) : channel.SatisfiesCodingTheorem :=
   channel.finiteDMCSatisfiesCodingTheorem_of_bounds

@@ -27,8 +27,7 @@ or source notice states otherwise:
 - `data/tags.yaml`
 - editorial documentation and explanatory website prose
 
-`LICENSES/CC-BY-4.0.txt` contains the project notice and links to the complete
-legal text.
+`LICENSES/CC-BY-4.0.txt` contains the complete official legal text.
 
 Bibliographic facts and mathematical facts may not themselves be copyrightable in
 some jurisdictions. The license applies to the selection, arrangement, and

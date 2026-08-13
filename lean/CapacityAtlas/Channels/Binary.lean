@@ -47,7 +47,7 @@ theorem binarySymmetric_isBinarySymmetric (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤
 
 /-- The single-letter information capacity of the binary symmetric channel. -/
 @[capacity_problem "binary-symmetric-channel", capacity_statement, capacity_solved,
-  capacity_formal_proof]
+  capacity_formal_proof, capacity_claim "information-capacity" 2]
 theorem binarySymmetric_informationCapacity (p : ℝ) (hp0 : 0 ≤ p) (hpHalf : p ≤ 2⁻¹) :
     (binarySymmetric p hp0 (hpHalf.trans (by norm_num))).informationCapacityBits =
       1 - Real.binEntropy p / Real.log 2 :=
@@ -73,7 +73,7 @@ theorem binarySymmetric_informationCapacity_half :
 
 /-- The operational average-error capacity of the binary symmetric channel. -/
 @[capacity_problem "binary-symmetric-channel", capacity_statement, capacity_solved,
-  capacity_formal_proof]
+  capacity_formal_proof, capacity_claim "operational-capacity" 2]
 theorem binarySymmetric_operationalCapacity
     (p : ℝ) (hp0 : 0 ≤ p) (hpHalf : p ≤ 2⁻¹) :
     (binarySymmetric p hp0 (hpHalf.trans (by norm_num))).operationalCapacityBits =
@@ -119,6 +119,7 @@ def binaryErasure (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) :
     cases input <;> simp [binaryErasureTransition]
 
 /-- An erasure has probability `e` under every BEC input distribution. -/
+@[capacity_api]
 theorem binaryErasure_outputDistribution_none
     (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) (input : FiniteDistribution Bool) :
     (binaryErasure e he0 he1).outputDistribution input none = e := by
@@ -127,6 +128,7 @@ theorem binaryErasure_outputDistribution_none
     one_mul]
 
 /-- An unerased BEC output retains its input mass, scaled by `1 - e`. -/
+@[capacity_api]
 theorem binaryErasure_outputDistribution_some
     (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1)
     (input : FiniteDistribution Bool) (output : Bool) :
@@ -137,6 +139,7 @@ theorem binaryErasure_outputDistribution_some
       binaryErasureTransition, input.bool_probability_false] <;> ring
 
 /-- Every BEC row has binary entropy `h(e)`. -/
+@[capacity_api]
 theorem binaryErasure_rowDistribution_entropy
     (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) (input : Bool) :
     ((binaryErasure e he0 he1).rowDistribution input).entropy =
@@ -148,6 +151,7 @@ theorem binaryErasure_rowDistribution_entropy
     simp [binaryErasureTransition, Real.binEntropy_eq_negMulLog_add_negMulLog_one_sub]
 
 /-- The BEC conditional output entropy is independent of the input distribution. -/
+@[capacity_api]
 theorem binaryErasure_conditionalOutputEntropy
     (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) (input : FiniteDistribution Bool) :
     (binaryErasure e he0 he1).conditionalOutputEntropy input =
@@ -158,6 +162,7 @@ theorem binaryErasure_conditionalOutputEntropy
     one_mul]
 
 /-- The BEC output entropy splits into erasure entropy and retained input entropy. -/
+@[capacity_api]
 theorem binaryErasure_outputEntropy
     (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) (input : FiniteDistribution Bool) :
     ((binaryErasure e he0 he1).outputDistribution input).entropy =
@@ -171,6 +176,7 @@ theorem binaryErasure_outputEntropy
   ring
 
 /-- The BEC retains the fraction `1 - e` of the input entropy. -/
+@[capacity_api]
 theorem binaryErasure_mutualInformation
     (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) (input : FiniteDistribution Bool) :
     (binaryErasure e he0 he1).mutualInformation input =
@@ -181,7 +187,7 @@ theorem binaryErasure_mutualInformation
 
 /-- The single-letter information capacity of the binary erasure channel. -/
 @[capacity_problem "binary-erasure-channel", capacity_statement, capacity_solved,
-  capacity_formal_proof]
+  capacity_formal_proof, capacity_claim "information-capacity" 1]
 theorem binaryErasure_informationCapacity (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) :
     (binaryErasure e he0 he1).informationCapacityBits = 1 - e := by
   let uniform := FiniteDistribution.uniform Bool
@@ -200,7 +206,7 @@ theorem binaryErasure_informationCapacity (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤
 
 /-- The operational average-error capacity of the binary erasure channel. -/
 @[capacity_problem "binary-erasure-channel", capacity_statement, capacity_solved,
-  capacity_formal_proof]
+  capacity_formal_proof, capacity_claim "operational-capacity" 1]
 theorem binaryErasure_operationalCapacity (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) :
     (binaryErasure e he0 he1).operationalCapacityBits = 1 - e := by
   calc
