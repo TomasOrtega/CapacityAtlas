@@ -4,7 +4,7 @@ Licensed under the Apache License, Version 2.0 (the "License").
 See https://www.apache.org/licenses/LICENSE-2.0
 -/
 
-import CapacityAtlasForMathlib.InformationTheory.OperationalTheory
+import CapacityAtlasForMathlib.InformationTheory.FiniteChannelCapacity
 
 namespace CapacityAtlas
 
@@ -24,24 +24,6 @@ structure WiretapCode {X Y Z : Type*} [Fintype X] [Fintype Y] [Fintype Z]
   randomizationCount_pos : 0 < randomizationCount
   encode : Fin messageCount → Fin randomizationCount → Fin blocklength → X
   decode : (Fin blocklength → Y) → Fin messageCount
-
-/-- Strong and weak secrecy are deliberately different operational predicates. -/
-@[capacity_problem "general-finite-wiretap-channel", capacity_definition]
-structure WiretapOperationalTheory (Model : Type*) where
-  strongSecrecyAchievable : Model → ℝ → Prop
-  weakSecrecyAchievable : Model → ℝ → Prop
-
-namespace WiretapOperationalTheory
-
-noncomputable def strongCapacity {Model : Type*} (theory : WiretapOperationalTheory Model)
-    (model : Model) : ℝ :=
-  sSup {rate | theory.strongSecrecyAchievable model rate}
-
-noncomputable def weakCapacity {Model : Type*} (theory : WiretapOperationalTheory Model)
-    (model : Model) : ℝ :=
-  sSup {rate | theory.weakSecrecyAchievable model rate}
-
-end WiretapOperationalTheory
 
 /-- A finite auxiliary `V`, its law, and a stochastic prefixing channel `V → X`. -/
 structure WiretapAuxiliary (X : Type*) [Fintype X] where

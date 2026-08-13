@@ -84,21 +84,17 @@ private theorem additiveNoise_informationCapacity_nats (noise : FiniteDistributi
       FiniteDistribution.entropy_uniform]
 
 /-- The single-letter information capacity of a finite-group additive-noise channel. -/
-@[capacity_problem "finite-group-additive-noise-channel", capacity_statement]
+@[capacity_problem "finite-group-additive-noise-channel", capacity_statement, capacity_solved,
+  capacity_formal_proof]
 theorem additiveNoise_informationCapacity (noise : FiniteDistribution G) :
     (additiveNoise noise).informationCapacityBits =
       Real.log (Fintype.card G) / Real.log 2 - noise.entropyBits := by
   rw [additiveNoise_informationCapacity_nats, FiniteDistribution.entropyBits]
   ring
 
-/-- The operational average-error capacity claim for a finite-group additive-noise channel. -/
-@[capacity_problem "finite-group-additive-noise-channel", capacity_statement]
-def finiteGroupAdditiveNoiseCapacityStatement (noise : FiniteDistribution G) : Prop :=
-  (additiveNoise noise).operationalCapacityBits =
-    Real.log (Fintype.card G) / Real.log 2 - noise.entropyBits
-
 /-- The operational capacity of a finite-group additive-noise channel. -/
-@[capacity_problem "finite-group-additive-noise-channel", capacity_short_proof]
+@[capacity_problem "finite-group-additive-noise-channel", capacity_statement, capacity_solved,
+  capacity_formal_proof]
 theorem additiveNoise_operationalCapacity (noise : FiniteDistribution G) :
     (additiveNoise noise).operationalCapacityBits =
       Real.log (Fintype.card G) / Real.log 2 - noise.entropyBits := by
@@ -108,11 +104,5 @@ theorem additiveNoise_operationalCapacity (noise : FiniteDistribution G) :
       FiniteChannel.codingTheorem (additiveNoise noise)
     _ = Real.log (Fintype.card G) / Real.log 2 - noise.entropyBits :=
       additiveNoise_informationCapacity noise
-
-/-- The registered finite-group additive-noise proposition holds unconditionally. -/
-@[capacity_problem "finite-group-additive-noise-channel", capacity_short_proof]
-theorem finiteGroupAdditiveNoiseCapacityStatement_proof (noise : FiniteDistribution G) :
-    finiteGroupAdditiveNoiseCapacityStatement noise :=
-  additiveNoise_operationalCapacity noise
 
 end CapacityAtlas.Channel

@@ -52,12 +52,10 @@ bounds:
   references:
   - costa-1983
 formalization:
-  statement:
-    status: none
-    language: Lean
-    claims: []
-    notes: A faithful proof needs Gaussian conditional distributions and the Gel'fand-Pinsker theorem.
-    files: []
+  status: none
+  claims: []
+  notes: A faithful proof needs Gaussian conditional distributions and the Gel'fand-Pinsker theorem.
+  files: []
   proofs: []
 references:
 - costa-1983

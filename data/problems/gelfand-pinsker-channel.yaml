@@ -50,12 +50,10 @@ bounds:
   references:
   - gelfand-pinsker-1980
 formalization:
-  statement:
-    status: none
-    language: Lean
-    claims: []
-    notes: This theorem is a natural substantial external-proof repository once state and entropy APIs exist.
-    files: []
+  status: none
+  claims: []
+  notes: This theorem is a natural substantial external-proof repository once state and entropy APIs exist.
+  files: []
   proofs: []
 references:
 - gelfand-pinsker-1980

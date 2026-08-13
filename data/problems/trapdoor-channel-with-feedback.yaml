@@ -3,7 +3,7 @@
 id: trapdoor-channel-with-feedback
 title: Trapdoor channel with feedback
 status: solved
-updated: '2026-08-12'
+updated: '2026-08-13'
 summary: With causal noiseless output feedback and a known initial state, the binary trapdoor channel has capacity equal to the logarithm of the golden ratio.
 tags:
   model: [point-to-point]
@@ -33,21 +33,13 @@ bounds:
   year: 2006
   references: [permuter-et-al-2006]
 formalization:
-  statement:
-    status: statement
-    language: Lean
-    claims:
-    - id: exact-capacity
-      kind: exact-capacity
-      status: open
-      version: 1
-      description: Exact feedback-capacity formula.
-    notes: The finite-state transition and real-valued logarithmic identity are explicit.
-    files:
-    - path: lean/CapacityAtlas/Channels/Trapdoor.lean
-      declaration: CapacityAtlas.Channel.trapdoorFeedbackCapacityStatement
-      role: statement
-      description: Feedback capacity equals log base two of the golden ratio.
-      claim_id: exact-capacity
+  status: definitions
+  claims: []
+  notes: Concrete definitions are retained; no capacity or bound claim is formally stated.
+  files:
+  - path: lean/CapacityAtlas/Channels/Trapdoor.lean
+    declaration: CapacityAtlas.Channel.trapdoorFeedbackModel
+    role: definition
+    description: Concrete finite-state trapdoor channel used for the feedback problem.
   proofs: []
 references: [permuter-et-al-2006]

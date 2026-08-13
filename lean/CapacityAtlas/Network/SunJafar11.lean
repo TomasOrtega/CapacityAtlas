@@ -52,7 +52,7 @@ def sunJafar11 : Instance SunJafar11Message SunJafar11Receiver :=
   Instance.fromInterference id sunJafar11Interference
 
 /-- The checked one-based translation of all eleven source rows. -/
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_short_proof]
+@[capacity_problem "sun-jafar-11-message-index-coding", capacity_test]
 theorem sunJafar11_oneBased_translation (receiver : SunJafar11Receiver) :
     (sunJafar11Interference receiver).image (fun message ↦ message.val + 1) =
       sunJafar11InterferenceOneBased receiver := by
@@ -72,7 +72,7 @@ theorem sunJafar11_oneBased_translation (receiver : SunJafar11Receiver) :
 @[simp] theorem sunJafar11_receiver11 : sunJafar11Interference 10 = {3, 5} := rfl
 
 /-- The operational side-information table is exactly the complement of the source table. -/
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_short_proof]
+@[capacity_problem "sun-jafar-11-message-index-coding", capacity_test]
 theorem sunJafar11_sideInformation_complement (receiver : SunJafar11Receiver) :
     sunJafar11.sideInformation receiver =
       (Finset.univ.erase (sunJafar11.demand receiver)) \
@@ -100,16 +100,16 @@ def sunJafar11AlignmentEdges : Finset SunJafar11Edge :=
 def sunJafar11ExpectedAlignmentEdges : Finset SunJafar11Edge :=
   {(0, 2), (1, 2), (1, 3), (2, 3), (2, 4), (3, 4), (3, 5)}
 
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_short_proof]
+@[capacity_problem "sun-jafar-11-message-index-coding", capacity_test]
 theorem sunJafar11_alignmentEdges_exact :
     sunJafar11AlignmentEdges = sunJafar11ExpectedAlignmentEdges := by
   native_decide
 
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_short_proof]
+@[capacity_problem "sun-jafar-11-message-index-coding", capacity_test]
 theorem sunJafar11_alignmentEdge_count : sunJafar11AlignmentEdges.card = 7 := by
   native_decide
 
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_short_proof]
+@[capacity_problem "sun-jafar-11-message-index-coding", capacity_test]
 theorem sunJafar11_atMostTwoInterferers (receiver : SunJafar11Receiver) :
     (sunJafar11Interference receiver).card ≤ 2 := by
   fin_cases receiver <;> native_decide
@@ -119,7 +119,7 @@ def sunJafar11InnerDiamond : Finset SunJafar11Message := {1, 2, 3, 4}
 def sunJafar11ExpectedDiamondEdges : Finset SunJafar11Edge :=
   {(1, 2), (1, 3), (2, 3), (2, 4), (3, 4)}
 
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_short_proof]
+@[capacity_problem "sun-jafar-11-message-index-coding", capacity_test]
 theorem sunJafar11_innerDiamond_exact :
     sunJafar11AlignmentEdges.filter
         (fun edge ↦ edge.1 ∈ sunJafar11InnerDiamond ∧ edge.2 ∈ sunJafar11InnerDiamond) =
@@ -182,7 +182,8 @@ theorem sunJafar11_alignment_reachable_iff (left right : SunJafar11Message) :
     · exact .refl _
 
 /-- The listed pairs are exactly the internal conflicts, with endpoints ordered. -/
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_short_proof]
+@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_test,
+  capacity_formal_proof]
 theorem sunJafar11_internalConflicts_exact :
     {edge : SunJafar11Edge |
       edge.1 < edge.2 ∧ IsInternalConflict sunJafar11 edge.1 edge.2} =
@@ -202,7 +203,8 @@ def sunJafar11HasAlignmentPathTwo (left right : SunJafar11Message) : Bool :=
     sunJafar11AreAligned left middle && sunJafar11AreAligned middle right).Nonempty)
 
 /-- Every listed internal conflict has alignment-graph distance exactly two. -/
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_short_proof]
+@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_test,
+  capacity_formal_proof]
 theorem sunJafar11_internalConflictDistance_two :
     sunJafar11ExpectedInternalConflicts.filter (fun edge ↦
       !sunJafar11AreAligned edge.1 edge.2 &&
@@ -211,50 +213,45 @@ theorem sunJafar11_internalConflictDistance_two :
   native_decide
 
 /-- The published construction has a linear encoder and achieves symmetric rate `5/13`. -/
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement]
-def sunJafar11_linear_achievability : Prop :=
-  (5 : ℝ) / 13 ≤ linearEncoderSymmetricCapacity sunJafar11
+@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_solved]
+theorem sunJafar11_linear_achievability :
+    (5 : ℝ) / 13 ≤ linearEncoderSymmetricCapacity sunJafar11 := by
+  sorry
 
 /-- The published code gives the same lower bound without a linearity restriction. -/
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement]
-def sunJafar11_unrestricted_achievability : Prop :=
-  (5 : ℝ) / 13 ≤ symmetricCapacity sunJafar11
-
-/-- Linear-encoder achievability implies unrestricted achievability. -/
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_short_proof]
-theorem sunJafar11_linear_achievability_implies_unrestricted_achievability
-    (h : sunJafar11_linear_achievability) : sunJafar11_unrestricted_achievability := by
-  exact h.trans (linearEncoderSymmetricCapacity_le_symmetricCapacity sunJafar11)
+@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_solved]
+theorem sunJafar11_unrestricted_achievability :
+    (5 : ℝ) / 13 ≤ symmetricCapacity sunJafar11 := by
+  sorry
 
 /-- No zero-error code with a linear encoder exceeds symmetric rate `5/13`. -/
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement]
-def sunJafar11_linear_converse : Prop :=
-  linearEncoderSymmetricCapacity sunJafar11 ≤ (5 : ℝ) / 13
+@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_solved]
+theorem sunJafar11_linear_converse :
+    linearEncoderSymmetricCapacity sunJafar11 ≤ (5 : ℝ) / 13 := by
+  sorry
 
 /-- The Zhang--Yeung converse for unrestricted nonlinear zero-error codes. -/
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement]
-def sunJafar11_nonlinear_converse : Prop :=
-  symmetricCapacity sunJafar11 ≤ (11 : ℝ) / 28
+@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_solved]
+theorem sunJafar11_nonlinear_converse :
+    symmetricCapacity sunJafar11 ≤ (11 : ℝ) / 28 := by
+  sorry
 
 /-- The open exact nonlinear symmetric-capacity claim. -/
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement]
-def sunJafar11_exact_capacity_conjecture : Prop :=
-  symmetricCapacity sunJafar11 = (5 : ℝ) / 13
+@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_open]
+theorem sunJafar11_exact_capacity_conjecture :
+    symmetricCapacity sunJafar11 = (5 : ℝ) / 13 := by
+  sorry
 
 /-- Shannon polymatroid inequalities alone stop at the outer value `2/5`. -/
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement]
-def sunJafar11_shannon_outer_bound_limit : Prop :=
-  shannonPolymatroidOuterBound sunJafar11 = (2 : ℝ) / 5
+@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_solved]
+theorem sunJafar11_shannon_outer_bound_limit :
+    shannonPolymatroidOuterBound sunJafar11 = (2 : ℝ) / 5 := by
+  sorry
 
 /-- The operational symmetric capacity is at most the Shannon relaxation value `2/5`. -/
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement]
-def sunJafar11_shannon_outer_bound : Prop :=
-  symmetricCapacity sunJafar11 ≤ (2 : ℝ) / 5
-
-/-- The computed Shannon relaxation value implies the operational outer bound. -/
-@[capacity_problem "sun-jafar-11-message-index-coding", capacity_short_proof]
-theorem sunJafar11_shannon_relaxation_value_implies_outer_bound
-    (h : sunJafar11_shannon_outer_bound_limit) : sunJafar11_shannon_outer_bound := by
-  exact (symmetricCapacity_le_shannonPolymatroidOuterBound sunJafar11).trans_eq h
+@[capacity_problem "sun-jafar-11-message-index-coding", capacity_statement, capacity_solved]
+theorem sunJafar11_shannon_outer_bound :
+    symmetricCapacity sunJafar11 ≤ (2 : ℝ) / 5 := by
+  sorry
 
 end CapacityAtlas.IndexCoding

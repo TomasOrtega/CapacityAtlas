@@ -53,12 +53,10 @@ bounds:
   - ahlswede-1978
   - csiszar-narayan-1988
 formalization:
-  statement:
-    status: none
-    language: Lean
-    claims: []
-    notes: Adversarial state sequences and symmetrizability are high-value shared definitions.
-    files: []
+  status: none
+  claims: []
+  notes: Adversarial state sequences and symmetrizability are high-value shared definitions.
+  files: []
   proofs: []
 references:
 - ahlswede-1978

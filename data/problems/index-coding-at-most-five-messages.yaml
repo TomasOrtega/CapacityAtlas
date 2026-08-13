@@ -3,7 +3,7 @@
 id: index-coding-at-most-five-messages
 title: Index coding with at most five messages
 status: solved
-updated: '2026-08-12'
+updated: '2026-08-13'
 summary: The capacity regions of all 9,846 nonisomorphic index-coding instances with at most five messages are covered by a finite classification.
 tags:
   model: [index-coding]
@@ -33,21 +33,17 @@ bounds:
   year: 2013
   references: [arbabjolfaei-et-al-2013]
 formalization:
-  statement:
-    status: statement
-    language: Lean
-    claims:
-    - id: exact-capacity-regions
-      kind: exact-capacity
-      status: open
-      version: 1
-      description: Exact operational capacity regions for all instances with at most five messages.
-    notes: The family-level proposition avoids assigning thousands of hand-written permanent problem IDs.
-    files:
-    - path: lean/CapacityAtlas/Network/SmallIndexCoding.lean
-      declaration: CapacityAtlas.IndexCoding.indexCodingAtMostFiveMessagesCapacityRegions
-      role: statement
-      description: Family statement equating every small operational capacity region with the composite-coding formula.
-      claim_id: exact-capacity-regions
+  status: definitions
+  claims: []
+  notes: Concrete definitions are retained; no capacity or bound claim is formally stated.
+  files:
+  - path: lean/CapacityAtlasForMathlib/Network/IndexCoding.lean
+    declaration: CapacityAtlas.IndexCoding.Instance
+    role: API
+    description: General finite index-coding instance.
+  - path: lean/CapacityAtlasForMathlib/Network/IndexCoding.lean
+    declaration: CapacityAtlas.IndexCoding.symmetricCapacity
+    role: API
+    description: Operational zero-error symmetric capacity.
   proofs: []
 references: [arbabjolfaei-et-al-2013]

@@ -3,7 +3,7 @@
 id: binary-insertion-channel
 title: Binary random-insertion channel
 status: open
-updated: '2026-08-12'
+updated: '2026-08-13'
 summary: In the fixed iid random-insertion model, each transmitted bit may be followed by one independent fair inserted bit and exact capacity is unknown.
 tags:
   model: [point-to-point]
@@ -50,21 +50,13 @@ frontier:
   progress:
   - Extend rigorous small-p expansions and finite-block certificates.
 formalization:
-  statement:
-    status: statement
-    language: Lean
-    claims:
-    - id: capacity-bounds
-      kind: capacity-bounds
-      status: open
-      version: 1
-      description: Registered lower and upper capacity bounds.
-    notes: The one-step finite-support law fixes the insertion convention and excludes the Gallager model.
-    files:
-    - path: lean/CapacityAtlas/Channels/Insertion.lean
-      declaration: CapacityAtlas.Channel.binaryInsertionCapacityBounds
-      role: statement
-      description: Basic capacity bounds for the explicitly defined random-insertion law.
-      claim_id: capacity-bounds
+  status: definitions
+  claims: []
+  notes: Concrete definitions are retained; no capacity or bound claim is formally stated.
+  files:
+  - path: lean/CapacityAtlas/Channels/Insertion.lean
+    declaration: CapacityAtlas.Channel.randomBinaryInsertionStep
+    role: definition
+    description: Concrete one-step random binary insertion law.
   proofs: []
 references: [tegin-duman-2025]

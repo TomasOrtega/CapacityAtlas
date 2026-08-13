@@ -5,7 +5,7 @@ title: Sun-Jafar six-message groupcast index-coding instance
 abbreviation: SJ6-GC
 status: open
 featured: true
-updated: '2026-08-12'
+updated: '2026-08-13'
 summary: A six-message, ten-receiver groupcast instance has linear-encoder capacity 5/13 and a non-Shannon nonlinear upper bound 11/28.
 tags:
   model: [index-coding]
@@ -57,91 +57,98 @@ frontier:
   progress:
   - Improve either endpoint with an auditable certificate.
 formalization:
-  statement:
-    status: statement
-    language: Lean
-    claims:
-    - id: exact-capacity
-      kind: exact-capacity
-      status: open
-      version: 1
-      description: Exact unrestricted nonlinear zero-error symmetric capacity.
-    - id: linear-achievability
-      kind: achievability
-      status: open
-      version: 2
-      description: Published 5/13 linear-encoder achievability bound.
-    - id: unrestricted-achievability
-      kind: achievability
-      status: open
-      version: 1
-      description: Unrestricted 5/13 lower bound derived from linear-encoder achievability.
-    - id: linear-converse
-      kind: converse
-      status: open
-      version: 1
-      description: Global finite-field linear-encoder converse.
-    - id: nonlinear-converse
-      kind: converse
-      status: open
-      version: 1
-      description: Zhang-Yeung nonlinear upper bound.
-    - id: shannon-relaxation-value
-      kind: converse
-      status: open
-      version: 1
-      description: Exact value of the Shannon polymatroid relaxation.
-    - id: shannon-outer-bound
-      kind: converse
-      status: open
-      version: 1
-      description: Operational 2/5 outer bound derived from the Shannon relaxation.
-    - id: interference-translation
-      kind: structural
-      status: proved
-      version: 1
-      description: Exact translation of all ten source interference rows.
-    notes: Demands and interference rows are machine-checked translations of the one-based primary-source figure.
-    files:
-    - path: lean/CapacityAtlas/Network/SunJafarGroupcast.lean
-      declaration: CapacityAtlas.IndexCoding.sunJafarGroupcast_exact_capacity_conjecture
-      role: statement
-      description: Exact nonlinear symmetric-capacity conjecture.
-      claim_id: exact-capacity
-    - path: lean/CapacityAtlas/Network/SunJafarGroupcast.lean
-      declaration: CapacityAtlas.IndexCoding.sunJafarGroupcast_linear_achievability
-      role: statement
-      description: Published 5/13 linear-encoder achievability claim.
-      claim_id: linear-achievability
-    - path: lean/CapacityAtlas/Network/SunJafarGroupcast.lean
-      declaration: CapacityAtlas.IndexCoding.sunJafarGroupcast_unrestricted_achievability
-      role: statement
-      description: Unrestricted 5/13 lower-bound claim.
-      claim_id: unrestricted-achievability
-    - path: lean/CapacityAtlas/Network/SunJafarGroupcast.lean
-      declaration: CapacityAtlas.IndexCoding.sunJafarGroupcast_linear_converse
-      role: statement
-      description: Global finite-field linear-encoder converse.
-      claim_id: linear-converse
-    - path: lean/CapacityAtlas/Network/SunJafarGroupcast.lean
-      declaration: CapacityAtlas.IndexCoding.sunJafarGroupcast_nonlinear_converse
-      role: statement
-      description: Zhang-Yeung nonlinear upper bound.
-      claim_id: nonlinear-converse
-    - path: lean/CapacityAtlas/Network/SunJafarGroupcast.lean
-      declaration: CapacityAtlas.IndexCoding.sunJafarGroupcast_shannon_outer_bound_limit
-      role: statement
-      description: Exact limitation of Shannon polymatroid inequalities.
-      claim_id: shannon-relaxation-value
-    - path: lean/CapacityAtlas/Network/SunJafarGroupcast.lean
-      declaration: CapacityAtlas.IndexCoding.sunJafarGroupcast_shannon_outer_bound
-      role: statement
-      description: Operational 2/5 Shannon-polymatroid outer-bound claim.
-      claim_id: shannon-outer-bound
-    - path: lean/CapacityAtlas/Network/SunJafarGroupcast.lean
-      declaration: CapacityAtlas.IndexCoding.sunJafarGroupcast_interference_translation
-      role: short-proof
-      description: Checked translation of all ten source interference rows.
-      claim_id: interference-translation
+  status: stated
+  claims:
+  - id: exact-capacity
+    kind: exact-capacity
+    category: open
+    formal_status: stated
+    version: 1
+    description: Unrestricted nonlinear zero-error symmetric capacity equals 5/13.
+  - id: linear-achievability
+    kind: achievability
+    category: solved
+    formal_status: stated
+    version: 2
+    description: Published 5/13 linear-encoder achievability bound.
+  - id: unrestricted-achievability
+    kind: achievability
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Unrestricted 5/13 lower bound derived from linear-encoder achievability.
+  - id: linear-converse
+    kind: converse
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Global finite-field linear-encoder symmetric capacity is at most 5/13.
+  - id: nonlinear-converse
+    kind: converse
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Unrestricted nonlinear zero-error symmetric capacity is at most 11/28.
+  - id: shannon-relaxation-value
+    kind: converse
+    category: solved
+    formal_status: stated
+    version: 1
+    description: The Shannon polymatroid relaxation equals 2/5.
+  - id: shannon-outer-bound
+    kind: converse
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Operational 2/5 outer bound derived from the Shannon relaxation.
+  - id: interference-translation
+    kind: structural
+    category: test
+    formal_status: proved
+    version: 1
+    description: Exact translation of all ten source interference rows.
+  notes: Demands and interference rows are machine-checked translations of the one-based primary-source
+    figure.
+  files:
+  - path: lean/CapacityAtlas/Network/SunJafarGroupcast.lean
+    declaration: CapacityAtlas.IndexCoding.sunJafarGroupcast_exact_capacity_conjecture
+    role: claim
+    description: Unrestricted nonlinear zero-error symmetric capacity equals 5/13.
+    claim_id: exact-capacity
+  - path: lean/CapacityAtlas/Network/SunJafarGroupcast.lean
+    declaration: CapacityAtlas.IndexCoding.sunJafarGroupcast_linear_achievability
+    role: claim
+    description: Published 5/13 linear-encoder achievability bound.
+    claim_id: linear-achievability
+  - path: lean/CapacityAtlas/Network/SunJafarGroupcast.lean
+    declaration: CapacityAtlas.IndexCoding.sunJafarGroupcast_unrestricted_achievability
+    role: claim
+    description: Unrestricted 5/13 lower bound derived from linear-encoder achievability.
+    claim_id: unrestricted-achievability
+  - path: lean/CapacityAtlas/Network/SunJafarGroupcast.lean
+    declaration: CapacityAtlas.IndexCoding.sunJafarGroupcast_linear_converse
+    role: claim
+    description: Global finite-field linear-encoder symmetric capacity is at most 5/13.
+    claim_id: linear-converse
+  - path: lean/CapacityAtlas/Network/SunJafarGroupcast.lean
+    declaration: CapacityAtlas.IndexCoding.sunJafarGroupcast_nonlinear_converse
+    role: claim
+    description: Unrestricted nonlinear zero-error symmetric capacity is at most 11/28.
+    claim_id: nonlinear-converse
+  - path: lean/CapacityAtlas/Network/SunJafarGroupcast.lean
+    declaration: CapacityAtlas.IndexCoding.sunJafarGroupcast_shannon_outer_bound_limit
+    role: claim
+    description: The Shannon polymatroid relaxation equals 2/5.
+    claim_id: shannon-relaxation-value
+  - path: lean/CapacityAtlas/Network/SunJafarGroupcast.lean
+    declaration: CapacityAtlas.IndexCoding.sunJafarGroupcast_shannon_outer_bound
+    role: claim
+    description: Operational 2/5 outer bound derived from the Shannon relaxation.
+    claim_id: shannon-outer-bound
+  - path: lean/CapacityAtlas/Network/SunJafarGroupcast.lean
+    declaration: CapacityAtlas.IndexCoding.sunJafarGroupcast_interference_translation
+    role: claim
+    description: Exact translation of all ten source interference rows.
+    claim_id: interference-translation
   proofs: []
 references: [sun-jafar-2015, zhang-yeung-1998]

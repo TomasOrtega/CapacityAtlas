@@ -50,12 +50,10 @@ bounds:
   references:
   - ozarow-1984
 formalization:
-  statement:
-    status: none
-    language: Lean
-    claims: []
-    notes: The exact feedback region is a substantial external formalization target.
-    files: []
+  status: none
+  claims: []
+  notes: The exact feedback region is a substantial external formalization target.
+  files: []
   proofs: []
 references:
 - ozarow-1984

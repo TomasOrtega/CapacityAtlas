@@ -59,13 +59,14 @@ def sunJafarGroupcast :
     Instance SunJafarGroupcastMessage SunJafarGroupcastReceiver :=
   Instance.fromInterference sunJafarGroupcastDemand sunJafarGroupcastInterference
 
-@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_short_proof]
+@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_test]
 theorem sunJafarGroupcast_demand_translation (receiver : SunJafarGroupcastReceiver) :
     (sunJafarGroupcastDemand receiver).val + 1 =
       sunJafarGroupcastDemandOneBased receiver := by
   fin_cases receiver <;> native_decide
 
-@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_short_proof]
+@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement,
+  capacity_test, capacity_formal_proof]
 theorem sunJafarGroupcast_interference_translation (receiver : SunJafarGroupcastReceiver) :
     (sunJafarGroupcastInterference receiver).image (fun message ↦ message.val + 1) =
       sunJafarGroupcastInterferenceOneBased receiver := by
@@ -88,54 +89,56 @@ def sunJafarGroupcastAlignmentEdges : Finset SunJafarGroupcastEdge :=
 def sunJafarGroupcastExpectedAlignmentEdges : Finset SunJafarGroupcastEdge :=
   {(0, 2), (1, 2), (1, 3), (2, 3), (2, 4), (3, 4)}
 
-@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_short_proof]
+@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_test]
 theorem sunJafarGroupcast_alignmentEdges_exact :
     sunJafarGroupcastAlignmentEdges = sunJafarGroupcastExpectedAlignmentEdges := by
   native_decide
 
-@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_short_proof]
+@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_test]
 theorem sunJafarGroupcast_alignmentEdge_count :
     sunJafarGroupcastAlignmentEdges.card = 6 := by
   native_decide
 
-@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement]
-def sunJafarGroupcast_linear_achievability : Prop :=
-  (5 : ℝ) / 13 ≤ linearEncoderSymmetricCapacity sunJafarGroupcast
+@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement,
+  capacity_solved]
+theorem sunJafarGroupcast_linear_achievability :
+    (5 : ℝ) / 13 ≤ linearEncoderSymmetricCapacity sunJafarGroupcast := by
+  sorry
 
-@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement]
-def sunJafarGroupcast_unrestricted_achievability : Prop :=
-  (5 : ℝ) / 13 ≤ symmetricCapacity sunJafarGroupcast
+@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement,
+  capacity_solved]
+theorem sunJafarGroupcast_unrestricted_achievability :
+    (5 : ℝ) / 13 ≤ symmetricCapacity sunJafarGroupcast := by
+  sorry
 
-@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_short_proof]
-theorem sunJafarGroupcast_linear_achievability_implies_unrestricted_achievability
-    (h : sunJafarGroupcast_linear_achievability) :
-    sunJafarGroupcast_unrestricted_achievability := by
-  exact h.trans (linearEncoderSymmetricCapacity_le_symmetricCapacity sunJafarGroupcast)
+@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement,
+  capacity_solved]
+theorem sunJafarGroupcast_linear_converse :
+    linearEncoderSymmetricCapacity sunJafarGroupcast ≤ (5 : ℝ) / 13 := by
+  sorry
 
-@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement]
-def sunJafarGroupcast_linear_converse : Prop :=
-  linearEncoderSymmetricCapacity sunJafarGroupcast ≤ (5 : ℝ) / 13
+@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement,
+  capacity_solved]
+theorem sunJafarGroupcast_nonlinear_converse :
+    symmetricCapacity sunJafarGroupcast ≤ (11 : ℝ) / 28 := by
+  sorry
 
-@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement]
-def sunJafarGroupcast_nonlinear_converse : Prop :=
-  symmetricCapacity sunJafarGroupcast ≤ (11 : ℝ) / 28
+@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement,
+  capacity_open]
+theorem sunJafarGroupcast_exact_capacity_conjecture :
+    symmetricCapacity sunJafarGroupcast = (5 : ℝ) / 13 := by
+  sorry
 
-@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement]
-def sunJafarGroupcast_exact_capacity_conjecture : Prop :=
-  symmetricCapacity sunJafarGroupcast = (5 : ℝ) / 13
+@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement,
+  capacity_solved]
+theorem sunJafarGroupcast_shannon_outer_bound_limit :
+    shannonPolymatroidOuterBound sunJafarGroupcast = (2 : ℝ) / 5 := by
+  sorry
 
-@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement]
-def sunJafarGroupcast_shannon_outer_bound_limit : Prop :=
-  shannonPolymatroidOuterBound sunJafarGroupcast = (2 : ℝ) / 5
-
-@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement]
-def sunJafarGroupcast_shannon_outer_bound : Prop :=
-  symmetricCapacity sunJafarGroupcast ≤ (2 : ℝ) / 5
-
-@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_short_proof]
-theorem sunJafarGroupcast_shannon_relaxation_value_implies_outer_bound
-    (h : sunJafarGroupcast_shannon_outer_bound_limit) :
-    sunJafarGroupcast_shannon_outer_bound := by
-  exact (symmetricCapacity_le_shannonPolymatroidOuterBound sunJafarGroupcast).trans_eq h
+@[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_statement,
+  capacity_solved]
+theorem sunJafarGroupcast_shannon_outer_bound :
+    symmetricCapacity sunJafarGroupcast ≤ (2 : ℝ) / 5 := by
+  sorry
 
 end CapacityAtlas.IndexCoding

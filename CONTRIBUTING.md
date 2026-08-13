@@ -6,8 +6,8 @@ number of entries.
 
 The contribution model is inspired by Google DeepMind's
 [Formal Conjectures](https://github.com/google-deepmind/formal-conjectures),
-particularly its separation of statements from substantial external proofs and
-its structured formal-proof metadata. See [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md).
+particularly its statement-first convention and independent formal-proof
+metadata. See [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md).
 
 ## Ways to contribute
 
@@ -17,8 +17,8 @@ A focused pull request can:
 - correct a channel model, normalization, bound, date, or citation
 - add a newly published achievability or converse
 - improve controlled tags or research-frontier exposition
-- add a canonical Lean definition or statement
-- register a substantial external Lean proof
+- add a canonical formal definition or claim
+- register formal proof provenance
 - improve the generator, tests, accessibility, or documentation
 
 Use Discussions for research conversation. Use Issues for actionable corrections,
@@ -52,22 +52,27 @@ Do not add free-form tags to a problem record. Propose a new controlled value on
 when it will distinguish several entries and cannot be expressed by an existing
 value. AMS classifications are intentionally not used.
 
-## Lean policy
+## Formal verification policy
 
-Capacity Atlas currently accepts only Lean 4.
+Capacity Atlas uses Lean 4 for formal verification.
 
 - Reuse definitions in `CapacityAtlasForMathlib`.
 - Put channel-specific definitions and statements in `CapacityAtlas`.
 - Put metadata attributes and generator utilities in `CapacityAtlasUtil`.
 - Attach `@[capacity_problem "problem-id"]` to problem-specific declarations.
-- Mark roles with `@[capacity_definition]`, `@[capacity_statement]`,
-  `@[capacity_short_proof]`, or `@[capacity_shared_api]`.
-- Give each canonical proposition a stable claim ID, kind, status, and version in
-  the problem record; link its declarations with `claim_id`.
-- Keep unproved claims as named `Prop` definitions with status `open`.
-- Do not use `sorry`, `admit`, or unreviewed axioms.
+- Mark declaration roles with `@[capacity_definition]`,
+  `@[capacity_statement]`, or `@[capacity_shared_api]`.
+- Classify formal claims independently as `open`, `solved`, `API`, or `test` and
+  as formally `stated` or `proved`.
+- Write open research claims as theorem declarations with `by sorry`. A solved
+  claim may also use `sorry` when its proof provenance is recorded separately.
+- Mark a complete local proof with `@[capacity_formal_proof]` and use
+  `@[capacity_test]` for tested structural claims.
+- Do not use `sorry` or `admit` in `CapacityAtlasForMathlib`, reusable APIs,
+  tests, or declarations marked as locally proved. Unreviewed axioms are never
+  accepted.
 - Increment that claim's version whenever its proposition changes in a way that
-  can invalidate an external proof.
+  can invalidate a formal proof.
 
 The central repository should contain canonical claims, reusable API, tests,
 and short illuminating proofs. As in Formal Conjectures' contribution policy, a
@@ -76,11 +81,11 @@ rule applies when a proof needs significant problem-specific infrastructure even
 if its final theorem is short.
 
 See [docs/lean.md](docs/lean.md) and
-[docs/external-proofs.md](docs/external-proofs.md).
+[docs/formal-proofs.md](docs/formal-proofs.md).
 
-## External proofs
+## Formal proof provenance
 
-An external proof record must:
+A linked proof record must:
 
 - use Lean 4
 - identify the exact claim proved
@@ -89,7 +94,7 @@ An external proof record must:
 - link to that immutable commit
 - name the Capacity Atlas claim identifier and version it targets
 
-The external repository should import a pinned Capacity Atlas commit or release
+The proof repository should import a pinned Capacity Atlas commit or release
 and prove the canonical proposition directly whenever possible.
 
 ## Problem files

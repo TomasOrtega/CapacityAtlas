@@ -54,12 +54,28 @@ initialize capacityDefinitionAttr : TagAttribute ←
 initialize capacityStatementAttr : TagAttribute ←
   registerTagAttribute `capacity_statement "Canonical Capacity Atlas problem statement."
 
-/-- Marks a short proof retained in the registry as a test or compact result. -/
-initialize capacityShortProofAttr : TagAttribute ←
-  registerTagAttribute `capacity_short_proof "Short proof retained in Capacity Atlas."
-
 /-- Marks reusable information-theory infrastructure intended for possible upstreaming. -/
 initialize capacitySharedApiAttr : TagAttribute ←
   registerTagAttribute `capacity_shared_api "Reusable Capacity Atlas API declaration."
+
+/-- Marks an open research claim. -/
+initialize capacityOpenAttr : TagAttribute ←
+  registerTagAttribute `capacity_open "Open Capacity Atlas research claim."
+
+/-- Marks a mathematically solved research claim. -/
+initialize capacitySolvedAttr : TagAttribute ←
+  registerTagAttribute `capacity_solved "Solved Capacity Atlas research claim."
+
+/-- Marks a statement that is part of the reusable API. -/
+initialize capacityApiAttr : TagAttribute ←
+  registerTagAttribute `capacity_api "Capacity Atlas API statement."
+
+/-- Marks a statement used to test a definition or formal model. -/
+initialize capacityTestAttr : TagAttribute ←
+  registerTagAttribute `capacity_test "Capacity Atlas test statement."
+
+/-- Records that the attached claim has a complete proof in this repository. -/
+initialize capacityFormalProofAttr : TagAttribute ←
+  registerTagAttribute `capacity_formal_proof "Locally proved Capacity Atlas claim."
 
 end CapacityAtlas.Metadata

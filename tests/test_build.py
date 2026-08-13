@@ -94,7 +94,7 @@ def test_browse_filters_keep_status_and_formalization_separate(tmp_path: Path) -
         for option in formalization_filter.select("option")
     }
     assert formalization_options["formally-stated"].startswith("Formally stated")
-    assert formalization_options["formally-proved"].startswith("Capacity claim formally proved")
+    assert formalization_options["formally-proved"].startswith("Formally proved")
     assert not formalization_options["formally-proved"].endswith("(0)")
 
     formalized_row = soup.select_one('[data-problem-row][data-formalization~="formally-stated"]')
@@ -123,15 +123,13 @@ def test_browse_formalization_includes_proved_capacity_claim() -> None:
     problem = {
         "status": "open",
         "formalization": {
-            "statement": {
-                "status": "statement",
-                "claims": [
-                    {
-                        "kind": "converse",
-                        "status": "proved",
-                    }
-                ],
-            },
+            "status": "stated",
+            "claims": [
+                {
+                    "kind": "converse",
+                    "formal_status": "proved",
+                }
+            ],
         },
     }
 
@@ -145,15 +143,13 @@ def test_browse_formalization_excludes_structural_proof() -> None:
     problem = {
         "status": "solved",
         "formalization": {
-            "statement": {
-                "status": "statement",
-                "claims": [
-                    {
-                        "kind": "structural",
-                        "status": "proved",
-                    }
-                ],
-            },
+            "status": "stated",
+            "claims": [
+                {
+                    "kind": "structural",
+                    "formal_status": "proved",
+                }
+            ],
         },
     }
 

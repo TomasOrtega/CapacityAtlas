@@ -57,12 +57,10 @@ bounds:
   - liao-1972
   - elgamal-kim-2011
 formalization:
-  statement:
-    status: none
-    language: Lean
-    claims: []
-    notes: Gaussian random variables and multi-user regions are not yet formalized.
-    files: []
+  status: none
+  claims: []
+  notes: Gaussian random variables and multi-user regions are not yet formalized.
+  files: []
   proofs: []
 references:
 - ahlswede-1971

@@ -4,7 +4,7 @@ id: gaussian-mimo-channel
 title: Point-to-point Gaussian MIMO channel
 status: solved
 featured: true
-updated: '2026-08-12'
+updated: '2026-08-13'
 summary: A point-to-point Gaussian vector channel under a total covariance trace constraint has a log-determinant water-filling capacity formula.
 tags:
   model: [point-to-point]
@@ -36,21 +36,13 @@ bounds:
   year: 1999
   references: [telatar-1999]
 formalization:
-  statement:
-    status: statement
-    language: Lean
-    claims:
-    - id: exact-capacity
-      kind: exact-capacity
-      status: open
-      version: 1
-      description: Exact real Gaussian MIMO capacity formula.
-    notes: The real-valued model fixes the one-half normalization; matrix optimization infrastructure remains an external proof task.
-    files:
-    - path: lean/CapacityAtlas/Channels/GaussianMIMO.lean
-      declaration: CapacityAtlas.Channel.gaussianMIMOCapacityStatement
-      role: statement
-      description: Operational real Gaussian MIMO capacity equals the water-filling log-determinant value.
-      claim_id: exact-capacity
+  status: definitions
+  claims: []
+  notes: Concrete definitions are retained; no capacity or bound claim is formally stated.
+  files:
+  - path: lean/CapacityAtlas/Channels/GaussianMIMO.lean
+    declaration: CapacityAtlas.Channel.RealGaussianMIMOModel
+    role: definition
+    description: Real channel matrix, white-noise variance, and total-power model.
   proofs: []
 references: [telatar-1999]

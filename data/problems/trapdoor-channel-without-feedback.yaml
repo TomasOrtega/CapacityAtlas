@@ -3,7 +3,7 @@
 id: trapdoor-channel-without-feedback
 title: Trapdoor channel without feedback
 status: open
-updated: '2026-08-12'
+updated: '2026-08-13'
 summary: Removing output feedback from the same binary finite-state trapdoor channel leaves its exact feedforward capacity unresolved.
 tags:
   model: [point-to-point]
@@ -49,21 +49,13 @@ frontier:
     status: done
     url: https://capacityatlas.org/problems/trapdoor-channel-with-feedback/
 formalization:
-  statement:
-    status: statement
-    language: Lean
-    claims:
-    - id: capacity-bounds
-      kind: capacity-bounds
-      status: open
-      version: 1
-      description: Registered feedforward capacity bounds.
-    notes: A separate feedforward operational interface prevents accidental reuse of the feedback theorem.
-    files:
-    - path: lean/CapacityAtlas/Channels/Trapdoor.lean
-      declaration: CapacityAtlas.Channel.trapdoorWithoutFeedbackCapacityBounds
-      role: statement
-      description: Basic feedforward-capacity bounds for the fixed trapdoor transition.
-      claim_id: capacity-bounds
+  status: definitions
+  claims: []
+  notes: Concrete definitions are retained; no capacity or bound claim is formally stated.
+  files:
+  - path: lean/CapacityAtlas/Channels/Trapdoor.lean
+    declaration: CapacityAtlas.Channel.trapdoorFeedforwardModel
+    role: definition
+    description: Concrete finite-state trapdoor channel used for the no-feedback problem.
   proofs: []
 references: [permuter-et-al-2006]

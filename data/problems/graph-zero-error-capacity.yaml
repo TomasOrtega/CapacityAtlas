@@ -59,12 +59,10 @@ frontier:
   - Find a new multiplicative upper bound below Lovász theta.
   - Formalize graph-channel equivalence and the pentagon theorem.
 formalization:
-  statement:
-    status: none
-    language: Lean
-    claims: []
-    notes: The canonical statement should reuse Mathlib graph products and a shared zero-error code definition.
-    files: []
+  status: none
+  claims: []
+  notes: The canonical statement should reuse Mathlib graph products and a shared zero-error code definition.
+  files: []
   proofs: []
 references:
 - shannon-1956

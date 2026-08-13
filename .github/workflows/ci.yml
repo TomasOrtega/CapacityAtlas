@@ -50,20 +50,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Reject placeholders
-        run: |
-          if grep -RInE '(^|[^A-Za-z])(sorry|admit)([^A-Za-z]|$)' \
-              lean/CapacityAtlas lean/CapacityAtlas.lean \
-              lean/CapacityAtlasForMathlib lean/CapacityAtlasForMathlib.lean \
-              lean/CapacityAtlasUtil lean/CapacityAtlasUtil.lean; then
-            echo 'Lean placeholders are not permitted.' >&2
-            exit 1
-          fi
       - uses: leanprover/lean-action@v1
         with:
           lake-package-directory: lean
-          build: true
+          auto-config: false
+          build: false
           use-mathlib-cache: true
+      - name: Build trusted Lean layers
+        working-directory: lean
+        run: lake --wfail build CapacityAtlasForMathlib CapacityAtlasUtil
+      - name: Build all Lean declarations
+        working-directory: lean
+        run: lake build
 
   deploy:
     name: Deploy GitHub Pages

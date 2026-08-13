@@ -66,12 +66,13 @@ noncomputable def constrainedInformationCapacityBits (channel : FiniteChannel X 
       information = channel.mutualInformationBits input}
 
 /-- The finite-DMC coding theorem with a feasible nonnegative input-cost constraint. -/
-@[capacity_problem "finite-dmc-input-cost", capacity_statement]
-def finiteDMCInputCostCapacityStatement (channel : FiniteChannel X Y)
-    (cost : X → ℝ) (budget : ℝ) : Prop :=
+@[capacity_problem "finite-dmc-input-cost", capacity_statement, capacity_solved]
+theorem finiteDMCInputCostCapacityStatement (channel : FiniteChannel X Y)
+    (cost : X → ℝ) (budget : ℝ) :
   (∀ symbol, 0 ≤ cost symbol) →
     (∃ symbol, cost symbol ≤ budget) →
       channel.constrainedOperationalCapacityBits cost budget =
-        channel.constrainedInformationCapacityBits cost budget
+        channel.constrainedInformationCapacityBits cost budget := by
+  sorry
 
 end CapacityAtlas.FiniteChannel

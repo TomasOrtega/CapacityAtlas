@@ -10,20 +10,6 @@ namespace CapacityAtlas.Channel
 
 open CapacityAtlas
 
-@[capacity_problem "less-noisy-broadcast-channel", capacity_statement]
-def lessNoisyBroadcastCapacityStatement {X Y₁ Y₂ : Type*}
-    [Fintype X] [Fintype Y₁] [Fintype Y₂]
-    (theory : RegionOperationalTheory (FiniteBroadcastChannel X Y₁ Y₂))
-    (channel : FiniteBroadcastChannel X Y₁ Y₂) : Prop :=
-  channel.IsLessNoisy → theory.capacityRegion channel = superpositionRegion channel
-
-@[capacity_problem "more-capable-broadcast-channel", capacity_statement]
-def moreCapableBroadcastCapacityStatement {X Y₁ Y₂ : Type*}
-    [Fintype X] [Fintype Y₁] [Fintype Y₂]
-    (theory : RegionOperationalTheory (FiniteBroadcastChannel X Y₁ Y₂))
-    (channel : FiniteBroadcastChannel X Y₁ Y₂) : Prop :=
-  channel.IsMoreCapable → theory.capacityRegion channel = moreCapableRegion channel
-
 def blackwellOutput₁ : Fin 3 → Bool := ![false, false, true]
 def blackwellOutput₂ : Fin 3 → Bool := ![false, true, true]
 
@@ -40,11 +26,6 @@ noncomputable def blackwellCapacityRegion : Set RatePair :=
     rate.1 ≤ (input.map blackwellOutput₁).entropyBits ∧
       rate.2 ≤ (input.map blackwellOutput₂).entropyBits ∧
       rate.1 + rate.2 ≤ input.entropyBits}
-
-@[capacity_problem "blackwell-broadcast-channel", capacity_statement]
-def blackwellBroadcastCapacityStatement
-    (theory : RegionOperationalTheory (FiniteBroadcastChannel (Fin 3) Bool Bool)) : Prop :=
-  theory.capacityRegion blackwellBroadcastChannel = blackwellCapacityRegion
 
 /-- The binary skew-symmetric channel's opposite deterministic/noisy branches. -/
 @[capacity_problem "binary-skew-symmetric-broadcast-channel", capacity_definition]
@@ -64,13 +45,5 @@ noncomputable def binarySkewSymmetricBroadcastChannel :
       by_cases hinput : input = true <;>
         by_cases houtput : output = true <;> simp [hinput, houtput]
     row_sum input := by cases input <;> norm_num [Fintype.sum_bool] }
-
-/-- The flagship BSSC question: does Marton's inner region meet the UV outer region? -/
-@[capacity_problem "binary-skew-symmetric-broadcast-channel", capacity_statement]
-def binarySkewSymmetricBroadcastCapacityStatement
-    (martonInnerRegion uvOuterRegion :
-      FiniteBroadcastChannel Bool Bool Bool → Set RatePair) : Prop :=
-  martonInnerRegion binarySkewSymmetricBroadcastChannel =
-    uvOuterRegion binarySkewSymmetricBroadcastChannel
 
 end CapacityAtlas.Channel

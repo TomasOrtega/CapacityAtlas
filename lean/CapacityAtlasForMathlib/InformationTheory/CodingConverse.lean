@@ -362,7 +362,8 @@ theorem codingTheorem [Nonempty X]
     channel.hasRandomCodingBounds channel.hasAchievableRateConverse
 
 /-- The finite-channel coding theorem, including the empty-input convention. -/
-@[capacity_shared_api]
+@[capacity_problem "discrete-memoryless-channel", capacity_shared_api, capacity_statement,
+  capacity_solved, capacity_formal_proof]
 theorem codingTheorem_all
     (channel : FiniteChannel X Y) : channel.SatisfiesCodingTheorem :=
   channel.finiteDMCSatisfiesCodingTheorem_of_bounds

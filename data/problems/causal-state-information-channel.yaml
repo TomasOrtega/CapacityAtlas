@@ -50,12 +50,10 @@ bounds:
   references:
   - shannon-1958
 formalization:
-  statement:
-    status: none
-    language: Lean
-    claims: []
-    notes: State processes and causal encoder strategies need a shared operational layer.
-    files: []
+  status: none
+  claims: []
+  notes: State processes and causal encoder strategies need a shared operational layer.
+  files: []
   proofs: []
 references:
 - shannon-1958

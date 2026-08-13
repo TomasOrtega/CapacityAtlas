@@ -4,7 +4,7 @@ Licensed under the Apache License, Version 2.0 (the "License").
 See https://www.apache.org/licenses/LICENSE-2.0
 -/
 
-import CapacityAtlasForMathlib.InformationTheory.OperationalTheory
+import CapacityAtlasForMathlib.InformationTheory.FiniteChannelCapacity
 
 open scoped BigOperators
 

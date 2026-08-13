@@ -3,7 +3,7 @@
 id: general-finite-wiretap-channel
 title: General finite wiretap channel
 status: solved
-updated: '2026-08-12'
+updated: '2026-08-13'
 summary: The unconstrained finite wiretap channel has a single-auxiliary secrecy-capacity characterization without a degradedness assumption.
 tags:
   model: [wiretap]
@@ -35,21 +35,21 @@ bounds:
   year: 1978
   references: [csiszar-korner-1978]
 formalization:
-  statement:
-    status: statement
-    language: Lean
-    claims:
-    - id: exact-capacity
-      kind: exact-capacity
-      status: open
-      version: 1
-      description: Exact strong-secrecy capacity formula.
-    notes: Strong and weak secrecy predicates and capacities are separate; the statement uses the unconstrained one-auxiliary value.
-    files:
-    - path: lean/CapacityAtlas/Channels/FiniteWiretap.lean
-      declaration: CapacityAtlas.Channel.generalFiniteWiretapCapacityStatement
-      role: statement
-      description: Strong-secrecy capacity identity for a general finite wiretap channel.
-      claim_id: exact-capacity
+  status: definitions
+  claims: []
+  notes: Concrete definitions are retained; no capacity or bound claim is formally stated.
+  files:
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/FiniteWiretapChannel.lean
+    declaration: CapacityAtlas.FiniteWiretapChannel
+    role: definition
+    description: Pair of finite legitimate and eavesdropper channels.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/FiniteWiretapChannel.lean
+    declaration: CapacityAtlas.WiretapCode
+    role: definition
+    description: Finite stochastic wiretap block-code structure.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/FiniteWiretapChannel.lean
+    declaration: CapacityAtlas.finiteWiretapAuxiliaryCapacity
+    role: definition
+    description: Single-auxiliary information expression.
   proofs: []
 references: [csiszar-korner-1978, sreekumar-et-al-2020]

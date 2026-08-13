@@ -58,12 +58,10 @@ bounds:
   references:
   - shannon-1948
 formalization:
-  statement:
-    status: none
-    language: Lean
-    claims: []
-    notes: Continuous probability and differential entropy are not yet in the shared Lean layer.
-    files: []
+  status: none
+  claims: []
+  notes: Continuous probability and differential entropy are not yet in the shared Lean layer.
+  files: []
   proofs: []
 references:
 - shannon-1948

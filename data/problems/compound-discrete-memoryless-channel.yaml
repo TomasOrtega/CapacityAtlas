@@ -48,12 +48,11 @@ bounds:
   references:
   - blackwell-breiman-thomasian-1959
 formalization:
-  statement:
-    status: none
-    language: Lean
-    claims: []
-    notes: Families of finite channels can reuse the shared DMC structure; uniform operational codes are missing.
-    files: []
+  status: none
+  claims: []
+  notes: Families of finite channels can reuse the shared DMC structure; uniform operational codes are
+    missing.
+  files: []
   proofs: []
 references:
 - blackwell-breiman-thomasian-1959

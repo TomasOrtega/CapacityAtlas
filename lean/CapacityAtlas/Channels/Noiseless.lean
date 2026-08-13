@@ -41,43 +41,33 @@ private theorem identity_mutualInformation {X : Type*} [Fintype X] [DecidableEq 
   simp [FiniteChannel.conditionalOutputEntropy, identity_rowDistribution_entropy]
 
 /-- The single-letter information capacity of a noiseless finite channel. -/
-@[capacity_problem "noiseless-q-ary-channel", capacity_statement]
-theorem noiseless_informationCapacity (X : Type*) [Fintype X] [DecidableEq X] [Nonempty X] :
-    (FiniteChannel.identity X).informationCapacityBits =
-      Real.log (Fintype.card X) / Real.log 2 := by
-  apply FiniteChannel.informationCapacityBits_eq_of_upper_bound_attained
-    (FiniteChannel.identity X) (Real.log (Fintype.card X) / Real.log 2)
-    (FiniteDistribution.uniform X)
-  · intro input
-    rw [FiniteChannel.mutualInformationBits, identity_mutualInformation]
-    exact div_le_div_of_nonneg_right input.entropy_le_log_card
-      (Real.log_pos (by norm_num)).le
-  · rw [FiniteChannel.mutualInformationBits, identity_mutualInformation,
-      FiniteDistribution.entropy_uniform]
-
-/-- The operational average-error capacity claim for a noiseless `q`-symbol channel. -/
-@[capacity_problem "noiseless-q-ary-channel", capacity_statement]
-def noiselessCapacityStatement (q : ℕ) (_hq : 2 ≤ q) : Prop :=
-  (FiniteChannel.identity (Fin q)).operationalCapacityBits =
-    Real.log q / Real.log 2
-
-/-- The operational average-error capacity of a noiseless finite channel. -/
-@[capacity_problem "noiseless-q-ary-channel", capacity_short_proof]
-theorem noiseless_operationalCapacity (X : Type*) [Fintype X] [DecidableEq X] [Nonempty X] :
-    (FiniteChannel.identity X).operationalCapacityBits =
-      Real.log (Fintype.card X) / Real.log 2 := by
-  calc
-    (FiniteChannel.identity X).operationalCapacityBits =
-        (FiniteChannel.identity X).informationCapacityBits :=
-      FiniteChannel.codingTheorem (FiniteChannel.identity X)
-    _ = Real.log (Fintype.card X) / Real.log 2 := noiseless_informationCapacity X
-
-/-- The registered noiseless-channel capacity proposition holds unconditionally. -/
-@[capacity_problem "noiseless-q-ary-channel", capacity_short_proof]
-theorem noiselessCapacityStatement_proof (q : ℕ) (hq : 2 ≤ q) :
-    noiselessCapacityStatement q hq := by
+@[capacity_problem "noiseless-q-ary-channel", capacity_statement, capacity_solved,
+  capacity_formal_proof]
+theorem noiseless_informationCapacity (q : ℕ) (hq : 2 ≤ q) :
+    (FiniteChannel.identity (Fin q)).informationCapacityBits = Real.log q / Real.log 2 := by
   have hq0 : 0 < q := lt_of_lt_of_le (by norm_num) hq
   letI : Nonempty (Fin q) := Fin.pos_iff_nonempty.mp hq0
-  simpa [noiselessCapacityStatement] using noiseless_operationalCapacity (Fin q)
+  apply FiniteChannel.informationCapacityBits_eq_of_upper_bound_attained
+    (FiniteChannel.identity (Fin q)) (Real.log q / Real.log 2)
+    (FiniteDistribution.uniform (Fin q))
+  · intro input
+    rw [FiniteChannel.mutualInformationBits, identity_mutualInformation]
+    exact div_le_div_of_nonneg_right (by simpa using input.entropy_le_log_card)
+      (Real.log_pos (by norm_num)).le
+  · rw [FiniteChannel.mutualInformationBits, identity_mutualInformation,
+      FiniteDistribution.entropy_uniform, Fintype.card_fin]
+
+/-- The operational average-error capacity of a noiseless finite channel. -/
+@[capacity_problem "noiseless-q-ary-channel", capacity_statement, capacity_solved,
+  capacity_formal_proof]
+theorem noiseless_operationalCapacity (q : ℕ) (hq : 2 ≤ q) :
+    (FiniteChannel.identity (Fin q)).operationalCapacityBits = Real.log q / Real.log 2 := by
+  have hq0 : 0 < q := lt_of_lt_of_le (by norm_num) hq
+  letI : Nonempty (Fin q) := Fin.pos_iff_nonempty.mp hq0
+  calc
+    (FiniteChannel.identity (Fin q)).operationalCapacityBits =
+        (FiniteChannel.identity (Fin q)).informationCapacityBits :=
+      FiniteChannel.codingTheorem (FiniteChannel.identity (Fin q))
+    _ = Real.log q / Real.log 2 := noiseless_informationCapacity q hq
 
 end CapacityAtlas.Channel

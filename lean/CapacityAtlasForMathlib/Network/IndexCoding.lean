@@ -294,19 +294,6 @@ noncomputable def linearEncoderSymmetricCapacityOver (problem : Instance Message
     [Field FieldAlphabet] : ℝ :=
   sSup {rate | AchievableLinearEncoderSymmetricRateOver problem FieldAlphabet rate}
 
-/-- Compatibility alias for linear-encoder achievability; it does not require linear decoders. -/
-@[deprecated AchievableLinearEncoderSymmetricRateOver (since := "2026-08-12"), capacity_shared_api]
-abbrev AchievableLinearSymmetricRateOver (problem : Instance Message Receiver)
-    (FieldAlphabet : Type*) [Fintype FieldAlphabet] [DecidableEq FieldAlphabet]
-    [Field FieldAlphabet] (rate : ℝ) :=
-  AchievableLinearEncoderSymmetricRateOver problem FieldAlphabet rate
-
-/-- Compatibility alias for linear-encoder capacity; it does not require linear decoders. -/
-@[deprecated linearEncoderSymmetricCapacityOver (since := "2026-08-12"), capacity_shared_api]
-noncomputable abbrev linearSymmetricCapacityOver (problem : Instance Message Receiver)
-    (FieldAlphabet : Type*) [Fintype FieldAlphabet] [DecidableEq FieldAlphabet]
-    [Field FieldAlphabet] := linearEncoderSymmetricCapacityOver problem FieldAlphabet
-
 /-- A finite field packaged so capacities can be compared across characteristics and extensions. -/
 @[capacity_shared_api]
 structure FiniteFieldModel where
@@ -328,16 +315,7 @@ noncomputable def linearEncoderSymmetricCapacityForModel (problem : Instance Mes
 noncomputable def linearEncoderSymmetricCapacity (problem : Instance Message Receiver) : ℝ :=
   sSup (Set.range (linearEncoderSymmetricCapacityForModel problem))
 
-/-- Compatibility alias for a model's linear-encoder capacity. -/
-@[deprecated linearEncoderSymmetricCapacityForModel (since := "2026-08-12"), capacity_shared_api]
-noncomputable abbrev linearSymmetricCapacityForModel (problem : Instance Message Receiver)
-    (model : FiniteFieldModel) := linearEncoderSymmetricCapacityForModel problem model
-
-/-- Compatibility alias for global linear-encoder capacity; decoder linearity is not asserted. -/
-@[deprecated linearEncoderSymmetricCapacity (since := "2026-08-12"), capacity_shared_api]
-noncomputable abbrev linearSymmetricCapacity (problem : Instance Message Receiver) :=
-  linearEncoderSymmetricCapacity problem
-
+omit [Fintype Message] [Fintype Receiver] in
 private theorem zeroRate_linearEncoderAchievable
     (problem : Instance Message Receiver) (FieldAlphabet : Type*)
     [Fintype FieldAlphabet] [DecidableEq FieldAlphabet] [Field FieldAlphabet] :
@@ -356,6 +334,7 @@ private theorem zeroRate_linearEncoderAchievable
       · constructor <;> intros <;> funext coordinate <;> simp [code]),
     by simp [Code.symmetricRate, hδ.le]⟩
 
+omit [Fintype Message] [Fintype Receiver] in
 private theorem Code.symmetricRate_le_one_of_zeroError
     [Nonempty Receiver] {Alphabet : Type*} [Fintype Alphabet] [DecidableEq Alphabet]
     [Nontrivial Alphabet]
@@ -397,6 +376,7 @@ private theorem Code.symmetricRate_le_one_of_zeroError
   unfold Code.symmetricRate
   exact (div_le_one (by positivity)).2 (by exact_mod_cast hlength)
 
+omit [Fintype Message] [Fintype Receiver] in
 private theorem achievableSymmetricRate_le_one [Nonempty Receiver]
     (problem : Instance Message Receiver) {rate : ℝ}
     (hrate : AchievableSymmetricRate problem rate) : rate ≤ 1 := by
@@ -409,11 +389,13 @@ private theorem achievableSymmetricRate_le_one [Nonempty Receiver]
   have hcode := Code.symmetricRate_le_one_of_zeroError problem code hzero hbroadcastLength
   linarith
 
+omit [Fintype Message] [Fintype Receiver] in
 private theorem achievableSymmetricRate_bounded [Nonempty Receiver]
     (problem : Instance Message Receiver) :
     BddAbove {rate | AchievableSymmetricRate problem rate} :=
   ⟨1, fun _ hrate ↦ achievableSymmetricRate_le_one problem hrate⟩
 
+omit [Fintype Message] [Fintype Receiver] in
 private theorem achievableLinearEncoderSymmetricRate_le_one [Nonempty Receiver]
     (problem : Instance Message Receiver) (FieldAlphabet : Type*)
     [Fintype FieldAlphabet] [DecidableEq FieldAlphabet] [Field FieldAlphabet]
@@ -426,6 +408,7 @@ private theorem achievableLinearEncoderSymmetricRate_le_one [Nonempty Receiver]
   have hcode := Code.symmetricRate_le_one_of_zeroError problem code hzero hbroadcastLength
   linarith
 
+omit [Fintype Message] [Fintype Receiver] in
 private theorem achievableLinearEncoderSymmetricRate_bounded [Nonempty Receiver]
     (problem : Instance Message Receiver) (FieldAlphabet : Type*)
     [Fintype FieldAlphabet] [DecidableEq FieldAlphabet] [Field FieldAlphabet] :
@@ -433,8 +416,8 @@ private theorem achievableLinearEncoderSymmetricRate_bounded [Nonempty Receiver]
   ⟨1, fun _ hrate ↦
     achievableLinearEncoderSymmetricRate_le_one problem FieldAlphabet hrate⟩
 
-/-- Every rate achievable with a linear encoder is achievable without that restriction. -/
-@[capacity_shared_api]
+/- Every rate achievable with a linear encoder is achievable without that restriction. -/
+omit [Fintype Message] [Fintype Receiver] in
 theorem linearEncoderAchievable_implies_achievable
     (problem : Instance Message Receiver) (FieldAlphabet : Type*)
     [Fintype FieldAlphabet] [DecidableEq FieldAlphabet] [Field FieldAlphabet]
@@ -448,8 +431,10 @@ theorem linearEncoderAchievable_implies_achievable
   exact ⟨messageLength, broadcastLength, hfirst, hbroadcast,
     code.relabelAlphabet equiv, code.relabelAlphabet_isZeroError equiv hzero, hrate⟩
 
-/-- A fixed-field linear-encoder capacity is bounded by the global one. -/
-@[capacity_shared_api]
+attribute [capacity_shared_api] linearEncoderAchievable_implies_achievable
+
+/- A fixed-field linear-encoder capacity is bounded by the global one. -/
+omit [Fintype Message] [Fintype Receiver] in
 theorem linearEncoderSymmetricCapacityOver_le_linearEncoderSymmetricCapacity
     [Nonempty Receiver] (problem : Instance Message Receiver) (FieldAlphabet : Type)
     [Fintype FieldAlphabet] [DecidableEq FieldAlphabet] [Field FieldAlphabet] :
@@ -473,16 +458,11 @@ theorem linearEncoderSymmetricCapacityOver_le_linearEncoderSymmetricCapacity
         field := inferInstance }
     exact ⟨model, rfl⟩
 
-/-- Compatibility spelling of the fixed-field to global linear-encoder inequality. -/
-@[capacity_shared_api]
-theorem linearSymmetricCapacityOver_le_linearSymmetricCapacity
-    [Nonempty Receiver] (problem : Instance Message Receiver) (FieldAlphabet : Type)
-    [Fintype FieldAlphabet] [DecidableEq FieldAlphabet] [Field FieldAlphabet] :
-    linearSymmetricCapacityOver problem FieldAlphabet ≤ linearSymmetricCapacity problem :=
-  linearEncoderSymmetricCapacityOver_le_linearEncoderSymmetricCapacity problem FieldAlphabet
+attribute [capacity_shared_api]
+  linearEncoderSymmetricCapacityOver_le_linearEncoderSymmetricCapacity
 
-/-- Linear-encoder capacity is no larger than unrestricted symmetric capacity. -/
-@[capacity_shared_api]
+/- Linear-encoder capacity is no larger than unrestricted symmetric capacity. -/
+omit [Fintype Message] [Fintype Receiver] in
 theorem linearEncoderSymmetricCapacity_le_symmetricCapacity
     [Nonempty Receiver] (problem : Instance Message Receiver) :
     linearEncoderSymmetricCapacity problem ≤ symmetricCapacity problem := by
@@ -505,12 +485,7 @@ theorem linearEncoderSymmetricCapacity_le_symmetricCapacity
       apply le_csSup (achievableSymmetricRate_bounded problem)
       exact linearEncoderAchievable_implies_achievable problem model.Carrier hrate
 
-/-- Compatibility spelling of the linear-encoder to unrestricted inequality. -/
-@[capacity_shared_api]
-theorem linearSymmetricCapacity_le_symmetricCapacity [Nonempty Receiver]
-    (problem : Instance Message Receiver) :
-    linearSymmetricCapacity problem ≤ symmetricCapacity problem :=
-  linearEncoderSymmetricCapacity_le_symmetricCapacity problem
+attribute [capacity_shared_api] linearEncoderSymmetricCapacity_le_symmetricCapacity
 
 /-- Feasibility in the normalized symmetric Shannon-polymatroid outer relaxation. -/
 @[capacity_shared_api]
@@ -776,6 +751,7 @@ private def addDecodedDemand {Alphabet : Type*}
       observation.2 ⟨message.1,
         (Finset.mem_insert.mp message.2).resolve_left hdemand⟩ coordinate
 
+omit [Fintype Receiver] in
 private theorem entropy_broadcast_complement_interference_insert
     {Alphabet : Type*} [Fintype Alphabet] [DecidableEq Alphabet]
     {problem : Instance Message Receiver} {messageLength broadcastLength : ℕ}
@@ -805,6 +781,7 @@ private theorem entropy_broadcast_complement_interference_insert
       · simp [Function.comp_apply, addDecodedDemand, hdemand, restrictValues]
   · rfl
 
+omit [Fintype Receiver] in
 private theorem demand_not_interference (problem : Instance Message Receiver)
     (receiver : Receiver) :
     problem.demand receiver ∉ problem.interference receiver := by
@@ -839,6 +816,7 @@ private theorem denominator_pos {Alphabet : Type*} [Fintype Alphabet] [Nontrivia
   · apply Real.log_pos
     exact_mod_cast Fintype.one_lt_card (α := Alphabet)
 
+omit [Fintype Receiver] in
 private theorem observation_empty
     {Alphabet : Type*} [Fintype Alphabet] [DecidableEq Alphabet] [Nontrivial Alphabet]
     {problem : Instance Message Receiver} {messageLength broadcastLength : ℕ}
@@ -876,6 +854,7 @@ private theorem observation_empty
   simp only [Finset.card_univ, Fintype.card_fun, Fintype.card_fin]
   rw [Nat.cast_pow, Real.log_pow]
 
+omit [Fintype Receiver] in
 private theorem observation_univ
     {Alphabet : Type*} [Fintype Alphabet] [DecidableEq Alphabet] [Nontrivial Alphabet]
     {problem : Instance Message Receiver} {messageLength broadcastLength : ℕ}
@@ -903,6 +882,7 @@ private theorem observation_univ
   rw [hset]
   exact hobservation
 
+omit [Fintype Receiver] in
 private theorem raw_empty
     {Alphabet : Type*} [Fintype Alphabet] [DecidableEq Alphabet] [Nontrivial Alphabet]
     {problem : Instance Message Receiver} {messageLength broadcastLength : ℕ}
@@ -911,6 +891,7 @@ private theorem raw_empty
   rw [rawRank, observation_empty]
   simp
 
+omit [Fintype Receiver] in
 private theorem raw_univ_le_one
     {Alphabet : Type*} [Fintype Alphabet] [DecidableEq Alphabet] [Nontrivial Alphabet]
     {problem : Instance Message Receiver} {messageLength broadcastLength : ℕ}
@@ -944,6 +925,7 @@ private theorem raw_univ_le_one
   apply (div_le_one hdenom).2
   exact hentropy
 
+omit [Fintype Receiver] in
 private theorem observation_submodular
     {Alphabet : Type*} [Fintype Alphabet] [DecidableEq Alphabet] [Nontrivial Alphabet]
     {problem : Instance Message Receiver} {messageLength broadcastLength : ℕ}
@@ -968,6 +950,7 @@ private theorem observation_submodular
   rw [hunion, hinter] at h
   simpa [observationEntropy, distribution, add_comm] using h
 
+omit [Fintype Receiver] in
 private theorem raw_submodular
     {Alphabet : Type*} [Fintype Alphabet] [DecidableEq Alphabet] [Nontrivial Alphabet]
     {problem : Instance Message Receiver} {messageLength broadcastLength : ℕ}
@@ -1014,6 +997,7 @@ private theorem raw_submodular
           rw [hcard]
           ring
 
+omit [Fintype Receiver] in
 private theorem rawRank_monotone
     {Alphabet : Type*} [Fintype Alphabet] [DecidableEq Alphabet] [Nontrivial Alphabet]
     {problem : Instance Message Receiver} {messageLength broadcastLength : ℕ}
@@ -1082,6 +1066,7 @@ private theorem rawRank_monotone
   apply (div_le_div_iff_of_pos_right hdenominator).2
   simpa only [rawRank, wordEntropy] using hnumerator
 
+omit [Fintype Receiver] in
 private theorem rawRank_receiver
     {Alphabet : Type*} [Fintype Alphabet] [DecidableEq Alphabet] [Nontrivial Alphabet]
     {problem : Instance Message Receiver} {messageLength broadcastLength : ℕ}
@@ -1120,6 +1105,7 @@ private noncomputable def normalizedRank
     (raw : Finset Message → ℝ) (set : Finset Message) : ℝ :=
   raw set + (set.card : ℝ) * ((1 - raw Finset.univ) / (Fintype.card Message : ℝ))
 
+omit [Fintype Receiver] in
 private theorem normalizedRank_feasible [Nonempty Message]
     (problem : Instance Message Receiver) (rate : ℝ) (raw : Finset Message → ℝ)
     (hempty : raw ∅ = 0) (huniv : raw Finset.univ ≤ 1)
@@ -1162,6 +1148,7 @@ private theorem normalizedRank_feasible [Nonempty Message]
     dsimp [normalizedRank]
     nlinarith
 
+omit [Fintype Receiver] in
 private theorem code_feasible
     {Alphabet : Type*} [Fintype Alphabet] [DecidableEq Alphabet] [Nontrivial Alphabet]
     [Nonempty Message]
@@ -1186,6 +1173,7 @@ end ShannonCertificate
 noncomputable def shannonPolymatroidOuterBound (problem : Instance Message Receiver) : ℝ :=
   sSup {rate | ∃ rank, ShannonPolymatroidFeasible problem rate rank}
 
+omit [Fintype Receiver] in
 private theorem shannonPolymatroidFeasible_rate_le_one [Nonempty Receiver]
     (problem : Instance Message Receiver) {rate : ℝ} {rank : Finset Message → ℝ}
     (hfeasible : ShannonPolymatroidFeasible problem rate rank) : rate ≤ 1 := by
@@ -1199,6 +1187,7 @@ private theorem shannonPolymatroidFeasible_rate_le_one [Nonempty Receiver]
     exact hfeasible.2.2.1 _ Finset.univ (Finset.subset_univ _)
   linarith [hfeasible.2.2.2.2 receiver]
 
+omit [Fintype Receiver] in
 private theorem shannonPolymatroidRates_bounded [Nonempty Receiver]
     (problem : Instance Message Receiver) :
     BddAbove {rate | ∃ rank, ShannonPolymatroidFeasible problem rate rank} := by
@@ -1206,6 +1195,7 @@ private theorem shannonPolymatroidRates_bounded [Nonempty Receiver]
   rintro rate ⟨rank, hfeasible⟩
   exact shannonPolymatroidFeasible_rate_le_one problem hfeasible
 
+omit [Fintype Message] [Fintype Receiver] in
 private theorem zeroRate_achievable (problem : Instance Message Receiver) :
     AchievableSymmetricRate problem 0 := by
   refine ⟨2, by norm_num, ?_⟩
@@ -1217,6 +1207,7 @@ private theorem zeroRate_achievable (problem : Instance Message Receiver) :
     (by intro _ _ coordinate; exact Fin.elim0 coordinate),
     by simp [Code.symmetricRate, hδ.le]⟩
 
+omit [Fintype Receiver] in
 private theorem achievableSymmetricRate_le_shannonPolymatroidOuterBound
     [Nonempty Receiver] (problem : Instance Message Receiver)
     {rate : ℝ} (hrate : AchievableSymmetricRate problem rate) :
@@ -1236,8 +1227,8 @@ private theorem achievableSymmetricRate_le_shannonPolymatroidOuterBound
     exact ShannonCertificate.code_feasible code hzero hbroadcast
   linarith
 
-/-- Every operationally achievable symmetric rate satisfies the Shannon polymatroid bound. -/
-@[capacity_shared_api]
+/- Every operationally achievable symmetric rate satisfies the Shannon polymatroid bound. -/
+omit [Fintype Receiver] in
 theorem symmetricCapacity_le_shannonPolymatroidOuterBound [Nonempty Receiver]
     (problem : Instance Message Receiver) :
     symmetricCapacity problem ≤ shannonPolymatroidOuterBound problem := by
@@ -1246,5 +1237,7 @@ theorem symmetricCapacity_le_shannonPolymatroidOuterBound [Nonempty Receiver]
   · exact ⟨0, zeroRate_achievable problem⟩
   · intro rate hrate
     exact achievableSymmetricRate_le_shannonPolymatroidOuterBound problem hrate
+
+attribute [capacity_shared_api] symmetricCapacity_le_shannonPolymatroidOuterBound
 
 end CapacityAtlas.IndexCoding

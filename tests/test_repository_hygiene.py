@@ -34,3 +34,27 @@ def test_temporary_ci_files_are_absent() -> None:
     ]
 
     assert [str(path.relative_to(ROOT)) for path in temporary_files if path.exists()] == []
+
+
+def test_lean_ci_uses_layered_warning_boundary() -> None:
+    workflow = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+
+    assert "lake --wfail build CapacityAtlasForMathlib CapacityAtlasUtil" in workflow
+    assert "lake build" in workflow
+    assert "grep -RInE" not in workflow
+    assert "Reject placeholders" not in workflow
+
+
+def test_obsolete_lean_compatibility_surface_is_removed() -> None:
+    obsolete = [
+        ROOT / "lean" / "CapacityAtlas" / "Code.lean",
+        ROOT / "lean" / "CapacityAtlas" / "FiniteChannel.lean",
+        ROOT / "lean" / "CapacityAtlas" / "Network" / "IndexCoding.lean",
+    ]
+    assert [str(path.relative_to(ROOT)) for path in obsolete if path.exists()] == []
+
+    lean = "\n".join(path.read_text(encoding="utf-8") for path in (ROOT / "lean").rglob("*.lean"))
+    assert "ScalarOperationalTheory" not in lean
+    assert "RegionOperationalTheory" not in lean
+    assert "WiretapOperationalTheory" not in lean
+    assert "linearSymmetricCapacity" not in lean

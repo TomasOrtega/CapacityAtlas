@@ -38,8 +38,8 @@ def _tag_overlap(left: dict[str, Any], right: dict[str, Any], axes: dict[str, An
 def _browse_formalization(problem: dict[str, Any]) -> list[str]:
     """Return the claim-aware formalization filters available for a problem."""
     statuses: list[str] = []
-    statement = problem["formalization"]["statement"]
-    if any(claim["kind"] != "definition" for claim in statement.get("claims", [])):
+    formalization = problem["formalization"]
+    if formalization.get("claims"):
         statuses.append("formally-stated")
     capacity_claim_kinds = {
         "achievability",
@@ -48,8 +48,8 @@ def _browse_formalization(problem: dict[str, Any]) -> list[str]:
         "capacity-bounds",
     }
     has_proved_capacity_claim = any(
-        claim["kind"] in capacity_claim_kinds and claim["status"] == "proved"
-        for claim in statement.get("claims", [])
+        claim["kind"] in capacity_claim_kinds and claim["formal_status"] == "proved"
+        for claim in formalization.get("claims", [])
     )
     if has_proved_capacity_claim:
         statuses.append("formally-proved")
@@ -134,10 +134,9 @@ def build_site(
         problem["capacity"].setdefault("notes", "")
         problem["quantity"].setdefault("criterion", "")
         problem["formalization"].setdefault("proofs", [])
-        statement = problem["formalization"]["statement"]
-        statement.setdefault("notes", "")
-        statement.setdefault("claims", [])
-        statement.setdefault("files", [])
+        problem["formalization"].setdefault("notes", "")
+        problem["formalization"].setdefault("claims", [])
+        problem["formalization"].setdefault("files", [])
         problem["browse_formalization"] = _browse_formalization(problem)
         for bound in problem["bounds"]:
             bound.setdefault("conditions", "")
@@ -169,13 +168,7 @@ def build_site(
         "open": status_counts["open"],
         "partial": status_counts["partially-solved"],
         "solved": status_counts["solved"],
-        "statements": sum(
-            any(
-                claim["kind"] != "definition"
-                for claim in problem["formalization"]["statement"]["claims"]
-            )
-            for problem in problems
-        ),
+        "statements": sum(bool(problem["formalization"]["claims"]) for problem in problems),
         "proved": sum("formally-proved" in problem["browse_formalization"] for problem in problems),
         "proofs": sum(len(problem["formalization"]["proofs"]) for problem in problems),
     }

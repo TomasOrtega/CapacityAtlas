@@ -39,73 +39,54 @@ def binarySymmetric (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
     cases input <;> simp [binarySymmetricTransition]
 
 /-- The BSC constructor has the shared binary-symmetric transition predicate. -/
-@[capacity_problem "binary-symmetric-channel", capacity_short_proof]
+@[capacity_problem "binary-symmetric-channel", capacity_test]
 theorem binarySymmetric_isBinarySymmetric (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
     (binarySymmetric p hp0 hp1).IsBinarySymmetric p := by
   intro input output
   rfl
 
 /-- The single-letter information capacity of the binary symmetric channel. -/
-@[capacity_problem "binary-symmetric-channel", capacity_statement]
-theorem binarySymmetric_informationCapacity (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
-    (binarySymmetric p hp0 hp1).informationCapacityBits =
+@[capacity_problem "binary-symmetric-channel", capacity_statement, capacity_solved,
+  capacity_formal_proof]
+theorem binarySymmetric_informationCapacity (p : ℝ) (hp0 : 0 ≤ p) (hpHalf : p ≤ 2⁻¹) :
+    (binarySymmetric p hp0 (hpHalf.trans (by norm_num))).informationCapacityBits =
       1 - Real.binEntropy p / Real.log 2 :=
   FiniteChannel.informationCapacityBits_eq_binarySymmetric
-    (binarySymmetric_isBinarySymmetric p hp0 hp1) hp0 hp1
+    (binarySymmetric_isBinarySymmetric p hp0 (hpHalf.trans (by norm_num))) hp0
+    (hpHalf.trans (by norm_num))
 
 /-- The noiseless BSC has information capacity one bit per use. -/
-@[capacity_problem "binary-symmetric-channel", capacity_short_proof]
+@[capacity_problem "binary-symmetric-channel", capacity_test]
 theorem binarySymmetric_informationCapacity_zero :
     (binarySymmetric 0 (by norm_num) (by norm_num)).informationCapacityBits = 1 := by
-  rw [binarySymmetric_informationCapacity]
+  rw [binarySymmetric_informationCapacity 0 (by norm_num) (by norm_num)]
   simp
 
 /-- The completely noisy BSC has zero information capacity. -/
-@[capacity_problem "binary-symmetric-channel", capacity_short_proof]
+@[capacity_problem "binary-symmetric-channel", capacity_test]
 theorem binarySymmetric_informationCapacity_half :
     (binarySymmetric 2⁻¹ (by norm_num) (by norm_num)).informationCapacityBits = 0 := by
-  rw [binarySymmetric_informationCapacity, Real.binEntropy_two_inv]
+  rw [binarySymmetric_informationCapacity 2⁻¹ (by norm_num) (by norm_num),
+    Real.binEntropy_two_inv]
   field_simp [Real.log_ne_zero_of_pos_of_ne_one (by norm_num : (0 : ℝ) < 2) (by norm_num)]
   norm_num
 
-/-- The operational average-error capacity claim for the BSC parameter range used by the atlas. -/
-@[capacity_problem "binary-symmetric-channel", capacity_statement]
-def binarySymmetricCapacityStatement (p : ℝ) (hp0 : 0 ≤ p) (hpHalf : p ≤ 2⁻¹) : Prop :=
-  let channel := binarySymmetric p hp0 (hpHalf.trans (by norm_num))
-  channel.operationalCapacityBits = 1 - Real.binEntropy p / Real.log 2
-
-/-- The operational BSC formula follows from the finite-channel coding theorem. -/
-@[capacity_problem "binary-symmetric-channel", capacity_short_proof]
-theorem binarySymmetric_operationalCapacity_of_codingTheorem
-    (p : ℝ) (hp0 : 0 ≤ p) (hpHalf : p ≤ 2⁻¹)
-    (codingTheorem :
-      (binarySymmetric p hp0 (hpHalf.trans (by norm_num))).SatisfiesCodingTheorem) :
-    binarySymmetricCapacityStatement p hp0 hpHalf :=
-  FiniteChannel.operationalCapacityBits_eq_of_satisfiesCodingTheorem _ _ codingTheorem
-    (binarySymmetric_informationCapacity p hp0 (hpHalf.trans (by norm_num)))
-
 /-- The operational average-error capacity of the binary symmetric channel. -/
-@[capacity_problem "binary-symmetric-channel", capacity_short_proof]
+@[capacity_problem "binary-symmetric-channel", capacity_statement, capacity_solved,
+  capacity_formal_proof]
 theorem binarySymmetric_operationalCapacity
-    (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
-    (binarySymmetric p hp0 hp1).operationalCapacityBits =
+    (p : ℝ) (hp0 : 0 ≤ p) (hpHalf : p ≤ 2⁻¹) :
+    (binarySymmetric p hp0 (hpHalf.trans (by norm_num))).operationalCapacityBits =
       1 - Real.binEntropy p / Real.log 2 := by
   calc
-    (binarySymmetric p hp0 hp1).operationalCapacityBits =
-        (binarySymmetric p hp0 hp1).informationCapacityBits :=
-      FiniteChannel.codingTheorem (binarySymmetric p hp0 hp1)
+    (binarySymmetric p hp0 (hpHalf.trans (by norm_num))).operationalCapacityBits =
+        (binarySymmetric p hp0 (hpHalf.trans (by norm_num))).informationCapacityBits :=
+      FiniteChannel.codingTheorem (binarySymmetric p hp0 (hpHalf.trans (by norm_num)))
     _ = 1 - Real.binEntropy p / Real.log 2 :=
-      binarySymmetric_informationCapacity p hp0 hp1
-
-/-- The registered BSC capacity proposition holds unconditionally. -/
-@[capacity_problem "binary-symmetric-channel", capacity_short_proof]
-theorem binarySymmetricCapacityStatement_proof
-    (p : ℝ) (hp0 : 0 ≤ p) (hpHalf : p ≤ 2⁻¹) :
-    binarySymmetricCapacityStatement p hp0 hpHalf :=
-  binarySymmetric_operationalCapacity p hp0 (hpHalf.trans (by norm_num))
+      binarySymmetric_informationCapacity p hp0 hpHalf
 
 /-- At crossover probability zero, the binary symmetric channel is noiseless. -/
-@[capacity_problem "binary-symmetric-channel", capacity_short_proof]
+@[capacity_problem "binary-symmetric-channel", capacity_test]
 theorem binarySymmetric_zero :
     binarySymmetric 0 (by norm_num) (by norm_num) =
       FiniteChannel.identity Bool := by
@@ -199,7 +180,8 @@ theorem binaryErasure_mutualInformation
   ring
 
 /-- The single-letter information capacity of the binary erasure channel. -/
-@[capacity_problem "binary-erasure-channel", capacity_statement]
+@[capacity_problem "binary-erasure-channel", capacity_statement, capacity_solved,
+  capacity_formal_proof]
 theorem binaryErasure_informationCapacity (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) :
     (binaryErasure e he0 he1).informationCapacityBits = 1 - e := by
   let uniform := FiniteDistribution.uniform Bool
@@ -216,22 +198,9 @@ theorem binaryErasure_informationCapacity (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤
       FiniteDistribution.entropy_uniform]
     norm_num
 
-/-- The operational average-error capacity claim for the binary erasure channel. -/
-@[capacity_problem "binary-erasure-channel", capacity_statement]
-def binaryErasureCapacityStatement (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) : Prop :=
-  (binaryErasure e he0 he1).operationalCapacityBits = 1 - e
-
-/-- The operational BEC formula follows from the finite-channel coding theorem. -/
-@[capacity_problem "binary-erasure-channel", capacity_short_proof]
-theorem binaryErasure_operationalCapacity_of_codingTheorem
-    (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1)
-    (codingTheorem : (binaryErasure e he0 he1).SatisfiesCodingTheorem) :
-    binaryErasureCapacityStatement e he0 he1 :=
-  FiniteChannel.operationalCapacityBits_eq_of_satisfiesCodingTheorem _ _ codingTheorem
-    (binaryErasure_informationCapacity e he0 he1)
-
 /-- The operational average-error capacity of the binary erasure channel. -/
-@[capacity_problem "binary-erasure-channel", capacity_short_proof]
+@[capacity_problem "binary-erasure-channel", capacity_statement, capacity_solved,
+  capacity_formal_proof]
 theorem binaryErasure_operationalCapacity (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) :
     (binaryErasure e he0 he1).operationalCapacityBits = 1 - e := by
   calc
@@ -239,13 +208,6 @@ theorem binaryErasure_operationalCapacity (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤
         (binaryErasure e he0 he1).informationCapacityBits :=
       FiniteChannel.codingTheorem (binaryErasure e he0 he1)
     _ = 1 - e := binaryErasure_informationCapacity e he0 he1
-
-/-- The registered BEC capacity proposition holds unconditionally. -/
-@[capacity_problem "binary-erasure-channel", capacity_short_proof]
-theorem binaryErasureCapacityStatement_proof
-    (e : ℝ) (he0 : 0 ≤ e) (he1 : e ≤ 1) :
-    binaryErasureCapacityStatement e he0 he1 :=
-  binaryErasure_operationalCapacity e he0 he1
 
 /-- Transition probabilities of the binary Z-channel.
 
