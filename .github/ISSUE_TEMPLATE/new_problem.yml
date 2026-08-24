@@ -1,10 +1,11 @@
 name: Propose a capacity problem
 description: Add a precisely specified channel-capacity question.
 title: "[Problem] "
+labels: ["enhancement"]
 body:
   - type: markdown
     attributes:
-      value: Use primary sources and distinguish the communication model from the operational quantity.
+      value: No YAML is needed. Describe the problem and cite primary sources; maintainers can format the entry and choose tags.
   - type: input
     id: title
     attributes:
@@ -15,7 +16,7 @@ body:
   - type: textarea
     id: model
     attributes:
-      label: Exact channel model
+      label: Channel model
       description: Include alphabets, transition law, memory, feedback, state information, constraints, and code class.
     validations:
       required: true
@@ -29,22 +30,20 @@ body:
   - type: textarea
     id: status
     attributes:
-      label: Exact result or best known bounds
+      label: Known results or bounds
       description: Separate achievability and converse claims and state all assumptions.
     validations:
       required: true
   - type: textarea
     id: tags
     attributes:
-      label: Proposed controlled tags
-      description: Choose model, features, quantity, and knowledge values from data/tags.yaml.
-    validations:
-      required: true
+      label: Suggested tags
+      description: Optional. Choose model, features, quantity, and knowledge values from data/tags.yaml.
   - type: textarea
     id: sources
     attributes:
       label: Primary sources
-      description: Provide durable links and theorem, proposition, or section identifiers.
+      description: Link each source and identify the relevant theorem, proposition, or section.
     validations:
       required: true
   - type: checkboxes
