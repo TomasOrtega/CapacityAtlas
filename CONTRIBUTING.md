@@ -1,17 +1,38 @@
 # Contributing to Capacity Atlas
 
-Capacity Atlas treats a channel-capacity problem as a precise, versioned research
-object. Contributions should improve reliability rather than merely increase the
-number of entries.
+You do not need to write code or YAML. Share a precise claim and a primary
+source; maintainers can format the registry entry.
 
-The contribution model is inspired by Google DeepMind's
-[Formal Conjectures](https://github.com/google-deepmind/formal-conjectures),
-particularly its statement-first convention and independent formal-proof
-metadata. See [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md).
+Choose a contribution path:
 
-## Ways to contribute
+- [Suggest a correction](https://github.com/TomasOrtega/CapacityAtlas/issues/new?template=bug_report.yml)
+- [Add or correct a bound](https://github.com/TomasOrtega/CapacityAtlas/issues/new?template=add_bound.yml)
+- [Propose a new problem](https://github.com/TomasOrtega/CapacityAtlas/issues/new?template=new_problem.yml)
+- [Propose a formalization](https://github.com/TomasOrtega/CapacityAtlas/issues/new?template=formalization.yml)
 
-A focused pull request can:
+Use [Discussions](https://github.com/TomasOrtega/CapacityAtlas/discussions) for
+research questions and proof ideas. Browse
+[starter issues](https://github.com/TomasOrtega/CapacityAtlas/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+for small, scoped tasks.
+
+## Send a pull request
+
+For a direct data or code change:
+
+1. Create a record with `uv run --locked capacity-atlas new my-problem`, or edit
+   an existing file.
+2. Cite a primary source for each mathematical claim.
+3. Check one record with
+   `uv run --locked capacity-atlas validate data/problems/my-problem.yaml`.
+4. Run `make check` and open a focused pull request. For Lean or formalization
+   metadata, also run `make lean`.
+
+Set up the development environment once with `make install`. `make check` runs
+lint, validation, tests, and the site build. Generated `dist/` files are not
+committed.
+
+Capacity Atlas treats each channel-capacity problem as a precise, versioned
+research object. A contribution may:
 
 - add a precisely specified capacity problem
 - correct a channel model, normalization, bound, date, or citation
@@ -21,9 +42,7 @@ A focused pull request can:
 - register formal proof provenance
 - improve the generator, tests, accessibility, or documentation
 
-Use Discussions for research conversation. Use Issues for actionable corrections,
-missing entries, formalization work, or site bugs. Canonical changes arrive by
-pull request.
+Issues track actionable work. Pull requests change the canonical registry.
 
 ## Mathematical evidence
 
@@ -105,27 +124,8 @@ and prove the canonical proposition directly whenever possible.
 
 Each problem lives at `data/problems/<id>.yaml`. The identifier is permanent,
 lowercase, and hyphenated. Start from `docs/problem-template.yaml`.
-
-Set up the locked development environment and Git hooks once:
-
-```bash
-make install
-```
-
-Run:
-
-```bash
-make lint
-make validate
-make test
-make build
-make lean
-```
-
 `make lean` builds the trusted libraries and problem library with warnings as
-errors, then validates the compiled declaration registry and transitive axioms.
-
-Generated `dist/` files are not committed.
+errors, then checks the compiled declaration registry and transitive axioms.
 
 ## Licensing contributions
 
@@ -138,3 +138,10 @@ By submitting a contribution, you agree that:
 
 Do not paste copyrighted paper text. State results in original prose and cite the
 primary source.
+
+## Acknowledgement
+
+The contribution model is inspired by Google DeepMind's
+[Formal Conjectures](https://github.com/google-deepmind/formal-conjectures),
+especially its statement-first convention and independent formal-proof
+metadata. See [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md).

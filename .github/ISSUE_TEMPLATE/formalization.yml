@@ -1,14 +1,17 @@
 name: Propose a formal claim or proof
-description: Coordinate a formal claim or proof repository.
+description: Coordinate a Lean definition, claim, or proof.
 title: "[Formal] "
+labels: ["enhancement"]
 body:
+  - type: markdown
+    attributes:
+      value: A proposal is enough. Maintainers can help with registry metadata and repository layout.
   - type: input
     id: problem
     attributes:
       label: Capacity Atlas problem ID
+      description: Optional for shared API work.
       placeholder: sun-jafar-11-message-index-coding
-    validations:
-      required: true
   - type: dropdown
     id: contribution
     attributes:
@@ -23,25 +26,23 @@ body:
   - type: textarea
     id: declarations
     attributes:
-      label: Proposed declarations
-      description: Name declarations, module paths, and metadata attributes.
+      label: What should be formalized?
+      description: Describe the definition, statement, proof, or shared API.
     validations:
       required: true
   - type: textarea
     id: faithfulness
     attributes:
-      label: Faithfulness argument
-      description: Explain why the proposition matches the model, criterion, and normalization on the page.
+      label: Faithfulness or intended use
+      description: For a claim, explain why it matches the page. For shared API, explain where it will be used.
     validations:
       required: true
   - type: input
     id: claim
     attributes:
       label: Claim ID and version
-      description: Give the stable claim ID and its integer version.
+      description: Required for an existing registered claim. Otherwise leave blank.
       placeholder: nonlinear-converse v1
-    validations:
-      required: true
   - type: textarea
     id: proof
     attributes:
@@ -52,7 +53,7 @@ body:
     attributes:
       label: Policy
       options:
-        - label: Any sorry is confined to a research claim; APIs, tests, and locally proved code contain no sorry or admit.
+        - label: Any sorry is confined to a research claim; APIs, tests, and local proofs contain no sorry or admit.
           required: true
         - label: I agree that submitted software and Lean source are contributed under Apache-2.0.
           required: true
