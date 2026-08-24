@@ -167,7 +167,9 @@ def test_home_is_compact_faceted_registry(tmp_path: Path) -> None:
     assert not soup.select(".eyebrow")
     headings = {heading.get_text(" ", strip=True) for heading in soup.select(".browse-group h3")}
     assert headings == {"Channel model", "Features", "Quantity", "Current knowledge"}
-    assert "Formal Conjectures" in soup.get_text(" ", strip=True)
+    registry_heading = soup.find("h2", string="One registry, many proofs")
+    assert registry_heading
+    assert not registry_heading.find_parent("section").select(".columns")
     assert "lean" not in page.lower()
     assert "Formally stated" in soup.get_text(" ", strip=True)
     assert "Formally proved" in soup.get_text(" ", strip=True)
