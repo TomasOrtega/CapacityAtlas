@@ -63,6 +63,32 @@ def test_problem_page_exposes_versioned_claims_and_active_giscus(tmp_path: Path)
     assert "data/problems/binary-symmetric-channel.yaml" in page
 
 
+def test_frontier_task_links_are_optional(tmp_path: Path) -> None:
+    output = build_site(output=tmp_path / "site")
+    linked_page = BeautifulSoup(
+        (output / "problems" / "trapdoor-channel-without-feedback" / "index.html").read_text(
+            encoding="utf-8"
+        ),
+        "html.parser",
+    )
+    plain_page = BeautifulSoup(
+        (output / "problems" / "sun-jafar-11-message-index-coding" / "index.html").read_text(
+            encoding="utf-8"
+        ),
+        "html.parser",
+    )
+
+    linked_task = linked_page.select_one(".task-list li a")
+    assert linked_task is not None
+    assert linked_task.get_text(" ", strip=True) == (
+        "Keep the solved feedback capacity as a separate operational statement."
+    )
+    assert linked_task["href"] == (
+        "https://capacityatlas.org/problems/trapdoor-channel-with-feedback/"
+    )
+    assert not plain_page.select(".task-list li a")
+
+
 def test_navigation_has_discussions_without_a_lean_tab(tmp_path: Path) -> None:
     output = build_site(output=tmp_path / "site")
     page = (output / "index.html").read_text(encoding="utf-8")
