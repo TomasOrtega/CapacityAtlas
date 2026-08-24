@@ -119,6 +119,27 @@ def test_browse_filters_keep_status_and_formalization_separate(tmp_path: Path) -
     assert "formally-proved" not in sun_jafar_row.get("data-formalization", "").split()
 
 
+def test_browse_search_includes_research_frontier(tmp_path: Path) -> None:
+    output = build_site(output=tmp_path / "site")
+    page = (output / "problems" / "index.html").read_text(encoding="utf-8")
+    soup = BeautifulSoup(page, "html.parser")
+
+    relay_link = soup.select_one('a[href="/problems/general-relay-channel/"]')
+    assert relay_link is not None
+    relay_row = relay_link.find_parent(attrs={"data-problem-row": True})
+    assert relay_row is not None
+    relay_search = relay_row.get("data-search", "")
+    assert "exact capacity characterization" in relay_search
+    assert "arguments discard causal structure" in relay_search
+    assert "relay causality" in relay_search
+
+    index_coding_link = soup.select_one('a[href="/problems/sun-jafar-11-message-index-coding/"]')
+    assert index_coding_link is not None
+    index_coding_row = index_coding_link.find_parent(attrs={"data-problem-row": True})
+    assert index_coding_row is not None
+    assert "formalize the 5/13 vector-linear code" in index_coding_row.get("data-search", "")
+
+
 def test_browse_formalization_includes_proved_capacity_claim() -> None:
     problem = {
         "status": "open",
