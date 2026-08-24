@@ -320,6 +320,39 @@ permuter-et-al-2006:
   arxiv: cs/0610047
   url: https://arxiv.org/abs/cs/0610047
 
+kobayashi-morita-hoshi-2003:
+  title: Some Considerations on the Trapdoor Channel
+  authors: [Kingo Kobayashi, Hiroyoshi Morita, Mamoru Hoshi]
+  year: 2003
+  venue: Proceedings of the 3rd Asian-European Workshop on Information Theory
+  url: https://researchers.uec.ac.jp/search/detail.html?lang=en&systemId=80ca06b10cd3121f520e17560c007669
+
+kobayashi-2006:
+  title: Capacity Problem of Trapdoor Channel
+  authors: [Kingo Kobayashi]
+  year: 2006
+  venue: General Theory of Information Transfer and Combinatorics, Lecture Notes in Computer Science 4123
+  doi: 10.1007/11889342_76
+  url: https://doi.org/10.1007/11889342_76
+
+huleihel-et-al-2021:
+  title: Computable Upper Bounds on the Capacity of Finite-State Channels
+  authors: [Bashar Huleihel, Oron Sabag, Haim H. Permuter, Navin Kashyap, Shlomo Shamai]
+  year: 2021
+  venue: IEEE Transactions on Information Theory
+  doi: 10.1109/TIT.2021.3091691
+  arxiv: '1911.02113'
+  url: https://arxiv.org/abs/1911.02113
+
+huleihel-et-al-2024:
+  title: Capacity of Finite-State Channels With Delayed Feedback
+  authors: [Bashar Huleihel, Oron Sabag, Haim H. Permuter, Victoria Kostina]
+  year: 2024
+  venue: IEEE Transactions on Information Theory
+  doi: 10.1109/TIT.2023.3304408
+  arxiv: '2303.18008'
+  url: https://arxiv.org/abs/2303.18008
+
 tegin-duman-2025:
   title: Capacity Approximations for Insertion Channels with Small Insertion Probabilities
   authors: [Busra Tegin, Tolga M. Duman]
