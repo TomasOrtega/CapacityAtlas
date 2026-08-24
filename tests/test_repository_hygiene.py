@@ -10,6 +10,17 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def test_problem_template_documents_frontier_subproblems() -> None:
+    template = (ROOT / "docs" / "problem-template.yaml").read_text(encoding="utf-8")
+    example = """  # subproblems:
+  # - title: Resolve one named special case.
+  #   status: open
+  #   url: https://example.org/work-item
+"""
+
+    assert example in template
+
+
 def test_issue_forms_have_unique_names_and_titles() -> None:
     forms = sorted((ROOT / ".github" / "ISSUE_TEMPLATE").glob("*.yml"))
     definitions = [yaml.safe_load(form.read_text(encoding="utf-8")) for form in forms]
