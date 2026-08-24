@@ -35,6 +35,12 @@ object. A bound records its direction, relation, method, year, assumptions, and
 primary references. The headline `capacity` block summarizes the current
 envelope but is not a substitute for provenance.
 
+## Research frontier
+
+`frontier.subproblems` is an optional list of concrete tasks. Each item has a
+`title` and a `status`: `open`, `in-progress`, or `done`. An optional `url` can
+link to related work.
+
 ## Formalization
 
 `formalization.status` is `none`, `definitions`, or `stated`. Definitions-only

@@ -41,6 +41,10 @@ frontier:
   bottleneck: Explain why the known methods do not meet.
   progress:
     - State one concrete result that would improve the record.
+  # subproblems:
+  # - title: Resolve one named special case.
+  #   status: open
+  #   url: https://example.org/work-item
 formalization:
   status: none
   # For formal claims, add stable id, kind, category, formal_status, version,
