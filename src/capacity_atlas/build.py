@@ -159,8 +159,18 @@ def build_site(
             for axis_id in atlas.tag_axes
         ]
         all_tags = [tag for selected in problem["tags"].values() for tag in selected]
+        frontier = problem["frontier"] or {}
         problem["search_text"] = " ".join(
-            [problem["title"], problem.get("abbreviation", ""), problem["summary"], *all_tags]
+            [
+                problem["title"],
+                problem.get("abbreviation", ""),
+                problem["summary"],
+                *all_tags,
+                frontier.get("question", ""),
+                frontier.get("bottleneck", ""),
+                *frontier.get("progress", []),
+                *(item["title"] for item in frontier.get("subproblems", [])),
+            ]
         ).lower()
         problem["resolved_references"] = [
             references[ref_id] | {"id": ref_id} for ref_id in problem["references"]
