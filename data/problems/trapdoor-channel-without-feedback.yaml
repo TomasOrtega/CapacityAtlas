@@ -3,7 +3,7 @@
 id: trapdoor-channel-without-feedback
 title: Trapdoor channel without feedback
 status: open
-updated: '2026-08-13'
+updated: '2026-08-24'
 summary: Removing output feedback from the same binary finite-state trapdoor channel leaves its exact feedforward capacity unresolved.
 tags:
   model: [point-to-point]
@@ -24,21 +24,32 @@ quantity:
   criterion: Nonfeedback encoding over arbitrary blocklengths.
 capacity:
   kind: bounds
-  display: 0\le C\le1
-  notes: The exact value is not identified with the solved feedback capacity.
+  display: 0.572\le C\le0.5765
+  lower: '0.572'
+  upper: '0.5765'
+  notes: Both endpoints are reported numerical bounds rather than exact symbolic constants; the exact feedforward capacity remains open.
 bounds:
-- id: alphabet-bound
-  direction: upper
-  relation: C\le1
-  method: Binary input alphabet bound.
-  year: 2006
-  references: [permuter-et-al-2006]
-- id: nonnegative-rate
+- id: finite-block-ba-lower-2003
   direction: lower
-  relation: C\ge0
-  method: One-message code.
-  year: 2006
-  references: [permuter-et-al-2006]
+  relation: C\ge0.572
+  method: Finite-block Blahut-Arimoto maximization using recursive trapdoor-channel matrices.
+  year: 2003
+  notes: The reported decimal is extrapolated from computations through blocklength 10.
+  references: [kobayashi-morita-hoshi-2003, kobayashi-2006]
+- id: q-graph-duality-upper-2021
+  direction: upper
+  relation: C\le\log_2(3/2)
+  method: Q-graph dual capacity bound with an analytic Bellman-equation solution.
+  year: 2021
+  references: [huleihel-et-al-2021]
+- id: delayed-feedback-q-graph-upper-2024
+  direction: upper
+  relation: C\le0.5765
+  method: Four-step delayed-feedback Q-graph converse evaluated by convex optimization.
+  year: 2024
+  conditions: The initial state is known to the encoder and decoder; delayed feedback upper-bounds feedforward capacity.
+  notes: The source reports this rounded value from computer-based simulations, not as an exact analytic endpoint.
+  references: [huleihel-et-al-2024]
 frontier:
   question: Determine the exact capacity without encoder access to past outputs.
   bottleneck: Channel state depends on the unobserved output history and creates input-dependent memory.
@@ -58,4 +69,9 @@ formalization:
     role: definition
     description: Concrete finite-state trapdoor channel used for the no-feedback problem.
   proofs: []
-references: [permuter-et-al-2006]
+references:
+- permuter-et-al-2006
+- kobayashi-morita-hoshi-2003
+- kobayashi-2006
+- huleihel-et-al-2021
+- huleihel-et-al-2024
