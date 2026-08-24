@@ -63,6 +63,18 @@ def test_problem_page_exposes_versioned_claims_and_active_giscus(tmp_path: Path)
     assert "data/problems/binary-symmetric-channel.yaml" in page
 
 
+def test_problem_result_tables_have_captions(tmp_path: Path) -> None:
+    output = build_site(output=tmp_path / "site")
+
+    for page in (output / "problems").glob("*/index.html"):
+        soup = BeautifulSoup(page.read_text(encoding="utf-8"), "html.parser")
+        table = soup.select_one("#status table")
+        assert table is not None, page
+        caption = table.find("caption")
+        assert caption is not None, page
+        assert soup.h1.get_text(" ", strip=True) in caption.get_text(" ", strip=True), page
+
+
 def test_navigation_has_discussions_without_a_lean_tab(tmp_path: Path) -> None:
     output = build_site(output=tmp_path / "site")
     page = (output / "index.html").read_text(encoding="utf-8")

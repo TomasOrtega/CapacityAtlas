@@ -131,6 +131,7 @@ mjx-container { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
 .capacity-display { max-width: 100%; overflow-x: auto; padding: 1.25rem 1rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--soft); text-align: center; font-size: 1.04rem; }
 .table-wrap { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; font-size: .94rem; }
+caption { padding: 0 0 .5rem; color: var(--muted); text-align: left; font-weight: 700; }
 th, td { padding: .7rem .55rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
 th { color: var(--muted); font-size: .82rem; }
 td small { display: block; margin-top: .25rem; color: var(--muted); font-size: var(--text-sm); }
