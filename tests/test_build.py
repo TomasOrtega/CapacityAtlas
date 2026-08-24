@@ -77,6 +77,32 @@ def test_problem_page_exposes_versioned_claims_and_active_giscus(tmp_path: Path)
     assert "data/problems/binary-symmetric-channel.yaml" in page
 
 
+def test_frontier_task_links_are_optional(tmp_path: Path) -> None:
+    output = build_site(output=tmp_path / "site")
+    linked_page = BeautifulSoup(
+        (output / "problems" / "trapdoor-channel-without-feedback" / "index.html").read_text(
+            encoding="utf-8"
+        ),
+        "html.parser",
+    )
+    plain_page = BeautifulSoup(
+        (output / "problems" / "sun-jafar-11-message-index-coding" / "index.html").read_text(
+            encoding="utf-8"
+        ),
+        "html.parser",
+    )
+
+    linked_task = linked_page.select_one(".task-list li a")
+    assert linked_task is not None
+    assert linked_task.get_text(" ", strip=True) == (
+        "Keep the solved feedback capacity as a separate operational statement."
+    )
+    assert linked_task["href"] == (
+        "https://capacityatlas.org/problems/trapdoor-channel-with-feedback/"
+    )
+    assert not plain_page.select(".task-list li a")
+
+
 def test_contribute_page_offers_direct_no_code_paths(tmp_path: Path) -> None:
     output = build_site(output=tmp_path / "site")
     page = (output / "contribute" / "index.html").read_text(encoding="utf-8")
@@ -157,6 +183,27 @@ def test_browse_filters_keep_status_and_formalization_separate(tmp_path: Path) -
     sun_jafar_row = sun_jafar_link.find_parent(attrs={"data-problem-row": True})
     assert sun_jafar_row is not None
     assert "formally-proved" not in sun_jafar_row.get("data-formalization", "").split()
+
+
+def test_browse_search_includes_research_frontier(tmp_path: Path) -> None:
+    output = build_site(output=tmp_path / "site")
+    page = (output / "problems" / "index.html").read_text(encoding="utf-8")
+    soup = BeautifulSoup(page, "html.parser")
+
+    relay_link = soup.select_one('a[href="/problems/general-relay-channel/"]')
+    assert relay_link is not None
+    relay_row = relay_link.find_parent(attrs={"data-problem-row": True})
+    assert relay_row is not None
+    relay_search = relay_row.get("data-search", "")
+    assert "exact capacity characterization" in relay_search
+    assert "arguments discard causal structure" in relay_search
+    assert "relay causality" in relay_search
+
+    index_coding_link = soup.select_one('a[href="/problems/sun-jafar-11-message-index-coding/"]')
+    assert index_coding_link is not None
+    index_coding_row = index_coding_link.find_parent(attrs={"data-problem-row": True})
+    assert index_coding_row is not None
+    assert "formalize the 5/13 vector-linear code" in index_coding_row.get("data-search", "")
 
 
 def test_browse_formalization_includes_proved_capacity_claim() -> None:
