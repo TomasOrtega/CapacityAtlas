@@ -28,5 +28,5 @@
   </div>
 </section>
 {% if featured %}<section class="section section--alt"><div class="container"><div class="section-heading"><h2>Featured open problems</h2></div><div class="problem-list">{% for problem in featured if problem.status != 'solved' %}{{ problem_row(problem) }}{% endfor %}</div></div></section>{% endif %}
-<section class="section"><div class="container prose"><h2>A registry, not a proof monorepo</h2><div class="columns"><p>Capacity Atlas keeps canonical channel specifications, controlled tags, and versioned, formally stated claims in one reviewable repository. Substantial formally proved developments live in dedicated repositories and link back by immutable commit.</p><p>The claim-level organization, immutable proof links, and simple browse interface are inspired by <a href="https://github.com/google-deepmind/formal-conjectures">Google DeepMind's Formal Conjectures</a>. See the acknowledgements for the exact design influences and citation.</p></div></div></section>
+<section class="section"><div class="container prose"><h2>One registry, many proofs</h2><p>Capacity Atlas keeps canonical channel specifications, tags, and versioned formal claims in one place. Larger proofs live in dedicated repositories and are linked at immutable commits.</p></div></section>
 {% endblock %}

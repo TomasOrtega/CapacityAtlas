@@ -1,12 +1,16 @@
-name: Report a correction or site bug
-description: Report a factual, bibliographic, accessibility, or implementation problem.
+name: Suggest a correction
+description: Report a factual, reference, accessibility, or site problem.
 title: "[Correction] "
+labels: ["bug"]
 body:
+  - type: markdown
+    attributes:
+      value: No code is needed. Tell us what is wrong and, for mathematical corrections, cite a primary source.
   - type: input
     id: location
     attributes:
-      label: Page or file
-      placeholder: problems/binary-symmetric-channel or data/problems/...
+      label: Problem, page, or file
+      placeholder: binary-symmetric-channel or data/problems/...
     validations:
       required: true
   - type: textarea
@@ -18,11 +22,11 @@ body:
   - type: textarea
     id: correction
     attributes:
-      label: Proposed correction
+      label: What should it say or do instead?
     validations:
       required: true
   - type: textarea
     id: evidence
     attributes:
-      label: Evidence or reproduction steps
-      description: Cite a primary source for mathematical corrections.
+      label: Source or reproduction steps
+      description: Cite a primary source for a mathematical correction. Optional for other reports.
