@@ -1,28 +1,21 @@
-## Summary
+## What changed?
 
-Describe the focused change.
+Describe the focused change and why it is needed.
 
-## Mathematical provenance
+## Evidence (mathematical or data changes only)
 
-List the primary sources checked and the exact claims they support. Write “not applicable” for site-only changes.
+List the primary sources, the exact claims they support, and any controlled tag
+changes. Remove this section when it does not apply.
 
-## Tags and formal verification
+## Formalization (formal changes only)
 
-- State which controlled tag axes changed and why.
-- State which canonical formal claim identifiers or versions changed.
-- For linked formal proofs, include the immutable commit, declaration, claim identifier and version, and CI status.
+List affected claim IDs and versions. Say whether a proposition changed. For a
+linked proof, include the immutable commit, file, declaration, claim ID, version,
+and CI status. Remove this section when it does not apply.
 
-## Licensing
+## Third-party material (if any)
 
-- [ ] Software and Lean changes are contributed under Apache-2.0.
-- [ ] Atlas data and prose changes are contributed under CC-BY-4.0.
-- [ ] Third-party material is identified and compatible.
+Identify its source and license. Remove this section when it does not apply.
 
-## Checks
-
-- [ ] `make lint`
-- [ ] `make validate`
-- [ ] `make test`
-- [ ] `make build`
-- [ ] `make lean` when Lean or formalization metadata changed
-- [ ] No generated `dist/` files are committed
+By submitting, I agree that software and Lean contributions use Apache-2.0 and
+atlas data and prose use CC-BY-4.0.
