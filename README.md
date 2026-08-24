@@ -103,11 +103,14 @@ docs/                 contribution and maintenance guides
 
 ## Contributing
 
-Start from [docs/problem-template.yaml](docs/problem-template.yaml). Every
-mathematical claim should cite a primary source and state its assumptions.
-Formal contributions must reuse shared definitions and identify the stable
-problem ID. Placeholders are allowed only for research claims that are marked
-formally stated. See [CONTRIBUTING.md](CONTRIBUTING.md).
+No code or YAML is required. You can
+[suggest a correction](https://github.com/TomasOrtega/CapacityAtlas/issues/new?template=bug_report.yml),
+[add a bound](https://github.com/TomasOrtega/CapacityAtlas/issues/new?template=add_bound.yml),
+[propose a problem](https://github.com/TomasOrtega/CapacityAtlas/issues/new?template=new_problem.yml),
+or [propose a formalization](https://github.com/TomasOrtega/CapacityAtlas/issues/new?template=formalization.yml).
+Provide the claim and a primary source; maintainers can handle the registry
+format. See [CONTRIBUTING.md](CONTRIBUTING.md) for pull requests and review
+requirements.
 
 ## Licensing
 

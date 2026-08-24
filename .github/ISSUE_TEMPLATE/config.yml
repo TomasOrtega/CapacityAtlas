@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
+  - name: Starter tasks
+    url: https://github.com/TomasOrtega/CapacityAtlas/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22
+    about: Pick a small, scoped contribution.
   - name: Browse the atlas
     url: https://capacityatlas.org/
     about: Check whether the problem or result is already represented.
