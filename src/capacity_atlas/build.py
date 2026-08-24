@@ -9,7 +9,7 @@ from collections import Counter
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
-from urllib.parse import quote
+from urllib.parse import quote, urlencode
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined, select_autoescape
 
@@ -87,6 +87,10 @@ def build_site(
         path = atlas.problem_files[problem_id].relative_to(atlas.root).as_posix()
         return f"{atlas.site['repository_url']}/edit/main/{path}"
 
+    def issue_url(template: str, **fields: str) -> str:
+        query = urlencode({"template": template, **fields})
+        return f"{atlas.site['repository_url']}/issues/new?{query}"
+
     def discussion_url(problem: dict[str, Any]) -> str:
         query = quote(f"capacityatlas:{problem['id']}")
         return f"{atlas.site['repository_url']}/discussions?discussions_q={query}"
@@ -108,6 +112,7 @@ def build_site(
     env.globals.update(
         site_url=site_url,
         edit_url=edit_url,
+        issue_url=issue_url,
         discussion_url=discussion_url,
         new_discussion_url=new_discussion_url,
     )

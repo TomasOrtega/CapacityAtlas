@@ -3,6 +3,7 @@
 
 import json
 from pathlib import Path
+from urllib.parse import parse_qs, urlsplit
 
 from bs4 import BeautifulSoup
 
@@ -59,8 +60,47 @@ def test_problem_page_exposes_versioned_claims_and_active_giscus(tmp_path: Path)
     assert giscus["data-term"] == "capacityatlas:binary-symmetric-channel"
     assert giscus["data-strict"] == "1"
     assert "GitHub Discussions is enabled" not in page
-    assert "Edit this entry" in page
+    actions = {
+        link.get_text(" ", strip=True): link["href"] for link in soup.select(".problem-actions a")
+    }
+    assert set(actions) == {"Suggest a correction", "Add a bound", "Discuss", "Edit YAML"}
+    correction_query = parse_qs(urlsplit(actions["Suggest a correction"]).query)
+    bound_query = parse_qs(urlsplit(actions["Add a bound"]).query)
+    assert correction_query == {
+        "template": ["bug_report.yml"],
+        "location": ["problems/binary-symmetric-channel"],
+    }
+    assert bound_query == {
+        "template": ["add_bound.yml"],
+        "problem": ["binary-symmetric-channel"],
+    }
     assert "data/problems/binary-symmetric-channel.yaml" in page
+
+
+def test_contribute_page_offers_direct_no_code_paths(tmp_path: Path) -> None:
+    output = build_site(output=tmp_path / "site")
+    page = (output / "contribute" / "index.html").read_text(encoding="utf-8")
+    soup = BeautifulSoup(page, "html.parser")
+    actions = {
+        link.get_text(" ", strip=True): link["href"]
+        for link in soup.select(".contribution-grid .button")
+    }
+
+    assert "No local setup is required" in soup.get_text(" ", strip=True)
+    assert set(actions) == {
+        "Report a correction",
+        "Add a bound",
+        "Propose a problem",
+        "Plan a formalization",
+    }
+    assert parse_qs(urlsplit(actions["Report a correction"]).query)["template"] == [
+        "bug_report.yml"
+    ]
+    assert parse_qs(urlsplit(actions["Add a bound"]).query)["template"] == ["add_bound.yml"]
+    assert parse_qs(urlsplit(actions["Propose a problem"]).query)["template"] == ["new_problem.yml"]
+    assert parse_qs(urlsplit(actions["Plan a formalization"]).query)["template"] == [
+        "formalization.yml"
+    ]
 
 
 def test_navigation_has_discussions_without_a_lean_tab(tmp_path: Path) -> None:
@@ -167,7 +207,9 @@ def test_home_is_compact_faceted_registry(tmp_path: Path) -> None:
     assert not soup.select(".eyebrow")
     headings = {heading.get_text(" ", strip=True) for heading in soup.select(".browse-group h3")}
     assert headings == {"Channel model", "Features", "Quantity", "Current knowledge"}
-    assert "Formal Conjectures" in soup.get_text(" ", strip=True)
+    registry_heading = soup.find("h2", string="One registry, many proofs")
+    assert registry_heading
+    assert not registry_heading.find_parent("section").select(".columns")
     assert "lean" not in page.lower()
     assert "Formally stated" in soup.get_text(" ", strip=True)
     assert "Formally proved" in soup.get_text(" ", strip=True)
