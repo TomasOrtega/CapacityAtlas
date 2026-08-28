@@ -267,8 +267,7 @@ def test_home_is_compact_faceted_registry(tmp_path: Path) -> None:
     headings = {heading.get_text(" ", strip=True) for heading in soup.select(".browse-group h3")}
     assert headings == {"Channel model", "Features", "Quantity", "Current knowledge"}
     registry_heading = soup.find("h2", string="One registry, many proofs")
-    assert registry_heading
-    assert not registry_heading.find_parent("section").select(".columns")
+    assert registry_heading is None
     assert "lean" not in page.lower()
     assert "Formally stated" in soup.get_text(" ", strip=True)
     assert "Formally proved" in soup.get_text(" ", strip=True)
@@ -280,6 +279,13 @@ def test_typography_uses_a_balanced_scale() -> None:
     assert "--text-sm: .84rem" in css
     assert "5.4rem" not in css
     assert "font-size: .72rem" not in css
+
+
+def test_hero_headline_stays_on_one_line_above_mobile_widths() -> None:
+    css = Path("site/static/styles.css").read_text(encoding="utf-8")
+    assert ".hero h1 { max-width: none;" in css
+    assert "@media (min-width: 44.01rem)" in css
+    assert ".hero h1 { white-space: nowrap; }" in css
 
 
 def test_license_split_is_visible(tmp_path: Path) -> None:

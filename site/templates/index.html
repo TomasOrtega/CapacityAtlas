@@ -28,5 +28,4 @@
   </div>
 </section>
 {% if featured %}<section class="section section--alt"><div class="container"><div class="section-heading"><h2>Featured open problems</h2></div><div class="problem-list">{% for problem in featured if problem.status != 'solved' %}{{ problem_row(problem) }}{% endfor %}</div></div></section>{% endif %}
-<section class="section"><div class="container prose"><h2>One registry, many proofs</h2><p>Capacity Atlas keeps canonical channel specifications, tags, and versioned formal claims in one place. Larger proofs live in dedicated repositories and are linked at immutable commits.</p></div></section>
 {% endblock %}
