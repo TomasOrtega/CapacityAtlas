@@ -48,8 +48,8 @@ mjx-container { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
 .nav-toggle { display: none; }
 
 .hero { color: #fff; background: var(--navy); }
-.hero__inner { max-width: 60rem; padding-block: clamp(3.5rem, 8vw, 6rem); }
-.hero h1 { max-width: 18ch; margin: 0 0 1rem; font-size: var(--title-xl); line-height: 1.04; letter-spacing: -.035em; }
+.hero__inner { max-width: 60rem; padding-block: clamp(2.75rem, 6vw, 4.5rem); }
+.hero h1 { max-width: none; margin: 0; font-size: var(--title-xl); line-height: 1.04; letter-spacing: -.035em; }
 .hero p { max-width: 46rem; color: #d6e0ef; font-size: clamp(1.04rem, 1.7vw, 1.2rem); }
 .hero__actions, .discussion-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
 
@@ -161,6 +161,10 @@ td small { display: block; margin-top: .25rem; color: var(--muted); font-size: v
 
 .site-footer { border-top: 1px solid var(--line); background: var(--soft); }
 .site-footer__inner { display: flex; justify-content: space-between; gap: 2rem; padding-block: 1.4rem; color: var(--muted); font-size: var(--text-sm); }
+
+@media (min-width: 44.01rem) {
+  .hero h1 { white-space: nowrap; }
+}
 
 @media (max-width: 62rem) {
   .browse-grid { grid-template-columns: repeat(2, 1fr); }
