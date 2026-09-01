@@ -34,6 +34,8 @@ def test_production_urls_use_custom_domain_root(tmp_path: Path) -> None:
     assert 'href="https://capacityatlas.org/"' in home
     assert 'href="https://capacityatlas.org/problems/binary-symmetric-channel/"' in problem
     assert 'href="/assets/styles.css"' in home
+    assert 'href="/assets/favicon.svg"' in home
+    assert (output / "assets" / "favicon.svg").is_file()
     assert 'href="/problems/"' in home
     assert 'href="/CapacityAtlas/' not in home
     assert 'src="/CapacityAtlas/' not in home
