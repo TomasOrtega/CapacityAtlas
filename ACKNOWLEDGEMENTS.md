@@ -45,3 +45,15 @@ Unless a file says otherwise, no source code from Formal Conjectures is included
 in Capacity Atlas. The adopted elements above are architectural patterns and
 contribution conventions. Formal Conjectures remains the authoritative source
 for its own code, attributes, website, and policies.
+
+## Copied Lean entropy code
+
+The local entropy implementation includes code extracted and adapted from the
+[PFR project](https://github.com/teorth/pfr/tree/85d5879ae144170098815201491639f6e7d3c352),
+by the PFR contributors, at commit
+`85d5879ae144170098815201491639f6e7d3c352`. Each copied file identifies its original
+source and the local changes. PFR is not a package dependency; these copies are
+maintained with Capacity Atlas's pinned mathlib version.
+
+The copied code is distributed under PFR's Apache-2.0 license, reproduced in
+[LICENSES/PFR-Apache-2.0.txt](LICENSES/PFR-Apache-2.0.txt).

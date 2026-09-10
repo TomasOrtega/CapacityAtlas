@@ -58,30 +58,29 @@ theorem xor_assoc {n : ℕ} (x y z : BinaryWord n) :
 
 /-- Translation by a word is an involutive permutation of the Boolean cube. -/
 @[capacity_shared_api]
-def xorEquiv {n : ℕ} (x : BinaryWord n) : BinaryWord n ≃ BinaryWord n where
-  toFun := xor x
-  invFun := xor x
-  left_inv y := by
-    funext i
-    exact Bool.bne_self_left (x i) (y i)
-  right_inv y := by
+def xorEquiv {n : ℕ} (x : BinaryWord n) : BinaryWord n ≃ BinaryWord n :=
+  Function.Involutive.toPerm (xor x) fun y => by
     funext i
     exact Bool.bne_self_left (x i) (y i)
 
 /-- Number of one-bits in a binary word. -/
 @[capacity_shared_api]
 def weight {n : ℕ} (x : BinaryWord n) : ℕ :=
-  (Finset.univ.filter fun i => x i = true).card
+  hammingDist x (fun _ => false)
+
+@[capacity_shared_api]
+theorem weight_eq_card_filter {n : ℕ} (x : BinaryWord n) :
+    weight x = (Finset.univ.filter fun i => x i = true).card := by
+  simp [weight, hammingDist]
 
 @[simp, capacity_shared_api]
 theorem weight_false {n : ℕ} : weight (fun _ : Fin n => false) = 0 := by
-  simp [weight]
+  exact hammingDist_self _
 
 @[capacity_shared_api]
 theorem weight_le {n : ℕ} (x : BinaryWord n) : weight x ≤ n := by
-  calc
-    weight x ≤ Finset.univ.card := by exact Finset.card_filter_le _ _
-    _ = n := Fintype.card_fin n
+  simpa only [weight, Fintype.card_fin] using
+    (hammingDist_le_card_fintype (x := x) (y := fun _ => false))
 
 /-- The Boolean cube has `2^n` words. -/
 @[capacity_shared_api]

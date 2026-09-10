@@ -19,8 +19,10 @@ import CapacityAtlasForMathlib.InformationTheory.FiniteEntropy
 import Mathlib.Algebra.Field.Basic
 import Mathlib.Algebra.Field.ZMod
 import Mathlib.Algebra.Module.Basic
+import Mathlib.Algebra.Module.LinearMap.Defs
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 import Mathlib.Data.Fin.Tuple.Basic
+import Mathlib.Data.Finset.Pi
 import Mathlib.Data.Fintype.Card
 import Mathlib.Data.Fintype.EquivFin
 import Mathlib.Order.ConditionallyCompleteLattice.Indexed
@@ -268,10 +270,19 @@ noncomputable def vanishingErrorSymmetricCapacityOver
 def Code.IsLinearEncoder {FieldAlphabet : Type*} [Field FieldAlphabet]
     {problem : Instance Message Receiver} {messageLength broadcastLength : ℕ}
     (code : Code problem FieldAlphabet FieldAlphabet messageLength broadcastLength) : Prop :=
-  code.encode 0 = 0 ∧
+  IsLinearMap FieldAlphabet code.encode
+
+omit [Fintype Message] [Fintype Receiver] in
+@[capacity_shared_api]
+theorem Code.isLinearEncoder_iff {FieldAlphabet : Type*} [Field FieldAlphabet]
+    {problem : Instance Message Receiver} {messageLength broadcastLength : ℕ}
+    (code : Code problem FieldAlphabet FieldAlphabet messageLength broadcastLength) :
+    code.IsLinearEncoder ↔ code.encode 0 = 0 ∧
     (∀ left right, code.encode (left + right) = code.encode left + code.encode right) ∧
     ∀ (scalar : FieldAlphabet) messages,
-      code.encode (scalar • messages) = scalar • code.encode messages
+      code.encode (scalar • messages) = scalar • code.encode messages := by
+  exact ⟨fun h ↦ ⟨h.map_zero, h.map_add, h.map_smul⟩,
+    fun h ↦ ⟨h.2.1, h.2.2⟩⟩
 
 /-- Zero-error achievability with a linear encoder over a fixed finite field.
 
@@ -327,11 +338,8 @@ private theorem zeroRate_linearEncoderAchievable
   exact ⟨0, firstBroadcastLength + 1, Nat.le_add_right _ _, Nat.zero_lt_succ _, code,
     (by intro _ _ coordinate; exact Fin.elim0 coordinate),
     (by
-      unfold Code.IsLinearEncoder
-      constructor
-      · funext coordinate
-        simp [code]
-      · constructor <;> intros <;> funext coordinate <;> simp [code]),
+      change IsLinearMap FieldAlphabet ⇑(0 : _ →ₗ[FieldAlphabet] _)
+      exact LinearMap.isLinear _),
     by simp [Code.symmetricRate, hδ.le]⟩
 
 omit [Fintype Message] [Fintype Receiver] in
@@ -501,13 +509,6 @@ def ShannonPolymatroidFeasible (problem : Instance Message Receiver) (rate : ℝ
 
 namespace ShannonCertificate
 
-private def restrictValues {I A : Type*} (set : Finset I) (values : I → A) :
-    {i // i ∈ set} → A := fun index ↦ values index
-
-private def restrictSubset {I A : Type*} {small large : Finset I} (h : small ⊆ large)
-    (values : {i // i ∈ large} → A) : {i // i ∈ small} → A :=
-  fun index ↦ values ⟨index, h index.property⟩
-
 private def mergeRestrictions {I A : Type*} [DecidableEq I] (left right : Finset I)
     (values : ({i // i ∈ left} → A) × ({i // i ∈ right} → A)) :
     {i // i ∈ left ∪ right} → A :=
@@ -535,14 +536,7 @@ private theorem uniform_map_equiv {X Y : Type*} [Fintype X] [Fintype Y]
   ext y
   change (∑ x with equiv x = y, (Fintype.card X : ℝ)⁻¹) =
     (Fintype.card Y : ℝ)⁻¹
-  rw [show Finset.univ.filter (fun x ↦ equiv x = y) = {equiv.symm y} by
-    ext x
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]
-    constructor
-    · intro h
-      exact equiv.injective (h.trans (equiv.apply_symm_apply y).symm)
-    · rintro rfl
-      exact equiv.apply_symm_apply y]
+  rw [Finset.sum_filter, ← equiv.symm.sum_comp]
   simp [Fintype.card_congr equiv]
 
 private theorem uniform_prod_map_fst {X Y : Type*} [Fintype X] [Fintype Y]
@@ -557,10 +551,10 @@ private theorem uniform_prod_map_fst {X Y : Type*} [Fintype X] [Fintype Y]
 
 private theorem uniform_pi_restrict {I A : Type*} [Fintype I] [DecidableEq I]
     [Fintype A] [DecidableEq A] [Nonempty A] (set : Finset I) :
-    (FiniteDistribution.uniform (I → A)).map (restrictValues set) =
+    (FiniteDistribution.uniform (I → A)).map (Finset.restrict set) =
       FiniteDistribution.uniform ({i // i ∈ set} → A) := by
   let equiv := Equiv.piEquivPiSubtypeProd (fun i ↦ i ∈ set) (fun _ ↦ A)
-  have hcomp : restrictValues set = Prod.fst ∘ equiv := by
+  have hcomp : Finset.restrict set = Prod.fst ∘ equiv := by
     funext values index
     rfl
   rw [hcomp, ← FiniteDistribution.map_map]
@@ -569,7 +563,7 @@ private theorem uniform_pi_restrict {I A : Type*} [Fintype I] [DecidableEq I]
 
 private theorem entropy_pi_restrict_uniform {I A : Type*} [Fintype I] [DecidableEq I]
     [Fintype A] [DecidableEq A] [Nonempty A] (set : Finset I) :
-    ((FiniteDistribution.uniform (I → A)).map (restrictValues set)).entropy =
+    ((FiniteDistribution.uniform (I → A)).map (Finset.restrict set)).entropy =
       (set.card : ℝ) * Real.log (Fintype.card A) := by
   rw [uniform_pi_restrict set, FiniteDistribution.entropy_uniform]
   simp only [Fintype.card_fun, Fintype.card_coe]
@@ -581,15 +575,15 @@ private theorem entropy_broadcast_restrict_submodular
     (distribution : FiniteDistribution Source) (messages : Source → I → A)
     (broadcast : Source → Broadcast) (left right : Finset I) :
     (distribution.map (fun source ↦
-        (broadcast source, restrictValues (left ∪ right) (messages source)))).entropy +
+        (broadcast source, Finset.restrict (left ∪ right) (messages source)))).entropy +
       (distribution.map (fun source ↦
-        (broadcast source, restrictValues (left ∩ right) (messages source)))).entropy ≤
+        (broadcast source, Finset.restrict (left ∩ right) (messages source)))).entropy ≤
       (distribution.map (fun source ↦
-        (broadcast source, restrictValues left (messages source)))).entropy +
+        (broadcast source, Finset.restrict left (messages source)))).entropy +
       (distribution.map (fun source ↦
-        (broadcast source, restrictValues right (messages source)))).entropy := by
+        (broadcast source, Finset.restrict right (messages source)))).entropy := by
   let observe (set : Finset I) (source : Source) :=
-    (broadcast source, restrictValues set (messages source))
+    (broadcast source, Finset.restrict set (messages source))
   have hssa := distribution.entropy_map_strong_subadditivity
     (observe left) (observe right) (observe (left ∩ right))
   have htriple :
@@ -601,14 +595,14 @@ private theorem entropy_broadcast_restrict_submodular
         (observations.1.1, mergeRestrictions left right
           (observations.1.2, observations.2.1.2)))
       (fun observation ↦
-        ((observation.1, restrictSubset Finset.subset_union_left observation.2),
-          ((observation.1, restrictSubset Finset.subset_union_right observation.2),
-            (observation.1, restrictSubset
+        ((observation.1, Finset.restrict₂ (π := fun _ ↦ A) Finset.subset_union_left observation.2),
+          ((observation.1, Finset.restrict₂ (π := fun _ ↦ A) Finset.subset_union_right observation.2),
+            (observation.1, Finset.restrict₂ (π := fun _ ↦ A)
               (Finset.inter_subset_left.trans Finset.subset_union_left) observation.2))))
     · funext source
-      ext <;> simp [observe, mergeRestrictions, restrictValues]
+      ext <;> simp [observe, mergeRestrictions, Finset.restrict]
     · funext source
-      ext <;> simp [observe, restrictSubset, restrictValues]
+      ext <;> simp [observe, Finset.restrict₂, Finset.restrict]
   have hleft :
       (distribution.map fun source ↦
         (observe left source, observe (left ∩ right) source)).entropy =
@@ -616,10 +610,10 @@ private theorem entropy_broadcast_restrict_submodular
     apply entropy_map_eq_of_mutually_determined distribution _ _ Prod.fst
       (fun observation ↦
         (observation, (observation.1,
-          restrictSubset Finset.inter_subset_left observation.2)))
+          Finset.restrict₂ (π := fun _ ↦ A) Finset.inter_subset_left observation.2)))
     · rfl
     · funext source
-      ext <;> simp [observe, restrictSubset, restrictValues]
+      ext <;> simp [observe, Finset.restrict₂, Finset.restrict]
   have hright :
       (distribution.map fun source ↦
         (observe right source, observe (left ∩ right) source)).entropy =
@@ -627,10 +621,10 @@ private theorem entropy_broadcast_restrict_submodular
     apply entropy_map_eq_of_mutually_determined distribution _ _ Prod.fst
       (fun observation ↦
         (observation, (observation.1,
-          restrictSubset Finset.inter_subset_right observation.2)))
+          Finset.restrict₂ (π := fun _ ↦ A) Finset.inter_subset_right observation.2)))
     · rfl
     · funext source
-      ext <;> simp [observe, restrictSubset, restrictValues]
+      ext <;> simp [observe, Finset.restrict₂, Finset.restrict]
   rw [htriple, hleft, hright] at hssa
   exact hssa
 
@@ -640,13 +634,13 @@ private theorem entropy_broadcast_restrict_conditioning
     (distribution : FiniteDistribution Source) (messages : Source → I → A)
     (broadcast : Source → Broadcast) {small large : Finset I} (hsubset : small ⊆ large) :
     (distribution.map (fun source ↦
-        (broadcast source, restrictValues large (messages source)))).entropy +
-      (distribution.map (fun source ↦ restrictValues small (messages source))).entropy ≤
-      (distribution.map (fun source ↦ restrictValues large (messages source))).entropy +
+        (broadcast source, Finset.restrict large (messages source)))).entropy +
+      (distribution.map (fun source ↦ Finset.restrict small (messages source))).entropy ≤
+      (distribution.map (fun source ↦ Finset.restrict large (messages source))).entropy +
       (distribution.map (fun source ↦
-        (broadcast source, restrictValues small (messages source)))).entropy := by
-  let largeObservation (source : Source) := restrictValues large (messages source)
-  let smallObservation (source : Source) := restrictValues small (messages source)
+        (broadcast source, Finset.restrict small (messages source)))).entropy := by
+  let largeObservation (source : Source) := Finset.restrict large (messages source)
+  let smallObservation (source : Source) := Finset.restrict small (messages source)
   have hssa := distribution.entropy_map_strong_subadditivity broadcast
     largeObservation smallObservation
   have htriple :
@@ -657,19 +651,19 @@ private theorem entropy_broadcast_restrict_conditioning
     apply entropy_map_eq_of_mutually_determined distribution _ _
       (fun observation ↦ (observation.1, observation.2.1))
       (fun observation ↦
-        (observation.1, (observation.2, restrictSubset hsubset observation.2)))
+        (observation.1, (observation.2, Finset.restrict₂ (π := fun _ ↦ A) hsubset observation.2)))
     · rfl
     · funext source
-      ext <;> simp [largeObservation, smallObservation, restrictSubset, restrictValues]
+      ext <;> simp [largeObservation, smallObservation, Finset.restrict₂, Finset.restrict]
   have hlargePair :
       (distribution.map fun source ↦
         (largeObservation source, smallObservation source)).entropy =
       (distribution.map largeObservation).entropy := by
     apply entropy_map_eq_of_mutually_determined distribution _ _ Prod.fst
-      (fun observation ↦ (observation, restrictSubset hsubset observation))
+      (fun observation ↦ (observation, Finset.restrict₂ (π := fun _ ↦ A) hsubset observation))
     · rfl
     · funext source
-      ext <;> simp [largeObservation, smallObservation, restrictSubset, restrictValues]
+      ext <;> simp [largeObservation, smallObservation, Finset.restrict₂, Finset.restrict]
   rw [htriple, hlargePair] at hssa
   simpa [largeObservation, smallObservation, add_comm] using hssa
 
@@ -677,32 +671,21 @@ private theorem entropy_restrict_subset_difference
     {I A : Type*} [Fintype I] [DecidableEq I] [Fintype A] [DecidableEq A]
     (distribution : FiniteDistribution (I → A))
     {small large : Finset I} (hsubset : small ⊆ large) :
-    (distribution.map (restrictValues large)).entropy -
-        (distribution.map (restrictValues small)).entropy ≤
-      (distribution.map (restrictValues (large \ small))).entropy := by
+    (distribution.map (Finset.restrict large)).entropy -
+        (distribution.map (Finset.restrict small)).entropy ≤
+      (distribution.map (Finset.restrict (large \ small))).entropy := by
   have hssa := distribution.entropy_map_strong_subadditivity
-    (restrictValues small) (restrictValues (large \ small)) (fun _ ↦ Unit.unit)
+    (Finset.restrict small) (Finset.restrict (large \ small)) (fun _ ↦ Unit.unit)
   have hempty : (distribution.map fun _ ↦ Unit.unit).entropy = 0 := by
     have hle := (distribution.map fun _ ↦ Unit.unit).entropy_le_log_card
     have hnonnegative := (distribution.map fun _ ↦ Unit.unit).entropy_nonnegative
     norm_num at hle
     exact le_antisymm hle hnonnegative
-  have hunion : small ∪ (large \ small) = large := by
-    ext i
-    simp only [Finset.mem_union, Finset.mem_sdiff]
-    constructor
-    · rintro (h | h)
-      · exact hsubset h
-      · exact h.1
-    · intro h
-      by_cases hs : i ∈ small
-      · exact Or.inl hs
-      · exact Or.inr ⟨h, hs⟩
   have htriple :
       (distribution.map fun source ↦
-        (restrictValues small source,
-          (restrictValues (large \ small) source, Unit.unit))).entropy =
-      (distribution.map (restrictValues large)).entropy := by
+        (Finset.restrict small source,
+          (Finset.restrict (large \ small) source, Unit.unit))).entropy =
+      (distribution.map (Finset.restrict large)).entropy := by
     let join : (({i // i ∈ small} → A) ×
         (({i // i ∈ large \ small} → A) × Unit)) →
         {i // i ∈ large} → A := fun observations index ↦
@@ -710,24 +693,24 @@ private theorem entropy_restrict_subset_difference
       else observations.2.1 ⟨index, Finset.mem_sdiff.mpr ⟨index.property, h⟩⟩
     apply entropy_map_eq_of_mutually_determined distribution _ _ join
       (fun observation ↦
-        (restrictSubset hsubset observation,
-          (restrictSubset Finset.sdiff_subset observation, Unit.unit)))
+        (Finset.restrict₂ (π := fun _ ↦ A) hsubset observation,
+          (Finset.restrict₂ (π := fun _ ↦ A) Finset.sdiff_subset observation, Unit.unit)))
     · funext source
       ext index
-      simp only [Function.comp_apply, join, restrictValues]
+      simp only [Function.comp_apply, join, Finset.restrict]
       split_ifs <;> rfl
     · funext source
-      ext <;> simp [restrictValues, restrictSubset]
+      ext <;> simp [Finset.restrict, Finset.restrict₂]
   have hsmall :
       (distribution.map fun source ↦
-        (restrictValues small source, Unit.unit)).entropy =
-      (distribution.map (restrictValues small)).entropy := by
+        (Finset.restrict small source, Unit.unit)).entropy =
+      (distribution.map (Finset.restrict small)).entropy := by
     apply entropy_map_eq_of_mutually_determined distribution _ _ Prod.fst
       (fun observation ↦ (observation, Unit.unit)) <;> rfl
   have hdiff :
       (distribution.map fun source ↦
-        (restrictValues (large \ small) source, Unit.unit)).entropy =
-      (distribution.map (restrictValues (large \ small))).entropy := by
+        (Finset.restrict (large \ small) source, Unit.unit)).entropy =
+      (distribution.map (Finset.restrict (large \ small))).entropy := by
     apply entropy_map_eq_of_mutually_determined distribution _ _ Prod.fst
       (fun observation ↦ (observation, Unit.unit)) <;> rfl
   rw [htriple, hempty, hsmall, hdiff] at hssa
@@ -760,11 +743,11 @@ private theorem entropy_broadcast_complement_interference_insert
     (distribution : FiniteDistribution (Message → Fin messageLength → Alphabet)) :
     (distribution.map (fun messages ↦
         (code.encode messages,
-          restrictValues (Finset.univ \ insert (problem.demand receiver)
+          Finset.restrict (Finset.univ \ insert (problem.demand receiver)
             (problem.interference receiver)) messages))).entropy =
       (distribution.map (fun messages ↦
         (code.encode messages,
-          restrictValues (Finset.univ \ problem.interference receiver) messages))).entropy := by
+          Finset.restrict (Finset.univ \ problem.interference receiver) messages))).entropy := by
   rw [Instance.complement_insert_interference, Instance.complement_interference]
   apply entropy_map_eq_of_mutually_determined distribution _ _
     (fun observation ↦ (observation.1, addDecodedDemand code receiver observation))
@@ -778,7 +761,7 @@ private theorem entropy_broadcast_complement_interference_insert
       · simp only [Function.comp_apply, addDecodedDemand, hdemand, dite_true]
         change code.decodedSymbol messages receiver coordinate = messages message.1 coordinate
         rw [hzero, hdemand]
-      · simp [Function.comp_apply, addDecodedDemand, hdemand, restrictValues]
+      · simp [Function.comp_apply, addDecodedDemand, hdemand, Finset.restrict]
   · rfl
 
 omit [Fintype Receiver] in
@@ -794,7 +777,7 @@ private noncomputable def observationEntropy
     (set : Finset Message) : ℝ :=
   ((FiniteDistribution.uniform (Message → Fin messageLength → Alphabet)).map
     (fun messages ↦ (code.encode messages,
-      restrictValues (Finset.univ \ set) messages))).entropy
+      Finset.restrict (Finset.univ \ set) messages))).entropy
 
 private noncomputable def rawRank
     {Alphabet : Type*} [Fintype Alphabet] [DecidableEq Alphabet] [Nonempty Alphabet]
@@ -828,8 +811,8 @@ private theorem observation_empty
     FiniteDistribution.uniform (Message → Fin messageLength → Alphabet)
   have hobservation :
       (distribution.map (fun messages ↦ (code.encode messages,
-        restrictValues Finset.univ messages))).entropy =
-      (distribution.map (restrictValues Finset.univ)).entropy := by
+        Finset.restrict Finset.univ messages))).entropy =
+      (distribution.map (Finset.restrict Finset.univ)).entropy := by
     apply entropy_map_eq_of_mutually_determined distribution _ _ Prod.snd
       (fun restricted ↦
         let messages := fun message ↦ restricted ⟨message, Finset.mem_univ message⟩
@@ -844,11 +827,10 @@ private theorem observation_empty
   have hobservation' :
       ((FiniteDistribution.uniform (Message → Fin messageLength → Alphabet)).map
         (fun messages ↦ (code.encode messages,
-          restrictValues (Finset.univ \ ∅) messages))).entropy =
+          Finset.restrict (Finset.univ \ ∅) messages))).entropy =
       ((FiniteDistribution.uniform (Message → Fin messageLength → Alphabet)).map
-        (restrictValues Finset.univ)).entropy := by
-    have hset : (Finset.univ \ (∅ : Finset Message)) = Finset.univ := by ext; simp
-    rw [hset]
+        (Finset.restrict Finset.univ)).entropy := by
+    rw [Finset.sdiff_empty]
     exact hobservation
   rw [hobservation', entropy_pi_restrict_uniform]
   simp only [Finset.card_univ, Fintype.card_fun, Fintype.card_fin]
@@ -866,7 +848,7 @@ private theorem observation_univ
     FiniteDistribution.uniform (Message → Fin messageLength → Alphabet)
   have hobservation :
       (distribution.map (fun messages ↦
-        (code.encode messages, restrictValues (∅ : Finset Message) messages))).entropy =
+        (code.encode messages, Finset.restrict (∅ : Finset Message) messages))).entropy =
       (distribution.map code.encode).entropy := by
     apply entropy_map_eq_of_mutually_determined distribution _ _ Prod.fst
       (fun broadcast ↦ (broadcast,
@@ -878,8 +860,7 @@ private theorem observation_univ
       · funext index
         exact (Finset.notMem_empty index.1 index.2).elim
   rw [observationEntropy]
-  have hset : (Finset.univ \ (Finset.univ : Finset Message)) = ∅ := by ext; simp
-  rw [hset]
+  rw [Finset.sdiff_self]
   exact hobservation
 
 omit [Fintype Receiver] in
@@ -937,17 +918,7 @@ private theorem observation_submodular
     FiniteDistribution.uniform (Message → Fin messageLength → Alphabet)
   have h := entropy_broadcast_restrict_submodular distribution id code.encode
     (Finset.univ \ left) (Finset.univ \ right)
-  have hunion :
-      (Finset.univ \ left) ∪ (Finset.univ \ right) =
-        Finset.univ \ (left ∩ right) := by
-    ext message
-    simp only [Finset.mem_union, Finset.mem_sdiff, Finset.mem_univ, true_and,
-      Finset.mem_inter]
-    tauto
-  have hinter :
-      (Finset.univ \ left) ∩ (Finset.univ \ right) =
-        Finset.univ \ (left ∪ right) := by ext; simp
-  rw [hunion, hinter] at h
+  rw [← Finset.sdiff_inter_distrib_right, ← Finset.sdiff_union_distrib] at h
   simpa [observationEntropy, distribution, add_comm] using h
 
 omit [Fintype Receiver] in
@@ -1007,16 +978,14 @@ private theorem rawRank_monotone
   let distribution := FiniteDistribution.uniform
     (Message → Fin messageLength → Alphabet)
   let wordEntropy := (messageLength : ℝ) * Real.log (Fintype.card Alphabet)
-  have hobservedSubset : Finset.univ \ right ⊆ Finset.univ \ left := by
-    intro message hmessage
-    simp only [Finset.mem_sdiff, Finset.mem_univ, true_and] at hmessage ⊢
-    exact fun hleft ↦ hmessage (hsubset hleft)
+  have hobservedSubset : Finset.univ \ right ⊆ Finset.univ \ left :=
+    Finset.sdiff_subset_sdiff_right Finset.univ hsubset
   have hconditioning := entropy_broadcast_restrict_conditioning
     distribution (fun messages ↦ messages) code.encode hobservedSubset
   have hconditioning' :
       observationEntropy code left +
-          (distribution.map (restrictValues (Finset.univ \ right))).entropy ≤
-        (distribution.map (restrictValues (Finset.univ \ left))).entropy +
+          (distribution.map (Finset.restrict (Finset.univ \ right))).entropy ≤
+        (distribution.map (Finset.restrict (Finset.univ \ left))).entropy +
           observationEntropy code right := by
     simpa only [observationEntropy, distribution] using hconditioning
   have hwordLog :
