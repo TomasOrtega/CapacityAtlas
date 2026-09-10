@@ -131,6 +131,7 @@ def test_only_faithful_problem_statements_are_registered() -> None:
     expected = {
         "binary-erasure-channel",
         "binary-symmetric-channel",
+        "binary-z-channel",
         "discrete-memoryless-channel",
         "finite-dmc-input-cost",
         "finite-group-additive-noise-channel",
