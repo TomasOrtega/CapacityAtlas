@@ -20,10 +20,10 @@ theorem negMulLog_add_mul_log_le_sub {x y : ℝ} (hx : 0 ≤ x) (hy : 0 < y) :
   rw [div_mul_cancel₀ x hy.ne'] at hmul
   have hcancel : (x / y) * negMulLog y = -(x * log y) := by
     simp only [negMulLog_def]
-    field_simp [hy.ne'] <;> ring
+    field_simp [hy.ne']
   rw [hcancel] at hmul
   have hright : y * (1 - x / y) = y - x := by
-    field_simp [hy.ne'] <;> ring
+    field_simp [hy.ne']
   rw [hright] at hscaled
   linarith
 
@@ -39,7 +39,8 @@ theorem binEntropy_add_mul_log_le_log_one_add {x t : ℝ}
   rw [log_div ht.ne' hdenominator.ne'] at hfirst
   rw [log_div one_ne_zero hdenominator.ne', log_one, zero_sub] at hsecond
   have hsum : t / (1 + t) + 1 / (1 + t) = 1 := by
-    field_simp [hdenominator.ne'] <;> ring
+    field_simp [hdenominator.ne']
+    ring
   rw [binEntropy_eq_negMulLog_add_negMulLog_one_sub]
   linarith
 
@@ -49,10 +50,12 @@ theorem binEntropy_div_one_add_add_mul_log {t : ℝ} (ht : 0 < t) :
     binEntropy (t / (1 + t)) + (t / (1 + t)) * log t = log (1 + t) := by
   have hdenominator : 0 < 1 + t := by linarith
   have hcomplement : 1 - t / (1 + t) = 1 / (1 + t) := by
-    field_simp [hdenominator.ne'] <;> ring
+    field_simp [hdenominator.ne']
+    ring
   rw [binEntropy_eq_negMulLog_add_negMulLog_one_sub, hcomplement]
   simp only [negMulLog_def]
   rw [log_div ht.ne' hdenominator.ne', log_div one_ne_zero hdenominator.ne', log_one]
-  field_simp [hdenominator.ne'] <;> ring
+  field_simp [hdenominator.ne']
+  ring
 
 end Real
