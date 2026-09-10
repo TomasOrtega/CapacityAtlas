@@ -4,7 +4,7 @@ id: binary-z-channel
 title: Binary Z-channel
 abbreviation: Z-channel
 status: solved
-updated: '2026-08-10'
+updated: '2026-09-10'
 summary: One binary symbol is transmitted perfectly while the other can flip in only one direction.
 tags:
   model:
@@ -57,14 +57,63 @@ bounds:
   - shannon-1948
   - cover-thomas-2006
 formalization:
-  status: definitions
-  claims: []
-  notes: The asymmetric kernel is formalized; the closed-form optimization is not.
+  status: stated
+  claims:
+  - id: information-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: proved
+    version: 1
+    description: The closed-form single-letter information capacity, including one bit at p=0 and zero at p=1.
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: proved
+    version: 1
+    description: The closed-form operational vanishing-average-error capacity for every 0 ≤ p ≤ 1.
+  - id: optimizing-input
+    kind: structural
+    category: solved
+    formal_status: proved
+    version: 1
+    description: An explicit Bernoulli input attains capacity, with probability of input 1 equal to
+      p^(p/(1-p))/(1+(1-p)p^(p/(1-p))) in the interior.
+  notes: The optimization uses a general binary entropy log-partition inequality and its equality case.
+    The operational result reuses the finite-DMC coding theorem. Both endpoints are proved directly;
+    the explicit input is uniform at p=0 and deterministic at p=1, where every input attains zero capacity.
+    The Lean formula uses totalized powers and division to give the stated endpoint values.
   files:
   - path: lean/CapacityAtlas/Channels/Binary.lean
     declaration: CapacityAtlas.Channel.binaryZ
     role: definition
     description: Binary Z-channel as a finite stochastic channel.
+  - path: lean/CapacityAtlas/Channels/BinaryZ.lean
+    declaration: CapacityAtlas.Channel.binaryZOptimalInput
+    role: definition
+    description: Explicit capacity-achieving Bernoulli distribution, including both endpoints.
+  - path: lean/CapacityAtlas/Channels/BinaryZ.lean
+    declaration: CapacityAtlas.Channel.binaryZ_informationCapacity
+    role: claim
+    description: The exact information-capacity formula on the full closed parameter interval.
+    claim_id: information-capacity
+  - path: lean/CapacityAtlas/Channels/BinaryZ.lean
+    declaration: CapacityAtlas.Channel.binaryZ_operationalCapacity
+    role: claim
+    description: The exact operational average-error capacity from the finite-DMC coding theorem.
+    claim_id: operational-capacity
+  - path: lean/CapacityAtlas/Channels/BinaryZ.lean
+    declaration: CapacityAtlas.Channel.binaryZ_optimalInput
+    role: claim
+    description: The explicit Bernoulli input attains the operational capacity.
+    claim_id: optimizing-input
+  - path: lean/CapacityAtlas/Channels/BinaryZ.lean
+    declaration: CapacityAtlas.Channel.binaryZ_zero
+    role: test
+    description: The noiseless endpoint has capacity one and the explicit input is uniform.
+  - path: lean/CapacityAtlas/Channels/BinaryZ.lean
+    declaration: CapacityAtlas.Channel.binaryZ_one
+    role: test
+    description: The constant-output endpoint has capacity zero, attained by every input.
   proofs: []
 references:
 - shannon-1948

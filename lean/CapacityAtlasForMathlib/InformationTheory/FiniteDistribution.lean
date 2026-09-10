@@ -140,6 +140,13 @@ theorem entropy_bernoulli (q : ℝ) (hq0 : 0 ≤ q) (hq1 : q ≤ 1) :
     (bernoulli q hq0 hq1).entropy = Real.binEntropy q := by
   simp [entropy, Real.binEntropy_eq_negMulLog_add_negMulLog_one_sub]
 
+/-- The entropy of a Boolean distribution depends only on its probability of `true`. -/
+@[capacity_shared_api]
+theorem entropy_bool (distribution : FiniteDistribution Bool) :
+    distribution.entropy = Real.binEntropy (distribution true) := by
+  conv_lhs => rw [distribution.eq_bernoulli]
+  exact entropy_bernoulli _ _ _
+
 @[capacity_shared_api]
 theorem entropyBits_bernoulli (q : ℝ) (hq0 : 0 ≤ q) (hq1 : q ≤ 1) :
     (bernoulli q hq0 hq1).entropyBits = Real.binEntropy q / Real.log 2 := by
