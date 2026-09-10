@@ -6,8 +6,10 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
 
 from bs4 import BeautifulSoup
+from pytest import MonkeyPatch
 
 from capacity_atlas.build import _browse_formalization, build_site
+from capacity_atlas.validate import assert_valid
 
 
 def test_build_writes_pages_and_api(tmp_path: Path) -> None:
@@ -77,6 +79,27 @@ def test_problem_page_exposes_versioned_claims_and_active_giscus(tmp_path: Path)
         "problem": ["binary-symmetric-channel"],
     }
     assert "data/problems/binary-symmetric-channel.yaml" in page
+
+
+def test_linked_proof_notes_are_optional(tmp_path: Path, monkeypatch: MonkeyPatch) -> None:
+    atlas = assert_valid()
+    problem = next(
+        problem for problem in atlas.problems if problem["id"] == "finite-dmc-input-cost"
+    )
+    proof = problem["formalization"]["proofs"][0]
+    proof.pop("notes", None)
+    monkeypatch.setattr("capacity_atlas.build.assert_valid", lambda root: atlas)
+
+    output = build_site(output=tmp_path / "site")
+    page = (output / "problems" / problem["id"] / "index.html").read_text(encoding="utf-8")
+    soup = BeautifulSoup(page, "html.parser")
+    link = soup.select_one(f'#formalization a[href="{proof["url"]}"]')
+
+    assert link is not None
+    assert link.get_text(" ", strip=True) == proof["claim_id"]
+    provenance = link.find_parent("li").get_text(" ", strip=True)
+    assert proof["declaration"] in provenance
+    assert f"claim v{proof['claim_version']}" in provenance
 
 
 def test_problem_result_tables_have_captions(tmp_path: Path) -> None:

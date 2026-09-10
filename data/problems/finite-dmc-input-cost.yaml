@@ -3,7 +3,7 @@
 id: finite-dmc-input-cost
 title: Finite discrete memoryless channel with input cost
 status: solved
-updated: '2026-08-13'
+updated: '2026-09-10'
 summary: A finite DMC under a feasible maximum-codeword average-cost constraint has a constrained mutual-information capacity formula.
 tags:
   model: [point-to-point]
@@ -32,18 +32,21 @@ bounds:
   relation: C(\Gamma)=\max_{P_X:\,\mathbb E[c(X)]\le\Gamma}I(X;Y)
   method: Cost-constrained channel coding theorem and convex optimization.
   year: 2015
-  references: [sutter-et-al-2015]
+  references: [sutter-et-al-2015, kostina-verdu-2015]
 formalization:
   status: stated
   claims:
   - id: exact-capacity
     kind: exact-capacity
     category: solved
-    formal_status: stated
+    formal_status: proved
     version: 1
     description: For nonnegative cost with a feasible symbol, maximum-codeword-cost operational capacity
       equals constrained information capacity.
-  notes: The model fixes maximum codeword cost separately from admissible one-letter input distributions.
+  notes: The linked certificate proves the unchanged operational claim using cost-controlled random
+    coding and a finite-mixture converse. It covers the minimum feasible budget and proves that an
+    admissible input attains the information supremum. Its complete build and transitive axiom audit
+    run in the proof repository; the local canonical declaration remains stated independently.
   files:
   - path: lean/CapacityAtlas/Channels/InputCost.lean
     declaration: CapacityAtlas.FiniteChannel.finiteDMCInputCostCapacityStatement
@@ -51,5 +54,15 @@ formalization:
     description: For nonnegative cost with a feasible symbol, maximum-codeword-cost operational capacity
       equals constrained information capacity.
     claim_id: exact-capacity
-  proofs: []
-references: [sutter-et-al-2015]
+  proofs:
+  - id: input-cost-capacity-certificate
+    claim_id: exact-capacity
+    status: complete
+    system: Lean
+    repository: TomasOrtega/CapacityAtlasInputCost
+    commit: 5e6a432bc276aa4e08b7f27658daf40e029cda48
+    url: https://github.com/TomasOrtega/CapacityAtlasInputCost/commit/5e6a432bc276aa4e08b7f27658daf40e029cda48
+    file: CapacityAtlasCost/Capacity.lean
+    declaration: CapacityAtlasCost.finiteDMCInputCostCapacity
+    claim_version: 1
+references: [sutter-et-al-2015, kostina-verdu-2015]

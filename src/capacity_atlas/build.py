@@ -142,6 +142,8 @@ def build_site(
         problem["formalization"].setdefault("notes", "")
         problem["formalization"].setdefault("claims", [])
         problem["formalization"].setdefault("files", [])
+        for proof in problem["formalization"]["proofs"]:
+            proof.setdefault("notes", "")
         problem["browse_formalization"] = _browse_formalization(problem)
         for bound in problem["bounds"]:
             bound.setdefault("conditions", "")

@@ -248,6 +248,14 @@ sutter-et-al-2015:
   arxiv: '1407.7629'
   url: https://arxiv.org/abs/1407.7629
 
+kostina-verdu-2015:
+  title: 'Channels with Cost Constraints: Strong Converse and Dispersion'
+  authors: [Victoria Kostina, Sergio Verdú]
+  year: 2015
+  venue: IEEE Transactions on Information Theory
+  arxiv: '1401.5124'
+  url: https://arxiv.org/abs/1401.5124
+
 csiszar-korner-1978:
   title: Broadcast Channels with Confidential Messages
   authors: [Imre Csiszár, János Körner]
