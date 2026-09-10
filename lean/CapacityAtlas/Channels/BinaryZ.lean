@@ -51,7 +51,8 @@ private theorem binaryZ_entropy_coefficient (p : ℝ) (hp0 : 0 < p) (hp1 : p < 1
   rw [Real.log_mul (sub_pos.mpr hp1).ne' (Real.rpow_pos_of_pos hp0 _).ne',
     Real.log_rpow hp0, Real.binEntropy_eq_negMulLog_add_negMulLog_one_sub]
   simp only [Real.negMulLog_def]
-  field_simp [(sub_pos.mpr hp1).ne'] <;> ring
+  field_simp [(sub_pos.mpr hp1).ne']
+  ring
 
 /-- For an interior parameter, the binary entropy bound is attained by the explicit input. -/
 @[capacity_api]
@@ -71,7 +72,9 @@ theorem binaryZ_mutualInformation_optimum (p : ℝ) (hp0 : 0 < p) (hp1 : p < 1) 
     have hx1 : (1 - p) * input true ≤ 1 :=
       (mul_le_mul_of_nonneg_left (input.probability_le_one true)
         (sub_nonneg.mpr hp1.le)).trans (by linarith)
-    convert Real.binEntropy_add_mul_log_le_log_one_add hx0 hx1 ht using 1 <;> dsimp [t] <;> ring
+    convert Real.binEntropy_add_mul_log_le_log_one_add hx0 hx1 ht using 1
+    dsimp [t]
+    ring
   · rw [binaryZ_mutualInformation, hentropy]
     change Real.binEntropy ((1 - p) * binaryZOptimalBias p) -
       binaryZOptimalBias p * (-(1 - p) * Real.log t) = Real.log (1 + t)
@@ -96,7 +99,7 @@ theorem binaryZ_informationCapacity (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
   · intro input
     rcases eq_or_lt_of_le hp0 with rfl | hp0'
     · rw [FiniteChannel.mutualInformationBits, binaryZ_mutualInformation]
-      simpa using (div_le_div_of_nonneg_right (Real.binEntropy_le_log_two
+      simpa [one_add_one_eq_two] using (div_le_div_of_nonneg_right (Real.binEntropy_le_log_two
         (p := input true)) (Real.log_pos (by norm_num : (1 : ℝ) < 2)).le)
     rcases eq_or_lt_of_le hp1 with rfl | hp1'
     · simp [FiniteChannel.mutualInformationBits, binaryZ_mutualInformation]
@@ -105,7 +108,9 @@ theorem binaryZ_informationCapacity (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
       (Real.log_pos (by norm_num : (1 : ℝ) < 2)).le
   · rcases eq_or_lt_of_le hp0 with rfl | hp0'
     · norm_num [FiniteChannel.mutualInformationBits, binaryZ_mutualInformation,
-        binaryZOptimalInput, binaryZOptimalBias, Real.binEntropy_two_inv]
+        binaryZOptimalInput, binaryZOptimalBias]
+      rw [one_div, Real.binEntropy_two_inv]
+      exact div_self (ne_of_gt (Real.log_pos (by norm_num : (1 : ℝ) < 2)))
     rcases eq_or_lt_of_le hp1 with rfl | hp1'
     · simp [FiniteChannel.mutualInformationBits, binaryZ_mutualInformation]
     exact congrArg (fun value ↦ value / Real.log 2)
@@ -128,7 +133,9 @@ theorem binaryZ_optimalInput (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
   rw [binaryZ_operationalCapacity]
   rcases eq_or_lt_of_le hp0 with rfl | hp0'
   · norm_num [FiniteChannel.mutualInformationBits, binaryZ_mutualInformation,
-      binaryZOptimalInput, binaryZOptimalBias, Real.binEntropy_two_inv]
+      binaryZOptimalInput, binaryZOptimalBias]
+    rw [one_div, Real.binEntropy_two_inv]
+    exact div_self (ne_of_gt (Real.log_pos (by norm_num : (1 : ℝ) < 2)))
   rcases eq_or_lt_of_le hp1 with rfl | hp1'
   · simp [FiniteChannel.mutualInformationBits, binaryZ_mutualInformation]
   exact congrArg (fun value ↦ value / Real.log 2)
