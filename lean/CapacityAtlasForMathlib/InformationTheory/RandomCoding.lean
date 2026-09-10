@@ -453,6 +453,111 @@ theorem exists_oneShotCode_averageErrorProbability_le
       (FiniteProductProbability.sum_mass input input.sum_probability)
   exact ⟨codeOf codebook, hcodebook.trans hensemble⟩
 
+/-- Repairing inadmissible codewords adds at most their input mass to the random-coding bound. -/
+@[capacity_shared_api]
+theorem exists_oneShotCode_averageErrorProbability_le_of_allowed
+    {M : Type*} [Fintype M] [Nonempty M] [DecidableEq M]
+    (channel : FiniteChannel A B) (input : FiniteDistribution A) (threshold : ℝ)
+    (allowed : A → Prop) [DecidablePred allowed]
+    (fallback : A) (hfallback : allowed fallback) :
+    ∃ code : OneShotCode channel M,
+      (∀ message, allowed (code.encode message)) ∧
+        code.averageErrorProbability ≤
+          channel.informationDensityLowerTailMass input threshold +
+            (Fintype.card M : ℝ) * Real.exp (-threshold) +
+              ∑ symbol : A, input symbol * (if allowed symbol then 0 else 1) := by
+  letI : Nonempty A := ⟨fallback⟩
+  let codeOf : (M → A) → OneShotCode channel M := fun codebook ↦
+    { encode := fun message ↦
+        if allowed (codebook message) then codebook message else fallback
+      decode := thresholdDecoder channel input threshold codebook }
+  let badMass := ∑ symbol : A, input symbol * (if allowed symbol then 0 else 1)
+  let bound := channel.informationDensityLowerTailMass input threshold +
+    (Fintype.card M : ℝ) * Real.exp (-threshold) + badMass
+  have herror (codebook : M → A) (message : M) :
+      (codeOf codebook).errorProbability message ≤
+        (thresholdCode channel input threshold codebook).errorProbability message +
+          (if allowed (codebook message) then 0 else 1) := by
+    by_cases hallowed : allowed (codebook message)
+    · simp [OneShotCode.errorProbability, OneShotCode.successProbability,
+        codeOf, thresholdCode, hallowed]
+    · have hupper : (codeOf codebook).errorProbability message ≤ 1 := by
+        unfold OneShotCode.errorProbability OneShotCode.successProbability
+        apply sub_le_self
+        apply Finset.sum_nonneg
+        intro output _
+        split_ifs
+        · exact channel.nonnegative _ _
+        · rfl
+      have hnonnegative :
+          0 ≤ (thresholdCode channel input threshold codebook).errorProbability message := by
+        rw [OneShotCode.errorProbability_eq_sum_decode_ne]
+        apply Finset.sum_nonneg
+        intro output _
+        split_ifs
+        · exact channel.nonnegative _ _
+        · rfl
+      simpa [hallowed] using hupper.trans (le_add_of_nonneg_left hnonnegative)
+  have hmessage (message : M) :
+      (∑ codebook : M → A, FiniteProductProbability.mass input codebook *
+        (codeOf codebook).errorProbability message) ≤ bound := by
+    calc
+      ∑ codebook : M → A, FiniteProductProbability.mass input codebook *
+          (codeOf codebook).errorProbability message ≤
+          ∑ codebook : M → A, FiniteProductProbability.mass input codebook *
+            ((thresholdCode channel input threshold codebook).errorProbability message +
+              (if allowed (codebook message) then 0 else 1)) := by
+        apply Finset.sum_le_sum
+        intro codebook _
+        exact mul_le_mul_of_nonneg_left (herror codebook message)
+          (FiniteProductProbability.mass_nonnegative input input.nonnegative codebook)
+      _ = (∑ codebook : M → A, FiniteProductProbability.mass input codebook *
+          (thresholdCode channel input threshold codebook).errorProbability message) +
+            badMass := by
+        simp_rw [mul_add, Finset.sum_add_distrib]
+        congr 1
+        exact FiniteProductProbability.sum_mass_mul_apply input
+          (fun symbol ↦ if allowed symbol then 0 else 1) input.sum_probability message
+      _ ≤ bound := add_le_add_left
+        (expected_thresholdCode_errorProbability_le channel input threshold message) badMass
+  have hensemble :
+      (∑ codebook : M → A, FiniteProductProbability.mass input codebook *
+        (codeOf codebook).averageErrorProbability) ≤ bound := by
+    calc
+      ∑ codebook : M → A, FiniteProductProbability.mass input codebook *
+          (codeOf codebook).averageErrorProbability =
+          (Fintype.card M : ℝ)⁻¹ *
+            ∑ message : M, ∑ codebook : M → A,
+              FiniteProductProbability.mass input codebook *
+                (codeOf codebook).errorProbability message := by
+        simp_rw [OneShotCode.averageErrorProbability_eq, Finset.mul_sum]
+        rw [Finset.sum_comm]
+        apply Fintype.sum_congr
+        intro message
+        apply Fintype.sum_congr
+        intro codebook
+        ring
+      _ ≤ (Fintype.card M : ℝ)⁻¹ * ∑ _message : M, bound := by
+        apply mul_le_mul_of_nonneg_left _ (by positivity)
+        exact Finset.sum_le_sum fun message _ ↦ hmessage message
+      _ = bound := by
+        rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+        have hcard : (Fintype.card M : ℝ) ≠ 0 := by
+          exact_mod_cast Fintype.card_ne_zero
+        field_simp
+  obtain ⟨codebook, hcodebook⟩ :=
+    FiniteProductProbability.exists_value_le_weighted_mean
+      (FiniteProductProbability.mass (ι := M) input)
+      (fun codebook ↦ (codeOf codebook).averageErrorProbability)
+      (FiniteProductProbability.mass_nonnegative input input.nonnegative)
+      (FiniteProductProbability.sum_mass input input.sum_probability)
+  refine ⟨codeOf codebook, ?_, hcodebook.trans hensemble⟩
+  intro message
+  dsimp [codeOf]
+  split_ifs with hallowed
+  · exact hallowed
+  · exact hfallback
+
 /-- The block-channel lower tail is the lower tail of the additive coordinate statistic. -/
 theorem block_informationDensityLowerTailMass_eq
     {X Y : Type*} [Fintype X] [Fintype Y]
