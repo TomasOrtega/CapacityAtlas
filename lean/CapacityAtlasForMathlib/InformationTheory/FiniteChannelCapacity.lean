@@ -28,6 +28,37 @@ theorem rowDistribution_apply (channel : FiniteChannel X Y) (input : X) (output 
     channel.rowDistribution input output = channel.transition input output :=
   rfl
 
+/-- Construct a channel from one finite distribution for each input. -/
+@[capacity_shared_api]
+def ofRows (rows : X → FiniteDistribution Y) : FiniteChannel X Y where
+  transition input := rows input
+  nonnegative input := (rows input).nonnegative
+  row_sum input := (rows input).sum_probability
+
+@[simp, capacity_shared_api]
+theorem ofRows_transition (rows : X → FiniteDistribution Y) (input : X) (output : Y) :
+    (ofRows rows).transition input output = rows input output :=
+  rfl
+
+@[simp, capacity_shared_api]
+theorem rowDistribution_ofRows (rows : X → FiniteDistribution Y) :
+    (ofRows rows).rowDistribution = rows := by
+  funext input
+  rfl
+
+@[simp, capacity_shared_api]
+theorem ofRows_rowDistribution (channel : FiniteChannel X Y) :
+    ofRows channel.rowDistribution = channel := by
+  rfl
+
+/-- Finite channels are equivalent to functions assigning a distribution to each input. -/
+@[capacity_shared_api]
+def equivRows : FiniteChannel X Y ≃ (X → FiniteDistribution Y) where
+  toFun := rowDistribution
+  invFun := ofRows
+  left_inv := ofRows_rowDistribution
+  right_inv := rowDistribution_ofRows
+
 /-- The output distribution induced by an input distribution. -/
 @[capacity_shared_api]
 noncomputable def outputDistribution (channel : FiniteChannel X Y)
@@ -83,16 +114,9 @@ theorem informationCapacityBits_eq_of_upper_bound_attained
     (upper : ∀ input, channel.mutualInformationBits input ≤ bound)
     (attained : channel.mutualInformationBits witness = bound) :
     channel.informationCapacityBits = bound := by
-  have hbdd : BddAbove (Set.range channel.mutualInformationBits) := by
-    refine ⟨bound, ?_⟩
+  exact IsGreatest.csSup_eq ⟨⟨witness, attained⟩, by
     rintro value ⟨input, rfl⟩
-    exact upper input
-  apply le_antisymm
-  · exact csSup_le ⟨_, Set.mem_range_self witness⟩ fun value hvalue ↦ by
-      obtain ⟨input, rfl⟩ := hvalue
-      exact upper input
-  · rw [← attained]
-    exact le_csSup hbdd (Set.mem_range_self witness)
+    exact upper input⟩
 
 /-- A strict lower bound on information capacity is exceeded by some input distribution. -/
 @[capacity_shared_api]
@@ -100,16 +124,9 @@ theorem exists_input_of_lt_informationCapacityBits [Nonempty X]
     (channel : FiniteChannel X Y) {rate : ℝ}
     (hrate : rate < channel.informationCapacityBits) :
     ∃ input : FiniteDistribution X, rate < channel.mutualInformationBits input := by
-  by_contra hwitness
-  simp only [not_exists, not_lt] at hwitness
-  have hcapacity : channel.informationCapacityBits ≤ rate := by
-    unfold informationCapacityBits
-    apply csSup_le
-    · exact ⟨channel.mutualInformationBits (FiniteDistribution.uniform X),
-        Set.mem_range_self (FiniteDistribution.uniform X)⟩
-    · rintro value ⟨input, rfl⟩
-      exact hwitness input
-  exact (not_lt_of_ge hcapacity) hrate
+  obtain ⟨_, ⟨input, rfl⟩, hinput⟩ := exists_lt_of_lt_csSup
+    ⟨_, Set.mem_range_self (FiniteDistribution.uniform X)⟩ hrate
+  exact ⟨input, hinput⟩
 
 /-- An empty input alphabet has no information values, hence zero information capacity. -/
 @[capacity_shared_api]

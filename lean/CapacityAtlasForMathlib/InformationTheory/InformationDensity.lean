@@ -168,11 +168,8 @@ theorem sum_jointMass_mul_informationDensity
 /-- Coordinatewise pairing identifies a pair of words with a word of pairs. -/
 @[capacity_shared_api]
 def wordPairEquiv (n : ℕ) :
-    ((Fin n → X) × (Fin n → Y)) ≃ (Fin n → X × Y) where
-  toFun words i := (words.1 i, words.2 i)
-  invFun pairs := (fun i ↦ (pairs i).1, fun i ↦ (pairs i).2)
-  left_inv words := by ext i <;> rfl
-  right_inv pairs := by ext i <;> rfl
+    ((Fin n → X) × (Fin n → Y)) ≃ (Fin n → X × Y) :=
+  (Equiv.arrowProdEquivProdArrow (Fin n) (fun _ ↦ X) (fun _ ↦ Y)).symm
 
 /-- An i.i.d. input passed through a memoryless channel has an i.i.d. output. -/
 @[simp, capacity_shared_api]

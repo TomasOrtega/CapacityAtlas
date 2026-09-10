@@ -45,6 +45,52 @@ operational criterion, rate normalization, and claimed capacity or bound.
 Statements parameterized by an arbitrary operational theory, capacity function,
 region, or bound do not qualify.
 
+## Mathlib reuse
+
+Check the version pinned in `lean/lake-manifest.json` before adding general
+infrastructure. The mathlib 4.32.0 audit identified reusable Hamming distance,
+cycle graphs, linear-map predicates, finite-function restrictions and
+equivalences, finite-product identities, supremum lemmas, and the convexity and
+logarithm inequalities underlying our entropy bounds. Local wrappers preserve
+atlas terminology; use mathlib for their general mathematical content.
+
+`FiniteDistribution` keeps its existing real-valued interface, with checked
+equivalences to mathlib's `Convexity.StdSimplex ℝ X` and `PMF X` on finite types.
+Import `FiniteDistribution.StdSimplex` or `FiniteDistribution.PMF` under
+`CapacityAtlasForMathlib.InformationTheory` for these adapters. Both preserve
+weights and pushforwards. `mapStdSimplex` supports arbitrary target types,
+including `ℝ`, through mathlib's finitely supported simplex. This uppercase
+`Convexity.StdSimplex` differs from the finite-dimensional set `stdSimplex`.
+
+`FiniteChannel.equivRows` identifies a channel with a distribution for each
+input. `FiniteChannel.PMF` connects output distributions and serial channel
+composition to `PMF.bind`. These adapters preserve the public structure fields
+and existing finite-sum formulas. Mathlib's `Matrix.rowStochastic` only covers
+square matrices, whereas our channels allow different input and output alphabets.
+
+Strong subadditivity and entropy monotonicity under deterministic observations
+specialize PFR's
+[`entropy_triple_add_entropy_le`](https://github.com/teorth/pfr/blob/85d5879ae144170098815201491639f6e7d3c352/PFR/ForMathlib/Entropy/Basic.lean#L1110)
+and [`entropy_comp_le`](https://github.com/teorth/pfr/blob/85d5879ae144170098815201491639f6e7d3c352/PFR/ForMathlib/Entropy/Basic.lean#L643).
+`FiniteDistribution.Entropy` proves that our finite entropy and pushforward formulas
+agree with PFR random-variable entropy under the corresponding PMF measure.
+The necessary PFR code is copied locally from commit
+`85d5879ae144170098815201491639f6e7d3c352` and maintained against our mathlib pin.
+The entropy development lives in `InformationTheory/Entropy`, with supporting
+lemmas in `MeasureTheory` and `Probability` under `CapacityAtlasForMathlib`.
+Copied files credit their source and identify local adaptations; see
+[the acknowledgements](../ACKNOWLEDGEMENTS.md#copied-lean-entropy-code) and
+[the upstream license](../LICENSES/PFR-Apache-2.0.txt).
+PFR, `AddCombi`, and `checkdecls` are not package dependencies.
+The atlas audit checks the copied code and its transitive axioms.
+
+Kraft's
+[`gibbs_sum_log_ratio_nonneg_of_ac`](https://github.com/elazarg/kraft/blob/f742ff92fed86732fbca8b8ff7df2860c6b9a11b/InformationTheory/Entropy/Basic.lean#L141)
+was also tested: its subprobability hypothesis generalizes our normalized Gibbs
+statement, and its specialization compiles against our mathlib pin with only
+standard axioms. We retain the short mathlib-based Gibbs proof rather than add
+a second entropy-library dependency for that elementary inequality.
+
 ## Claim metadata
 
 Each problem records one coverage status:

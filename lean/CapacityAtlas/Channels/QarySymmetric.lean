@@ -27,23 +27,9 @@ private theorem sum_ite_zero (q : ℕ) [NeZero q] (a b : ℝ) :
     (∑ z : ZMod q, if z = 0 then a else b) =
       a + ((q - 1 : ℕ) : ℝ) * b := by
   classical
-  have hcard : (Finset.univ.erase (0 : ZMod q)).card = q - 1 := by
-    rw [Finset.card_erase_of_mem (Finset.mem_univ (0 : ZMod q)), Finset.card_univ,
-      ZMod.card]
-  calc
-    (∑ z : ZMod q, if z = 0 then a else b) =
-        (∑ z ∈ (Finset.univ.erase (0 : ZMod q)), if z = 0 then a else b) +
-          (if (0 : ZMod q) = 0 then a else b) := by
-      exact (Finset.sum_erase_add _ _ (Finset.mem_univ (0 : ZMod q))).symm
-    _ = a + ((q - 1 : ℕ) : ℝ) * b := by
-      rw [show (∑ z ∈ (Finset.univ.erase (0 : ZMod q)), if z = 0 then a else b) =
-        ∑ _z ∈ (Finset.univ.erase (0 : ZMod q)), b by
-          apply Finset.sum_congr rfl
-          intro z hz
-          simp [Finset.ne_of_mem_erase hz]]
-      rw [Finset.sum_const, hcard]
-      simp only [nsmul_eq_mul, if_true]
-      ring
+  rw [Finset.sum_ite]
+  simp [Finset.filter_eq', Finset.filter_ne', Finset.card_erase_of_mem, ZMod.card,
+    nsmul_eq_mul]
 
 /-- The atlas q-ary noise range is contained in the probability interval. -/
 @[capacity_api]
@@ -87,17 +73,7 @@ theorem qarySymmetric_transition (q : ℕ) [NeZero q] (hq : 2 ≤ q)
     (qarySymmetric q hq p hp0 hp1).transition input output =
       if input = output then 1 - p else p / ((q - 1 : ℕ) : ℝ) := by
   change (if -input + output = 0 then 1 - p else p / ((q - 1 : ℕ) : ℝ)) = _
-  by_cases h : input = output
-  · subst output
-    simp
-  · have hn : -input + output ≠ 0 := by
-      intro hn
-      apply h
-      calc
-        input = input + 0 := (add_zero input).symm
-        _ = input + (-input + output) := congrArg (input + ·) hn.symm
-        _ = output := by rw [← add_assoc, add_neg_cancel, zero_add]
-    simp [h, hn]
+  simp only [neg_add_eq_zero]
 
 /-- Entropy of q-ary symmetric noise in nats. -/
 @[capacity_api]
@@ -116,12 +92,9 @@ theorem qarySymmetricNoise_entropy (q : ℕ) [NeZero q] (hq : 2 ≤ q)
   have hscaled :
       ((q - 1 : ℕ) : ℝ) * Real.negMulLog (p / ((q - 1 : ℕ) : ℝ)) =
         Real.negMulLog p + p * Real.log ((q - 1 : ℕ) : ℝ) := by
-    by_cases hpzero : p = 0
-    · simp [hpzero]
-    · unfold Real.negMulLog
-      rw [Real.log_div hpzero hd]
-      field_simp [hd]
-      ring
+    rw [div_eq_mul_inv, Real.negMulLog_mul]
+    simp only [Real.negMulLog_def, Real.log_inv]
+    field_simp [hd]
   rw [hscaled, Real.binEntropy_eq_negMulLog_add_negMulLog_one_sub]
   ring
 

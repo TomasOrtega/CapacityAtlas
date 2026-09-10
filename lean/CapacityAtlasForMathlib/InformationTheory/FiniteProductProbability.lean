@@ -66,10 +66,7 @@ theorem sum_mass_mul_apply (w f : α → ℝ) (hw : ∑ a, w a = 1) (i : ι) :
           apply Fintype.sum_congr
           intro x
           congr 1
-          rw [Fintype.prod_eq_single i]
-          · simp [h]
-          · intro j hji
-            simp [h, hji]
+          exact (Fintype.prod_ite_eq' i (fun j ↦ f (x j))).symm
     _ = ∏ j, ∑ a, w a * h j a := sum_mass_mul_prod w h
     _ = mean w f := by
       rw [Fintype.prod_eq_single i]
@@ -91,10 +88,7 @@ theorem sum_prod_mul_apply (w : ι → α → ℝ) (f : α → ℝ)
       intro x
       rw [Finset.prod_mul_distrib]
       congr 1
-      rw [Fintype.prod_eq_single i]
-      · simp [h]
-      · intro j hji
-        simp [h, hji]
+      exact (Fintype.prod_ite_eq' i (fun j ↦ f (x j))).symm
     _ = ∏ j, ∑ a, w j a * h j a := by
       simpa only using
         (Fintype.prod_sum (fun j a ↦ w j a * h j a)).symm
@@ -131,12 +125,7 @@ theorem sum_mass_mul_apply_mul_apply (w f g : α → ℝ)
           intro x
           congr 1
           simp only [h, Finset.prod_mul_distrib]
-          rw [Fintype.prod_eq_single i, Fintype.prod_eq_single j]
-          · simp
-          · intro k hki
-            simp [hki]
-          · intro k hkj
-            simp [hkj]
+          rw [Fintype.prod_ite_eq', Fintype.prod_ite_eq']
     _ = ∏ k, ∑ a, w a * h k a := sum_mass_mul_prod w h
     _ = mean w f * mean w g := by
       rw [Fintype.prod_eq_mul i j hij]

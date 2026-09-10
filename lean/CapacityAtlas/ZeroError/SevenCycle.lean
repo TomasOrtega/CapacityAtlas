@@ -6,17 +6,25 @@ See https://www.apache.org/licenses/LICENSE-2.0
 
 import CapacityAtlasForMathlib.InformationTheory.GraphZeroError
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Combinatorics.SimpleGraph.CycleGraph
 
 namespace CapacityAtlas.ZeroError
 
 open CapacityAtlas
 
 def sevenCycleAdjacent (left right : Fin 7) : Prop :=
-  left.val = (right.val + 1) % 7 ∨ right.val = (left.val + 1) % 7
+  (SimpleGraph.cycleGraph 7).Adj left right
 
 instance : DecidableRel sevenCycleAdjacent := fun left right ↦ by
   unfold sevenCycleAdjacent
   infer_instance
+
+@[capacity_problem "seven-cycle-zero-error-channel", capacity_test]
+theorem sevenCycleAdjacent_iff (left right : Fin 7) :
+    sevenCycleAdjacent left right ↔
+      left.val = (right.val + 1) % 7 ∨ right.val = (left.val + 1) % 7 := by
+  revert left right
+  decide
 
 @[capacity_problem "seven-cycle-zero-error-channel", capacity_definition]
 noncomputable def sevenCycleShannonCapacity : ℝ :=

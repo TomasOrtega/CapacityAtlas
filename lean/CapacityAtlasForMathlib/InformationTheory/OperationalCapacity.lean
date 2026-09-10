@@ -348,20 +348,7 @@ theorem informationCapacityBits_le_operationalCapacityBits_of_direct_converse
     refine ⟨channel.informationCapacityBits, ?_⟩
     intro rate hrate
     exact converse hrate
-  by_contra hcapacity
-  have hstrict : channel.operationalCapacityBits < channel.informationCapacityBits :=
-    lt_of_not_ge hcapacity
-  let rate := (channel.operationalCapacityBits + channel.informationCapacityBits) / 2
-  have hop_lt_rate : channel.operationalCapacityBits < rate := by
-    dsimp [rate]
-    linarith
-  have hrate_lt_info : rate < channel.informationCapacityBits := by
-    dsimp [rate]
-    linarith
-  have hrate_le_op : rate ≤ channel.operationalCapacityBits := by
-    unfold operationalCapacityBits
-    exact le_csSup hbounded (direct hrate_lt_info)
-  exact (not_lt_of_ge hrate_le_op) hop_lt_rate
+  exact le_of_forall_lt_imp_le_of_dense fun rate hrate ↦ le_csSup hbounded (direct hrate)
 
 /-- Direct achievability and the converse imply the finite-channel coding theorem. -/
 @[capacity_shared_api]
