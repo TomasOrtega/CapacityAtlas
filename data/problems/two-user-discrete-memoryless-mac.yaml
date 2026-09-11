@@ -47,10 +47,10 @@ formalization:
   - id: exact-capacity
     kind: exact-capacity
     category: solved
-    formal_status: stated
+    formal_status: proved
     version: 1
     description: The complete average-error capacity region with separate deterministic encoders equals the three single-letter inequalities over arbitrary finite time sharing, including boundary rates and zero-rate axes.
-  notes: The canonical region uses separate positive message counts, a joint decoder, and rate slack at every sufficiently large blocklength. The information region is a literal finite-Q union.
+  notes: The external proof uses separate random codebooks and a fixed-schedule time-sharing reduction. Three Fano bounds share one time coordinate; compactness supplies exact boundary witnesses. The canonical region retains arbitrary finite Q.
   files:
   - path: lean/CapacityAtlasForMathlib/InformationTheory/MultipleAccess.lean
     declaration: CapacityAtlas.MultipleAccess.BlockCode
@@ -69,5 +69,16 @@ formalization:
     role: claim
     claim_id: exact-capacity
     description: Canonical operational MAC capacity-region equality.
-  proofs: []
+  proofs:
+  - id: finite-mac-capacity-region-proof
+    claim_id: exact-capacity
+    claim_version: 1
+    status: complete
+    system: Lean
+    repository: TomasOrtega/CapacityAtlasMAC
+    commit: ec5be554b9644df94dd58190963793f3f1d1da52
+    url: https://github.com/TomasOrtega/CapacityAtlasMAC/commit/ec5be554b9644df94dd58190963793f3f1d1da52
+    file: CapacityAtlasMAC.lean
+    declaration: CapacityAtlasMAC.capacityCertificate
+    notes: Pins Atlas commit f1ffd9d31dfa462010be6a95ab79bfd2f911ca76. The audit checks every external proof declaration and full canonical-proposition correspondence with rigid universes; negative controls reject a different proposition and a universe-restricted certificate.
 references: [ahlswede-1971, liao-1972, elgamal-kim-2011]
