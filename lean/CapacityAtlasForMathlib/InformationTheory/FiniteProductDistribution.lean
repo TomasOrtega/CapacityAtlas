@@ -45,6 +45,24 @@ theorem map_productFamily_eval [DecidableEq A] (distributions : I → FiniteDist
     Finset.mem_univ, if_true] using
     sum_productFamily_mul_eval distributions (fun x ↦ if x = a then 1 else 0) i
 
+/-- Separate deterministic maps preserve independent coordinate laws. -/
+@[capacity_shared_api]
+theorem map_productFamily {B : Type*} [Fintype B] [DecidableEq B]
+    (distributions : I → FiniteDistribution A) (f : I → A → B) :
+    (productFamily distributions).map (fun word i ↦ f i (word i)) =
+      productFamily (fun i ↦ (distributions i).map (f i)) := by
+  classical
+  ext word
+  change (∑ source : I → A with (fun i ↦ f i (source i)) = word,
+    ∏ i, distributions i (source i)) =
+    ∏ i, ∑ a with f i a = word i, distributions i a
+  simp only [Finset.sum_filter]
+  rw [Fintype.prod_sum]
+  apply Fintype.sum_congr
+  intro source
+  rw [Fintype.prod_ite_zero]
+  simp only [funext_iff]
+
 omit [Fintype I] [DecidableEq I] in
 @[simp, capacity_shared_api]
 theorem productFamily_const_eq_iid (distribution : FiniteDistribution A) (n : ℕ) :

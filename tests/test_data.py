@@ -180,6 +180,7 @@ def test_only_faithful_problem_statements_are_registered() -> None:
         "compound-discrete-memoryless-channel",
         "discrete-memoryless-channel",
         "discrete-memoryless-channel-with-feedback",
+        "finite-common-message-broadcast-channel",
         "finite-dmc-decoder-state",
         "finite-dmc-input-cost",
         "finite-group-additive-noise-channel",

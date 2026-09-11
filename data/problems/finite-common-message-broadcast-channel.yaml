@@ -1,0 +1,92 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: finite-common-message-broadcast-channel
+title: Finite broadcast channel with a common message
+status: solved
+updated: '2026-09-11'
+summary: One encoder sends the same message to every receiver in a fixed finite family.
+tags:
+  model: [broadcast]
+  features: [finite-alphabet, discrete-memoryless]
+  quantity: [capacity]
+  knowledge: [exact, single-letter-characterization]
+model:
+  input: One deterministic encoder maps a uniform common message to a word over a finite nonempty alphabet \(\mathcal X\).
+  output: Each receiver \(j\) in a fixed finite nonempty set \(\mathcal J\) observes a word over its own finite nonempty alphabet \(\mathcal Y_j\).
+  law: A memoryless joint law \(W((y_j)_{j\in\mathcal J}\mid x)\) governs each use. Receiver \(j\)'s marginal channel is \(W_j(y_j\mid x)\).
+  assumptions:
+  - Every receiver decodes the same message using only its own output word and its own deterministic decoder.
+  - Receiver outputs may be correlated within a use; the joint channel is memoryless across uses.
+  - The receiver set is fixed and does not grow with blocklength.
+  - There is no feedback, receiver cooperation, or input-cost constraint.
+quantity:
+  name: Common-message broadcast capacity
+  symbol: C_{\mathrm{common}}
+  units: bits per channel use
+  criterion: The supremum of rates supported at every sufficiently large blocklength with vanishing average decoding error at every receiver.
+capacity:
+  kind: exact
+  display: C_{\mathrm{common}}=\max_{P_X}\min_{j\in\mathcal J}I(X;Y_j)
+  notes: One input distribution serves every receiver; the finite minimum is attained, and compactness gives a maximizing input. Cover's Section III (pages 4–5) specifies the common-message model and finite-receiver extension; Section IX, equation (49), discusses the max–min formula through compound-channel results. The formal proof uses an exact reduction to the finite compound channel.
+bounds:
+- id: common-message-random-coding
+  direction: lower
+  relation: C_{\mathrm{common}}\ge\max_{P_X}\min_j I(X;Y_j)
+  method: A common code reliable over every receiver marginal, via the compound-channel coding theorem; Cover's Section IX, equation (49).
+  year: 1972
+  references: [cover-1972, blackwell-breiman-thomasian-1959, lapidoth-telatar-1998]
+- id: common-message-converse
+  direction: upper
+  relation: C_{\mathrm{common}}\le\max_{P_X}\min_j I(X;Y_j)
+  method: The compound-channel converse uses one common input distribution to bound every receiver; the max–min characterization is discussed in Cover's Section IX, equation (49).
+  year: 1972
+  references: [cover-1972, blackwell-breiman-thomasian-1959, lapidoth-telatar-1998]
+formalization:
+  status: stated
+  claims:
+  - id: exact-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: proved
+    version: 1
+    description: The operational common-message capacity of any finite joint broadcast channel equals the max–min of its receiver mutual informations over one shared input distribution.
+  notes: The canonical proposition exposes the joint physical channel and receiver marginals. The formal proof tags receiver outputs and extends the decoder family to one compound decoder, preserving rates and receiver errors exactly. This is the formal proof route, not an attributed historical construction.
+  files:
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/CommonMessageBroadcast.lean
+    declaration: CapacityAtlas.CommonMessageBroadcast.BlockCode
+    role: API
+    description: One message encoder and a decoder for each receiver's own output alphabet.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/CommonMessageBroadcast.lean
+    declaration: CapacityAtlas.CommonMessageBroadcast.receiverChannels
+    role: API
+    description: Receiver marginals of an arbitrary memoryless joint broadcast law.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/CommonMessageBroadcast.lean
+    declaration: CapacityAtlas.CommonMessageBroadcast.operationalCapacityBits
+    role: API
+    description: Common-message average-error capacity at all sufficiently large blocklengths.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/CommonMessageBroadcastInformation.lean
+    declaration: CapacityAtlas.CommonMessageBroadcast.informationCapacityBits
+    role: API
+    description: The max–min information target for receiver-dependent output alphabets.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/CommonMessageBroadcastInformation.lean
+    declaration: CapacityAtlas.CommonMessageBroadcast.exists_capacityAchieving_input
+    role: API
+    description: A common input distribution attains the max–min information target.
+  - path: lean/CapacityAtlas/Channels/CommonMessageBroadcast.lean
+    declaration: CapacityAtlas.Channel.commonMessageBroadcastCapacityStatement
+    role: claim
+    claim_id: exact-capacity
+    description: Canonical joint-channel common-message capacity proposition.
+  proofs:
+  - id: finite-common-message-capacity-proof
+    claim_id: exact-capacity
+    claim_version: 1
+    status: complete
+    system: Lean
+    repository: TomasOrtega/CapacityAtlasCommonMessage
+    commit: 83923a9a73280ff2d24c71411398438edcc20e4b
+    url: https://github.com/TomasOrtega/CapacityAtlasCommonMessage/commit/83923a9a73280ff2d24c71411398438edcc20e4b
+    file: CapacityAtlasCommonMessage.lean
+    declaration: CapacityAtlasCommonMessage.capacityCertificate
+    notes: Pins Atlas 1f4b83da5f2bc05efba649054be18b1f6fd8da31 and compound proof 1d5cbdc0a8cfb5d034facdb8d1e2473bb3c40ebe. The imported proof is rebuilt against the resolved Atlas prerequisite. The audit checks transitive axioms and full canonical-proposition correspondence with rigid universes; negative controls reject a different proposition and a universe-restricted certificate.
+references: [cover-1972, blackwell-breiman-thomasian-1959, lapidoth-telatar-1998]
