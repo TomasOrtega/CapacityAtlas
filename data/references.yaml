@@ -39,6 +39,13 @@ blackwell-breiman-thomasian-1959:
   doi: 10.1214/aoms/1177706106
   url: https://doi.org/10.1214/aoms/1177706106
 
+lapidoth-telatar-1998:
+  title: The Compound Channel Capacity of a Class of Finite-State Channels
+  authors: [Amos Lapidoth, İ. Emre Telatar]
+  year: 1998
+  venue: IEEE Transactions on Information Theory
+  url: https://infoscience.epfl.ch/server/api/core/bitstreams/86a85253-ceb6-45ea-970f-ab907c765f69/content
+
 shannon-1961:
   title: Two-Way Communication Channels
   authors: [Claude E. Shannon]

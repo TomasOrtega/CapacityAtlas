@@ -22,3 +22,4 @@ import CapacityAtlas.Network.PrimitiveRelay
 import CapacityAtlas.Network.SunJafar11
 import CapacityAtlas.Network.SunJafarGroupcast
 import CapacityAtlas.ZeroError.SevenCycle
+import CapacityAtlas.Channels.Compound

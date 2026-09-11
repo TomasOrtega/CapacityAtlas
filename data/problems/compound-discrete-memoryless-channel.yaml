@@ -3,57 +3,86 @@
 id: compound-discrete-memoryless-channel
 title: Finite compound discrete memoryless channel
 status: solved
-updated: '2026-08-10'
+updated: '2026-09-10'
 summary: One unknown channel from a known finite family governs the entire transmission block.
 tags:
-  model:
-  - point-to-point
-  features:
-  - finite-alphabet
-  - discrete-memoryless
-  - compound
-  quantity:
-  - capacity
-  knowledge:
-  - exact
-  - single-letter-characterization
+  model: [point-to-point]
+  features: [finite-alphabet, discrete-memoryless, compound]
+  quantity: [capacity]
+  knowledge: [exact, single-letter-characterization]
 model:
-  input: \(X\in\mathcal X\)
-  output: \(Y\in\mathcal Y\)
-  law: A fixed but unknown \(W_s(y|x)\) is selected from a known finite family \(\{W_s:s\in\mathcal S\}\).
+  input: A word over a finite nonempty alphabet \(\mathcal X\), determined by the message alone.
+  output: A word over a common finite nonempty output alphabet \(\mathcal Y\).
+  law: A fixed unknown member \(W_s(y|x)\) of a known finite nonempty family governs every use, with conditionally independent outputs.
   assumptions:
-  - The same state s applies throughout the block.
-  - A single code must work uniformly for every channel in the family.
+  - The same member s applies throughout the block; neither encoder nor decoder knows s.
+  - One deterministic encoder and one deterministic decoder must work for every family member.
+  - Messages are uniform, and their average decoding error must vanish uniformly over the family.
+  - There is no feedback and no input-cost constraint.
 quantity:
   name: Compound-channel capacity
   symbol: C_{\mathrm{cmp}}
   units: bits per channel use
-  criterion: Uniformly vanishing average error over the channel family.
+  criterion: The supremum of rates supported at every sufficiently large blocklength with uniformly vanishing average error over the channel family.
 capacity:
   kind: characterization
-  display: C_{\mathrm{cmp}}=\max_{P_X}\inf_{s\in\mathcal S} I(P_X,W_s)
+  display: C_{\mathrm{cmp}}=\max_{P_X}\min_{s\in\mathcal S} I(P_X,W_s)
+  notes: The finite minimum is attained, and compactness of the input simplex gives a maximizing input. Lapidoth and Telatar state the compound DMC formula in equation (1), with the channel-independent decoder convention on page 973 and the uniform average-error criterion in Definition 1.
 bounds:
 - id: universal-random-coding
   direction: lower
-  relation: C_{\mathrm{cmp}}\ge\max_{P_X}\inf_s I(P_X,W_s)
-  method: A common random code and universal decoding over the family.
+  relation: C_{\mathrm{cmp}}\ge\max_{P_X}\min_s I(P_X,W_s)
+  method: A common codebook and channel-independent decoder achieve the worst mutual information for a chosen input law.
   year: 1959
-  references:
-  - blackwell-breiman-thomasian-1959
+  references: [blackwell-breiman-thomasian-1959, lapidoth-telatar-1998]
 - id: worst-channel-converse
   direction: upper
-  relation: C_{\mathrm{cmp}}\le\max_{P_X}\inf_s I(P_X,W_s)
-  method: Every code must satisfy a converse for each member of the family.
+  relation: C_{\mathrm{cmp}}\le\max_{P_X}\min_s I(P_X,W_s)
+  method: Fano's inequality, entropy subadditivity, and mutual-information concavity give one averaged input distribution satisfying every member's rate bound.
   year: 1959
-  references:
-  - blackwell-breiman-thomasian-1959
+  references: [blackwell-breiman-thomasian-1959, lapidoth-telatar-1998]
 formalization:
-  status: none
-  claims: []
-  notes: Families of finite channels can reuse the shared DMC structure; uniform operational codes are
-    missing.
-  files: []
-  proofs: []
-references:
-- blackwell-breiman-thomasian-1959
-- cover-thomas-2006
+  status: stated
+  claims:
+  - id: exact-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: proved
+    version: 1
+    description: Operational capacity with one common encoder and decoder equals the maximum, over input distributions, of the least mutual information across the finite channel family.
+  notes: The canonical proposition fixes a member-independent code and uniform average error. The shared API proves attainment of the max–min information target. The external direct proof selects a common decoder using a uniform mixture of whole-block channels, and its converse retains one averaged input distribution across the family.
+  files:
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/CompoundChannel.lean
+    declaration: CapacityAtlas.CompoundChannel.BlockCode
+    role: API
+    description: One deterministic encoder and decoder independent of the unknown member.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/CompoundChannel.lean
+    declaration: CapacityAtlas.CompoundChannel.operationalCapacityBits
+    role: API
+    description: Uniform average-error capacity at all sufficiently large blocklengths.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/CompoundChannel.lean
+    declaration: CapacityAtlas.CompoundChannel.informationCapacityBits
+    role: API
+    description: Supremum over input distributions of the least member mutual information.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/CompoundChannel.lean
+    declaration: CapacityAtlas.CompoundChannel.exists_capacityAchieving_input
+    role: API
+    description: An input distribution attains the max–min information target.
+  - path: lean/CapacityAtlas/Channels/Compound.lean
+    declaration: CapacityAtlas.Channel.compoundCapacityStatement
+    role: claim
+    claim_id: exact-capacity
+    description: Canonical finite compound-channel capacity proposition.
+  proofs:
+  - id: finite-compound-capacity-proof
+    claim_id: exact-capacity
+    claim_version: 1
+    status: complete
+    system: Lean
+    repository: TomasOrtega/CapacityAtlasCompound
+    commit: 1d5cbdc0a8cfb5d034facdb8d1e2473bb3c40ebe
+    url: https://github.com/TomasOrtega/CapacityAtlasCompound/commit/1d5cbdc0a8cfb5d034facdb8d1e2473bb3c40ebe
+    file: CapacityAtlasCompound.lean
+    declaration: CapacityAtlasCompound.capacityCertificate
+    notes: Pins Atlas commit 61a109e8cba1b8afa4b42c68afd96a3df71120d0. The audit checks every transitive proof axiom and exact canonical-proposition correspondence with rigid universes; negative controls reject a different proposition and a universe-restricted certificate.
+references: [blackwell-breiman-thomasian-1959, lapidoth-telatar-1998, cover-thomas-2006]
