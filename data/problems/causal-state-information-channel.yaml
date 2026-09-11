@@ -48,10 +48,10 @@ formalization:
   - id: exact-capacity
     kind: exact-capacity
     category: solved
-    formal_status: stated
+    formal_status: proved
     version: 1
     description: Operational capacity of arbitrary deterministic causal-state codes equals the information capacity of the finite Shannon-strategy channel.
-  notes: The canonical proposition uses prefix-dependent policies, the explicit iid-state block law, and an output-only decoder. It is stated as a proposition definition without adding an admitted theorem or axiom.
+  notes: The external proof embeds strategy codes and bounds arbitrary causal policies by an inductive entropy argument and Fano's inequality. Its certificate proves the canonical proposition at a pinned Atlas commit and also establishes optimizer attainment. The local proposition definition adds no admitted theorem or axiom.
   files:
   - path: lean/CapacityAtlasForMathlib/InformationTheory/CausalState.lean
     declaration: CapacityAtlas.CausalState.Policy
@@ -78,5 +78,16 @@ formalization:
     role: claim
     claim_id: exact-capacity
     description: Canonical proposition equating causal operational capacity with strategy information capacity.
-  proofs: []
+  proofs:
+  - id: shannon-causal-capacity-proof
+    claim_id: exact-capacity
+    claim_version: 1
+    status: complete
+    system: Lean
+    repository: TomasOrtega/CapacityAtlasCausalState
+    commit: 0176a0e9fed6ec13fd2f566d9906c3ea8103d1cc
+    url: https://github.com/TomasOrtega/CapacityAtlasCausalState/commit/0176a0e9fed6ec13fd2f566d9906c3ea8103d1cc
+    file: CapacityAtlasCausal.lean
+    declaration: CapacityAtlasCausal.capacityCertificate
+    notes: The proof pins Atlas commit 661affbfb9241fcc2b926db78564d81731a42f14 and audits every transitive proof axiom and exact canonical-proposition correspondence.
 references: [shannon-1958, elgamal-kim-2011]
