@@ -70,6 +70,14 @@ elgamal-kim-2011:
   arxiv: '1001.3404'
   url: https://arxiv.org/abs/1001.3404
 
+cover-1972:
+  title: Broadcast Channels
+  authors: [Thomas M. Cover]
+  year: 1972
+  venue: IEEE Transactions on Information Theory 18(1), 2–14
+  doi: 10.1109/TIT.1972.1054727
+  url: https://isl.stanford.edu/~cover/papers/transIT/0002cove.pdf
+
 ahlswede-1971:
   title: Multi-way communication channels
   authors: [Rudolf Ahlswede]

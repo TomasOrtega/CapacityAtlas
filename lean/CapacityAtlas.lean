@@ -25,3 +25,4 @@ import CapacityAtlas.ZeroError.SevenCycle
 import CapacityAtlas.Channels.Compound
 import CapacityAtlas.Channels.Feedback
 import CapacityAtlas.Channels.MultipleAccess
+import CapacityAtlas.Channels.CommonMessageBroadcast
