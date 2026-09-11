@@ -73,16 +73,15 @@ elgamal-kim-2011:
 ahlswede-1971:
   title: Multi-way communication channels
   authors: [Rudolf Ahlswede]
-  year: 1971
-  venue: Second International Symposium on Information Theory
-  url: https://www.math.uni-bielefeld.de/ahlswede/homepage/public/1.pdf
+  year: 1973
+  venue: Proceedings of the Second International Symposium on Information Theory (September 1971), Akadémiai Kiadó, pp. 23–52
+  url: https://www.math.uni-bielefeld.de/ahlswede/homepage/public/12.pdf
 
 liao-1972:
   title: Multiple Access Channels
-  authors: [Hsiao-Hwa Liao]
+  authors: [Henry Herng-Jiunn Liao]
   year: 1972
   venue: PhD thesis, University of Hawaii
-  url: https://scholarspace.manoa.hawaii.edu/handle/10125/55860
 
 bergmans-1973:
   title: Random Coding Theorem for Broadcast Channels with Degraded Components

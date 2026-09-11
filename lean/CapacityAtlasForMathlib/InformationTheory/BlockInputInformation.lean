@@ -6,6 +6,7 @@ See the License for the specific language governing permissions and limitations.
 
 import CapacityAtlasForMathlib.InformationTheory.FiniteEntropy
 import CapacityAtlasForMathlib.InformationTheory.FiniteMixture
+import CapacityAtlasForMathlib.InformationTheory.CodingConverse
 
 open scoped BigOperators
 
@@ -70,6 +71,27 @@ theorem block_mutualInformationBits_le_mul_averageCoordinateMarginal
     div_le_div_of_nonneg_right
       (channel.block_mutualInformation_le_mul_averageCoordinateMarginal input)
       (Real.log_nonneg (by norm_num))
+
+omit [NeZero n] in
+/-- A deterministic word encoder obeys the sum of its coordinate information bounds. -/
+@[capacity_shared_api]
+theorem encoded_block_mutualInformation_le_sum {M : Type*} [Fintype M]
+    (channel : FiniteChannel X Y) (n : ℕ) (encode : M → Fin n → X)
+    (input : FiniteDistribution M) :
+    ((channel.block n).encoded encode).mutualInformation input ≤
+      ∑ i, (channel.encoded (fun m ↦ encode m i)).mutualInformation input := by
+  classical
+  rw [(channel.block n).encoded_mutualInformation]
+  calc
+    (channel.block n).mutualInformation (input.map encode) ≤
+        ∑ i, channel.mutualInformation ((input.map encode).coordinateMarginal i) :=
+      channel.block_mutualInformation_le_sum_coordinate n (input.map encode)
+    _ = ∑ i, (channel.encoded (fun m ↦ encode m i)).mutualInformation input := by
+      apply Finset.sum_congr rfl
+      intro i _
+      rw [channel.encoded_mutualInformation]
+      congr 1
+      simp [FiniteDistribution.coordinateMarginal, FiniteDistribution.map_map, Function.comp_def]
 
 end FiniteChannel
 

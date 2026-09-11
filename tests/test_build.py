@@ -81,6 +81,25 @@ def test_problem_page_exposes_versioned_claims_and_active_giscus(tmp_path: Path)
     assert "data/problems/binary-symmetric-channel.yaml" in page
 
 
+def test_reference_without_url_renders_as_text(tmp_path: Path, monkeypatch: MonkeyPatch) -> None:
+    atlas = assert_valid()
+    problem = next(
+        problem for problem in atlas.problems if problem["id"] == "binary-symmetric-channel"
+    )
+    reference = atlas.references[problem["references"][0]]
+    reference.pop("url", None)
+    monkeypatch.setattr("capacity_atlas.build.assert_valid", lambda _: atlas)
+
+    output = build_site(output=tmp_path / "site")
+    page = output / "problems" / problem["id"] / "index.html"
+    soup = BeautifulSoup(page.read_text(encoding="utf-8"), "html.parser")
+    citation = next(
+        item for item in soup.select(".references li") if reference["title"] in item.get_text()
+    )
+    assert citation.find("a") is None
+    assert reference["title"] in citation.get_text()
+
+
 def test_linked_proof_notes_are_optional(tmp_path: Path, monkeypatch: MonkeyPatch) -> None:
     atlas = assert_valid()
     problem = next(
