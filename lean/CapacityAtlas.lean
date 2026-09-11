@@ -10,6 +10,7 @@ import CapacityAtlas.Channels.AdditiveNoise
 import CapacityAtlas.Channels.Binary
 import CapacityAtlas.Channels.BinaryZ
 import CapacityAtlas.Channels.Broadcast
+import CapacityAtlas.Channels.DecoderState
 import CapacityAtlas.Channels.GaussianMIMO
 import CapacityAtlas.Channels.InputCost
 import CapacityAtlas.Channels.Insertion

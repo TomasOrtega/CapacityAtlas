@@ -23,6 +23,13 @@ shannon-1958:
   venue: IBM Journal of Research and Development
   url: https://ieeexplore.ieee.org/document/5394307
 
+heegard-elgamal-1983:
+  title: On the Capacity of Computer Memory with Defects
+  authors: [Chris Heegard, Abbas A. El Gamal]
+  year: 1983
+  venue: IEEE Transactions on Information Theory
+  url: https://isl.stanford.edu/groups/elgamal/abbas_publications/J015.pdf
+
 blackwell-breiman-thomasian-1959:
   title: The Capacity of a Class of Channels
   authors: [David Blackwell, Leo Breiman, A. J. Thomasian]
