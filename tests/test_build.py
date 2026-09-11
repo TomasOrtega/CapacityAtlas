@@ -105,8 +105,19 @@ def test_linked_proof_notes_are_optional(tmp_path: Path, monkeypatch: MonkeyPatc
     problem = next(
         problem for problem in atlas.problems if problem["id"] == "finite-dmc-input-cost"
     )
-    proof = problem["formalization"]["proofs"][0]
-    proof.pop("notes", None)
+    proof = {
+        "id": "example-proof",
+        "claim_id": "exact-capacity",
+        "claim_version": 1,
+        "status": "complete",
+        "system": "Lean",
+        "repository": "example/proof",
+        "commit": "0" * 40,
+        "url": f"https://github.com/example/proof/commit/{'0' * 40}",
+        "file": "Example.lean",
+        "declaration": "Example.capacity",
+    }
+    problem["formalization"]["proofs"] = [proof]
     monkeypatch.setattr("capacity_atlas.build.assert_valid", lambda root: atlas)
 
     output = build_site(output=tmp_path / "site")

@@ -75,8 +75,8 @@ value. AMS classifications are intentionally not used.
 
 Capacity Atlas uses Lean 4 for formal verification.
 
-- Reuse definitions in `CapacityAtlasForMathlib`.
-- Put channel-specific definitions and statements in `CapacityAtlas`.
+- Reuse definitions and proofs in `CapacityAtlasForMathlib`.
+- Put channel-specific definitions, statements, and proofs in `CapacityAtlas`.
 - Put metadata attributes and generator utilities in `CapacityAtlasUtil`.
 - Attach `@[capacity_problem "problem-id"]` to problem-specific declarations.
 - Mark declaration roles with `@[capacity_definition]`,
@@ -90,7 +90,7 @@ Capacity Atlas uses Lean 4 for formal verification.
   stated directly with `sorry` or proved from another admitted research claim.
 - Mark a complete local proof with `@[capacity_formal_proof]` and use
   `@[capacity_test]` for tested structural claims.
-- For a research claim whose proof belongs externally, use a `def` returning
+- For a research claim proved in an external repository, use a `def` returning
   `Prop` tagged `@[capacity_proposition]`, with the usual statement, identity,
   version, and open/solved category metadata. Its body must have clean transitive
   axioms. The definition states the proposition; it is not a local proof and
@@ -103,18 +103,23 @@ Capacity Atlas uses Lean 4 for formal verification.
 - Increment that claim's version whenever its proposition changes in a way that
   can invalidate a formal proof.
 
-The central repository should contain canonical claims, reusable API, tests,
-and short illuminating proofs. As in Formal Conjectures' contribution policy, a
-proof longer than roughly 25–50 lines should normally live elsewhere. The same
-rule applies when a proof needs significant problem-specific infrastructure even
-if its final theorem is short.
+Develop Lean code in this monorepo by default, including substantial proofs and
+problem-specific infrastructure. Keeping the code together lets proofs reuse
+definitions and lemmas and keeps their builds synchronized. Put broadly reusable
+infrastructure in `CapacityAtlasForMathlib` and problem-specific developments in
+`CapacityAtlas`; proof length does not determine where code belongs.
+
+Contributors may instead use an external repository when they prefer. Linked
+proofs follow the same claim identity, versioning, and trust requirements, plus
+the immutable provenance contract below.
 
 See [docs/lean.md](docs/lean.md) and
 [docs/formal-proofs.md](docs/formal-proofs.md).
 
 ## Formal proof provenance
 
-A linked proof record must:
+Local proofs are built and audited with the rest of the Lean project. An external
+proof's linked record must:
 
 - use Lean 4
 - identify the exact claim proved

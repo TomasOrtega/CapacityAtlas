@@ -6,6 +6,8 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
+import pytest
+
 from capacity_atlas.data import load_atlas
 from capacity_atlas.validate import validate_atlas
 
@@ -50,6 +52,38 @@ def _lean_report() -> dict[str, Any]:
 
 def test_registry_is_valid() -> None:
     assert validate_atlas() == []
+
+
+@pytest.mark.parametrize(
+    "problem_id",
+    [
+        "finite-dmc-input-cost",
+        "compound-discrete-memoryless-channel",
+        "causal-state-information-channel",
+        "discrete-memoryless-channel-with-feedback",
+        "two-user-discrete-memoryless-mac",
+    ],
+)
+@pytest.mark.parametrize("compiled", [False, True])
+def test_local_capacity_proof_does_not_require_external_records(
+    problem_id: str, compiled: bool
+) -> None:
+    atlas = deepcopy(load_atlas())
+    formalization = atlas.problems_by_id[problem_id]["formalization"]
+    formalization["proofs"] = []
+    claim = next(claim for claim in formalization["claims"] if claim["id"] == "exact-capacity")
+    assert claim["formal_status"] == "proved"
+    assert claim["version"] == 1
+
+    report = _lean_report()
+    assert validate_atlas(atlas, report if compiled else None) == []
+    declaration = next(
+        item
+        for item in report["declarations"]
+        if item["problemId"] == problem_id and item["claimId"] == claim["id"]
+    )
+    assert declaration["formalProof"] is True
+    assert declaration["proposition"] is False
 
 
 def test_registry_uses_controlled_axes() -> None:

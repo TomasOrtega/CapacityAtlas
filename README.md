@@ -9,10 +9,11 @@
 known bounds, open gaps, formally stated claims, and machine-checked proofs. The
 public site is [capacityatlas.org](https://capacityatlas.org/).
 
-The repository is deliberately a registry rather than a proof monorepo. It owns
-stable problem identifiers, precise communication models, controlled
-information-theory tags, primary references, and versioned formal claims.
-Substantial formal proofs live in dedicated repositories and are linked by an
+The repository combines the registry and Lean developments in one monorepo. It
+owns stable problem identifiers, precise communication models, controlled
+information-theory tags, primary references, versioned formal claims, and proofs.
+Keeping definitions, lemmas, and proofs together supports reuse across problems.
+Contributors may also maintain proofs in external repositories, linked by an
 immutable commit.
 
 ## Design
@@ -33,17 +34,16 @@ citation.
 
 ```text
 lean/
-├── CapacityAtlas/              channel-specific definitions and statements
-├── CapacityAtlasForMathlib/    reusable information-theory infrastructure
+├── CapacityAtlas/              channel-specific definitions, statements, and proofs
+├── CapacityAtlasForMathlib/    reusable information-theory definitions and proofs
 └── CapacityAtlasUtil/          registry metadata attributes and utilities
 ```
 
-The central repository uses Lean 4 for formal verification. It keeps shared API,
-canonical formal claims, tests, and short illuminating proofs. A proof longer than
-roughly 25–50 lines, or one needing significant problem-specific infrastructure,
-should normally live in a separate repository. Linked proof repositories
+The repository uses Lean 4 for formal verification. New definitions, API, claims,
+tests, and proofs belong here by default, including substantial problem-specific
+developments. External proof repositories remain welcome when preferred. They
 should import a pinned Capacity Atlas release or commit and prove the registered
-statement rather than restating it independently.
+statement directly whenever possible.
 
 Formal status is shown on each problem page rather than in a separate site tab.
 See [docs/lean.md](docs/lean.md) and
@@ -97,7 +97,7 @@ data/references.yaml primary bibliography records
 schema/               machine-checkable data schema
 site/                 small static templates, CSS, and JavaScript
 src/capacity_atlas/   loader, validator, and site generator
-lean/                 shared definitions and canonical formal records
+lean/                 shared definitions, canonical claims, and formal proofs
 docs/                 contribution and maintenance guides
 ```
 

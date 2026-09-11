@@ -2,6 +2,8 @@
 Copyright 2026 The Capacity Atlas Authors
 Licensed under the Apache License, Version 2.0 (the "License").
 See the License for the specific language governing permissions and limitations.
+Shared Fano normalization adapts CapacityAtlasMAC/Converse.lean from:
+https://github.com/TomasOrtega/CapacityAtlasMAC/blob/ec5be554b9644df94dd58190963793f3f1d1da52/CapacityAtlasMAC/Converse.lean
 -/
 
 import CapacityAtlasForMathlib.InformationTheory.FiniteEntropy
@@ -10,6 +12,74 @@ import CapacityAtlasForMathlib.InformationTheory.RandomCoding
 open scoped BigOperators
 
 namespace CapacityAtlas
+
+/-- Normalize a Fano log-message bound by the physical blocklength and convert to bits. -/
+@[capacity_shared_api]
+theorem fano_normalized_log_bound {n : ℕ} {L A e : ℝ} (hn : 0 < n)
+    (h : (1 - e) * L ≤ A * Real.log 2 + Real.log 2) :
+    (1 - e) * (L / ((n : ℝ) * Real.log 2)) ≤
+      (n : ℝ)⁻¹ * A + (n : ℝ)⁻¹ := by
+  have hnReal : 0 < (n : ℝ) := by exact_mod_cast hn
+  have hlogTwo : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  calc
+    _ = ((1 - e) * L) / ((n : ℝ) * Real.log 2) := by ring
+    _ ≤ (A * Real.log 2 + Real.log 2) / ((n : ℝ) * Real.log 2) :=
+      div_le_div_of_nonneg_right h (mul_pos hnReal hlogTwo).le
+    _ = _ := by field_simp [hnReal.ne', hlogTwo.ne']
+
+/-- Fano's message-count bound in bits per channel use. -/
+@[capacity_shared_api]
+theorem fano_rate_bound {messageCount blocklength : ℕ} {error capacity : ℝ}
+    (hblocklength : 0 < blocklength)
+    (hlogBound : Real.log messageCount ≤
+      (blocklength : ℝ) * capacity * Real.log 2 + Real.log 2 +
+        error * Real.log messageCount) :
+    (1 - error) * (Real.logb 2 messageCount / (blocklength : ℝ)) ≤
+      capacity + (blocklength : ℝ)⁻¹ := by
+  have hblocklengthReal : (blocklength : ℝ) ≠ 0 := by exact_mod_cast hblocklength.ne'
+  have hrearranged :
+      (1 - error) * Real.log messageCount ≤
+        (blocklength : ℝ) * capacity * Real.log 2 + Real.log 2 := by
+    linarith
+  simpa [Real.logb, div_div, mul_comm, hblocklengthReal] using
+    fano_normalized_log_bound hblocklength hrearranged
+
+/-- Replace a code's error and rate by the reliability and rate targets it meets. -/
+@[capacity_shared_api]
+theorem fano_rate_bound_of_error_le {rate codeRate error ε bound : ℝ}
+    (hrate : 0 ≤ rate) (hε : ε < 1) (herror : error ≤ ε) (hcodeRate : rate ≤ codeRate)
+    (hbound : (1 - error) * codeRate ≤ bound) :
+    (1 - ε) * rate ≤ bound := by
+  have hfactor : 0 ≤ 1 - error := by linarith
+  exact (mul_le_mul_of_nonneg_right (sub_le_sub_left herror 1) hrate).trans
+    ((mul_le_mul_of_nonneg_left hcodeRate hfactor).trans hbound)
+
+/-- Vanishing error and the inverse-blocklength Fano remainder give the rate converse. -/
+@[capacity_shared_api]
+theorem rate_le_of_fano_bounds {rate capacity : ℝ} (hcapacity : 0 ≤ capacity)
+    (hbounds : 0 ≤ rate → ∀ ε : ℝ, 0 < ε → ε < 1 →
+      ∀ᶠ n : ℕ in Filter.atTop, (1 - ε) * rate ≤ capacity + (n : ℝ)⁻¹) :
+    rate ≤ capacity := by
+  by_contra hrateCapacity
+  have hstrict : capacity < rate := lt_of_not_ge hrateCapacity
+  have hrate : 0 < rate := lt_of_le_of_lt hcapacity hstrict
+  let gap := rate - capacity
+  have hgap : 0 < gap := by dsimp [gap]; linarith
+  have hgapRate : gap ≤ rate := by dsimp [gap]; linarith
+  let ε := gap / (2 * rate)
+  have hε : 0 < ε := by dsimp [ε]; positivity
+  have hεlt : ε < 1 := by
+    apply (div_lt_one (mul_pos (by norm_num) hrate)).2
+    linarith
+  have hεRate : ε * rate = gap / 2 := by
+    dsimp [ε]
+    field_simp [hrate.ne']
+  have hlimit : Filter.Tendsto (fun n : ℕ ↦ capacity + (n : ℝ)⁻¹)
+      Filter.atTop (nhds capacity) := by
+    simpa using tendsto_const_nhds.add (tendsto_inv_atTop_nhds_zero_nat (𝕜 := ℝ))
+  have hbound := ge_of_tendsto hlimit (hbounds hrate.le ε hε hεlt)
+  dsimp [gap] at hεRate
+  nlinarith
 
 namespace FiniteChannel
 
@@ -259,26 +329,7 @@ theorem blockCode_rate_bound
     (code : BlockCode channel blocklength) (hblocklength : 0 < blocklength) :
     (1 - code.averageErrorProbability) * code.rate ≤
       channel.informationCapacityBits + (blocklength : ℝ)⁻¹ := by
-  have hlogBound := channel.blockCode_log_messageCount_le code
-  have hblocklengthReal : 0 < (blocklength : ℝ) := by exact_mod_cast hblocklength
-  have hlogTwo : 0 < Real.log 2 := Real.log_pos (by norm_num)
-  have hrearranged :
-      (1 - code.averageErrorProbability) * Real.log code.messageCount ≤
-        (blocklength : ℝ) * channel.informationCapacityBits * Real.log 2 + Real.log 2 := by
-    linarith
-  unfold BlockCode.rate Real.logb
-  calc
-    (1 - code.averageErrorProbability) *
-        (Real.log code.messageCount / Real.log 2 / (blocklength : ℝ)) =
-        ((1 - code.averageErrorProbability) * Real.log code.messageCount) /
-          ((blocklength : ℝ) * Real.log 2) := by
-      field_simp [hblocklengthReal.ne', hlogTwo.ne']
-    _ ≤ ((blocklength : ℝ) * channel.informationCapacityBits * Real.log 2 +
-          Real.log 2) / ((blocklength : ℝ) * Real.log 2) :=
-      div_le_div_of_nonneg_right hrearranged
-        (mul_pos hblocklengthReal hlogTwo).le
-    _ = channel.informationCapacityBits + (blocklength : ℝ)⁻¹ := by
-      field_simp [hblocklengthReal.ne', hlogTwo.ne']
+  exact fano_rate_bound hblocklength (channel.blockCode_log_messageCount_le code)
 
 namespace AchievableRate
 
@@ -288,62 +339,13 @@ theorem le_informationCapacityBits [Nonempty X]
     (channel : FiniteChannel X Y) {rate : ℝ}
     (hachievable : channel.AchievableRate rate) :
     rate ≤ channel.informationCapacityBits := by
-  by_contra hrateCapacity
-  have hstrict : channel.informationCapacityBits < rate := lt_of_not_ge hrateCapacity
-  have hcapacityNonnegative := channel.informationCapacityBits_nonnegative
-  have hratePositive : 0 < rate := lt_of_le_of_lt hcapacityNonnegative hstrict
-  let gap := rate - channel.informationCapacityBits
-  have hgap : 0 < gap := by
-    dsimp [gap]
-    linarith
-  have hgapRate : gap ≤ rate := by
-    dsimp [gap]
-    linarith
-  let ε := gap / (4 * rate)
-  have hε : 0 < ε := by
-    dsimp [ε]
-    positivity
-  have hεlt : ε < 1 := by
-    apply (div_lt_one (mul_pos (by norm_num) hratePositive)).2
-    linarith
-  have hεRate : ε * rate = gap / 4 := by
-    dsimp [ε]
-    field_simp [hratePositive.ne']
+  apply rate_le_of_fano_bounds channel.informationCapacityBits_nonnegative
+  intro hrate ε hε hεlt
   obtain ⟨firstBlocklength, hfirstPositive, hcodes⟩ := hachievable ε hε
-  obtain ⟨blocklength, hblocklengthLarge⟩ :=
-    exists_nat_gt (max (firstBlocklength : ℝ) (4 / gap))
-  have hfirstBlocklength : firstBlocklength ≤ blocklength := by
-    exact_mod_cast (lt_of_le_of_lt (le_max_left _ _) hblocklengthLarge).le
-  have hblocklengthPositive : 0 < blocklength :=
-    lt_of_lt_of_le hfirstPositive hfirstBlocklength
-  have hblocklengthReal : 0 < (blocklength : ℝ) := by
-    exact_mod_cast hblocklengthPositive
-  have hfourDiv : 4 / gap < (blocklength : ℝ) :=
-    lt_of_le_of_lt (le_max_right _ _) hblocklengthLarge
-  have hfourProduct : 4 < (blocklength : ℝ) * gap :=
-    (div_lt_iff₀ hgap).mp hfourDiv
-  have hinversePositive : 0 < (blocklength : ℝ)⁻¹ := inv_pos.mpr hblocklengthReal
-  have hinverseProduct : (blocklength : ℝ) * (blocklength : ℝ)⁻¹ = 1 :=
-    mul_inv_cancel₀ hblocklengthReal.ne'
-  have hinverseSmall : (blocklength : ℝ)⁻¹ < gap / 4 := by
-    nlinarith
-  obtain ⟨code, herror, hcodeRate⟩ := hcodes blocklength hfirstBlocklength
-  have hfactorNonnegative : 0 ≤ 1 - code.averageErrorProbability := by
-    linarith
-  have hlower :
-      (1 - ε) * rate ≤ (1 - code.averageErrorProbability) * code.rate := by
-    calc
-      (1 - ε) * rate ≤ (1 - code.averageErrorProbability) * rate := by
-        exact mul_le_mul_of_nonneg_right (by linarith) hratePositive.le
-      _ ≤ (1 - code.averageErrorProbability) * code.rate :=
-        mul_le_mul_of_nonneg_left hcodeRate hfactorNonnegative
-  have hupper := channel.blockCode_rate_bound code hblocklengthPositive
-  have hcombined :
-      (1 - ε) * rate ≤
-        channel.informationCapacityBits + (blocklength : ℝ)⁻¹ :=
-    hlower.trans hupper
-  dsimp [gap] at hgap hεRate hinverseSmall
-  nlinarith
+  filter_upwards [Filter.eventually_ge_atTop firstBlocklength] with n hn
+  obtain ⟨code, herror, hcodeRate⟩ := hcodes n hn
+  exact fano_rate_bound_of_error_le hrate hεlt herror hcodeRate
+    (channel.blockCode_rate_bound code (lt_of_lt_of_le hfirstPositive hn))
 
 end AchievableRate
 

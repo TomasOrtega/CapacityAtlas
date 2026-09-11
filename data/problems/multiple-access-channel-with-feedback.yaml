@@ -3,7 +3,7 @@
 id: multiple-access-channel-with-feedback
 title: Discrete memoryless multiple-access channel with feedback
 status: open
-updated: '2026-08-10'
+updated: '2026-09-11'
 summary: Common noiseless output feedback lets distributed encoders cooperate, but the general capacity region is
   unknown.
 tags:
@@ -56,12 +56,12 @@ frontier:
   progress:
   - Close the gap for a new explicit finite channel.
   - Strengthen dependence balance without losing computability.
-  - Relate external formal proofs to a versioned canonical feedback-code claim.
+  - Relate local or linked formal proofs to a versioned canonical feedback-code claim.
 formalization:
   status: none
   claims: []
-  notes: The Ozarow Gaussian special case is exact, but the general finite model remains an external-proof
-    target.
+  notes: The Ozarow Gaussian special case is exact, but the general finite model remains a formalization
+    target for this repository.
   files: []
   proofs: []
 references:

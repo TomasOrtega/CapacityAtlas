@@ -168,13 +168,33 @@ theorem natCeil_exp_le_two_mul_exp {t : ℝ} (ht : 0 ≤ t) :
   have hone : 1 ≤ Real.exp t := by simpa using Real.exp_monotone ht
   linarith
 
+/-- A threshold gap makes the rounded message-count contribution decay exponentially. -/
+@[capacity_shared_api]
+theorem messageCountAtRate_mul_exp_neg_le (rate δ : ℝ) (hrate : 0 ≤ rate)
+    (blocklength : ℕ) {threshold : ℝ}
+    (hthreshold : (blocklength : ℝ) * rate * Real.log 2 +
+      (blocklength : ℝ) * δ ≤ threshold) :
+    (messageCountAtRate rate blocklength : ℝ) * Real.exp (-threshold) ≤
+      2 * Real.exp (-((blocklength : ℝ) * δ)) := by
+  calc
+    _ ≤ (2 * Real.exp ((blocklength : ℝ) * rate * Real.log 2)) *
+        Real.exp (-threshold) :=
+      mul_le_mul_of_nonneg_right (natCeil_exp_le_two_mul_exp (by positivity))
+        (Real.exp_pos _).le
+    _ = 2 * Real.exp ((blocklength : ℝ) * rate * Real.log 2 - threshold) := by
+      rw [mul_assoc, ← Real.exp_add]
+      rfl
+    _ ≤ _ := by
+      apply mul_le_mul_of_nonneg_left (Real.exp_le_exp.mpr _) (by norm_num)
+      linarith
+
 /-- The polynomial and exponential terms in the random-coding estimate vanish. -/
 @[capacity_shared_api]
-theorem randomCodingAsymptoticBound_tendsto_zero (variance δ : ℝ) (hδ : 0 < δ) :
+theorem weightedRandomCodingBound_tendsto_zero (variance δ coefficient : ℝ) (hδ : 0 < δ) :
     Filter.Tendsto
       (fun blocklength : ℕ ↦
         ((blocklength : ℝ) * variance) / (((blocklength : ℝ) * δ) ^ 2) +
-          2 * Real.exp (-((blocklength : ℝ) * δ)))
+          coefficient * Real.exp (-((blocklength : ℝ) * δ)))
       Filter.atTop
       (nhds 0) := by
   have hfirstBase :
@@ -200,7 +220,17 @@ theorem randomCodingAsymptoticBound_tendsto_zero (variance δ : ℝ) (hδ : 0 < 
     Real.tendsto_exp_atBot.comp
       ((Filter.tendsto_neg_atTop_atBot :
         Filter.Tendsto (fun value : ℝ ↦ -value) Filter.atTop Filter.atBot).comp hscaled)
-  simpa using hfirst.add (Filter.Tendsto.const_mul 2 hexponential)
+  simpa using hfirst.add (Filter.Tendsto.const_mul coefficient hexponential)
+
+/-- The usual single-codebook random-coding estimate vanishes. -/
+@[capacity_shared_api]
+theorem randomCodingAsymptoticBound_tendsto_zero (variance δ : ℝ) (hδ : 0 < δ) :
+    Filter.Tendsto
+      (fun blocklength : ℕ ↦
+        ((blocklength : ℝ) * variance) / (((blocklength : ℝ) * δ) ^ 2) +
+          2 * Real.exp (-((blocklength : ℝ) * δ)))
+      Filter.atTop (nhds 0) :=
+  weightedRandomCodingBound_tendsto_zero variance δ 2 hδ
 
 /-- The finite-block estimate needed to derive direct achievability for a fixed input. -/
 @[capacity_shared_api]
@@ -256,35 +286,14 @@ theorem achievableRate_of_lt_mutualInformationBits_of_randomCodingBound [Nonempt
   obtain ⟨code, hcodeCount, hcodeError⟩ :=
     randomCoding δ hblocklengthPos hmessageCount hδ
   refine ⟨code, ?_, ?_⟩
-  · have hmessageExponent :
-        0 ≤ (blocklength : ℝ) * rate * Real.log 2 := by positivity
-    have hmessageUpper :
-        (messageCount : ℝ) ≤
-          2 * Real.exp ((blocklength : ℝ) * rate * Real.log 2) := by
-      exact natCeil_exp_le_two_mul_exp hmessageExponent
-    have hexponential :
+  · have hexponential :
         (messageCount : ℝ) * Real.exp
             (-((blocklength : ℝ) * channel.mutualInformation input -
               (blocklength : ℝ) * δ)) ≤
-          2 * Real.exp (-((blocklength : ℝ) * δ)) := by
-      calc
-        (messageCount : ℝ) * Real.exp
-              (-((blocklength : ℝ) * channel.mutualInformation input -
-                (blocklength : ℝ) * δ)) ≤
-            (2 * Real.exp ((blocklength : ℝ) * rate * Real.log 2)) *
-              Real.exp
-                (-((blocklength : ℝ) * channel.mutualInformation input -
-                  (blocklength : ℝ) * δ)) :=
-          mul_le_mul_of_nonneg_right hmessageUpper (Real.exp_pos _).le
-        _ = 2 * Real.exp
-              ((blocklength : ℝ) * rate * Real.log 2 +
-                -((blocklength : ℝ) * channel.mutualInformation input -
-                  (blocklength : ℝ) * δ)) := by
-          rw [mul_assoc, ← Real.exp_add]
-        _ = 2 * Real.exp (-((blocklength : ℝ) * δ)) := by
-          congr 2
-          dsimp [δ, gap, information, logTwo]
-          ring
+          2 * Real.exp (-((blocklength : ℝ) * δ)) :=
+      messageCountAtRate_mul_exp_neg_le rate δ hratePos.le blocklength (by
+        dsimp [δ, gap, information, logTwo]
+        linarith)
     have herrorBound :
         ((blocklength : ℝ) * variance) / (((blocklength : ℝ) * δ) ^ 2) +
             (messageCount : ℝ) * Real.exp

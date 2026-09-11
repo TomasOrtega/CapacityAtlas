@@ -155,6 +155,26 @@ theorem rowDistribution_relabelOutput [DecidableEq B] (channel : FiniteChannel M
     (f : A → B) (m : M) :
     (channel.relabelOutput f).rowDistribution m = (channel.rowDistribution m).map f := rfl
 
+/-- Compare output relabelings on the original alphabet. -/
+@[capacity_shared_api]
+theorem relabelOutput_eq_iff [DecidableEq B] (channel : FiniteChannel M A)
+    (equiv : A ≃ B) (other : FiniteChannel M B) :
+    channel.relabelOutput equiv = other ↔
+      ∀ m a, channel.transition m a = other.transition m (equiv a) := by
+  have htransition (m : M) (a : A) :
+      (channel.relabelOutput equiv).transition m (equiv a) = channel.transition m a := by
+    classical
+    change (∑ x with equiv x = equiv a, channel.transition m x) = channel.transition m a
+    simp [Finset.sum_filter, equiv.injective.eq_iff]
+  constructor
+  · intro h m a
+    rw [← h]
+    exact (htransition m a).symm
+  · intro h
+    ext m b
+    obtain ⟨a, rfl⟩ := equiv.surjective b
+    exact (htransition m a).trans (h m a)
+
 @[capacity_shared_api]
 theorem outputDistribution_relabelOutput [DecidableEq B] (channel : FiniteChannel M A)
     (f : A → B) (input : FiniteDistribution M) :
@@ -267,6 +287,20 @@ theorem latentExtension_mutualInformation_le [DecidableEq T]
   change _ - _ ≤ _ - _ + ((next.outputDistribution d).entropy - next.conditionalOutputEntropy d)
   change _ ≤ _ + (next.outputDistribution d).entropy at hout
   linarith
+
+/-- Hiding a latent index still adds at most one next-channel capacity. -/
+@[capacity_shared_api]
+theorem latentExtension_mutualInformation_le_add_capacity
+    (weights : FiniteDistribution J) (past : M → J → FiniteDistribution A)
+    (next : FiniteChannel T B) (strategy : M → J → T) (input : FiniteDistribution M) :
+    (latentExtension weights past next strategy).mutualInformation input ≤
+      (latentPast weights past).mutualInformation input +
+        next.informationCapacityBits * Real.log 2 := by
+  classical
+  apply (latentExtension_mutualInformation_le weights past next strategy input).trans
+  exact add_le_add le_rfl
+    ((div_le_iff₀ (Real.log_pos (by norm_num : (1 : ℝ) < 2))).mp
+      (next.mutualInformationBits_le_informationCapacityBits _))
 
 /-- Append a channel observation whose input depends on the message and preceding output. -/
 @[capacity_shared_api]

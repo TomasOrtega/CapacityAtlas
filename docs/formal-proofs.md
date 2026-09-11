@@ -1,14 +1,21 @@
 # Formal proof provenance
 
-Substantial proofs should live in dedicated repositories. Capacity Atlas records
-them as evidence for a stable, versioned claim rather than vendoring their
-source. This design is adapted from the `formal_proof` mechanism and long-proof
-policy of Google DeepMind's
+Develop proofs and their supporting infrastructure in this monorepo by default
+so other proofs can reuse them. Local proofs build against the shared definitions
+and are checked by the repository's transitive axiom audit. A complete local
+claim theorem carries `capacity_formal_proof`; see [the Lean guide](lean.md).
+When an external proof is brought into the monorepo, its immutable record may
+remain as historical provenance alongside the locally proved claim.
+
+Contributors may maintain proofs in external repositories when they prefer.
+Capacity Atlas records those proofs as evidence for stable, versioned claims
+using immutable links. This optional provenance mechanism is adapted from the
+`formal_proof` mechanism of Google DeepMind's
 [Formal Conjectures](https://github.com/google-deepmind/formal-conjectures).
 
-## Required repository contract
+## External repository contract
 
-A proof repository should contain a small manifest named
+An external proof repository should contain a small manifest named
 `capacity-atlas-proof.yaml`:
 
 ```yaml
@@ -43,7 +50,7 @@ Atlas commit, with the same parameters, and has only the permitted standard
 axioms. The proposition definition itself never counts as a local proof;
 `formal_status: proved` requires a complete linked proof record.
 
-## Atlas record
+## Linked proof record
 
 The corresponding problem YAML stores:
 
@@ -89,6 +96,7 @@ evidence visible instead of silently applying it to a revised problem.
 
 ## Multiple proofs
 
-Capacity Atlas permits several independent proofs of the same claim. Distinct
-proof strategies, human and AI formalizations, and later Mathlib proofs may all
-coexist. No proof repository is privileged merely by being first.
+Capacity Atlas permits several independent proofs of the same claim, developed
+locally or in external repositories. Distinct proof strategies, human and AI
+formalizations, and later Mathlib proofs may all coexist. No proof is privileged
+merely by being first.
