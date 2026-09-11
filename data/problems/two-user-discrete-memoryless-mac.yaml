@@ -50,7 +50,7 @@ formalization:
     formal_status: proved
     version: 1
     description: The complete average-error capacity region with separate deterministic encoders equals the three single-letter inequalities over arbitrary finite time sharing, including boundary rates and zero-rate axes.
-  notes: The external proof uses separate random codebooks and a fixed-schedule time-sharing reduction. Three Fano bounds share one time coordinate; compactness supplies exact boundary witnesses. The canonical region retains arbitrary finite Q.
+  notes: The local proof uses separate random codebooks and a fixed-schedule time-sharing reduction. Three Fano bounds share one time coordinate; compactness supplies exact boundary witnesses. The canonical region retains arbitrary finite Q. The proof is included in this repository's build and transitive axiom audit; the linked upstream certificate is retained as provenance.
   files:
   - path: lean/CapacityAtlasForMathlib/InformationTheory/MultipleAccess.lean
     declaration: CapacityAtlas.MultipleAccess.BlockCode
@@ -80,5 +80,5 @@ formalization:
     url: https://github.com/TomasOrtega/CapacityAtlasMAC/commit/ec5be554b9644df94dd58190963793f3f1d1da52
     file: CapacityAtlasMAC.lean
     declaration: CapacityAtlasMAC.capacityCertificate
-    notes: Pins Atlas commit f1ffd9d31dfa462010be6a95ab79bfd2f911ca76. The audit checks every external proof declaration and full canonical-proposition correspondence with rigid universes; negative controls reject a different proposition and a universe-restricted certificate.
+    notes: Historical upstream certificate imported into this repository. Pins Atlas commit f1ffd9d31dfa462010be6a95ab79bfd2f911ca76. The upstream audit checks every external proof declaration and full canonical-proposition correspondence with rigid universes; negative controls reject a different proposition and a universe-restricted certificate.
 references: [ahlswede-1971, liao-1972, elgamal-kim-2011]

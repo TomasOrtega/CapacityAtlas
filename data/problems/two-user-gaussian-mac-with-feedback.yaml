@@ -4,7 +4,7 @@ id: two-user-gaussian-mac-with-feedback
 title: Two-user Gaussian multiple-access channel with feedback
 status: solved
 featured: true
-updated: '2026-08-10'
+updated: '2026-09-11'
 summary: Ozarow's feedback scheme and converse determine the full two-user Gaussian MAC feedback region.
 tags:
   model:
@@ -52,7 +52,7 @@ bounds:
 formalization:
   status: none
   claims: []
-  notes: The exact feedback region is a substantial external formalization target.
+  notes: The exact feedback region is a substantial formalization target for this repository.
   files: []
   proofs: []
 references:

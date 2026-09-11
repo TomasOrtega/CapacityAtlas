@@ -3,7 +3,7 @@
 id: compound-discrete-memoryless-channel
 title: Finite compound discrete memoryless channel
 status: solved
-updated: '2026-09-10'
+updated: '2026-09-11'
 summary: One unknown channel from a known finite family governs the entire transmission block.
 tags:
   model: [point-to-point]
@@ -50,7 +50,7 @@ formalization:
     formal_status: proved
     version: 1
     description: Operational capacity with one common encoder and decoder equals the maximum, over input distributions, of the least mutual information across the finite channel family.
-  notes: The canonical proposition fixes a member-independent code and uniform average error. The shared API proves attainment of the max–min information target. The external direct proof selects a common decoder using a uniform mixture of whole-block channels, and its converse retains one averaged input distribution across the family.
+  notes: The locally proved canonical claim fixes a member-independent code and uniform average error. The shared API proves attainment of the max–min information target. The direct proof selects a common decoder using a uniform mixture of whole-block channels, and its converse retains one averaged input distribution across the family. The proof is included in this repository's build and transitive axiom audit; the linked upstream certificate is retained as provenance.
   files:
   - path: lean/CapacityAtlasForMathlib/InformationTheory/CompoundChannel.lean
     declaration: CapacityAtlas.CompoundChannel.BlockCode
@@ -84,5 +84,5 @@ formalization:
     url: https://github.com/TomasOrtega/CapacityAtlasCompound/commit/1d5cbdc0a8cfb5d034facdb8d1e2473bb3c40ebe
     file: CapacityAtlasCompound.lean
     declaration: CapacityAtlasCompound.capacityCertificate
-    notes: Pins Atlas commit 61a109e8cba1b8afa4b42c68afd96a3df71120d0. The audit checks every transitive proof axiom and exact canonical-proposition correspondence with rigid universes; negative controls reject a different proposition and a universe-restricted certificate.
+    notes: Historical upstream certificate imported into this repository. Pins Atlas commit 61a109e8cba1b8afa4b42c68afd96a3df71120d0. The upstream audit checks every transitive proof axiom and exact canonical-proposition correspondence with rigid universes; negative controls reject a different proposition and a universe-restricted certificate.
 references: [blackwell-breiman-thomasian-1959, lapidoth-telatar-1998, cover-thomas-2006]

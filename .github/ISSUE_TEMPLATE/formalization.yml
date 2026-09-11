@@ -5,7 +5,7 @@ labels: ["enhancement"]
 body:
   - type: markdown
     attributes:
-      value: A proposal is enough. Maintainers can help with registry metadata and repository layout.
+      value: A proposal is enough. Lean development belongs in this monorepo by default; external proof repositories are also welcome when preferred. Maintainers can help with registry metadata and repository layout.
   - type: input
     id: problem
     attributes:
@@ -47,7 +47,7 @@ body:
     id: proof
     attributes:
       label: Formal proof provenance
-      description: For substantial proofs, give repository, immutable commit, file, declaration, and public CI.
+      description: For local proofs, give the file and declaration if available. For external proofs, give repository, immutable commit, file, declaration, and public CI.
   - type: checkboxes
     id: policy
     attributes:

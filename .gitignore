@@ -8,3 +8,4 @@ build/
 dist/
 lean/.lake/
 .DS_Store
+campaign.md

@@ -7,9 +7,9 @@ problem YAML ─┬─ static website
               ├─ JSON API
               └─ faceted problem index
 
-Lean source ──── canonical definitions and statements shown on problem pages
+Lean source ──── shared definitions, canonical statements, and formal proofs
 
-external repos ─ immutable proof records
+external repos ─ optional immutable proof records
 
 GitHub Discussions ─ per-problem conversation
 ```
@@ -17,18 +17,30 @@ GitHub Discussions ─ per-problem conversation
 The site generator is intentionally small: Python, Jinja, plain CSS, and plain
 JavaScript. There is no application server, database, or front-end framework.
 
-## Why proofs are external
+## Proof development
 
-Coding theorems, converses, and computational certificates can grow into large
-projects with their own dependencies and release schedules. Keeping them outside
-the registry bounds CI cost, permits several independent proofs, and prevents one
-problem from dominating the central repository. The external repository proves a
-pinned Capacity Atlas statement and returns an immutable commit record.
+The monorepo is the default home for Lean definitions, lemmas, proofs, and their
+supporting infrastructure. Shared development makes results reusable across
+problems and checks them against one pinned toolchain and Mathlib version.
+Substantial proofs belong here too; their size does not require a separate
+repository.
+
+Reusable proof developments live in `CapacityAtlasForMathlib`, and registered
+claim theorems in `CapacityAtlas` import them. The imported input-cost,
+compound-channel, causal-state, feedback, and multiple-access proofs build and
+run through the same axiom audit as the rest of the shared library. Original
+immutable proof records remain available as historical provenance.
+
+Contributors may use external repositories when they prefer independent
+development, dependencies, or release schedules. An external repository proves
+a pinned Capacity Atlas statement and supplies an immutable commit record.
+Both local and external developments may provide independent proofs of the same
+claim.
 
 ## Design provenance
 
-The registry/statement/proof split, `ForMathlib` layer, formal-proof links, and
-compact browse model are explicitly inspired by Google DeepMind's Formal
-Conjectures. Capacity Atlas specializes these patterns to channel-capacity
-problems and replaces broad mathematical subject tags with information-theory
-facets.
+The separation of registry metadata, statements, and proof status, the
+`ForMathlib` layer, formal-proof links, and compact browse model are explicitly
+inspired by Google DeepMind's Formal Conjectures. Capacity Atlas specializes
+these patterns to channel-capacity problems and replaces broad mathematical
+subject tags with information-theory facets.

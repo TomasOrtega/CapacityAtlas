@@ -1,8 +1,8 @@
 # Formal verification guide
 
 Capacity Atlas uses Lean 4 to keep shared definitions, precise research claims,
-and compact proofs in one project while allowing substantial proofs to develop
-independently. The policy follows Google DeepMind's
+and proofs in one monorepo by default. External proof repositories remain welcome
+when contributors prefer them. The statement-first policy follows Google DeepMind's
 [Formal Conjectures](https://github.com/google-deepmind/formal-conjectures): an
 open claim is still valuable as a precise theorem declaration even when its
 central proof is intentionally admitted.
@@ -35,17 +35,46 @@ returning `Prop`, together with `capacity_statement` and its claim metadata.
 
 This is reusable information-theory infrastructure that may eventually be
 proposed to Mathlib. It contains finite distributions and channels, code and
-capacity definitions, network models, graph zero-error capacity, and finite
-index coding. It is part of the trusted layer and may not contain `sorry` or
-`admit`.
+capacity definitions and proofs, network models, graph zero-error capacity, and
+finite index coding. It is part of the trusted layer and may not contain `sorry`
+or `admit`.
+
+The input-cost, compound-channel, causal-state, feedback, and multiple-access
+proof developments live under `InformationTheory/` in the `InputCost`,
+`CompoundChannel`, `CausalState`, `Feedback`, and `MultipleAccess` subdirectories.
+These modules retain their original declaration namespaces so proofs and lemmas
+can be reused directly. Shared input-cost definitions live in
+`InformationTheory/InputCost.lean`; proof modules depend on this layer without
+importing problem statements.
+
+These developments were imported from the five registered proof repositories;
+[the acknowledgements](../ACKNOWLEDGEMENTS.md#imported-lean-proof-developments)
+record their source commits and paths. Their original immutable proof records
+remain as historical provenance. The common environment audit checks the local
+sources. Canonical claim theorems apply the shared proofs directly, so Lean
+checks their types without a separate external-certificate comparison.
+
+Common proof steps are shared across channel models:
+
+- `CodingConverse` normalizes Fano bounds and takes the vanishing-error limit.
+- `OperationalCapacity` bounds rounded message counts and proves convergence of
+  weighted random-coding estimates.
+- `SequentialInformation` compares output relabelings and bounds the information
+  added by sequential or latent channel extensions.
+- `MultipleAccess.swap` exchanges sender roles, letting right-sender bounds reuse
+  left-sender proofs.
 
 ### `CapacityAtlas`
 
-This layer contains concrete channel definitions, problem claims, and focused
-tests. Every problem claim must fix the physical channel, code class,
+This layer contains concrete channel definitions, problem claims, proofs, and
+focused tests. Every problem claim must fix the physical channel, code class,
 operational criterion, rate normalization, and claimed capacity or bound.
 Statements parameterized by an arbitrary operational theory, capacity function,
 region, or bound do not qualify.
+
+The canonical input-cost, compound-channel, causal-state, feedback, and
+multiple-access claims are locally proved theorems that import the shared proof
+modules. Their declaration names, propositions, and claim versions are preserved.
 
 ## Mathlib reuse
 
@@ -119,7 +148,7 @@ Every public theorem or lemma in the problem layer is classified as open
 research, solved research, API, or test; a complete local research proof also
 carries `capacity_formal_proof`.
 
-For a substantial external proof, the canonical statement can be a `def`
+For an external proof, the canonical statement can be a `def`
 returning `Prop` tagged `capacity_proposition`, `capacity_statement`,
 `capacity_claim`, and `capacity_open` or `capacity_solved`. The audit opens its
 parameters and checks that its result type is definitionally `Prop`. It also
@@ -150,10 +179,16 @@ repository commit, file, declaration, claim identifier, and claim version. See
 
 ## What belongs here
 
-Keep neutral shared definitions, concrete models, canonical claims, tests, and
-short illuminating proofs in the central repository. A proof longer than about
-25–50 lines, or one requiring substantial problem-specific infrastructure,
-should normally live in a dedicated repository.
+Develop Lean code here by default: neutral shared definitions, concrete models,
+canonical claims, tests, proofs, and the infrastructure they need. There is no
+proof-length threshold. Extract reusable definitions and lemmas into
+`CapacityAtlasForMathlib` so other developments can import them; keep
+problem-specific code in `CapacityAtlas`.
+
+An external repository is also an option when contributors prefer separate
+development. It should import a pinned Atlas version and prove the canonical
+statement, following the [formal proof provenance contract](formal-proofs.md).
+Its code need not be copied here to register a proof.
 
 ## Build and trust boundary
 

@@ -14,6 +14,11 @@ namespace CapacityAtlas.MultipleAccess
 
 variable {X₁ X₂ Y : Type*} [Fintype X₁] [Fintype X₂] [Fintype Y]
 
+/-- Exchange the two senders' input alphabets. -/
+@[capacity_shared_api]
+def swap (W : FiniteChannel (X₁ × X₂) Y) : FiniteChannel (X₂ × X₁) Y :=
+  W.encoded Prod.swap
+
 /-- Independent input laws for the two senders. -/
 @[capacity_shared_api]
 noncomputable def productInput (p₁ : FiniteDistribution X₁) (p₂ : FiniteDistribution X₂) :
@@ -41,6 +46,11 @@ noncomputable def leftInformation (W : FiniteChannel (X₁ × X₂) Y)
 noncomputable def rightInformation (W : FiniteChannel (X₁ × X₂) Y)
     (p₁ : FiniteDistribution X₁) (p₂ : FiniteDistribution X₂) : ℝ :=
   ∑ x₁, p₁ x₁ * (rightSlice W x₁).mutualInformationBits p₂
+
+@[simp, capacity_shared_api]
+theorem leftInformation_swap (W : FiniteChannel (X₁ × X₂) Y)
+    (p₂ : FiniteDistribution X₂) (p₁ : FiniteDistribution X₁) :
+    leftInformation (swap W) p₂ p₁ = rightInformation W p₁ p₂ := rfl
 
 /-- Joint input information, in bits. -/
 @[capacity_shared_api]
@@ -115,6 +125,31 @@ noncomputable def rate₁ (code : BlockCode W n) : ℝ :=
 @[capacity_shared_api]
 noncomputable def rate₂ (code : BlockCode W n) : ℝ :=
   Real.log code.messageCount₂ / ((n : ℝ) * Real.log 2)
+
+/-- Exchange the senders and the corresponding decoder components. -/
+@[capacity_shared_api]
+def swap (code : BlockCode W n) : BlockCode (MultipleAccess.swap W) n where
+  messageCount₁ := code.messageCount₂
+  messageCount₂ := code.messageCount₁
+  messageCount₁_pos := code.messageCount₂_pos
+  messageCount₂_pos := code.messageCount₁_pos
+  encode₁ := code.encode₂
+  encode₂ := code.encode₁
+  decode output := (code.decode output).swap
+
+@[simp, capacity_shared_api]
+theorem averageErrorProbability_swap (code : BlockCode W n) :
+    code.swap.averageErrorProbability = code.averageErrorProbability := by
+  classical
+  simp only [averageErrorProbability, CapacityAtlas.OneShotCode.averageErrorProbability_eq,
+    CapacityAtlas.OneShotCode.errorProbability_eq_sum_decode_ne,
+    Fintype.card_prod, Fintype.card_fin, Nat.cast_mul, Fintype.sum_prod_type]
+  change (↑code.messageCount₂ * ↑code.messageCount₁ : ℝ)⁻¹ *
+      (∑ m₂, ∑ m₁, ∑ output,
+        if (code.decode output).swap ≠ (m₂, m₁) then
+          (W.block n).transition (code.toOneShotCode.encode (m₁, m₂)) output else 0) = _
+  rw [mul_comm (code.messageCount₂ : ℝ), Finset.sum_comm]
+  simp only [ne_eq, Prod.swap_eq_iff_eq_swap, Prod.swap_prod_mk, toOneShotCode]
 
 end BlockCode
 

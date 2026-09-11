@@ -11,7 +11,8 @@ matter more than coverage.
 5. Treat mathematical status, formal claim status, and formal-proof status as
    independent fields.
 6. Increment a claim version only when its proposition changes materially.
-7. Keep substantial Lean proofs in external repositories. Link immutable commits.
+7. Keep Lean proofs and reusable infrastructure in this monorepo by default.
+   External repositories are also welcome when preferred; link immutable commits.
 8. Do not introduce `sorry`, `admit`, unreviewed axioms, hidden network calls, or
    generated artifacts.
 9. Keep the website static and dependency-light.

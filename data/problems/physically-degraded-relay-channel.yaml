@@ -3,7 +3,7 @@
 id: physically-degraded-relay-channel
 title: Physically degraded relay channel
 status: solved
-updated: '2026-08-10'
+updated: '2026-09-11'
 summary: When the destination is a degraded version of the relay observation, decode-forward meets the cut-set bound.
 tags:
   model:
@@ -50,8 +50,8 @@ bounds:
 formalization:
   status: none
   claims: []
-  notes: This theorem should live in a dedicated formal proof repository once causal relay codes are
-    shared.
+  notes: Formalize this theorem using shared causal relay codes in the monorepo by default;
+    an external proof repository is also welcome when preferred.
   files: []
   proofs: []
 references:

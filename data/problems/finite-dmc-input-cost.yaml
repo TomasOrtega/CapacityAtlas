@@ -3,7 +3,7 @@
 id: finite-dmc-input-cost
 title: Finite discrete memoryless channel with input cost
 status: solved
-updated: '2026-09-10'
+updated: '2026-09-11'
 summary: A finite DMC under a feasible maximum-codeword average-cost constraint has a constrained mutual-information capacity formula.
 tags:
   model: [point-to-point]
@@ -43,10 +43,10 @@ formalization:
     version: 1
     description: For nonnegative cost with a feasible symbol, maximum-codeword-cost operational capacity
       equals constrained information capacity.
-  notes: The linked certificate proves the unchanged operational claim using cost-controlled random
+  notes: The local proof establishes the unchanged operational claim using cost-controlled random
     coding and a finite-mixture converse. It covers the minimum feasible budget and proves that an
-    admissible input attains the information supremum. Its complete build and transitive axiom audit
-    run in the proof repository; the local canonical declaration remains stated independently.
+    admissible input attains the information supremum. The proof is included in this repository's
+    build and transitive axiom audit; the linked upstream certificate is retained as provenance.
   files:
   - path: lean/CapacityAtlas/Channels/InputCost.lean
     declaration: CapacityAtlas.FiniteChannel.finiteDMCInputCostCapacityStatement
@@ -65,4 +65,5 @@ formalization:
     file: CapacityAtlasCost/Capacity.lean
     declaration: CapacityAtlasCost.finiteDMCInputCostCapacity
     claim_version: 1
+    notes: Historical upstream certificate imported into this repository; the original immutable proof link is retained as provenance.
 references: [sutter-et-al-2015, kostina-verdu-2015]

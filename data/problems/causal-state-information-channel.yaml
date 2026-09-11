@@ -3,7 +3,7 @@
 id: causal-state-information-channel
 title: DMC with causal state information at the encoder
 status: solved
-updated: '2026-09-10'
+updated: '2026-09-11'
 summary: An iid channel state is revealed causally to the encoder but not to the decoder.
 tags:
   model: [point-to-point]
@@ -51,7 +51,7 @@ formalization:
     formal_status: proved
     version: 1
     description: Operational capacity of arbitrary deterministic causal-state codes equals the information capacity of the finite Shannon-strategy channel.
-  notes: The external proof embeds strategy codes and bounds arbitrary causal policies by an inductive entropy argument and Fano's inequality. Its certificate proves the canonical proposition at a pinned Atlas commit and also establishes optimizer attainment. The local proposition definition adds no admitted theorem or axiom.
+  notes: The local proof embeds strategy codes and bounds arbitrary causal policies by an inductive entropy argument and Fano's inequality. It proves the canonical claim and also establishes optimizer attainment. The proof is included in this repository's build and transitive axiom audit; the linked upstream certificate is retained as provenance.
   files:
   - path: lean/CapacityAtlasForMathlib/InformationTheory/CausalState.lean
     declaration: CapacityAtlas.CausalState.Policy
@@ -89,5 +89,5 @@ formalization:
     url: https://github.com/TomasOrtega/CapacityAtlasCausalState/commit/0176a0e9fed6ec13fd2f566d9906c3ea8103d1cc
     file: CapacityAtlasCausal.lean
     declaration: CapacityAtlasCausal.capacityCertificate
-    notes: The proof pins Atlas commit 661affbfb9241fcc2b926db78564d81731a42f14 and audits every transitive proof axiom and exact canonical-proposition correspondence.
+    notes: Historical upstream certificate imported into this repository. The upstream proof pins Atlas commit 661affbfb9241fcc2b926db78564d81731a42f14 and audits every transitive proof axiom and exact canonical-proposition correspondence.
 references: [shannon-1958, elgamal-kim-2011]

@@ -50,7 +50,7 @@ formalization:
     formal_status: proved
     version: 1
     description: Fixed-blocklength average-error capacity with arbitrary strictly causal noiseless feedback policies equals the ordinary finite-DMC mutual-information maximum.
-  notes: The canonical proposition uses the product law induced by each adaptive policy. Ordinary codes embed with identical rate and error; the external converse uses a sequential entropy bound and Fano's inequality.
+  notes: The locally proved canonical claim uses the product law induced by each adaptive policy. Ordinary codes embed with identical rate and error; the converse uses a sequential entropy bound and Fano's inequality. The proof is included in this repository's build and transitive axiom audit; the linked upstream certificate is retained as provenance.
   files:
   - path: lean/CapacityAtlasForMathlib/InformationTheory/Feedback.lean
     declaration: CapacityAtlas.Feedback.Policy
@@ -84,5 +84,5 @@ formalization:
     url: https://github.com/TomasOrtega/CapacityAtlasFeedback/commit/b35299f221ad1c17ccbafb45082c22a5379a99e9
     file: CapacityAtlasFeedback.lean
     declaration: CapacityAtlasFeedback.capacityCertificate
-    notes: Pins Atlas commit c0d665982bab3c4840bac511e950cdf3fc48b50c. The audit checks transitive proof axioms and full canonical-proposition correspondence with rigid universes; negative controls reject a different proposition and a universe-restricted certificate.
+    notes: Historical upstream certificate imported into this repository. Pins Atlas commit c0d665982bab3c4840bac511e950cdf3fc48b50c. The upstream audit checks transitive proof axioms and full canonical-proposition correspondence with rigid universes; negative controls reject a different proposition and a universe-restricted certificate.
 references: [shannon-1956, cover-thomas-2006]
