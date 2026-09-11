@@ -154,6 +154,7 @@ def test_only_faithful_problem_statements_are_registered() -> None:
         "seven-cycle-zero-error-channel",
         "sun-jafar-11-message-index-coding",
         "sun-jafar-six-message-groupcast-index-coding",
+        "two-user-discrete-memoryless-mac",
     }
 
     stated = {

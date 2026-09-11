@@ -55,6 +55,13 @@ theorem encoded_mutualInformation
   unfold mutualInformation
   rw [houtput, hconditional]
 
+@[capacity_shared_api]
+theorem encoded_mutualInformationBits [DecidableEq X]
+    (channel : FiniteChannel X Y) (encode : M → X) (input : FiniteDistribution M) :
+    (channel.encoded encode).mutualInformationBits input =
+      channel.mutualInformationBits (input.map encode) := by
+  rw [mutualInformationBits, encoded_mutualInformation, mutualInformationBits]
+
 private noncomputable def identityEncoderCode [Nonempty M]
     (channel : FiniteChannel M Y) (decode : Y → M) : OneShotCode channel M where
   encode := id
