@@ -510,13 +510,14 @@ theorem block_conditionalOutputEntropy
     (input.sum_map_mul (fun word : Fin n → X ↦ word coordinate)
       (fun symbol ↦ (channel.rowDistribution symbol).entropy)).symm
 
-/-- Block mutual information is at most blocklength times single-letter capacity. -/
+/-- Block mutual information is bounded by the sum of its coordinate mutual informations. -/
 @[capacity_shared_api]
-theorem block_mutualInformation_le_informationCapacityBits_mul_log_two
+theorem block_mutualInformation_le_sum_coordinate
     (channel : FiniteChannel X Y) (n : ℕ)
     (input : FiniteDistribution (Fin n → X)) :
     (channel.block n).mutualInformation input ≤
-      (n : ℝ) * channel.informationCapacityBits * Real.log 2 := by
+      ∑ coordinate : Fin n,
+        channel.mutualInformation (input.coordinateMarginal coordinate) := by
   classical
   let output := (channel.block n).outputDistribution input
   have houtputEntropy :
@@ -534,32 +535,38 @@ theorem block_mutualInformation_le_informationCapacityBits_mul_log_two
         rw [show output.coordinateMarginal coordinate =
             channel.outputDistribution (input.coordinateMarginal coordinate) by
           exact channel.block_output_coordinateMarginal n input coordinate]
-  have hsumInformation :
-      (channel.block n).mutualInformation input ≤
+  unfold mutualInformation
+  rw [channel.block_conditionalOutputEntropy n input]
+  calc
+    output.entropy -
         ∑ coordinate : Fin n,
-          channel.mutualInformation (input.coordinateMarginal coordinate) := by
-    unfold mutualInformation
-    rw [channel.block_conditionalOutputEntropy n input]
-    calc
-      output.entropy -
+          channel.conditionalOutputEntropy (input.coordinateMarginal coordinate) ≤
+        (∑ coordinate : Fin n,
+          (channel.outputDistribution (input.coordinateMarginal coordinate)).entropy) -
           ∑ coordinate : Fin n,
-            channel.conditionalOutputEntropy (input.coordinateMarginal coordinate) ≤
-          (∑ coordinate : Fin n,
-            (channel.outputDistribution (input.coordinateMarginal coordinate)).entropy) -
-            ∑ coordinate : Fin n,
-              channel.conditionalOutputEntropy (input.coordinateMarginal coordinate) :=
-        sub_le_sub_right houtputEntropy _
-      _ = ∑ coordinate : Fin n,
-          ((channel.outputDistribution (input.coordinateMarginal coordinate)).entropy -
-            channel.conditionalOutputEntropy (input.coordinateMarginal coordinate)) := by
-        rw [Finset.sum_sub_distrib]
-      _ = ∑ coordinate : Fin n,
-          channel.mutualInformation (input.coordinateMarginal coordinate) := by rfl
+            channel.conditionalOutputEntropy (input.coordinateMarginal coordinate) :=
+      sub_le_sub_right houtputEntropy _
+    _ = ∑ coordinate : Fin n,
+        ((channel.outputDistribution (input.coordinateMarginal coordinate)).entropy -
+          channel.conditionalOutputEntropy (input.coordinateMarginal coordinate)) := by
+      rw [Finset.sum_sub_distrib]
+    _ = ∑ coordinate : Fin n,
+        channel.mutualInformation (input.coordinateMarginal coordinate) := by rfl
+
+/-- Block mutual information is at most blocklength times single-letter capacity. -/
+@[capacity_shared_api]
+theorem block_mutualInformation_le_informationCapacityBits_mul_log_two
+    (channel : FiniteChannel X Y) (n : ℕ)
+    (input : FiniteDistribution (Fin n → X)) :
+    (channel.block n).mutualInformation input ≤
+      (n : ℝ) * channel.informationCapacityBits * Real.log 2 := by
+  classical
   have hlogTwo : 0 < Real.log 2 := Real.log_pos (by norm_num)
   calc
     (channel.block n).mutualInformation input ≤
         ∑ coordinate : Fin n,
-          channel.mutualInformation (input.coordinateMarginal coordinate) := hsumInformation
+          channel.mutualInformation (input.coordinateMarginal coordinate) :=
+      channel.block_mutualInformation_le_sum_coordinate n input
     _ ≤ ∑ _coordinate : Fin n,
         channel.informationCapacityBits * Real.log 2 := by
       apply Finset.sum_le_sum
