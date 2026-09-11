@@ -47,7 +47,7 @@ formalization:
   - id: exact-capacity
     kind: exact-capacity
     category: solved
-    formal_status: stated
+    formal_status: proved
     version: 1
     description: The operational common-message capacity of any finite joint broadcast channel equals the max–min of its receiver mutual informations over one shared input distribution.
   notes: The canonical proposition exposes the joint physical channel and receiver marginals. The formal proof tags receiver outputs and extends the decoder family to one compound decoder, preserving rates and receiver errors exactly. This is the formal proof route, not an attributed historical construction.
@@ -77,5 +77,16 @@ formalization:
     role: claim
     claim_id: exact-capacity
     description: Canonical joint-channel common-message capacity proposition.
-  proofs: []
+  proofs:
+  - id: finite-common-message-capacity-proof
+    claim_id: exact-capacity
+    claim_version: 1
+    status: complete
+    system: Lean
+    repository: TomasOrtega/CapacityAtlasCommonMessage
+    commit: 83923a9a73280ff2d24c71411398438edcc20e4b
+    url: https://github.com/TomasOrtega/CapacityAtlasCommonMessage/commit/83923a9a73280ff2d24c71411398438edcc20e4b
+    file: CapacityAtlasCommonMessage.lean
+    declaration: CapacityAtlasCommonMessage.capacityCertificate
+    notes: Pins Atlas 1f4b83da5f2bc05efba649054be18b1f6fd8da31 and compound proof 1d5cbdc0a8cfb5d034facdb8d1e2473bb3c40ebe. The imported proof is rebuilt against the resolved Atlas prerequisite. The audit checks transitive axioms and full canonical-proposition correspondence with rigid universes; negative controls reject a different proposition and a universe-restricted certificate.
 references: [cover-1972, blackwell-breiman-thomasian-1959, lapidoth-telatar-1998]
