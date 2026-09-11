@@ -1,0 +1,89 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: finite-dmc-decoder-state
+title: Finite DMC with state known only to the decoder
+status: solved
+updated: '2026-09-10'
+summary: An independent iid state observed only by the receiver gives a conditional-mutual-information capacity formula.
+tags:
+  model: [point-to-point]
+  features: [finite-alphabet, discrete-memoryless, side-information]
+  quantity: [capacity]
+  knowledge: [exact, single-letter-characterization]
+model:
+  input: A symbol \(X\in\mathcal X\), with a finite nonempty input alphabet.
+  output: The decoder observes both \(Y\in\mathcal Y\) and \(S\in\mathcal S\), with finite nonempty alphabets.
+  law: The state has fixed law \(q(s)\), and \(P(S=s,Y=y\mid X=x)=q(s)W(y\mid x,s)\).
+  assumptions:
+  - The state sequence is independent and identically distributed and independent of the message.
+  - The encoder knows the laws q and W but observes no state information and receives no feedback.
+  - The decoder knows the entire state and output sequences when decoding the block.
+  - Encoders and decoders are deterministic, messages are uniform, and average decoding error vanishes.
+  - There is no input-cost constraint.
+quantity:
+  name: Decoder-state capacity
+  symbol: C_{\mathrm{SI-D}}
+  units: bits per channel use
+  criterion: The supremum of rates supported at every sufficiently large blocklength with vanishing average error over messages, states, and channel outputs.
+capacity:
+  kind: characterization
+  display: C_{\mathrm{SI-D}}=\max_{P_X} I(X;Y\mid S)
+  notes: The maximization uses one input law independent of the state. Heegard and El Gamal's Theorem 2(d), with zero encoder state-description rate, gives this formula; Section III uses the paired output (S,Y).
+bounds:
+- id: decoder-output-achievability
+  direction: lower
+  relation: C_{\mathrm{SI-D}}\ge\max_{P_X}I(X;Y\mid S)
+  method: Apply finite-DMC random coding with the state and physical output treated jointly as the receiver observation.
+  year: 1983
+  references: [heegard-elgamal-1983, shannon-1948]
+- id: decoder-output-converse
+  direction: upper
+  relation: C_{\mathrm{SI-D}}\le\max_{P_X}I(X;Y\mid S)
+  method: Apply the finite-DMC converse to the paired output and use independence of input and state.
+  year: 1983
+  references: [heegard-elgamal-1983, shannon-1948]
+formalization:
+  status: stated
+  claims:
+  - id: exact-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: proved
+    version: 1
+    description: Operational average-error capacity equals the supremum of state-averaged mutual information over input laws independent of the state.
+  - id: optimizing-input
+    kind: structural
+    category: solved
+    formal_status: proved
+    version: 1
+    description: One input distribution independent of the state attains the operational capacity.
+  notes: The paired-output channel has exactly the iid-state block law. A finite entropy identity equates its mutual information with the state average, including zero-probability states. The local capacity proof reuses the finite-DMC coding theorem; compactness supplies an optimizing input.
+  files:
+  - path: lean/CapacityAtlas/Channels/DecoderState.lean
+    declaration: CapacityAtlas.Channel.decoderStateChannel
+    role: definition
+    description: State-dependent DMC with the state included in the decoder observation.
+  - path: lean/CapacityAtlas/Channels/DecoderState.lean
+    declaration: CapacityAtlas.Channel.decoderStateInformationCapacityBits
+    role: definition
+    description: Supremum of conditional mutual information over a single state-independent input law.
+  - path: lean/CapacityAtlas/Channels/DecoderState.lean
+    declaration: CapacityAtlas.Channel.decoderState_operationalCapacity
+    role: claim
+    claim_id: exact-capacity
+    description: Exact operational capacity by reduction to the paired-output finite DMC.
+  - path: lean/CapacityAtlas/Channels/DecoderState.lean
+    declaration: CapacityAtlas.Channel.decoderState_capacityAchieving_input
+    role: claim
+    claim_id: optimizing-input
+    description: A single input law attains the capacity for the prescribed state distribution.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/DecoderSideInformation.lean
+    declaration: CapacityAtlas.FiniteChannel.withDecoderState_block_transition
+    role: API
+    description: The block transition factors into the iid state mass and the conditional memoryless channel law.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/DecoderSideInformation.lean
+    declaration: CapacityAtlas.FiniteChannel.withDecoderState_mutualInformationBits
+    role: API
+    description: Mutual information of the paired-output channel equals the state average of per-state mutual information.
+  proofs: []
+references: [heegard-elgamal-1983, shannon-1948]

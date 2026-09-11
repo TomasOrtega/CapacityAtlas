@@ -133,6 +133,7 @@ def test_only_faithful_problem_statements_are_registered() -> None:
         "binary-symmetric-channel",
         "binary-z-channel",
         "discrete-memoryless-channel",
+        "finite-dmc-decoder-state",
         "finite-dmc-input-cost",
         "finite-group-additive-noise-channel",
         "noiseless-q-ary-channel",
