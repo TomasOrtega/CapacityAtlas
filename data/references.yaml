@@ -21,7 +21,8 @@ shannon-1958:
   authors: [Claude E. Shannon]
   year: 1958
   venue: IBM Journal of Research and Development
-  url: https://ieeexplore.ieee.org/document/5394307
+  doi: 10.1147/rd.24.0289
+  url: https://doi.org/10.1147/rd.24.0289
 
 heegard-elgamal-1983:
   title: On the Capacity of Computer Memory with Defects

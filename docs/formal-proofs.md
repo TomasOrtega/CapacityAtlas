@@ -35,6 +35,14 @@ The proof repository should:
 5. run its complete Lean build and transitive axiom checks in public CI
 6. preserve the registered commit permanently
 
+A canonical claim may be a `capacity_proposition` definition returning `Prop`.
+This records the exact statement without admitting it as a theorem. For example,
+an external theorem can have type `Canonical.claim parameters`. Its CI must
+check that the exported theorem proves the canonical proposition at the pinned
+Atlas commit, with the same parameters, and has only the permitted standard
+axioms. The proposition definition itself never counts as a local proof;
+`formal_status: proved` requires a complete linked proof record.
+
 ## Atlas record
 
 The corresponding problem YAML stores:

@@ -54,6 +54,7 @@ def test_lean_ci_uses_layered_warning_boundary() -> None:
     assert "lake --wfail build CapacityAtlasForMathlib CapacityAtlasUtil" in workflow
     assert "lake --wfail build CapacityAtlas" in workflow
     assert "lake exe capacity_audit" in workflow
+    assert "lake --wfail build CapacityAtlasAuditTests" in workflow
     assert "--lean-report" in workflow
     assert "grep -RInE" not in workflow
     assert "Reject placeholders" not in workflow

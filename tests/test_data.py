@@ -17,12 +17,20 @@ def _lean_report() -> dict[str, Any]:
         formalization = problem.get("formalization", {})
         files = formalization.get("files", [])
         for claim in formalization.get("claims", []):
-            declaration = next(
-                entry["declaration"]
+            entry = next(
+                entry
                 for entry in files
                 if entry.get("role") == "claim" and entry.get("claim_id") == claim["id"]
             )
-            locally_proved = claim["formal_status"] == "proved"
+            declaration = entry["declaration"]
+            contents = (atlas.root / entry["path"]).read_text(encoding="utf-8")
+            token = re.escape(declaration.rsplit(".", 1)[-1])
+            match = re.search(rf"\b(?:def|theorem|lemma)\s+{token}\b", contents)
+            assert match is not None
+            prefix = contents[: match.start()]
+            metadata = prefix[prefix.rfind("@[") :]
+            proposition = "capacity_proposition" in metadata
+            locally_proved = "capacity_formal_proof" in metadata
             declarations.append(
                 {
                     "declaration": declaration,
@@ -32,8 +40,9 @@ def _lean_report() -> dict[str, Any]:
                     "claimVersion": claim["version"],
                     "category": claim["category"],
                     "formalProof": locally_proved,
+                    "proposition": proposition,
                     "test": claim["category"] == "test",
-                    "axioms": [] if locally_proved else ["sorryAx"],
+                    "axioms": [] if locally_proved or proposition else ["sorryAx"],
                 }
             )
     return {"declarations": declarations, "errors": []}
@@ -115,13 +124,14 @@ def test_every_problem_statement_is_registered() -> None:
     declared: set[tuple[str, str]] = set()
     pattern = re.compile(
         r"@\[[^\]]*\bcapacity_statement\b[^\]]*\]\s*"
-        r"(?:theorem|lemma)\s+(\w+)",
+        r"(?:noncomputable\s+)?(?:def|theorem|lemma)\s+(\w+)",
         re.MULTILINE,
     )
-    for lean_path in (atlas.root / "lean").rglob("*.lean"):
-        relative = lean_path.relative_to(atlas.root).as_posix()
-        contents = lean_path.read_text(encoding="utf-8")
-        declared.update((relative, match.group(1)) for match in pattern.finditer(contents))
+    for layer in ("CapacityAtlas", "CapacityAtlasForMathlib", "CapacityAtlasUtil"):
+        for lean_path in (atlas.root / "lean" / layer).rglob("*.lean"):
+            relative = lean_path.relative_to(atlas.root).as_posix()
+            contents = lean_path.read_text(encoding="utf-8")
+            declared.update((relative, match.group(1)) for match in pattern.finditer(contents))
 
     assert declared == registered
 
@@ -132,6 +142,7 @@ def test_only_faithful_problem_statements_are_registered() -> None:
         "binary-erasure-channel",
         "binary-symmetric-channel",
         "binary-z-channel",
+        "causal-state-information-channel",
         "discrete-memoryless-channel",
         "finite-dmc-decoder-state",
         "finite-dmc-input-cost",

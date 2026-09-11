@@ -57,7 +57,7 @@ Each item in `formalization.claims` has:
 - a precise description
 
 Files identify a declaration and its role: `definition`, `claim`, `test`, or
-`API`. Claim declarations link through `claim_id`. Each claim theorem carries
+`API`. Claim declarations link through `claim_id`. Each claim declaration carries
 the same identity and version in `@[capacity_claim "claim-id" version]` metadata.
 
 `formalization.proofs` records formal proof provenance at immutable commits and
@@ -65,10 +65,12 @@ targets one exact claim identifier and version. A complete local proof or linked
 proof is required before a claim may be marked `proved`. Mathematical status,
 claim category, and formal-proof status are never inferred from one another.
 A locally proved claim is marked `capacity_formal_proof` and has no transitive
-`sorryAx` dependency. A locally stated claim may contain `sorry` directly or
-derive from an admitted research premise; either way, its compiled declaration
-transitively depends on `sorryAx` unless a complete linked proof supplies its
-provenance.
+`sorryAx` dependency. A stated theorem may contain `sorry` directly or derive
+from an admitted research premise; either way, its compiled declaration depends
+transitively on `sorryAx`. A research claim may instead be stated by a
+`capacity_proposition` definition returning `Prop`, with a clean body and the
+same identity/version metadata. Such definitions require complete linked proof
+provenance to be marked `proved` and cannot be classified as local proofs.
 
 The Browse page reflects this independence with separate **Status** and
 **Formalization** controls. **Formally stated** means at least one
