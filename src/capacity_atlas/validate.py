@@ -47,7 +47,7 @@ def validate_atlas(
     tag_values = atlas.tag_values
     reference_ids = set(atlas.references)
     seen_ids: set[str] = set()
-    yaml_claims: list[tuple[str, str, dict[str, Any], str, bool]] = []
+    yaml_claims: list[tuple[str, str, dict[str, Any], str, bool, bool]] = []
 
     for problem in atlas.problems:
         problem_id = str(problem.get("id", "<missing-id>"))
@@ -267,19 +267,38 @@ def validate_atlas(
                 for role, declaration_kind, metadata, body in links
                 if role == "claim"
             ]
-            if len(claim_declarations) != 1 or claim_declarations[0][0] not in {
-                "theorem",
-                "lemma",
-            }:
+            if len(claim_declarations) != 1:
                 issues.append(
                     ValidationIssue(
                         source,
-                        f"formal claim {claim_id!r} needs one theorem or lemma declaration",
+                        f"formal claim {claim_id!r} needs one theorem or lemma declaration "
+                        "or a tagged proposition definition",
                     )
                 )
                 continue
 
-            metadata = claim_declarations[0][1]
+            declaration_kind, metadata, _ = claim_declarations[0]
+            is_proposition = bool(re.search(r"\bcapacity_proposition\b", metadata))
+            if (is_proposition and declaration_kind != "def") or (
+                not is_proposition and declaration_kind not in {"theorem", "lemma"}
+            ):
+                issues.append(
+                    ValidationIssue(
+                        source,
+                        f"formal claim {claim_id!r} needs one theorem or lemma declaration "
+                        "or a tagged proposition definition",
+                    )
+                )
+                continue
+            claim_marker = f'capacity_claim "{claim_id}" {claim.get("version")}'
+            quoted_claim_id = re.escape(f'"{claim_id}"')
+            claim_version = re.escape(str(claim.get("version")))
+            if not re.search(
+                rf"\bcapacity_claim\s+{quoted_claim_id}\s+{claim_version}\b", metadata
+            ):
+                issues.append(
+                    ValidationIssue(source, f"formal claim {claim_id!r} lacks {claim_marker!r}")
+                )
             category_attribute = {
                 "open": "capacity_open",
                 "solved": "capacity_solved",
@@ -294,10 +313,36 @@ def validate_atlas(
                     )
                 )
 
-            has_local_proof = "capacity_formal_proof" in metadata
+            local_proof_tag = "capacity_formal_proof" in metadata
+            has_local_proof = local_proof_tag and not is_proposition
             has_linked_proof = claim_id in complete_linked_claims
             formal_status = claim.get("formal_status")
-            if formal_status == "proved" and not (has_local_proof or has_linked_proof):
+            if is_proposition:
+                if claim.get("category") not in {"open", "solved"} or any(
+                    tag in metadata
+                    for tag in ("capacity_api", "capacity_test", "capacity_shared_api")
+                ):
+                    issues.append(
+                        ValidationIssue(
+                            source,
+                            f"proposition claim {claim_id!r} requires an open or solved category "
+                            "without API or test tags",
+                        )
+                    )
+                if local_proof_tag:
+                    issues.append(
+                        ValidationIssue(
+                            source, f"proposition claim {claim_id!r} cannot be a local proof"
+                        )
+                    )
+            if is_proposition and formal_status == "proved" and not has_linked_proof:
+                issues.append(
+                    ValidationIssue(
+                        source,
+                        f"proposition claim {claim_id!r} needs a complete linked proof",
+                    )
+                )
+            elif formal_status == "proved" and not (has_local_proof or has_linked_proof):
                 issues.append(
                     ValidationIssue(
                         source,
@@ -317,7 +362,9 @@ def validate_atlas(
                 if entry.get("role") == "claim" and entry.get("claim_id") == claim_id
             ]
             if len(declarations) == 1:
-                yaml_claims.append((source, problem_id, claim, declarations[0], has_linked_proof))
+                yaml_claims.append(
+                    (source, problem_id, claim, declarations[0], has_linked_proof, is_proposition)
+                )
 
     if lean_report is not None:
         for error in lean_report.get("errors", []):
@@ -329,7 +376,7 @@ def validate_atlas(
             if isinstance(declaration, dict) and declaration.get("claimId") is not None
         ]
         yaml_by_declaration: dict[str, list[tuple[str, str, dict[str, Any], bool]]] = {}
-        for source, problem_id, claim, declaration, linked in yaml_claims:
+        for source, problem_id, claim, declaration, linked, _ in yaml_claims:
             yaml_by_declaration.setdefault(declaration, []).append(
                 (source, problem_id, claim, linked)
             )
@@ -365,7 +412,7 @@ def validate_atlas(
                     )
                 )
 
-        for source, problem_id, claim, declaration, has_linked_proof in yaml_claims:
+        for source, problem_id, claim, declaration, has_linked_proof, is_proposition in yaml_claims:
             matches = lean_by_declaration.get(declaration, [])
             claim_id = str(claim.get("id"))
             if len(matches) != 1:
@@ -383,6 +430,7 @@ def validate_atlas(
                 ("claim ID", lean_claim.get("claimId"), claim.get("id")),
                 ("category", lean_claim.get("category"), claim.get("category")),
                 ("version", lean_claim.get("claimVersion"), claim.get("version")),
+                ("proposition role", lean_claim.get("proposition") is True, is_proposition),
             )
             for field, actual, expected in comparisons:
                 if actual != expected:
@@ -395,8 +443,25 @@ def validate_atlas(
                     )
 
             axioms = {str(axiom) for axiom in lean_claim.get("axioms", [])}
-            has_local_proof = lean_claim.get("formalProof") is True
+            local_proof_tag = lean_claim.get("formalProof") is True
+            has_local_proof = local_proof_tag and not is_proposition
             formal_status = claim.get("formal_status")
+            if is_proposition:
+                if local_proof_tag:
+                    issues.append(
+                        ValidationIssue(
+                            source, f"proposition claim {claim_id!r} cannot be a local proof"
+                        )
+                    )
+                unexpected = axioms - {"propext", "Quot.sound", "Classical.choice"}
+                if unexpected:
+                    issues.append(
+                        ValidationIssue(
+                            source,
+                            f"proposition claim {claim_id!r} has undeclared trust dependencies: "
+                            f"{sorted(unexpected)}",
+                        )
+                    )
             if has_local_proof and "sorryAx" in axioms:
                 issues.append(
                     ValidationIssue(
@@ -412,7 +477,14 @@ def validate_atlas(
                         f"{trust_role} claim {claim_id!r} transitively depends on sorryAx",
                     )
                 )
-            if formal_status == "proved" and not (has_local_proof or has_linked_proof):
+            if is_proposition and formal_status == "proved" and not has_linked_proof:
+                issues.append(
+                    ValidationIssue(
+                        source,
+                        f"proposition claim {claim_id!r} needs a complete linked proof",
+                    )
+                )
+            elif formal_status == "proved" and not (has_local_proof or has_linked_proof):
                 issues.append(
                     ValidationIssue(
                         source,
@@ -426,7 +498,12 @@ def validate_atlas(
                         f"formally stated claim {claim_id!r} has complete proof metadata",
                     )
                 )
-            if formal_status == "stated" and not has_linked_proof and "sorryAx" not in axioms:
+            if (
+                formal_status == "stated"
+                and not is_proposition
+                and not has_linked_proof
+                and "sorryAx" not in axioms
+            ):
                 issues.append(
                     ValidationIssue(
                         source,

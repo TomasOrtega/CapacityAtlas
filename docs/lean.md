@@ -28,6 +28,8 @@ Declaration roles use `capacity_definition`, `capacity_statement`, and
 `capacity_shared_api`. Claim categories use `capacity_open`,
 `capacity_solved`, `capacity_api`, and `capacity_test`. A declaration with a
 complete local proof also carries `capacity_formal_proof`.
+An unproved research proposition can use `capacity_proposition` on a `def`
+returning `Prop`, together with `capacity_statement` and its claim metadata.
 
 ### `CapacityAtlasForMathlib`
 
@@ -111,17 +113,27 @@ The formal status is `stated` or `proved`. It records proof coverage, not the
 mathematical status of the problem. In particular, a proved structural test does
 not make a capacity claim formally proved.
 
-Every claim theorem carries `@[capacity_claim "claim-id" version]`. Its problem
+Every claim declaration carries `@[capacity_claim "claim-id" version]`. Its problem
 ID, claim ID, category, and version must agree with exactly one YAML record.
 Every public theorem or lemma in the problem layer is classified as open
 research, solved research, API, or test; a complete local research proof also
 carries `capacity_formal_proof`.
 
-Formal status follows compiled, transitive proof dependencies. A stated claim
-may contain `sorry` directly or prove an implication from another admitted
-research claim. Both forms depend transitively on `sorryAx`. A local proof, API,
-or test must not depend on `sorryAx`, `Lean.trustCompiler`, `Lean.ofReduceBool`,
-or an unreviewed axiom. Consequently, registered local results use
+For a substantial external proof, the canonical statement can be a `def`
+returning `Prop` tagged `capacity_proposition`, `capacity_statement`,
+`capacity_claim`, and `capacity_open` or `capacity_solved`. The audit opens its
+parameters and checks that its result type is definitionally `Prop`. It also
+checks the body's transitive axioms. This definition supplies a proposition,
+not evidence for it: it cannot have local-proof, API, or test tags, and marking
+it `proved` requires a complete linked proof. The audit report identifies this
+declaration role with `proposition: true`.
+
+For theorem declarations, formal status follows compiled, transitive proof
+dependencies. A stated theorem may contain `sorry` directly or prove an
+implication from another admitted research claim. Both forms depend transitively
+on `sorryAx`. A proposition definition, local proof, API, or test must not depend
+on `sorryAx`, `Lean.trustCompiler`, `Lean.ofReduceBool`, or an unreviewed axiom.
+Consequently, registered local results use
 kernel-checked tools such as `decide`, `norm_num`, and `omega`, not
 `native_decide`.
 
@@ -150,6 +162,7 @@ cd lean
 lake exe cache get
 lake --wfail build CapacityAtlasForMathlib CapacityAtlasUtil
 lake --wfail build CapacityAtlas
+lake --wfail build CapacityAtlasAuditTests
 lake exe capacity_audit > /tmp/capacity-audit.json
 cd ..
 uv run --locked capacity-atlas validate --lean-report /tmp/capacity-audit.json

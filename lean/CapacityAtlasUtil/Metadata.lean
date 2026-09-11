@@ -53,7 +53,7 @@ initialize capacityProblemAttr : ParametricAttribute String ←
       | _ => throwError "invalid `capacity_problem` attribute syntax"
   }
 
-/-- The stable claim identifier and proposition version attached to a theorem. -/
+/-- The stable claim identifier and proposition version attached to a declaration. -/
 initialize capacityClaimAttr : ParametricAttribute Claim ←
   registerParametricAttribute {
     name := `capacityClaim
@@ -72,6 +72,10 @@ initialize capacityDefinitionAttr : TagAttribute ←
 /-- Marks the canonical proposition representing a capacity problem. -/
 initialize capacityStatementAttr : TagAttribute ←
   registerTagAttribute `capacity_statement "Canonical Capacity Atlas problem statement."
+
+/-- Marks a Prop-valued definition stating a claim whose proof lives externally. -/
+initialize capacityPropositionAttr : TagAttribute ←
+  registerTagAttribute `capacity_proposition "Canonical Capacity Atlas proposition definition."
 
 /-- Marks reusable information-theory infrastructure intended for possible upstreaming. -/
 initialize capacitySharedApiAttr : TagAttribute ←

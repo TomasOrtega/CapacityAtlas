@@ -3,58 +3,91 @@
 id: causal-state-information-channel
 title: DMC with causal state information at the encoder
 status: solved
-updated: '2026-08-10'
+updated: '2026-09-10'
 summary: An iid channel state is revealed causally to the encoder but not to the decoder.
 tags:
-  model:
-  - point-to-point
-  features:
-  - finite-alphabet
-  - discrete-memoryless
-  - causal-state
-  - side-information
-  quantity:
-  - capacity
-  knowledge:
-  - exact
-  - single-letter-characterization
+  model: [point-to-point]
+  features: [finite-alphabet, discrete-memoryless, causal-state, side-information]
+  quantity: [capacity]
+  knowledge: [exact, single-letter-characterization]
 model:
-  input: The encoder chooses \(X_t=f_t(M,S^t)\).
-  output: \(Y_t\) is generated from \(W(y_t|x_t,s_t)\).
-  law: States \(S_t\) are iid and revealed to the encoder before choosing \(X_t\).
+  input: A symbol \(X_t\in\mathcal X\), chosen as \(X_t=f_t(M,S^t)\), with a finite nonempty alphabet.
+  output: The decoder observes only \(Y^n\), with finite nonempty output alphabet \(\mathcal Y\).
+  law: The finite state alphabet has law q; conditioned on input and state sequences, outputs are independent with transition \(W(y_t\mid x_t,s_t)\).
   assumptions:
-  - The decoder does not know the state sequence.
-  - The state distribution and channel law are known.
+  - States are iid, independent of the message, and revealed to the encoder before choosing the current input.
+  - The encoder may use all past and current states, but no future states and no output feedback.
+  - The decoder does not know the state sequence; both terminals know the state distribution and channel law.
+  - Encoders and decoders are deterministic, messages are uniform, and average decoding error vanishes.
+  - There is no input-cost constraint.
 quantity:
   name: Shannon-strategy capacity
   symbol: C_{\mathrm{causal}}
   units: bits per channel use
-  criterion: Average-error capacity.
+  criterion: The supremum of rates supported at every sufficiently large blocklength with vanishing average error over messages, states, and channel outputs.
 capacity:
   kind: characterization
-  display: C_{\mathrm{causal}}=\max_{P_U,\,x=f(U,S)} I(U;Y)
-  notes: U indexes a distribution over state-dependent input strategies.
+  display: C_{\mathrm{causal}}=\max_{P_U,\,x=f(U,S),\,U\perp S} I(U;Y)
+  notes: Equivalently, maximize over distributions on the fixed finite alphabet of functions from states to inputs. The induced strategy channel averages W(y|t(s),s) over q(s). Shannon's unnumbered theorem gives this capacity equivalence; ordinary strategy codes form a subclass of all causal codes.
 bounds:
 - id: shannon-strategy-achievability
   direction: lower
-  relation: C\ge\max I(U;Y)
-  method: Random coding over deterministic state-response strategies.
+  relation: C_{\mathrm{causal}}\ge\max_{P_U,\,x=f(U,S),\,U\perp S} I(U;Y)
+  method: Embed ordinary DMC codes on the finite strategy alphabet by evaluating each strategy at the current state.
   year: 1958
-  references:
-  - shannon-1958
+  references: [shannon-1958]
 - id: strategy-converse
   direction: upper
-  relation: C\le\max I(U;Y)
-  method: Absorb message and past states into a single auxiliary strategy variable.
+  relation: C_{\mathrm{causal}}\le\max_{P_U,\,x=f(U,S),\,U\perp S} I(U;Y)
+  method: Message and past states determine the current strategy; a conditional-entropy bound and Fano inequality bound all history-dependent causal codes.
   year: 1958
-  references:
-  - shannon-1958
+  references: [shannon-1958]
 formalization:
-  status: none
-  claims: []
-  notes: State processes and causal encoder strategies need a shared operational layer.
-  files: []
-  proofs: []
-references:
-- shannon-1958
-- elgamal-kim-2011
+  status: stated
+  claims:
+  - id: exact-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: proved
+    version: 1
+    description: Operational capacity of arbitrary deterministic causal-state codes equals the information capacity of the finite Shannon-strategy channel.
+  notes: The external proof embeds strategy codes and bounds arbitrary causal policies by an inductive entropy argument and Fano's inequality. Its certificate proves the canonical proposition at a pinned Atlas commit and also establishes optimizer attainment. The local proposition definition adds no admitted theorem or axiom.
+  files:
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/CausalState.lean
+    declaration: CapacityAtlas.CausalState.Policy
+    role: API
+    description: An input may depend on exactly the available past and current state prefix.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/CausalState.lean
+    declaration: CapacityAtlas.CausalState.blockChannel
+    role: API
+    description: Physical block law averaged over iid state words for arbitrary causal policies.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/CausalState.lean
+    declaration: CapacityAtlas.CausalState.strategyChannel
+    role: API
+    description: Finite DMC whose inputs are functions from states to physical input symbols.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/CausalState.lean
+    declaration: CapacityAtlas.CausalState.BlockCode
+    role: API
+    description: Deterministic causal encoder and output-only decoder with a positive message count.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/CausalState.lean
+    declaration: CapacityAtlas.CausalState.operationalCapacityBits
+    role: API
+    description: Vanishing-average-error capacity over all sufficiently large blocklengths.
+  - path: lean/CapacityAtlas/Channels/CausalState.lean
+    declaration: CapacityAtlas.Channel.causalStateCapacityStatement
+    role: claim
+    claim_id: exact-capacity
+    description: Canonical proposition equating causal operational capacity with strategy information capacity.
+  proofs:
+  - id: shannon-causal-capacity-proof
+    claim_id: exact-capacity
+    claim_version: 1
+    status: complete
+    system: Lean
+    repository: TomasOrtega/CapacityAtlasCausalState
+    commit: 0176a0e9fed6ec13fd2f566d9906c3ea8103d1cc
+    url: https://github.com/TomasOrtega/CapacityAtlasCausalState/commit/0176a0e9fed6ec13fd2f566d9906c3ea8103d1cc
+    file: CapacityAtlasCausal.lean
+    declaration: CapacityAtlasCausal.capacityCertificate
+    notes: The proof pins Atlas commit 661affbfb9241fcc2b926db78564d81731a42f14 and audits every transitive proof axiom and exact canonical-proposition correspondence.
+references: [shannon-1958, elgamal-kim-2011]

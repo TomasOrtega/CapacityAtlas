@@ -68,6 +68,9 @@ jobs:
       - name: Audit transitive Lean trust
         working-directory: lean
         run: lake exe capacity_audit > "$RUNNER_TEMP/capacity-audit.json"
+      - name: Test Lean audit boundaries
+        working-directory: lean
+        run: lake --wfail build CapacityAtlasAuditTests
       - name: Validate compiled claim registry
         run: uv run --locked capacity-atlas validate --lean-report "$RUNNER_TEMP/capacity-audit.json"
 

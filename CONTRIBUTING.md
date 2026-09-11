@@ -82,7 +82,7 @@ Capacity Atlas uses Lean 4 for formal verification.
 - Mark declaration roles with `@[capacity_definition]`,
   `@[capacity_statement]`, or `@[capacity_shared_api]`.
 - Attach `@[capacity_claim "claim-id" version]` to every registered claim
-  theorem. The problem ID, claim ID, category, and version must match YAML.
+  declaration. The problem ID, claim ID, category, and version must match YAML.
 - Classify formal claims independently as `open`, `solved`, `API`, or `test` and
   as formally `stated` or `proved`.
 - Classify every public theorem or lemma in the problem layer as open research,
@@ -90,6 +90,12 @@ Capacity Atlas uses Lean 4 for formal verification.
   stated directly with `sorry` or proved from another admitted research claim.
 - Mark a complete local proof with `@[capacity_formal_proof]` and use
   `@[capacity_test]` for tested structural claims.
+- For a research claim whose proof belongs externally, use a `def` returning
+  `Prop` tagged `@[capacity_proposition]`, with the usual statement, identity,
+  version, and open/solved category metadata. Its body must have clean transitive
+  axioms. The definition states the proposition; it is not a local proof and
+  cannot carry `capacity_formal_proof`, API, or test tags. Mark it `proved` only
+  with a complete linked external proof.
 - Do not introduce `sorryAx`, native-evaluation trust, or unreviewed axioms into
   `CapacityAtlasForMathlib`, `CapacityAtlasUtil`, reusable APIs, tests, or local
   formal proofs. The environment audit checks transitive dependencies, not just
