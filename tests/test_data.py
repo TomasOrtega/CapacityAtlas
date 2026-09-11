@@ -145,6 +145,7 @@ def test_only_faithful_problem_statements_are_registered() -> None:
         "causal-state-information-channel",
         "compound-discrete-memoryless-channel",
         "discrete-memoryless-channel",
+        "discrete-memoryless-channel-with-feedback",
         "finite-dmc-decoder-state",
         "finite-dmc-input-cost",
         "finite-group-additive-noise-channel",

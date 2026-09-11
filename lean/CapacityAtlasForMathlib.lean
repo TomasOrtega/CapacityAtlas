@@ -37,3 +37,4 @@ import CapacityAtlasForMathlib.InformationTheory.BlockInputInformation
 import CapacityAtlasForMathlib.InformationTheory.ChannelMixture
 import CapacityAtlasForMathlib.Network.FiniteInterferenceChannel
 import CapacityAtlasForMathlib.Network.IndexCoding
+import CapacityAtlasForMathlib.InformationTheory.Feedback
