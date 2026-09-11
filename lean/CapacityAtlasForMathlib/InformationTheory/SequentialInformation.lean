@@ -268,6 +268,88 @@ theorem latentExtension_mutualInformation_le [DecidableEq T]
   change _ ≤ _ + (next.outputDistribution d).entropy at hout
   linarith
 
+/-- Append a channel observation whose input depends on the message and preceding output. -/
+@[capacity_shared_api]
+noncomputable def sequentialExtension (past : FiniteChannel M A) (next : FiniteChannel T B)
+    (strategy : M → A → T) : FiniteChannel M (A × B) :=
+  ofRows fun m ↦ (past.rowDistribution m).joint fun a ↦ next.rowDistribution (strategy m a)
+
+@[simp, capacity_shared_api]
+theorem sequentialExtension_transition (past : FiniteChannel M A) (next : FiniteChannel T B)
+    (strategy : M → A → T) (m : M) (output : A × B) :
+    (sequentialExtension past next strategy).transition m output =
+      past.transition m output.1 * next.transition (strategy m output.1) output.2 := rfl
+
+@[simp, capacity_shared_api]
+theorem rowDistribution_sequentialExtension (past : FiniteChannel M A)
+    (next : FiniteChannel T B) (strategy : M → A → T) (m : M) :
+    (sequentialExtension past next strategy).rowDistribution m =
+      (past.rowDistribution m).joint (fun a ↦ next.rowDistribution (strategy m a)) := rfl
+
+@[capacity_shared_api]
+theorem sequentialExtension_output_fst [DecidableEq A] (past : FiniteChannel M A)
+    (next : FiniteChannel T B) (strategy : M → A → T) (input : FiniteDistribution M) :
+    ((sequentialExtension past next strategy).outputDistribution input).map Prod.fst =
+      past.outputDistribution input := by
+  change (FiniteDistribution.mixture input _).map Prod.fst = _
+  simp only [FiniteDistribution.map_mixture, FiniteDistribution.map_fst_joint]
+  rfl
+
+@[capacity_shared_api]
+theorem sequentialExtension_output_snd [DecidableEq B] [DecidableEq T]
+    (past : FiniteChannel M A) (next : FiniteChannel T B) (strategy : M → A → T)
+    (input : FiniteDistribution M) :
+    ((sequentialExtension past next strategy).outputDistribution input).map Prod.snd =
+      next.outputDistribution
+        ((input.joint past.rowDistribution).map fun ma ↦ strategy ma.1 ma.2) := by
+  change (FiniteDistribution.mixture input _).map Prod.snd = _
+  simp only [FiniteDistribution.map_mixture, FiniteDistribution.map_snd_joint]
+  ext b
+  rw [outputDistribution_apply, FiniteDistribution.sum_map_mul]
+  simp only [FiniteDistribution.mixture_apply, Fintype.sum_prod_type,
+    FiniteDistribution.joint_apply, Finset.mul_sum, mul_assoc, rowDistribution_apply]
+
+/-- The new row entropy is averaged under the actual input selected from the preceding output. -/
+@[capacity_shared_api]
+theorem sequentialExtension_conditionalOutputEntropy [DecidableEq T]
+    (past : FiniteChannel M A) (next : FiniteChannel T B) (strategy : M → A → T)
+    (input : FiniteDistribution M) :
+    (sequentialExtension past next strategy).conditionalOutputEntropy input =
+      past.conditionalOutputEntropy input + next.conditionalOutputEntropy
+        ((input.joint past.rowDistribution).map fun ma ↦ strategy ma.1 ma.2) := by
+  simp only [conditionalOutputEntropy, rowDistribution_sequentialExtension,
+    FiniteDistribution.entropy_joint, FiniteDistribution.sum_map_mul,
+    Fintype.sum_prod_type, FiniteDistribution.joint_apply, mul_add,
+    Finset.sum_add_distrib, Finset.mul_sum, mul_assoc]
+
+/-- The additional information is bounded by the next channel's information at its induced input. -/
+@[capacity_shared_api]
+theorem sequentialExtension_mutualInformation_le [DecidableEq T]
+    (past : FiniteChannel M A) (next : FiniteChannel T B) (strategy : M → A → T)
+    (input : FiniteDistribution M) :
+    (sequentialExtension past next strategy).mutualInformation input ≤
+      past.mutualInformation input + next.mutualInformation
+        ((input.joint past.rowDistribution).map fun ma ↦ strategy ma.1 ma.2) := by
+  classical
+  have hout := FiniteDistribution.entropy_le_entropy_fst_add_entropy_snd
+    ((sequentialExtension past next strategy).outputDistribution input)
+  rw [sequentialExtension_output_fst, sequentialExtension_output_snd] at hout
+  simp only [mutualInformation, sequentialExtension_conditionalOutputEntropy]
+  linarith
+
+/-- Adapting the next input to a preceding observation adds at most one channel capacity. -/
+@[capacity_shared_api]
+theorem sequentialExtension_mutualInformation_le_add_capacity
+    (past : FiniteChannel M A) (next : FiniteChannel T B) (strategy : M → A → T)
+    (input : FiniteDistribution M) :
+    (sequentialExtension past next strategy).mutualInformation input ≤
+      past.mutualInformation input + next.informationCapacityBits * Real.log 2 := by
+  classical
+  apply (sequentialExtension_mutualInformation_le past next strategy input).trans
+  exact add_le_add le_rfl
+    ((div_le_iff₀ (Real.log_pos (by norm_num : (1 : ℝ) < 2))).mp
+      (next.mutualInformationBits_le_informationCapacityBits _))
+
 end FiniteChannel
 
 end CapacityAtlas

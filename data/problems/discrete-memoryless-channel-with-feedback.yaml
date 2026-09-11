@@ -3,57 +3,86 @@
 id: discrete-memoryless-channel-with-feedback
 title: Finite discrete memoryless channel with noiseless feedback
 status: solved
-updated: '2026-08-10'
+updated: '2026-09-11'
 summary: Causal noiseless output feedback changes coding strategies and reliability but not ordinary DMC capacity.
 tags:
-  model:
-  - point-to-point
-  features:
-  - finite-alphabet
-  - discrete-memoryless
-  - feedback
-  quantity:
-  - capacity
-  knowledge:
-  - exact
-  - single-letter-characterization
+  model: [point-to-point]
+  features: [finite-alphabet, discrete-memoryless, feedback]
+  quantity: [capacity]
+  knowledge: [exact, single-letter-characterization]
 model:
-  input: At time \(t\), the encoder chooses \(X_t\) from the message and \(Y^{t-1}\).
-  output: \(Y_t\) is fed back noiselessly after each use.
-  law: \(W(y_t|x_t)\) is memoryless in the forward direction.
+  input: At use i the encoder chooses a symbol from a finite nonempty alphabet as a deterministic function of the message and outputs strictly before i.
+  output: A symbol from a finite nonempty alphabet is observed by the decoder and fed back noiselessly before the next use.
+  law: Conditional on the message and past outputs, the next output has the fixed transition law \(W(y_i\mid x_i)\).
   assumptions:
-  - Feedback is causal, noiseless, and unlimited.
-  - The criterion is vanishing average error, not zero error.
+  - Feedback is noiseless, strictly causal, and unlimited; both terminals know the forward channel law.
+  - Blocklengths are fixed in advance, with no variable stopping time.
+  - Messages are uniform, encoders and decoders are deterministic, and average decoding error vanishes.
+  - There is no input-cost constraint.
 quantity:
   name: Feedback capacity
   symbol: C_{\mathrm{fb}}(W)
   units: bits per channel use
-  criterion: Average-error capacity with causal feedback.
+  criterion: The supremum of rates supported at every sufficiently large fixed blocklength with vanishing average error and strictly causal output feedback.
 capacity:
   kind: exact
   display: C_{\mathrm{fb}}(W)=C(W)=\max_{P_X}I(X;Y)
+  notes: Shannon's Theorem 6 proves the ordinary feedback-capacity equality; Theorem 7 concerns the separate zero-error problem. The feedback model and theorem are verified in the Collected Papers reprint, pages 232–234. The formal direct proof inherits the all-sufficiently-large-blocklength guarantee from the ordinary DMC coding theorem.
 bounds:
 - id: ignore-feedback
   direction: lower
   relation: C_{\mathrm{fb}}\ge C
-  method: Use any capacity-achieving no-feedback code.
+  method: Embed ordinary DMC codes by choosing the same input word regardless of feedback, preserving rate and error exactly.
   year: 1956
-  references:
-  - shannon-1956
+  references: [shannon-1956]
 - id: feedback-converse
   direction: upper
   relation: C_{\mathrm{fb}}\le\max_{P_X}I(X;Y)
-  method: Directed dependence through feedback does not exceed the per-use mutual-information maximum for a memoryless
-    channel.
+  method: Each adaptive channel use contributes at most the single-use mutual-information maximum; sum over the block and apply Fano's inequality.
   year: 1956
-  references:
-  - shannon-1956
+  references: [shannon-1956]
 formalization:
-  status: none
-  claims: []
-  notes: Causal feedback encoders and block codes are not yet in the Lean API.
-  files: []
-  proofs: []
-references:
-- shannon-1956
-- cover-thomas-2006
+  status: stated
+  claims:
+  - id: exact-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: proved
+    version: 1
+    description: Fixed-blocklength average-error capacity with arbitrary strictly causal noiseless feedback policies equals the ordinary finite-DMC mutual-information maximum.
+  notes: The canonical proposition uses the product law induced by each adaptive policy. Ordinary codes embed with identical rate and error; the external converse uses a sequential entropy bound and Fano's inequality.
+  files:
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/Feedback.lean
+    declaration: CapacityAtlas.Feedback.Policy
+    role: API
+    description: Inputs depend on the message-specific policy and outputs strictly before the current use.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/Feedback.lean
+    declaration: CapacityAtlas.Feedback.blockChannel
+    role: API
+    description: Normalized physical output law of each adaptive feedback policy.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/Feedback.lean
+    declaration: CapacityAtlas.Feedback.BlockCode
+    role: API
+    description: Deterministic fixed-length feedback code with a positive message count.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/Feedback.lean
+    declaration: CapacityAtlas.Feedback.operationalCapacityBits
+    role: API
+    description: Average-error capacity over all sufficiently large fixed blocklengths.
+  - path: lean/CapacityAtlas/Channels/Feedback.lean
+    declaration: CapacityAtlas.Channel.feedbackCapacityStatement
+    role: claim
+    claim_id: exact-capacity
+    description: Canonical ordinary feedback-capacity proposition.
+  proofs:
+  - id: finite-dmc-feedback-capacity-proof
+    claim_id: exact-capacity
+    claim_version: 1
+    status: complete
+    system: Lean
+    repository: TomasOrtega/CapacityAtlasFeedback
+    commit: b35299f221ad1c17ccbafb45082c22a5379a99e9
+    url: https://github.com/TomasOrtega/CapacityAtlasFeedback/commit/b35299f221ad1c17ccbafb45082c22a5379a99e9
+    file: CapacityAtlasFeedback.lean
+    declaration: CapacityAtlasFeedback.capacityCertificate
+    notes: Pins Atlas commit c0d665982bab3c4840bac511e950cdf3fc48b50c. The audit checks transitive proof axioms and full canonical-proposition correspondence with rigid universes; negative controls reject a different proposition and a universe-restricted certificate.
+references: [shannon-1956, cover-thomas-2006]
