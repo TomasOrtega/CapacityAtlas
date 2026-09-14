@@ -1,0 +1,117 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: amplitude-constrained-gaussian-channel
+title: Amplitude-constrained scalar Gaussian channel
+status: solved
+updated: '2026-09-14'
+summary: A scalar Gaussian channel with a hard amplitude constraint has an optimizing input with finite
+  support.
+tags:
+  model:
+  - point-to-point
+  features:
+  - continuous-alphabet
+  - gaussian
+  - power-constraint
+  quantity:
+  - capacity
+  knowledge:
+  - single-letter-characterization
+model:
+  input: A real input satisfying |X| <= A at every coordinate of every codeword.
+  output: A real output corrupted by independent Gaussian noise.
+  law: Y=X+Z with iid Z distributed as N(0,N).
+  assumptions:
+  - A >= 0 and N > 0.
+  - The constraint is peak amplitude, not a replacement average-power constraint.
+  - All decoder decision regions are measurable. Average decoding error vanishes.
+  - For every message m and time t, |x_t(m)| <= A. This is a pathwise peak-amplitude bound, not an average-power
+    constraint.
+quantity:
+  name: Amplitude-constrained scalar Gaussian channel capacity
+  symbol: C
+  units: bits per channel use
+  criterion: Vanishing average block error, with the constraints specified in the model. Resource averaging
+    is fixed by the explicit model assumption below.
+capacity:
+  kind: characterization
+  display: C=\max_{\operatorname{supp}(P_X)\subseteq[-A,A]} I(X;X+Z)
+  conditions: An optimal input has finite support. Also C <= (1/2) log2(1+A^2/N).
+bounds:
+- id: published-capacity
+  direction: exact
+  relation: C=\max_{\operatorname{supp}(P_X)\subseteq[-A,A]} I(X;X+Z)
+  method: Smith optimality conditions, finite-support attainment and a channel coding theorem.
+  year: 1971
+  references:
+  - smith-1971
+- id: power-relaxation-upper
+  direction: upper
+  relation: C\le\tfrac12\log_2(1+A^2/N)
+  method: A peak amplitude bound implies the block power bound P=A^2.
+  year: 1971
+  references:
+  - smith-1971
+formalization:
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Amplitude-constrained AWGN capacity is attained by a finite-support input law.
+    bound_ids:
+    - published-capacity
+    - power-relaxation-upper
+  - id: capacity-formula
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: The peak-amplitude operational capacity equals the compact-input information supremum.
+    bound_ids:
+    - published-capacity
+  - id: finite-support-attainment
+    kind: structural
+    category: solved
+    formal_status: stated
+    version: 1
+    description: A finite-support input attains the operational peak-amplitude capacity.
+    bound_ids:
+    - published-capacity
+  - id: power-relaxation-converse
+    kind: converse
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Peak-amplitude capacity is bounded above by the relaxed average-power formula.
+    bound_ids:
+    - power-relaxation-upper
+  files:
+  - path: lean/CapacityAtlas/Claims/AmplitudeGaussian.lean
+    declaration: CapacityAtlas.Claims.amplitudeGaussian
+    role: claim
+    description: Amplitude-constrained AWGN capacity is attained by a finite-support input law.
+    claim_id: operational-capacity
+  - path: lean/CapacityAtlas/Claims/AmplitudeGaussian.lean
+    declaration: CapacityAtlas.Claims.amplitudeGaussianCapacity
+    role: claim
+    description: The peak-amplitude operational capacity equals the compact-input information supremum.
+    claim_id: capacity-formula
+  - path: lean/CapacityAtlas/Claims/AmplitudeGaussian.lean
+    declaration: CapacityAtlas.Claims.amplitudeGaussianAttainment
+    role: claim
+    description: A finite-support input attains the operational peak-amplitude capacity.
+    claim_id: finite-support-attainment
+  - path: lean/CapacityAtlas/Claims/AmplitudeGaussian.lean
+    declaration: CapacityAtlas.Claims.amplitudeGaussianUpper
+    role: claim
+    description: Peak-amplitude capacity is bounded above by the relaxed average-power formula.
+    claim_id: power-relaxation-converse
+  proofs: []
+  notes: 'Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion. Power convention:
+    AmplitudeAdmissible. No equivalence to another power convention is assumed.'
+references:
+- smith-1971

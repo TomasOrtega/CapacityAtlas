@@ -379,6 +379,15 @@
               "description": {
                 "type": "string",
                 "minLength": 3
+              },
+              "bound_ids": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "$ref": "#/$defs/id"
+                },
+                "description": "Specific literature-bound records supported by this formal claim. Does not claim proof completion."
               }
             }
           }

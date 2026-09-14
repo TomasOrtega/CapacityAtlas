@@ -1,0 +1,65 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: binary-memory-with-stuck-defects
+title: Binary memory with encoder-known stuck-at defects
+status: solved
+updated: '2026-09-14'
+summary: Independent stuck-at defects are known noncausally to the encoder but not the decoder.
+tags:
+  model:
+  - point-to-point
+  features:
+  - binary
+  - finite-alphabet
+  - discrete-memoryless
+  - noncausal-state
+  quantity:
+  - capacity
+  knowledge:
+  - exact
+model:
+  input: One chosen binary symbol per memory cell.
+  output: The binary symbol stored in each cell.
+  law: A normal cell returns its input. A defective cell returns its stuck value.
+  assumptions:
+  - State probabilities are 1-delta, delta/2, delta/2 for normal, stuck-zero, stuck-one.
+  - States are iid and independent of the uniform message, with 0 <= delta <= 1.
+  - The encoder sees the entire state word. The decoder sees only the output word.
+quantity:
+  name: Binary memory with encoder-known stuck-at defects capacity
+  symbol: C
+  units: bits per channel use
+  criterion: Vanishing average block error, with the constraints specified in the model.
+capacity:
+  kind: exact
+  display: C=1-\delta
+bounds:
+- id: published-capacity
+  direction: exact
+  relation: C=1-\delta
+  method: Defect masking and a genie-aided converse.
+  year: 1983
+  references:
+  - heegard-elgamal-1983
+formalization:
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Noncausal knowledge of the entire iid stuck-at pattern gives capacity 1-delta.
+    bound_ids:
+    - published-capacity
+  files:
+  - path: lean/CapacityAtlas/Claims/DefectiveMemory.lean
+    declaration: CapacityAtlas.Claims.defectiveMemory
+    role: claim
+    description: Noncausal knowledge of the entire iid stuck-at pattern gives capacity 1-delta.
+    claim_id: operational-capacity
+  proofs: []
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion.
+references:
+- heegard-elgamal-1983

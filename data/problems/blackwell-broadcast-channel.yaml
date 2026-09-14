@@ -3,13 +3,21 @@
 id: blackwell-broadcast-channel
 title: Blackwell deterministic broadcast channel
 status: solved
-updated: '2026-08-13'
-summary: The three-input Blackwell channel is a concrete nondegraded deterministic broadcast channel with an exact entropy capacity region.
+updated: '2026-09-14'
+summary: The three-input Blackwell channel is a concrete nondegraded deterministic broadcast channel with
+  an exact entropy capacity region.
 tags:
-  model: [broadcast]
-  features: [finite-alphabet, discrete-memoryless, asymmetric]
-  quantity: [capacity-region]
-  knowledge: [exact, single-letter-characterization]
+  model:
+  - broadcast
+  features:
+  - finite-alphabet
+  - discrete-memoryless
+  - asymmetric
+  quantity:
+  - capacity-region
+  knowledge:
+  - exact
+  - single-letter-characterization
 model:
   input: One of three symbols \(x\in\{0,1,2\}\).
   output: Two binary outputs with pairs \((Y_1,Y_2)=(0,0),(0,1),(1,1)\), respectively.
@@ -32,11 +40,21 @@ bounds:
   relation: \mathcal C_{\mathrm B}=\bigcup_{P_X}\{R_1\le H(Y_1),R_2\le H(Y_2),R_1+R_2\le H(Y_1,Y_2)\}
   method: Deterministic broadcast coding theorem.
   year: 1980
-  references: [gelfand-pinsker-broadcast-1980]
+  references:
+  - gelfand-pinsker-broadcast-1980
 formalization:
-  status: definitions
-  claims: []
-  notes: Concrete definitions are retained; no capacity or bound claim is formally stated.
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: The operational private-message region of the registered Blackwell channel.
+    bound_ids:
+    - deterministic-region
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion.
   files:
   - path: lean/CapacityAtlas/Channels/Broadcast.lean
     declaration: CapacityAtlas.Channel.blackwellBroadcastChannel
@@ -46,5 +64,11 @@ formalization:
     declaration: CapacityAtlas.Channel.blackwellCapacityRegion
     role: definition
     description: Deterministic single-letter private-message region.
+  - path: lean/CapacityAtlas/Claims/Blackwell.lean
+    declaration: CapacityAtlas.Claims.blackwell
+    role: claim
+    description: The operational private-message region of the registered Blackwell channel.
+    claim_id: operational-capacity
   proofs: []
-references: [gelfand-pinsker-broadcast-1980]
+references:
+- gelfand-pinsker-broadcast-1980

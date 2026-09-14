@@ -1,0 +1,67 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: constrained-bec-with-feedback
+title: Input-constrained binary erasure channel with feedback
+status: solved
+updated: '2026-09-14'
+summary: A binary erasure channel with no adjacent transmitted ones admits an exact feedback capacity
+  formula.
+tags:
+  model:
+  - point-to-point
+  features:
+  - binary
+  - finite-alphabet
+  - erasure
+  - feedback
+  - memory
+  quantity:
+  - capacity
+  knowledge:
+  - exact
+model:
+  input: Binary symbols constrained to have no consecutive ones along every output history.
+  output: An unerased input bit or an erasure marker.
+  law: The memoryless binary erasure channel has erasure probability epsilon.
+  assumptions:
+  - 0 <= epsilon <= 1. Erasures are independent across time.
+  - The encoder sees strictly past outputs through noiseless feedback.
+  - The input constraint holds for every message and output history.
+quantity:
+  name: Input-constrained binary erasure channel with feedback capacity
+  symbol: C
+  units: bits per channel use
+  criterion: Vanishing average block error, with the constraints specified in the model.
+capacity:
+  kind: exact
+  display: C_{\rm fb}=\max_{0\le p\le1/2}\frac{(1-\varepsilon)h_2(p)}{1+(1-\varepsilon)p}
+bounds:
+- id: published-capacity
+  direction: exact
+  relation: C_{\rm fb}=\max_{0\le p\le1/2}\frac{(1-\varepsilon)h_2(p)}{1+(1-\varepsilon)p}
+  method: Dynamic programming converse and an explicit constrained feedback code.
+  year: 2015
+  references:
+  - sabag-permuter-kashyap-2015
+formalization:
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 2
+    description: Exact feedback capacity of the binary (1,infinity) input-constrained erasure channel.
+    bound_ids:
+    - published-capacity
+  files:
+  - path: lean/CapacityAtlas/Claims/ConstrainedBEC.lean
+    declaration: CapacityAtlas.Claims.constrainedBEC
+    role: claim
+    description: Exact feedback capacity of the binary (1,infinity) input-constrained erasure channel.
+    claim_id: operational-capacity
+  proofs: []
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion.
+references:
+- sabag-permuter-kashyap-2015

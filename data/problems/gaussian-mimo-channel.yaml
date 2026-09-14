@@ -4,45 +4,101 @@ id: gaussian-mimo-channel
 title: Point-to-point Gaussian MIMO channel
 status: solved
 featured: true
-updated: '2026-08-13'
-summary: A point-to-point Gaussian vector channel under a total covariance trace constraint has a log-determinant water-filling capacity formula.
+updated: '2026-09-14'
+summary: A point-to-point Gaussian vector channel under a total covariance trace constraint has a log-determinant
+  water-filling capacity formula.
 tags:
-  model: [point-to-point]
-  features: [continuous-alphabet, gaussian, power-constraint]
-  quantity: [capacity]
-  knowledge: [exact, single-letter-characterization]
+  model:
+  - point-to-point
+  features:
+  - continuous-alphabet
+  - gaussian
+  - power-constraint
+  quantity:
+  - capacity
+  knowledge:
+  - exact
+  - single-letter-characterization
 model:
-  input: A real transmit vector \(X\in\mathbb R^{n_t}\) with covariance \(Q\succeq0\) and \(\operatorname{tr}Q\le P\).
+  input: A real transmit vector \(X\in\mathbb R^{n_t}\) with covariance \(Q\succeq0\) and \(\operatorname{tr}Q\le
+    P\).
   output: \(Y=HX+Z\in\mathbb R^{n_r}\), where \(Z\sim\mathcal N(0,\sigma^2I)\).
   law: A fixed real channel matrix \(H\) is known at encoder and decoder.
   assumptions:
-  - Total average transmit power is at most \(P\).
   - Average decoding error vanishes.
   - Real-channel normalization contributes a factor one half.
+  - For every message m, sum_t sum_k x_{t,k}(m)^2 <= n P. This is a shared transmit-antenna budget for
+    each codeword, not a separate per-antenna or message-averaged budget.
 quantity:
   name: Gaussian MIMO capacity
   symbol: C(H,P)
   units: bits per channel use
-  criterion: Arbitrary blocklength vector codes under the total average power constraint.
+  criterion: Arbitrary blocklength vector codes under the total average power constraint. Resource averaging
+    is fixed by the explicit model assumption below.
 capacity:
   kind: characterization
-  display: C(H,P)=\max_{Q\succeq0,\,\operatorname{tr}Q\le P}\frac12\log_2\det\!\left(I+\sigma^{-2}HQH^{\mathsf T}\right)
+  display: C(H,P)=\max_{Q\succeq0,\,\operatorname{tr}Q\le P}\frac12\log_2\det\!\left(I+\sigma^{-2}HQH^{\mathsf
+    T}\right)
   notes: The maximizing covariance is obtained by water-filling over the eigenmodes of \(H^{\mathsf T}H\).
 bounds:
 - id: water-filling-capacity
   direction: exact
-  relation: C(H,P)=\max_{Q\succeq0,\operatorname{tr}Q\le P}\frac12\log_2\det(I+\sigma^{-2}HQH^{\mathsf T})
+  relation: C(H,P)=\max_{Q\succeq0,\operatorname{tr}Q\le P}\frac12\log_2\det(I+\sigma^{-2}HQH^{\mathsf
+    T})
   method: Gaussian extremality and eigenmode water-filling.
   year: 1999
-  references: [telatar-1999]
+  references:
+  - telatar-1999
 formalization:
-  status: definitions
-  claims: []
-  notes: Concrete definitions are retained; no capacity or bound claim is formally stated.
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 2
+    description: Real Gaussian MIMO operational capacity under the registered total power constraint.
+    bound_ids:
+    - water-filling-capacity
+  - id: optimizer-attainment
+    kind: structural
+    category: solved
+    formal_status: stated
+    version: 1
+    description: The covariance supremum is attained by an admissible real positive-semidefinite covariance.
+    bound_ids:
+    - water-filling-capacity
+  - id: water-filling-optimizer
+    kind: structural
+    category: solved
+    formal_status: stated
+    version: 1
+    description: A spectral basis and water level produce an optimal covariance, including zero-gain modes.
+    bound_ids:
+    - water-filling-capacity
+  notes: 'Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion. Power convention:
+    CodewordVectorPowerAdmissible. No equivalence to another power convention is assumed.'
   files:
   - path: lean/CapacityAtlas/Channels/GaussianMIMO.lean
     declaration: CapacityAtlas.Channel.RealGaussianMIMOModel
     role: definition
     description: Real channel matrix, white-noise variance, and total-power model.
+  - path: lean/CapacityAtlas/Claims/GaussianMIMO.lean
+    declaration: CapacityAtlas.Claims.gaussianMIMO
+    role: claim
+    description: Real Gaussian MIMO operational capacity under the registered total power constraint.
+    claim_id: operational-capacity
+  - path: lean/CapacityAtlas/Claims/GaussianMIMO.lean
+    declaration: CapacityAtlas.Claims.gaussianMIMOAttainment
+    role: claim
+    description: The covariance supremum is attained by an admissible real positive-semidefinite covariance.
+    claim_id: optimizer-attainment
+  - path: lean/CapacityAtlas/Claims/GaussianMIMO.lean
+    declaration: CapacityAtlas.Claims.gaussianMIMOWaterFilling
+    role: claim
+    description: A spectral basis and water level produce an optimal covariance, including zero-gain modes.
+    claim_id: water-filling-optimizer
   proofs: []
-references: [telatar-1999]
+references:
+- telatar-1999

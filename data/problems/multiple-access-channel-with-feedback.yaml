@@ -3,9 +3,9 @@
 id: multiple-access-channel-with-feedback
 title: Discrete memoryless multiple-access channel with feedback
 status: open
-updated: '2026-09-11'
-summary: Common noiseless output feedback lets distributed encoders cooperate, but the general capacity region is
-  unknown.
+updated: '2026-09-14'
+summary: Common noiseless output feedback lets distributed encoders cooperate, but the general capacity
+  region is unknown.
 tags:
   model:
   - multiple-access
@@ -51,18 +51,60 @@ bounds:
   - hekstra-willems-1989
 frontier:
   question: Determine the capacity region of the general DM-MAC with common output feedback.
-  bottleneck: Feedback creates useful correlation between independent encoders, but neither block-Markov inner bounds
-    nor dependence-balance converses are universally tight.
+  bottleneck: Feedback creates useful correlation between independent encoders, but neither block-Markov
+    inner bounds nor dependence-balance converses are universally tight.
   progress:
   - Close the gap for a new explicit finite channel.
   - Strengthen dependence balance without losing computability.
   - Relate local or linked formal proofs to a versioned canonical feedback-code claim.
 formalization:
-  status: none
-  claims: []
-  notes: The Ozarow Gaussian special case is exact, but the general finite model remains a formalization
-    target for this repository.
-  files: []
+  status: stated
+  claims:
+  - id: cover-leung-dependence-balance
+    kind: capacity-bounds
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Cover--Leung achievability and dependence balance for a common-output finite feedback
+      MAC.
+    bound_ids:
+    - cover-leung-inner
+    - dependence-balance-outer
+  - id: cover-leung-achievability
+    kind: achievability
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Independently tracked cover leung achievability.
+    bound_ids:
+    - cover-leung-inner
+  - id: dependence-balance-converse
+    kind: converse
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Independently tracked dependence balance converse.
+    bound_ids:
+    - dependence-balance-outer
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion.
+  files:
+  - path: lean/CapacityAtlas/Claims/MACFeedbackBounds.lean
+    declaration: CapacityAtlas.Claims.macFeedbackBounds
+    role: claim
+    description: Cover--Leung achievability and dependence balance for a common-output finite feedback
+      MAC.
+    claim_id: cover-leung-dependence-balance
+  - path: lean/CapacityAtlas/Claims/MACFeedbackBounds.lean
+    declaration: CapacityAtlas.Claims.macFeedbackCoverLeung
+    role: claim
+    description: Independently tracked cover leung achievability.
+    claim_id: cover-leung-achievability
+  - path: lean/CapacityAtlas/Claims/MACFeedbackBounds.lean
+    declaration: CapacityAtlas.Claims.macFeedbackDependenceBalance
+    role: claim
+    description: Independently tracked dependence balance converse.
+    claim_id: dependence-balance-converse
   proofs: []
 references:
 - cover-leung-1981

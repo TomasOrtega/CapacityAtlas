@@ -3,7 +3,7 @@
 id: physically-degraded-broadcast-channel
 title: Physically degraded two-receiver broadcast channel
 status: solved
-updated: '2026-08-10'
+updated: '2026-09-14'
 summary: One transmitter sends private messages to receivers whose outputs form a degradation chain.
 tags:
   model:
@@ -49,10 +49,25 @@ bounds:
   references:
   - bergmans-1973
 formalization:
-  status: none
-  claims: []
-  notes: Multi-user rate regions and auxiliary variables are not yet in the Lean core.
-  files: []
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: The private-message operational region of a degraded finite broadcast channel.
+    bound_ids:
+    - superposition-inner
+    - degraded-broadcast-converse
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion.
+  files:
+  - path: lean/CapacityAtlas/Claims/DegradedBroadcast.lean
+    declaration: CapacityAtlas.Claims.degradedBroadcast
+    role: claim
+    description: The private-message operational region of a degraded finite broadcast channel.
+    claim_id: operational-capacity
   proofs: []
 references:
 - bergmans-1973

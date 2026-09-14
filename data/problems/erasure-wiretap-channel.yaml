@@ -1,0 +1,70 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: erasure-wiretap-channel
+title: Erasure wiretap channel with noiseless legitimate reception
+status: solved
+updated: '2026-09-14'
+summary: A noiseless legitimate receiver and an erasure eavesdropper have a simple strong-secrecy capacity.
+tags:
+  model:
+  - wiretap
+  features:
+  - binary
+  - finite-alphabet
+  - discrete-memoryless
+  - erasure
+  - degraded
+  - secrecy
+  quantity:
+  - secrecy-capacity
+  knowledge:
+  - exact
+model:
+  input: Binary channel inputs generated using private randomness.
+  output: The legitimate receiver sees the input. The eavesdropper sees an input or erasure.
+  law: The legitimate channel is the identity. The eavesdropper channel is a BEC of erasure probability
+    epsilon.
+  assumptions:
+  - 0 <= epsilon <= 1. Erasures are iid and independent of message and private seed.
+  - The seed is uniform, finite, private and independent of the uniform message.
+  - Legitimate average error and unnormalized I(M;Z^n) both tend to zero.
+quantity:
+  name: Erasure wiretap channel with noiseless legitimate reception capacity
+  symbol: C_s
+  units: secret bits per channel use
+  criterion: Vanishing legitimate average error and unnormalized information leakage.
+capacity:
+  kind: exact
+  display: C_s=\varepsilon
+bounds:
+- id: published-capacity
+  direction: exact
+  relation: C_s=\varepsilon
+  method: Random binning and the degraded wiretap converse.
+  year: 1975
+  references:
+  - wyner-1975
+  - bloch-laneman-2013
+formalization:
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Strong-secrecy capacity when the legitimate channel is noiseless and Eve sees erasures.
+    bound_ids:
+    - published-capacity
+  files:
+  - path: lean/CapacityAtlas/Claims/ErasureWiretap.lean
+    declaration: CapacityAtlas.Claims.erasureWiretap
+    role: claim
+    description: Strong-secrecy capacity when the legitimate channel is noiseless and Eve sees erasures.
+    claim_id: operational-capacity
+  proofs: []
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion.
+references:
+- wyner-1975
+- bloch-laneman-2013

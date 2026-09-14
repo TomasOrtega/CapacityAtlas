@@ -3,13 +3,20 @@
 id: trapdoor-channel-without-feedback
 title: Trapdoor channel without feedback
 status: open
-updated: '2026-08-24'
-summary: Removing output feedback from the same binary finite-state trapdoor channel leaves its exact feedforward capacity unresolved.
+updated: '2026-09-14'
+summary: Removing output feedback from the same binary finite-state trapdoor channel leaves its exact
+  feedforward capacity unresolved.
 tags:
-  model: [point-to-point]
-  features: [finite-alphabet, binary, memory]
-  quantity: [capacity]
-  knowledge: [bounds]
+  model:
+  - point-to-point
+  features:
+  - finite-alphabet
+  - binary
+  - memory
+  quantity:
+  - capacity
+  knowledge:
+  - bounds
 model:
   input: A binary symbol inserted into a box already containing one binary state symbol.
   output: One of the two symbols is selected uniformly as output; the other becomes the next state.
@@ -27,7 +34,8 @@ capacity:
   display: 0.572\le C\le0.5765
   lower: '0.572'
   upper: '0.5765'
-  notes: Both endpoints are reported numerical bounds rather than exact symbolic constants; the exact feedforward capacity remains open.
+  notes: Both endpoints are reported numerical bounds rather than exact symbolic constants; the exact
+    feedforward capacity remains open.
 bounds:
 - id: finite-block-ba-lower-2003
   direction: lower
@@ -35,21 +43,37 @@ bounds:
   method: Finite-block Blahut-Arimoto maximization using recursive trapdoor-channel matrices.
   year: 2003
   notes: The reported decimal is extrapolated from computations through blocklength 10.
-  references: [kobayashi-morita-hoshi-2003, kobayashi-2006]
+  references:
+  - kobayashi-morita-hoshi-2003
+  - kobayashi-2006
 - id: q-graph-duality-upper-2021
   direction: upper
   relation: C\le\log_2(3/2)
   method: Q-graph dual capacity bound with an analytic Bellman-equation solution.
   year: 2021
-  references: [huleihel-et-al-2021]
+  references:
+  - huleihel-et-al-2021
 - id: delayed-feedback-q-graph-upper-2024
   direction: upper
   relation: C\le0.5765
   method: Four-step delayed-feedback Q-graph converse evaluated by convex optimization.
   year: 2024
-  conditions: The initial state is known to the encoder and decoder; delayed feedback upper-bounds feedforward capacity.
-  notes: The source reports this rounded value from computer-based simulations, not as an exact analytic endpoint.
-  references: [huleihel-et-al-2024]
+  conditions: The initial state is known to the encoder and decoder; delayed feedback upper-bounds feedforward
+    capacity.
+  notes: The source reports this rounded value from computer-based simulations, not as an exact analytic
+    endpoint.
+  references:
+  - huleihel-et-al-2024
+- id: zero-error-repetition-lower
+  direction: lower
+  relation: 1/2\le C
+  method: Repeat each message bit twice. With known entering state, each output pair determines the input
+    bit and leaving state.
+  year: 2006
+  references:
+  - permuter-et-al-2006
+  notes: The source introduction records the zero-error value 1/2 and credits earlier work. Only this
+    analytic lower bound is selected, not 0.572.
 frontier:
   question: Determine the exact capacity without encoder access to past outputs.
   bottleneck: Channel state depends on the unobserved output history and creates input-dependent memory.
@@ -60,14 +84,57 @@ frontier:
     status: done
     url: https://capacityatlas.org/problems/trapdoor-channel-with-feedback/
 formalization:
-  status: definitions
-  claims: []
-  notes: Concrete definitions are retained; no capacity or bound claim is formally stated.
+  status: stated
+  claims:
+  - id: analytic-capacity-bounds
+    kind: capacity-bounds
+    category: solved
+    formal_status: stated
+    version: 2
+    description: Analytic no-feedback bounds. Rounded or extrapolated numerical endpoints are not asserted.
+    bound_ids:
+    - zero-error-repetition-lower
+    - q-graph-duality-upper-2021
+  - id: repetition-achievability
+    kind: achievability
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Independently tracked repetition achievability.
+    bound_ids:
+    - zero-error-repetition-lower
+  - id: analytic-converse
+    kind: converse
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Independently tracked analytic converse.
+    bound_ids:
+    - q-graph-duality-upper-2021
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion. The admitted analytic
+    claim uses 1/2 and log2(3/2). The separately displayed 0.572 and 0.5765 numerical endpoints are not
+    certified by this claim.
   files:
   - path: lean/CapacityAtlas/Channels/Trapdoor.lean
     declaration: CapacityAtlas.Channel.trapdoorFeedforwardModel
     role: definition
     description: Concrete finite-state trapdoor channel used for the no-feedback problem.
+  - path: lean/CapacityAtlas/Claims/TrapdoorBounds.lean
+    declaration: CapacityAtlas.Claims.trapdoorBounds
+    role: claim
+    description: Analytic no-feedback bounds. Rounded or extrapolated numerical endpoints are not asserted.
+    claim_id: analytic-capacity-bounds
+  - path: lean/CapacityAtlas/Claims/TrapdoorBounds.lean
+    declaration: CapacityAtlas.Claims.trapdoorRepetition
+    role: claim
+    description: Independently tracked repetition achievability.
+    claim_id: repetition-achievability
+  - path: lean/CapacityAtlas/Claims/TrapdoorBounds.lean
+    declaration: CapacityAtlas.Claims.trapdoorAnalyticConverse
+    role: claim
+    description: Independently tracked analytic converse.
+    claim_id: analytic-converse
   proofs: []
 references:
 - permuter-et-al-2006

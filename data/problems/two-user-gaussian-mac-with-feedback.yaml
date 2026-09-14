@@ -4,7 +4,7 @@ id: two-user-gaussian-mac-with-feedback
 title: Two-user Gaussian multiple-access channel with feedback
 status: solved
 featured: true
-updated: '2026-09-11'
+updated: '2026-09-14'
 summary: Ozarow's feedback scheme and converse determine the full two-user Gaussian MAC feedback region.
 tags:
   model:
@@ -26,11 +26,15 @@ model:
   assumptions:
   - Feedback is causal and noiseless.
   - Messages are independent.
+  - For each user j, E_{M_1,M_2,Z^n}[sum_t x_{j,t}(M_j,Y^{t-1})^2] <= n P_j. The messages are independent
+    and uniform. Every message-pair-conditional energy is integrable. The power bounds are separate and
+    not pathwise.
 quantity:
   name: Feedback capacity region
   symbol: \mathcal C_{\mathrm{GMAC,fb}}
   units: rate pairs in bits per channel use
-  criterion: Vanishing average joint decoding error.
+  criterion: Vanishing average joint decoding error. Resource averaging is fixed by the explicit model
+    assumption below.
 capacity:
   kind: region
   display: \bigcup_{0\le\rho\le1}\!\left\{\begin{array}{l}R_1\le\frac12\log_2(1+P_1(1-\rho^2)/N),\\R_2\le\frac12\log_2(1+P_2(1-\rho^2)/N),\\R_1+R_2\le\frac12\log_2(1+(P_1+P_2+2\rho\sqrt{P_1P_2})/N)\end{array}\right\}
@@ -50,10 +54,28 @@ bounds:
   references:
   - ozarow-1984
 formalization:
-  status: none
-  claims: []
-  notes: The exact feedback region is a substantial formalization target for this repository.
-  files: []
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Ozarow's capacity region under separate expected-power constraints and noiseless output
+      feedback.
+    bound_ids:
+    - ozarow-achievability
+    - ozarow-converse
+  notes: 'Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion. Power convention:
+    SeparateMessageNoiseAveragePowerAdmissible. No equivalence to another power convention is assumed.'
+  files:
+  - path: lean/CapacityAtlas/Claims/GaussianMACFeedback.lean
+    declaration: CapacityAtlas.Claims.gaussianMACFeedback
+    role: claim
+    description: Ozarow's capacity region under separate expected-power constraints and noiseless output
+      feedback.
+    claim_id: operational-capacity
   proofs: []
 references:
 - ozarow-1984

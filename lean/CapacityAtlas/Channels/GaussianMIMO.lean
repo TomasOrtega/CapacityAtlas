@@ -12,7 +12,8 @@ namespace CapacityAtlas.Channel
 
 open CapacityAtlas
 
-/-- A real Gaussian MIMO channel with total input power and white-noise variance. -/
+/-- A real Gaussian MIMO channel with total block-average power for every message
+and white-noise variance. The operational code applies the budget across all transmit antennas. -/
 @[capacity_problem "gaussian-mimo-channel", capacity_definition]
 structure RealGaussianMIMOModel (transmitAntennas receiveAntennas : ℕ) where
   channelMatrix : Matrix (Fin receiveAntennas) (Fin transmitAntennas) ℝ

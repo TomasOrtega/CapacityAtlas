@@ -7,6 +7,7 @@ https://github.com/TomasOrtega/CapacityAtlasMAC/blob/ec5be554b9644df94dd58190963
 -/
 
 import CapacityAtlasForMathlib.InformationTheory.FiniteEntropy
+import CapacityAtlasForMathlib.InformationTheory.FiniteChannel.Encoded
 import CapacityAtlasForMathlib.InformationTheory.RandomCoding
 
 open scoped BigOperators
@@ -84,20 +85,6 @@ theorem rate_le_of_fano_bounds {rate capacity : ℝ} (hcapacity : 0 ≤ capacity
 namespace FiniteChannel
 
 variable {M X Y : Type*} [Fintype M] [Fintype X] [Fintype Y]
-
-/-- A channel with its input symbols selected by a deterministic encoder. -/
-@[capacity_shared_api]
-def encoded (channel : FiniteChannel X Y) (encode : M → X) : FiniteChannel M Y where
-  transition message output := channel.transition (encode message) output
-  nonnegative message output := channel.nonnegative (encode message) output
-  row_sum message := channel.row_sum (encode message)
-
-@[simp, capacity_shared_api]
-theorem encoded_transition (channel : FiniteChannel X Y) (encode : M → X)
-    (message : M) (output : Y) :
-    (channel.encoded encode).transition message output =
-      channel.transition (encode message) output :=
-  rfl
 
 /-- Encoding before a channel is equivalent to pushing the input distribution forward. -/
 @[capacity_shared_api]

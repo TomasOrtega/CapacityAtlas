@@ -1,0 +1,995 @@
+[
+  {
+    "order": 9,
+    "problem": "physically-degraded-broadcast-channel",
+    "module": "CapacityAtlas.Claims.DegradedBroadcast",
+    "path": "lean/CapacityAtlas/Claims/DegradedBroadcast.lean",
+    "declaration": "CapacityAtlas.Claims.degradedBroadcast",
+    "description": "The private-message operational region of a degraded finite broadcast channel.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "superposition-inner",
+      "degraded-broadcast-converse"
+    ]
+  },
+  {
+    "order": 10,
+    "problem": "less-noisy-broadcast-channel",
+    "module": "CapacityAtlas.Claims.LessNoisyBroadcast",
+    "path": "lean/CapacityAtlas/Claims/LessNoisyBroadcast.lean",
+    "declaration": "CapacityAtlas.Claims.lessNoisyBroadcast",
+    "description": "The private-message capacity region when receiver 1 is less noisy.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "superposition-region"
+    ]
+  },
+  {
+    "order": 11,
+    "problem": "more-capable-broadcast-channel",
+    "module": "CapacityAtlas.Claims.MoreCapableBroadcast",
+    "path": "lean/CapacityAtlas/Claims/MoreCapableBroadcast.lean",
+    "declaration": "CapacityAtlas.Claims.moreCapableBroadcast",
+    "description": "The more-capable private-message region, including its sum-rate condition.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "superposition-region"
+    ]
+  },
+  {
+    "order": 12,
+    "problem": "binary-memory-with-stuck-defects",
+    "module": "CapacityAtlas.Claims.DefectiveMemory",
+    "path": "lean/CapacityAtlas/Claims/DefectiveMemory.lean",
+    "declaration": "CapacityAtlas.Claims.defectiveMemory",
+    "description": "Noncausal knowledge of the entire iid stuck-at pattern gives capacity 1-delta.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "published-capacity"
+    ]
+  },
+  {
+    "order": 13,
+    "problem": "gelfand-pinsker-channel",
+    "module": "CapacityAtlas.Claims.GelfandPinsker",
+    "path": "lean/CapacityAtlas/Claims/GelfandPinsker.lean",
+    "declaration": "CapacityAtlas.Claims.gelfandPinsker",
+    "description": "The Gel'fand--Pinsker formula for iid state seen noncausally only by the encoder.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "binning-achievability",
+      "gp-converse"
+    ]
+  },
+  {
+    "order": 14,
+    "problem": "blackwell-broadcast-channel",
+    "module": "CapacityAtlas.Claims.Blackwell",
+    "path": "lean/CapacityAtlas/Claims/Blackwell.lean",
+    "declaration": "CapacityAtlas.Claims.blackwell",
+    "description": "The operational private-message region of the registered Blackwell channel.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "deterministic-region"
+    ]
+  },
+  {
+    "order": 15,
+    "problem": "general-two-receiver-broadcast-channel",
+    "module": "CapacityAtlas.Claims.BroadcastBounds",
+    "path": "lean/CapacityAtlas/Claims/BroadcastBounds.lean",
+    "declaration": "CapacityAtlas.Claims.broadcastBounds",
+    "description": "The fixed two-auxiliary Marton inner bound and UV outer bound, with closures.",
+    "claim_id": "marton-uv-bounds",
+    "version": 1,
+    "kind": "capacity-bounds",
+    "bound_ids": [
+      "marton-inner",
+      "uv-outer"
+    ]
+  },
+  {
+    "order": 15,
+    "problem": "general-two-receiver-broadcast-channel",
+    "module": "CapacityAtlas.Claims.BroadcastBounds",
+    "path": "lean/CapacityAtlas/Claims/BroadcastBounds.lean",
+    "declaration": "CapacityAtlas.Claims.broadcastMarton",
+    "description": "Independently tracked marton achievability.",
+    "claim_id": "marton-achievability",
+    "version": 1,
+    "kind": "achievability",
+    "bound_ids": [
+      "marton-inner"
+    ]
+  },
+  {
+    "order": 15,
+    "problem": "general-two-receiver-broadcast-channel",
+    "module": "CapacityAtlas.Claims.BroadcastBounds",
+    "path": "lean/CapacityAtlas/Claims/BroadcastBounds.lean",
+    "declaration": "CapacityAtlas.Claims.broadcastUV",
+    "description": "Independently tracked uv converse.",
+    "claim_id": "uv-converse",
+    "version": 1,
+    "kind": "converse",
+    "bound_ids": [
+      "uv-outer"
+    ]
+  },
+  {
+    "order": 16,
+    "problem": "binary-skew-symmetric-broadcast-channel",
+    "module": "CapacityAtlas.Claims.SkewBroadcast",
+    "path": "lean/CapacityAtlas/Claims/SkewBroadcast.lean",
+    "declaration": "CapacityAtlas.Claims.skewBroadcastBounds",
+    "description": "Marton/UV bounds specialized to the concrete binary skew-symmetric channel.",
+    "claim_id": "marton-uv-bounds",
+    "version": 1,
+    "kind": "capacity-bounds",
+    "bound_ids": [
+      "marton-inner",
+      "uv-outer"
+    ]
+  },
+  {
+    "order": 16,
+    "problem": "binary-skew-symmetric-broadcast-channel",
+    "module": "CapacityAtlas.Claims.SkewBroadcast",
+    "path": "lean/CapacityAtlas/Claims/SkewBroadcast.lean",
+    "declaration": "CapacityAtlas.Claims.skewBroadcastMarton",
+    "description": "Independently tracked marton achievability.",
+    "claim_id": "marton-achievability",
+    "version": 1,
+    "kind": "achievability",
+    "bound_ids": [
+      "marton-inner"
+    ]
+  },
+  {
+    "order": 16,
+    "problem": "binary-skew-symmetric-broadcast-channel",
+    "module": "CapacityAtlas.Claims.SkewBroadcast",
+    "path": "lean/CapacityAtlas/Claims/SkewBroadcast.lean",
+    "declaration": "CapacityAtlas.Claims.skewBroadcastUV",
+    "description": "Independently tracked uv converse.",
+    "claim_id": "uv-converse",
+    "version": 1,
+    "kind": "converse",
+    "bound_ids": [
+      "uv-outer"
+    ]
+  },
+  {
+    "order": 17,
+    "problem": "erasure-wiretap-channel",
+    "module": "CapacityAtlas.Claims.ErasureWiretap",
+    "path": "lean/CapacityAtlas/Claims/ErasureWiretap.lean",
+    "declaration": "CapacityAtlas.Claims.erasureWiretap",
+    "description": "Strong-secrecy capacity when the legitimate channel is noiseless and Eve sees erasures.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "published-capacity"
+    ]
+  },
+  {
+    "order": 18,
+    "problem": "degraded-wiretap-channel",
+    "module": "CapacityAtlas.Claims.DegradedWiretap",
+    "path": "lean/CapacityAtlas/Claims/DegradedWiretap.lean",
+    "declaration": "CapacityAtlas.Claims.degradedWiretap",
+    "description": "The degraded finite wiretap formula with unnormalized leakage tending to zero.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "random-binning-achievability",
+      "degraded-secrecy-converse"
+    ]
+  },
+  {
+    "order": 19,
+    "problem": "general-finite-wiretap-channel",
+    "module": "CapacityAtlas.Claims.GeneralWiretap",
+    "path": "lean/CapacityAtlas/Claims/GeneralWiretap.lean",
+    "declaration": "CapacityAtlas.Claims.generalWiretap",
+    "description": "The general auxiliary-variable strong-secrecy capacity formula.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "auxiliary-characterization"
+    ]
+  },
+  {
+    "order": 20,
+    "problem": "strong-interference-two-user-dmc",
+    "module": "CapacityAtlas.Claims.StrongInterference",
+    "path": "lean/CapacityAtlas/Claims/StrongInterference.lean",
+    "declaration": "CapacityAtlas.Claims.strongInterference",
+    "description": "The strong-interference region uses the same time-sharing law at both receivers.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "decode-both-region"
+    ]
+  },
+  {
+    "order": 21,
+    "problem": "general-two-user-interference-channel",
+    "module": "CapacityAtlas.Claims.InterferenceBounds",
+    "path": "lean/CapacityAtlas/Claims/InterferenceBounds.lean",
+    "declaration": "CapacityAtlas.Claims.interferenceBounds",
+    "description": "A fixed Han--Kobayashi inner region and cooperative cut-set outer region.",
+    "claim_id": "han-kobayashi-cut-set",
+    "version": 1,
+    "kind": "capacity-bounds",
+    "bound_ids": [
+      "han-kobayashi-inner",
+      "cooperative-cut-set"
+    ]
+  },
+  {
+    "order": 21,
+    "problem": "general-two-user-interference-channel",
+    "module": "CapacityAtlas.Claims.InterferenceBounds",
+    "path": "lean/CapacityAtlas/Claims/InterferenceBounds.lean",
+    "declaration": "CapacityAtlas.Claims.interferenceCutSet",
+    "description": "Independently tracked cut set converse.",
+    "claim_id": "cut-set-converse",
+    "version": 1,
+    "kind": "converse",
+    "bound_ids": [
+      "cooperative-cut-set"
+    ]
+  },
+  {
+    "order": 21,
+    "problem": "general-two-user-interference-channel",
+    "module": "CapacityAtlas.Claims.InterferenceBounds",
+    "path": "lean/CapacityAtlas/Claims/InterferenceBounds.lean",
+    "declaration": "CapacityAtlas.Claims.interferenceHanKobayashi",
+    "description": "Independently tracked han kobayashi achievability.",
+    "claim_id": "han-kobayashi-achievability",
+    "version": 1,
+    "kind": "achievability",
+    "bound_ids": [
+      "han-kobayashi-inner"
+    ]
+  },
+  {
+    "order": 22,
+    "problem": "noiseless-multicast-network",
+    "module": "CapacityAtlas.Claims.Multicast",
+    "path": "lean/CapacityAtlas/Claims/Multicast.lean",
+    "declaration": "CapacityAtlas.Claims.multicast",
+    "description": "Single-source topological processing on a finite noiseless acyclic network.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "published-capacity"
+    ]
+  },
+  {
+    "order": 23,
+    "problem": "physically-degraded-relay-channel",
+    "module": "CapacityAtlas.Claims.DegradedRelay",
+    "path": "lean/CapacityAtlas/Claims/DegradedRelay.lean",
+    "declaration": "CapacityAtlas.Claims.degradedRelay",
+    "description": "The physically degraded relay capacity under strictly causal relaying.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "degraded-decode-forward",
+      "degraded-cut-set"
+    ]
+  },
+  {
+    "order": 24,
+    "problem": "general-relay-channel",
+    "module": "CapacityAtlas.Claims.RelayBounds",
+    "path": "lean/CapacityAtlas/Claims/RelayBounds.lean",
+    "declaration": "CapacityAtlas.Claims.relayBounds",
+    "description": "Decode-and-forward and compress-and-forward are lower bounds, cut set is an upper bound.",
+    "claim_id": "df-cf-cut-set",
+    "version": 1,
+    "kind": "capacity-bounds",
+    "bound_ids": [
+      "decode-forward",
+      "compress-forward",
+      "cut-set"
+    ]
+  },
+  {
+    "order": 24,
+    "problem": "general-relay-channel",
+    "module": "CapacityAtlas.Claims.RelayBounds",
+    "path": "lean/CapacityAtlas/Claims/RelayBounds.lean",
+    "declaration": "CapacityAtlas.Claims.relayCompressForward",
+    "description": "Independently tracked compress forward achievability.",
+    "claim_id": "compress-forward-achievability",
+    "version": 1,
+    "kind": "achievability",
+    "bound_ids": [
+      "compress-forward"
+    ]
+  },
+  {
+    "order": 24,
+    "problem": "general-relay-channel",
+    "module": "CapacityAtlas.Claims.RelayBounds",
+    "path": "lean/CapacityAtlas/Claims/RelayBounds.lean",
+    "declaration": "CapacityAtlas.Claims.relayCutSet",
+    "description": "Independently tracked cut set converse.",
+    "claim_id": "cut-set-converse",
+    "version": 1,
+    "kind": "converse",
+    "bound_ids": [
+      "cut-set"
+    ]
+  },
+  {
+    "order": 24,
+    "problem": "general-relay-channel",
+    "module": "CapacityAtlas.Claims.RelayBounds",
+    "path": "lean/CapacityAtlas/Claims/RelayBounds.lean",
+    "declaration": "CapacityAtlas.Claims.relayDecodeForward",
+    "description": "Independently tracked decode forward achievability.",
+    "claim_id": "decode-forward-achievability",
+    "version": 1,
+    "kind": "achievability",
+    "bound_ids": [
+      "decode-forward"
+    ]
+  },
+  {
+    "order": 25,
+    "problem": "primitive-relay-channel",
+    "module": "CapacityAtlas.Claims.PrimitiveRelayBounds",
+    "path": "lean/CapacityAtlas/Claims/PrimitiveRelayBounds.lean",
+    "declaration": "CapacityAtlas.Claims.primitiveRelayBounds",
+    "description": "Primitive-relay compress-and-forward and cut-set bounds with a causal rate-limited link.",
+    "claim_id": "cf-cut-set",
+    "version": 1,
+    "kind": "capacity-bounds",
+    "bound_ids": [
+      "compress-forward",
+      "cut-set"
+    ]
+  },
+  {
+    "order": 25,
+    "problem": "primitive-relay-channel",
+    "module": "CapacityAtlas.Claims.PrimitiveRelayBounds",
+    "path": "lean/CapacityAtlas/Claims/PrimitiveRelayBounds.lean",
+    "declaration": "CapacityAtlas.Claims.primitiveRelayCompressForward",
+    "description": "Independently tracked compress forward achievability.",
+    "claim_id": "compress-forward-achievability",
+    "version": 1,
+    "kind": "achievability",
+    "bound_ids": [
+      "compress-forward"
+    ]
+  },
+  {
+    "order": 25,
+    "problem": "primitive-relay-channel",
+    "module": "CapacityAtlas.Claims.PrimitiveRelayBounds",
+    "path": "lean/CapacityAtlas/Claims/PrimitiveRelayBounds.lean",
+    "declaration": "CapacityAtlas.Claims.primitiveRelayCutSet",
+    "description": "Independently tracked cut set converse.",
+    "claim_id": "cut-set-converse",
+    "version": 1,
+    "kind": "converse",
+    "bound_ids": [
+      "cut-set"
+    ]
+  },
+  {
+    "order": 26,
+    "problem": "multiple-access-channel-with-feedback",
+    "module": "CapacityAtlas.Claims.MACFeedbackBounds",
+    "path": "lean/CapacityAtlas/Claims/MACFeedbackBounds.lean",
+    "declaration": "CapacityAtlas.Claims.macFeedbackBounds",
+    "description": "Cover--Leung achievability and dependence balance for a common-output finite feedback MAC.",
+    "claim_id": "cover-leung-dependence-balance",
+    "version": 1,
+    "kind": "capacity-bounds",
+    "bound_ids": [
+      "cover-leung-inner",
+      "dependence-balance-outer"
+    ]
+  },
+  {
+    "order": 26,
+    "problem": "multiple-access-channel-with-feedback",
+    "module": "CapacityAtlas.Claims.MACFeedbackBounds",
+    "path": "lean/CapacityAtlas/Claims/MACFeedbackBounds.lean",
+    "declaration": "CapacityAtlas.Claims.macFeedbackCoverLeung",
+    "description": "Independently tracked cover leung achievability.",
+    "claim_id": "cover-leung-achievability",
+    "version": 1,
+    "kind": "achievability",
+    "bound_ids": [
+      "cover-leung-inner"
+    ]
+  },
+  {
+    "order": 26,
+    "problem": "multiple-access-channel-with-feedback",
+    "module": "CapacityAtlas.Claims.MACFeedbackBounds",
+    "path": "lean/CapacityAtlas/Claims/MACFeedbackBounds.lean",
+    "declaration": "CapacityAtlas.Claims.macFeedbackDependenceBalance",
+    "description": "Independently tracked dependence balance converse.",
+    "claim_id": "dependence-balance-converse",
+    "version": 1,
+    "kind": "converse",
+    "bound_ids": [
+      "dependence-balance-outer"
+    ]
+  },
+  {
+    "order": 27,
+    "problem": "modulo-additive-two-way-channel",
+    "module": "CapacityAtlas.Claims.AdditiveTwoWay",
+    "path": "lean/CapacityAtlas/Claims/AdditiveTwoWay.lean",
+    "declaration": "CapacityAtlas.Claims.additiveTwoWay",
+    "description": "Independent memoryless additive noises give a rectangular capacity region even with adaptation.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "published-capacity"
+    ]
+  },
+  {
+    "order": 28,
+    "problem": "discrete-memoryless-two-way-channel",
+    "module": "CapacityAtlas.Claims.TwoWayBounds",
+    "path": "lean/CapacityAtlas/Claims/TwoWayBounds.lean",
+    "declaration": "CapacityAtlas.Claims.twoWayBounds",
+    "description": "Shannon's fixed nonadaptive inner region and adaptive outer region.",
+    "claim_id": "shannon-inner-outer",
+    "version": 1,
+    "kind": "capacity-bounds",
+    "bound_ids": [
+      "shannon-two-way-inner",
+      "shannon-two-way-outer"
+    ]
+  },
+  {
+    "order": 28,
+    "problem": "discrete-memoryless-two-way-channel",
+    "module": "CapacityAtlas.Claims.TwoWayBounds",
+    "path": "lean/CapacityAtlas/Claims/TwoWayBounds.lean",
+    "declaration": "CapacityAtlas.Claims.twoWayShannonInner",
+    "description": "Independently tracked shannon achievability.",
+    "claim_id": "shannon-achievability",
+    "version": 1,
+    "kind": "achievability",
+    "bound_ids": [
+      "shannon-two-way-inner"
+    ]
+  },
+  {
+    "order": 28,
+    "problem": "discrete-memoryless-two-way-channel",
+    "module": "CapacityAtlas.Claims.TwoWayBounds",
+    "path": "lean/CapacityAtlas/Claims/TwoWayBounds.lean",
+    "declaration": "CapacityAtlas.Claims.twoWayShannonOuter",
+    "description": "Independently tracked shannon converse.",
+    "claim_id": "shannon-converse",
+    "version": 1,
+    "kind": "converse",
+    "bound_ids": [
+      "shannon-two-way-outer"
+    ]
+  },
+  {
+    "order": 29,
+    "problem": "arbitrarily-varying-discrete-memoryless-channel",
+    "module": "CapacityAtlas.Claims.AVC",
+    "path": "lean/CapacityAtlas/Claims/AVC.lean",
+    "declaration": "CapacityAtlas.Claims.arbitrarilyVarying",
+    "description": "The unconstrained deterministic average-error AVC dichotomy. The jammer does not see the message.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "symmetrizability-zero",
+      "elimination-dichotomy"
+    ]
+  },
+  {
+    "order": 30,
+    "problem": "additive-white-gaussian-noise-channel",
+    "module": "CapacityAtlas.Claims.AWGN",
+    "path": "lean/CapacityAtlas/Claims/AWGN.lean",
+    "declaration": "CapacityAtlas.Claims.awgn",
+    "description": "Operational real AWGN capacity with maximum-codeword average power.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "gaussian-achievability",
+      "entropy-maximization-converse"
+    ]
+  },
+  {
+    "order": 31,
+    "problem": "gaussian-mimo-channel",
+    "module": "CapacityAtlas.Claims.GaussianMIMO",
+    "path": "lean/CapacityAtlas/Claims/GaussianMIMO.lean",
+    "declaration": "CapacityAtlas.Claims.gaussianMIMO",
+    "description": "Real Gaussian MIMO operational capacity under the registered total power constraint.",
+    "claim_id": "operational-capacity",
+    "version": 2,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "water-filling-capacity"
+    ]
+  },
+  {
+    "order": 31,
+    "problem": "gaussian-mimo-channel",
+    "module": "CapacityAtlas.Claims.GaussianMIMO",
+    "path": "lean/CapacityAtlas/Claims/GaussianMIMO.lean",
+    "declaration": "CapacityAtlas.Claims.gaussianMIMOAttainment",
+    "description": "The covariance supremum is attained by an admissible real positive-semidefinite covariance.",
+    "claim_id": "optimizer-attainment",
+    "version": 1,
+    "kind": "structural",
+    "bound_ids": [
+      "water-filling-capacity"
+    ]
+  },
+  {
+    "order": 31,
+    "problem": "gaussian-mimo-channel",
+    "module": "CapacityAtlas.Claims.GaussianMIMO",
+    "path": "lean/CapacityAtlas/Claims/GaussianMIMO.lean",
+    "declaration": "CapacityAtlas.Claims.gaussianMIMOWaterFilling",
+    "description": "A spectral basis and water level produce an optimal covariance, including zero-gain modes.",
+    "claim_id": "water-filling-optimizer",
+    "version": 1,
+    "kind": "structural",
+    "bound_ids": [
+      "water-filling-capacity"
+    ]
+  },
+  {
+    "order": 32,
+    "problem": "two-user-gaussian-mac",
+    "module": "CapacityAtlas.Claims.GaussianMAC",
+    "path": "lean/CapacityAtlas/Claims/GaussianMAC.lean",
+    "declaration": "CapacityAtlas.Claims.gaussianMAC",
+    "description": "The Gaussian MAC capacity region under separate maximum-codeword power constraints.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "gaussian-mac-inner",
+      "gaussian-mac-outer"
+    ]
+  },
+  {
+    "order": 33,
+    "problem": "degraded-gaussian-broadcast-channel",
+    "module": "CapacityAtlas.Claims.GaussianBroadcast",
+    "path": "lean/CapacityAtlas/Claims/GaussianBroadcast.lean",
+    "declaration": "CapacityAtlas.Claims.gaussianBroadcast",
+    "description": "The scalar Gaussian broadcast power-splitting capacity region, stronger receiver first.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "gaussian-superposition",
+      "gaussian-broadcast-converse"
+    ]
+  },
+  {
+    "order": 34,
+    "problem": "gaussian-wiretap-channel",
+    "module": "CapacityAtlas.Claims.GaussianWiretap",
+    "path": "lean/CapacityAtlas/Claims/GaussianWiretap.lean",
+    "declaration": "CapacityAtlas.Claims.gaussianWiretap",
+    "description": "Degraded Gaussian strong-secrecy capacity with private finite randomization.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "gaussian-wiretap-achievability",
+      "gaussian-wiretap-converse"
+    ]
+  },
+  {
+    "order": 35,
+    "problem": "costa-dirty-paper-channel",
+    "module": "CapacityAtlas.Claims.DirtyPaper",
+    "path": "lean/CapacityAtlas/Claims/DirtyPaper.lean",
+    "declaration": "CapacityAtlas.Claims.dirtyPaper",
+    "description": "Noncausal independent Gaussian interference at the encoder causes no capacity loss.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "dirty-paper-achievability",
+      "genie-converse"
+    ]
+  },
+  {
+    "order": 36,
+    "problem": "awgn-channel-with-feedback",
+    "module": "CapacityAtlas.Claims.AWGNFeedback",
+    "path": "lean/CapacityAtlas/Claims/AWGNFeedback.lean",
+    "declaration": "CapacityAtlas.Claims.awgnFeedback",
+    "description": "Real AWGN feedback capacity under expected block-average power.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "ignore-feedback",
+      "memoryless-feedback-converse"
+    ]
+  },
+  {
+    "order": 37,
+    "problem": "two-user-gaussian-mac-with-feedback",
+    "module": "CapacityAtlas.Claims.GaussianMACFeedback",
+    "path": "lean/CapacityAtlas/Claims/GaussianMACFeedback.lean",
+    "declaration": "CapacityAtlas.Claims.gaussianMACFeedback",
+    "description": "Ozarow's capacity region under separate expected-power constraints and noiseless output feedback.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "ozarow-achievability",
+      "ozarow-converse"
+    ]
+  },
+  {
+    "order": 38,
+    "problem": "gaussian-fading-receiver-state",
+    "module": "CapacityAtlas.Claims.Fading",
+    "path": "lean/CapacityAtlas/Claims/Fading.lean",
+    "declaration": "CapacityAtlas.Claims.fading",
+    "description": "Iid ergodic real fading known only to the receiver, with finite expected information.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "published-capacity"
+    ]
+  },
+  {
+    "order": 39,
+    "problem": "amplitude-constrained-gaussian-channel",
+    "module": "CapacityAtlas.Claims.AmplitudeGaussian",
+    "path": "lean/CapacityAtlas/Claims/AmplitudeGaussian.lean",
+    "declaration": "CapacityAtlas.Claims.amplitudeGaussian",
+    "description": "Amplitude-constrained AWGN capacity is attained by a finite-support input law.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "published-capacity",
+      "power-relaxation-upper"
+    ]
+  },
+  {
+    "order": 39,
+    "problem": "amplitude-constrained-gaussian-channel",
+    "module": "CapacityAtlas.Claims.AmplitudeGaussian",
+    "path": "lean/CapacityAtlas/Claims/AmplitudeGaussian.lean",
+    "declaration": "CapacityAtlas.Claims.amplitudeGaussianCapacity",
+    "description": "The peak-amplitude operational capacity equals the compact-input information supremum.",
+    "claim_id": "capacity-formula",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "published-capacity"
+    ]
+  },
+  {
+    "order": 39,
+    "problem": "amplitude-constrained-gaussian-channel",
+    "module": "CapacityAtlas.Claims.AmplitudeGaussian",
+    "path": "lean/CapacityAtlas/Claims/AmplitudeGaussian.lean",
+    "declaration": "CapacityAtlas.Claims.amplitudeGaussianAttainment",
+    "description": "A finite-support input attains the operational peak-amplitude capacity.",
+    "claim_id": "finite-support-attainment",
+    "version": 1,
+    "kind": "structural",
+    "bound_ids": [
+      "published-capacity"
+    ]
+  },
+  {
+    "order": 39,
+    "problem": "amplitude-constrained-gaussian-channel",
+    "module": "CapacityAtlas.Claims.AmplitudeGaussian",
+    "path": "lean/CapacityAtlas/Claims/AmplitudeGaussian.lean",
+    "declaration": "CapacityAtlas.Claims.amplitudeGaussianUpper",
+    "description": "Peak-amplitude capacity is bounded above by the relaxed average-power formula.",
+    "claim_id": "power-relaxation-converse",
+    "version": 1,
+    "kind": "converse",
+    "bound_ids": [
+      "power-relaxation-upper"
+    ]
+  },
+  {
+    "order": 40,
+    "problem": "no-consecutive-ones-noiseless-channel",
+    "module": "CapacityAtlas.Claims.ConstrainedNoiseless",
+    "path": "lean/CapacityAtlas/Claims/ConstrainedNoiseless.lean",
+    "declaration": "CapacityAtlas.Claims.constrainedNoiseless",
+    "description": "The noiseless binary (1,infinity) constrained channel has log(phi) capacity.",
+    "claim_id": "operational-capacity",
+    "version": 2,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "published-capacity"
+    ]
+  },
+  {
+    "order": 41,
+    "problem": "finite-group-markov-noise-channel",
+    "module": "CapacityAtlas.Claims.MarkovNoise",
+    "path": "lean/CapacityAtlas/Claims/MarkovNoise.lean",
+    "declaration": "CapacityAtlas.Claims.markovNoise",
+    "description": "Stationary primitive Markov additive noise subtracts its entropy rate from log alphabet size.",
+    "claim_id": "operational-capacity",
+    "version": 2,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "published-capacity"
+    ]
+  },
+  {
+    "order": 42,
+    "problem": "constrained-bec-with-feedback",
+    "module": "CapacityAtlas.Claims.ConstrainedBEC",
+    "path": "lean/CapacityAtlas/Claims/ConstrainedBEC.lean",
+    "declaration": "CapacityAtlas.Claims.constrainedBEC",
+    "description": "Exact feedback capacity of the binary (1,infinity) input-constrained erasure channel.",
+    "claim_id": "operational-capacity",
+    "version": 2,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "published-capacity"
+    ]
+  },
+  {
+    "order": 43,
+    "problem": "trapdoor-channel-with-feedback",
+    "module": "CapacityAtlas.Claims.TrapdoorFeedback",
+    "path": "lean/CapacityAtlas/Claims/TrapdoorFeedback.lean",
+    "declaration": "CapacityAtlas.Claims.trapdoorFeedback",
+    "description": "Feedback trapdoor capacity with a fixed state known to both terminals.",
+    "claim_id": "operational-capacity",
+    "version": 2,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "dynamic-programming-solution"
+    ]
+  },
+  {
+    "order": 44,
+    "problem": "trapdoor-channel-without-feedback",
+    "module": "CapacityAtlas.Claims.TrapdoorBounds",
+    "path": "lean/CapacityAtlas/Claims/TrapdoorBounds.lean",
+    "declaration": "CapacityAtlas.Claims.trapdoorBounds",
+    "description": "Analytic no-feedback bounds. Rounded or extrapolated numerical endpoints are not asserted.",
+    "claim_id": "analytic-capacity-bounds",
+    "version": 2,
+    "kind": "capacity-bounds",
+    "bound_ids": [
+      "zero-error-repetition-lower",
+      "q-graph-duality-upper-2021"
+    ]
+  },
+  {
+    "order": 44,
+    "problem": "trapdoor-channel-without-feedback",
+    "module": "CapacityAtlas.Claims.TrapdoorBounds",
+    "path": "lean/CapacityAtlas/Claims/TrapdoorBounds.lean",
+    "declaration": "CapacityAtlas.Claims.trapdoorAnalyticConverse",
+    "description": "Independently tracked analytic converse.",
+    "claim_id": "analytic-converse",
+    "version": 1,
+    "kind": "converse",
+    "bound_ids": [
+      "q-graph-duality-upper-2021"
+    ]
+  },
+  {
+    "order": 44,
+    "problem": "trapdoor-channel-without-feedback",
+    "module": "CapacityAtlas.Claims.TrapdoorBounds",
+    "path": "lean/CapacityAtlas/Claims/TrapdoorBounds.lean",
+    "declaration": "CapacityAtlas.Claims.trapdoorRepetition",
+    "description": "Independently tracked repetition achievability.",
+    "claim_id": "repetition-achievability",
+    "version": 1,
+    "kind": "achievability",
+    "bound_ids": [
+      "zero-error-repetition-lower"
+    ]
+  },
+  {
+    "order": 45,
+    "problem": "binary-deletion-channel",
+    "module": "CapacityAtlas.Claims.DeletionBounds",
+    "path": "lean/CapacityAtlas/Claims/DeletionBounds.lean",
+    "declaration": "CapacityAtlas.Claims.deletionBounds",
+    "description": "Published deletion bounds in bits per INPUT bit, with the high-deletion restriction explicit.",
+    "claim_id": "published-capacity-bounds",
+    "version": 1,
+    "kind": "capacity-bounds",
+    "bound_ids": [
+      "run-length-lower-2023",
+      "parallel-ba-upper-2026"
+    ]
+  },
+  {
+    "order": 45,
+    "problem": "binary-deletion-channel",
+    "module": "CapacityAtlas.Claims.DeletionBounds",
+    "path": "lean/CapacityAtlas/Claims/DeletionBounds.lean",
+    "declaration": "CapacityAtlas.Claims.deletionHighConverse",
+    "description": "Independently tracked high deletion converse.",
+    "claim_id": "high-deletion-converse",
+    "version": 1,
+    "kind": "converse",
+    "bound_ids": [
+      "parallel-ba-upper-2026"
+    ]
+  },
+  {
+    "order": 45,
+    "problem": "binary-deletion-channel",
+    "module": "CapacityAtlas.Claims.DeletionBounds",
+    "path": "lean/CapacityAtlas/Claims/DeletionBounds.lean",
+    "declaration": "CapacityAtlas.Claims.deletionRunLength",
+    "description": "Independently tracked run length achievability.",
+    "claim_id": "run-length-achievability",
+    "version": 1,
+    "kind": "achievability",
+    "bound_ids": [
+      "run-length-lower-2023"
+    ]
+  },
+  {
+    "order": 46,
+    "problem": "pentagon-zero-error-channel",
+    "module": "CapacityAtlas.Claims.Pentagon",
+    "path": "lean/CapacityAtlas/Claims/Pentagon.lean",
+    "declaration": "CapacityAtlas.Claims.pentagon",
+    "description": "Both the graph growth constant and operational zero-error capacity of the pentagon typewriter.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "two-use-code",
+      "lovasz-theta"
+    ]
+  },
+  {
+    "order": 46,
+    "problem": "pentagon-zero-error-channel",
+    "module": "CapacityAtlas.Claims.Pentagon",
+    "path": "lean/CapacityAtlas/Claims/Pentagon.lean",
+    "declaration": "CapacityAtlas.Claims.pentagonGraph",
+    "description": "Independently tracked graph capacity.",
+    "claim_id": "graph-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "two-use-code",
+      "lovasz-theta"
+    ]
+  },
+  {
+    "order": 46,
+    "problem": "pentagon-zero-error-channel",
+    "module": "CapacityAtlas.Claims.Pentagon",
+    "path": "lean/CapacityAtlas/Claims/Pentagon.lean",
+    "declaration": "CapacityAtlas.Claims.pentagonTypewriter",
+    "description": "Independently tracked typewriter capacity.",
+    "claim_id": "typewriter-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "two-use-code",
+      "lovasz-theta"
+    ]
+  },
+  {
+    "order": 47,
+    "problem": "seven-cycle-zero-error-channel",
+    "module": "CapacityAtlas.Claims.SevenCycleOperational",
+    "path": "lean/CapacityAtlas/Claims/SevenCycleOperational.lean",
+    "declaration": "CapacityAtlas.Claims.sevenCycleOperational",
+    "description": "Operational zero-error versions of the existing seven-cycle graph bounds.",
+    "claim_id": "operational-capacity-bounds",
+    "version": 1,
+    "kind": "capacity-bounds",
+    "bound_ids": [
+      "fifth-power-independent-set",
+      "lovasz-theta"
+    ]
+  },
+  {
+    "order": 47,
+    "problem": "seven-cycle-zero-error-channel",
+    "module": "CapacityAtlas.Claims.SevenCycleOperational",
+    "path": "lean/CapacityAtlas/Claims/SevenCycleOperational.lean",
+    "declaration": "CapacityAtlas.Claims.sevenCycleAchievability",
+    "description": "Independently tracked operational achievability.",
+    "claim_id": "operational-achievability",
+    "version": 1,
+    "kind": "achievability",
+    "bound_ids": [
+      "fifth-power-independent-set"
+    ]
+  },
+  {
+    "order": 47,
+    "problem": "seven-cycle-zero-error-channel",
+    "module": "CapacityAtlas.Claims.SevenCycleOperational",
+    "path": "lean/CapacityAtlas/Claims/SevenCycleOperational.lean",
+    "declaration": "CapacityAtlas.Claims.sevenCycleConverse",
+    "description": "Independently tracked operational converse.",
+    "claim_id": "operational-converse",
+    "version": 1,
+    "kind": "converse",
+    "bound_ids": [
+      "lovasz-theta"
+    ]
+  },
+  {
+    "order": 48,
+    "problem": "directed-cycle-index-coding",
+    "module": "CapacityAtlas.Claims.DirectedIndexCycle",
+    "path": "lean/CapacityAtlas/Claims/DirectedIndexCycle.lean",
+    "declaration": "CapacityAtlas.Claims.directedIndexCycle",
+    "description": "The directed cycle with k+3 messages has symmetric capacity 1/(k+2), for unrestricted zero-error codes.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "published-capacity"
+    ]
+  },
+  {
+    "order": 49,
+    "problem": "five-cycle-index-coding",
+    "module": "CapacityAtlas.Claims.FiveIndexCycle",
+    "path": "lean/CapacityAtlas/Claims/FiveIndexCycle.lean",
+    "declaration": "CapacityAtlas.Claims.fiveIndexCycle",
+    "description": "The undirected five-cycle has unrestricted zero-error symmetric capacity 2/5.",
+    "claim_id": "operational-capacity",
+    "version": 1,
+    "kind": "exact-capacity",
+    "bound_ids": [
+      "published-capacity"
+    ]
+  }
+]

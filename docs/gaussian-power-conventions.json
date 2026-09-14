@@ -1,0 +1,82 @@
+[
+  {
+    "order": 30,
+    "problem": "additive-white-gaussian-noise-channel",
+    "predicate": "CapacityAtlas.Gaussian.CodewordPowerAdmissible",
+    "message_quantifier": "every-message",
+    "averaging": "none",
+    "model_assumption": "For every message m, sum_t x_t(m)^2 <= n P. The constraint is block-average but holds for each codeword, not only after averaging over messages."
+  },
+  {
+    "order": 31,
+    "problem": "gaussian-mimo-channel",
+    "predicate": "CapacityAtlas.Gaussian.CodewordVectorPowerAdmissible",
+    "message_quantifier": "every-message",
+    "averaging": "none",
+    "model_assumption": "For every message m, sum_t sum_k x_{t,k}(m)^2 <= n P. This is a shared transmit-antenna budget for each codeword, not a separate per-antenna or message-averaged budget."
+  },
+  {
+    "order": 32,
+    "problem": "two-user-gaussian-mac",
+    "predicate": "CapacityAtlas.Gaussian.SeparateCodewordPowerAdmissible",
+    "message_quantifier": "every-message-for-each-user",
+    "averaging": "none",
+    "model_assumption": "For user j and every local message m_j, sum_t x_{j,t}(m_j)^2 <= n P_j. There is no averaging over messages and no feedback."
+  },
+  {
+    "order": 33,
+    "problem": "degraded-gaussian-broadcast-channel",
+    "predicate": "CapacityAtlas.Gaussian.MessagePairPowerAdmissible",
+    "message_quantifier": "every-message-pair",
+    "averaging": "none",
+    "model_assumption": "For every pair (m_1,m_2), sum_t x_t(m_1,m_2)^2 <= n P. The constraint is not merely an expectation over the message pair."
+  },
+  {
+    "order": 34,
+    "problem": "gaussian-wiretap-channel",
+    "predicate": "CapacityAtlas.Gaussian.MessageSeedPowerAdmissible",
+    "message_quantifier": "every-message-and-private-seed",
+    "averaging": "none",
+    "model_assumption": "For every message m and every private seed s, sum_t x_t(m,s)^2 <= n P. This constraint is not averaged over the message or the seed."
+  },
+  {
+    "order": 35,
+    "problem": "costa-dirty-paper-channel",
+    "predicate": "CapacityAtlas.Gaussian.PerMessageStateAveragePowerAdmissible",
+    "message_quantifier": "every-message",
+    "averaging": "iid-state",
+    "model_assumption": "For every message m, E_{S^n}[sum_t x_t(m,S^n)^2] <= n P. Energy is integrable under the iid state law. The bound is not pathwise in the state and is not averaged over messages."
+  },
+  {
+    "order": 36,
+    "problem": "awgn-channel-with-feedback",
+    "predicate": "CapacityAtlas.Gaussian.MessageNoiseAveragePowerAdmissible",
+    "message_quantifier": "uniform-message",
+    "averaging": "message-and-induced-noise",
+    "model_assumption": "E_{M,Z^n}[sum_t x_t(M,Y^{t-1})^2] <= n P, with M uniform and independent of the Gaussian noise. Each message-conditional energy is integrable. This is an expected block-power bound, not a pathwise bound on feedback realizations."
+  },
+  {
+    "order": 37,
+    "problem": "two-user-gaussian-mac-with-feedback",
+    "predicate": "CapacityAtlas.Gaussian.SeparateMessageNoiseAveragePowerAdmissible",
+    "message_quantifier": "uniform-independent-message-pair",
+    "averaging": "message-pair-and-induced-noise",
+    "model_assumption": "For each user j, E_{M_1,M_2,Z^n}[sum_t x_{j,t}(M_j,Y^{t-1})^2] <= n P_j. The messages are independent and uniform. Every message-pair-conditional energy is integrable. The power bounds are separate and not pathwise."
+  },
+  {
+    "order": 38,
+    "problem": "gaussian-fading-receiver-state",
+    "predicate": "CapacityAtlas.Gaussian.FadingCodewordPowerAdmissible",
+    "message_quantifier": "every-message",
+    "averaging": "none",
+    "model_assumption": "For every message m, sum_t x_t(m)^2 <= n P. Inputs do not depend on the fading gains. There is no gain-dependent power adaptation or averaging of the power constraint over gains."
+  },
+  {
+    "order": 39,
+    "problem": "amplitude-constrained-gaussian-channel",
+    "predicate": "CapacityAtlas.Gaussian.AmplitudeAdmissible",
+    "message_quantifier": "every-message-and-coordinate",
+    "averaging": "none",
+    "model_assumption": "For every message m and time t, |x_t(m)| <= A. This is a pathwise peak-amplitude bound, not an average-power constraint."
+  }
+]

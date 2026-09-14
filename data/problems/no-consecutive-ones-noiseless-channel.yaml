@@ -1,0 +1,63 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: no-consecutive-ones-noiseless-channel
+title: Noiseless binary channel with no consecutive ones
+status: solved
+updated: '2026-09-14'
+summary: A noiseless binary channel forbids adjacent transmitted ones and has golden-ratio capacity.
+tags:
+  model:
+  - point-to-point
+  features:
+  - binary
+  - finite-alphabet
+  - memory
+  quantity:
+  - capacity
+  knowledge:
+  - exact
+model:
+  input: Binary words that contain no adjacent pair of ones.
+  output: The complete input word, received noiselessly.
+  law: Y=X, with the (1,infinity) run-length constraint on input words.
+  assumptions:
+  - Every codeword satisfies the constraint. There is no hidden constraint imposed on a preceding bit.
+  - Rates are per transmitted binary coordinate and error is averaged over uniform messages.
+quantity:
+  name: Noiseless binary channel with no consecutive ones capacity
+  symbol: C
+  units: bits per channel use
+  criterion: Vanishing average block error, with the constraints specified in the model.
+capacity:
+  kind: exact
+  display: C=\log_2\frac{1+\sqrt5}{2}
+bounds:
+- id: published-capacity
+  direction: exact
+  relation: C=\log_2\frac{1+\sqrt5}{2}
+  method: Admissible-word counting and noiseless operational coding.
+  year: 1948
+  references:
+  - shannon-1948
+formalization:
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 2
+    description: The noiseless binary (1,infinity) constrained channel has log(phi) capacity.
+    bound_ids:
+    - published-capacity
+  files:
+  - path: lean/CapacityAtlas/Claims/ConstrainedNoiseless.lean
+    declaration: CapacityAtlas.Claims.constrainedNoiseless
+    role: claim
+    description: The noiseless binary (1,infinity) constrained channel has log(phi) capacity.
+    claim_id: operational-capacity
+  proofs: []
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion.
+references:
+- shannon-1948

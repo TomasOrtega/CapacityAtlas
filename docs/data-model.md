@@ -55,6 +55,7 @@ Each item in `formalization.claims` has:
 - a `category`: `open`, `solved`, `API`, or `test`
 - an independent `formal_status`: `stated` or `proved`
 - a precise description
+- optional `bound_ids` linking the claim to specific literature-bound objects on the same page
 
 Files identify a declaration and its role: `definition`, `claim`, `test`, or
 `API`. Claim declarations link through `claim_id`. Each claim declaration carries

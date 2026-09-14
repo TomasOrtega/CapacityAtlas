@@ -5,9 +5,9 @@ title: Binary deletion channel
 abbreviation: BDC
 status: open
 featured: true
-updated: '2026-08-10'
-summary: Each input bit is independently deleted without an erasure marker; the exact capacity is unknown for every
-  nontrivial deletion probability.
+updated: '2026-09-14'
+summary: Each input bit is independently deleted without an erasure marker; the exact capacity is unknown
+  for every nontrivial deletion probability.
 tags:
   model:
   - point-to-point
@@ -41,7 +41,8 @@ capacity:
   display: 0.1221(1-d)<C_{\mathrm{del}}(d)\le0.3578(1-d)
   lower: 0.1221(1-d)
   upper: 0.3578(1-d)
-  conditions: The displayed pair is a simple uniform high-deletion summary; the upper bound shown holds for \(d\ge0.64\).
+  conditions: The displayed pair is a simple uniform high-deletion summary; the upper bound shown holds
+    for \(d\ge0.64\).
   notes: Pointwise numerical envelopes can be stronger.
 bounds:
 - id: run-length-lower-2023
@@ -60,19 +61,62 @@ bounds:
   - pinto-ribeiro-2026
   conditions: \(d\ge0.64\)
 frontier:
-  question: Determine \(C_{\mathrm{del}}(d)\), even at a benchmark value such as \(d=1/2\), or substantially narrow
-    the gap.
-  bottleneck: Deletions destroy alignment, and finite-letter optimizations grow exponentially without a known single-letter
-    reduction.
+  question: Determine \(C_{\mathrm{del}}(d)\), even at a benchmark value such as \(d=1/2\), or substantially
+    narrow the gap.
+  bottleneck: Deletions destroy alignment, and finite-letter optimizations grow exponentially without
+    a known single-letter reduction.
   progress:
   - Improve a certified pointwise bound.
   - Prove structure of capacity-achieving stationary inputs.
   - Develop compact certificates suitable for formal checking.
 formalization:
-  status: none
-  claims: []
-  notes: Variable-length outputs and synchronization errors are not yet modeled.
-  files: []
+  status: stated
+  claims:
+  - id: published-capacity-bounds
+    kind: capacity-bounds
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Published deletion bounds in bits per INPUT bit, with the high-deletion restriction explicit.
+    bound_ids:
+    - run-length-lower-2023
+    - parallel-ba-upper-2026
+  - id: run-length-achievability
+    kind: achievability
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Independently tracked run length achievability.
+    bound_ids:
+    - run-length-lower-2023
+  - id: high-deletion-converse
+    kind: converse
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Independently tracked high deletion converse.
+    bound_ids:
+    - parallel-ba-upper-2026
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion. The converse coefficient
+    applies only for deletion probability at least 16/25. Numerical certificates still need to be supplied
+    by the future proof.
+  files:
+  - path: lean/CapacityAtlas/Claims/DeletionBounds.lean
+    declaration: CapacityAtlas.Claims.deletionBounds
+    role: claim
+    description: Published deletion bounds in bits per INPUT bit, with the high-deletion restriction explicit.
+    claim_id: published-capacity-bounds
+  - path: lean/CapacityAtlas/Claims/DeletionBounds.lean
+    declaration: CapacityAtlas.Claims.deletionRunLength
+    role: claim
+    description: Independently tracked run length achievability.
+    claim_id: run-length-achievability
+  - path: lean/CapacityAtlas/Claims/DeletionBounds.lean
+    declaration: CapacityAtlas.Claims.deletionHighConverse
+    role: claim
+    description: Independently tracked high deletion converse.
+    claim_id: high-deletion-converse
   proofs: []
 references:
 - rubinstein-con-2023

@@ -5,8 +5,9 @@ title: Real additive white Gaussian noise channel
 abbreviation: AWGN
 status: solved
 featured: true
-updated: '2026-08-10'
-summary: The power-constrained real Gaussian channel has a closed-form capacity attained by a Gaussian input.
+updated: '2026-09-14'
+summary: The power-constrained real Gaussian channel has a closed-form capacity attained by a Gaussian
+  input.
 tags:
   model:
   - point-to-point
@@ -31,13 +32,15 @@ model:
   output: \(Y\in\mathbb R\)
   law: \(Y=X+Z\), where \(Z\sim\mathcal N(0,N)\) independently across uses.
   assumptions:
-  - The encoder satisfies \(\mathbb E[X^2]\le P\).
   - Average decoding error vanishes with blocklength.
+  - For every message m, sum_t x_t(m)^2 <= n P. The constraint is block-average but holds for each codeword,
+    not only after averaging over messages.
 quantity:
   name: Shannon capacity
   symbol: C_{\mathrm{AWGN}}(P,N)
   units: bits per channel use
-  criterion: Average-error capacity without feedback.
+  criterion: Average-error capacity without feedback. Resource averaging is fixed by the explicit model
+    assumption below.
 capacity:
   kind: exact
   display: C_{\mathrm{AWGN}}(P,N)=\frac12\log_2\!\left(1+\frac PN\right)
@@ -58,10 +61,26 @@ bounds:
   references:
   - shannon-1948
 formalization:
-  status: none
-  claims: []
-  notes: Continuous probability and differential entropy are not yet in the shared Lean layer.
-  files: []
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Operational real AWGN capacity with maximum-codeword average power.
+    bound_ids:
+    - gaussian-achievability
+    - entropy-maximization-converse
+  notes: 'Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion. Power convention:
+    CodewordPowerAdmissible. No equivalence to another power convention is assumed.'
+  files:
+  - path: lean/CapacityAtlas/Claims/AWGN.lean
+    declaration: CapacityAtlas.Claims.awgn
+    role: claim
+    description: Operational real AWGN capacity with maximum-codeword average power.
+    claim_id: operational-capacity
   proofs: []
 references:
 - shannon-1948

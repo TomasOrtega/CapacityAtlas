@@ -3,8 +3,9 @@
 id: physically-degraded-relay-channel
 title: Physically degraded relay channel
 status: solved
-updated: '2026-09-11'
-summary: When the destination is a degraded version of the relay observation, decode-forward meets the cut-set bound.
+updated: '2026-09-14'
+summary: When the destination is a degraded version of the relay observation, decode-forward meets the
+  cut-set bound.
 tags:
   model:
   - relay
@@ -48,11 +49,25 @@ bounds:
   references:
   - cover-elgamal-1979
 formalization:
-  status: none
-  claims: []
-  notes: Formalize this theorem using shared causal relay codes in the monorepo by default;
-    an external proof repository is also welcome when preferred.
-  files: []
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: The physically degraded relay capacity under strictly causal relaying.
+    bound_ids:
+    - degraded-decode-forward
+    - degraded-cut-set
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion.
+  files:
+  - path: lean/CapacityAtlas/Claims/DegradedRelay.lean
+    declaration: CapacityAtlas.Claims.degradedRelay
+    role: claim
+    description: The physically degraded relay capacity under strictly causal relaying.
+    claim_id: operational-capacity
   proofs: []
 references:
 - cover-elgamal-1979

@@ -1,0 +1,67 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: modulo-additive-two-way-channel
+title: Modulo-additive two-way channel
+status: solved
+updated: '2026-09-14'
+summary: Independent additive noises allow simultaneous communication in both directions without an adaptation
+  gain.
+tags:
+  model:
+  - two-way
+  features:
+  - finite-alphabet
+  - discrete-memoryless
+  - additive-noise
+  - feedback
+  quantity:
+  - capacity-region
+  knowledge:
+  - exact
+model:
+  input: Each terminal chooses an element of a common finite abelian group.
+  output: Terminal one sees X1+X2+Z1 and terminal two sees X1+X2+Z2.
+  law: Group addition with independent memoryless noises having arbitrary fixed group distributions.
+  assumptions:
+  - The two messages are independent and uniform.
+  - Each encoder knows its own message and strictly past local outputs.
+  - Each decoder knows its own message and its entire local output word.
+  - R1 is the rate from terminal one to terminal two, and R2 is the reverse rate.
+quantity:
+  name: Modulo-additive two-way channel capacity
+  symbol: \mathcal C
+  units: bits per channel use
+  criterion: Vanishing average block error, with the constraints specified in the model.
+capacity:
+  kind: region
+  display: 0\le R_1\le\log_2|G|-H(Z_2),\quad 0\le R_2\le\log_2|G|-H(Z_1)
+bounds:
+- id: published-capacity
+  direction: exact
+  relation: 0\le R_1\le\log_2|G|-H(Z_2),\quad 0\le R_2\le\log_2|G|-H(Z_1)
+  method: Self-input cancellation and conditional-entropy converses.
+  year: 2016
+  references:
+  - song-alajaji-linder-2016
+formalization:
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Independent memoryless additive noises give a rectangular capacity region even with adaptation.
+    bound_ids:
+    - published-capacity
+  files:
+  - path: lean/CapacityAtlas/Claims/AdditiveTwoWay.lean
+    declaration: CapacityAtlas.Claims.additiveTwoWay
+    role: claim
+    description: Independent memoryless additive noises give a rectangular capacity region even with adaptation.
+    claim_id: operational-capacity
+  proofs: []
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion.
+references:
+- song-alajaji-linder-2016

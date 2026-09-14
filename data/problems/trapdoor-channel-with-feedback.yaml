@@ -3,13 +3,21 @@
 id: trapdoor-channel-with-feedback
 title: Trapdoor channel with feedback
 status: solved
-updated: '2026-08-13'
-summary: With causal noiseless output feedback and a known initial state, the binary trapdoor channel has capacity equal to the logarithm of the golden ratio.
+updated: '2026-09-14'
+summary: With causal noiseless output feedback and a known initial state, the binary trapdoor channel
+  has capacity equal to the logarithm of the golden ratio.
 tags:
-  model: [point-to-point]
-  features: [finite-alphabet, binary, memory, feedback]
-  quantity: [capacity]
-  knowledge: [exact]
+  model:
+  - point-to-point
+  features:
+  - finite-alphabet
+  - binary
+  - memory
+  - feedback
+  quantity:
+  - capacity
+  knowledge:
+  - exact
 model:
   input: A binary symbol inserted into a box already containing one binary state symbol.
   output: One of the two symbols is selected uniformly as output; the other becomes the next state.
@@ -31,15 +39,31 @@ bounds:
   relation: C_{\mathrm{fb}}=\log_2\frac{1+\sqrt5}{2}
   method: Feedback dynamic program and an explicit capacity-achieving scheme.
   year: 2006
-  references: [permuter-et-al-2006]
+  references:
+  - permuter-et-al-2006
 formalization:
-  status: definitions
-  claims: []
-  notes: Concrete definitions are retained; no capacity or bound claim is formally stated.
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 2
+    description: Feedback trapdoor capacity with a fixed state known to both terminals.
+    bound_ids:
+    - dynamic-programming-solution
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion.
   files:
   - path: lean/CapacityAtlas/Channels/Trapdoor.lean
     declaration: CapacityAtlas.Channel.trapdoorFeedbackModel
     role: definition
     description: Concrete finite-state trapdoor channel used for the feedback problem.
+  - path: lean/CapacityAtlas/Claims/TrapdoorFeedback.lean
+    declaration: CapacityAtlas.Claims.trapdoorFeedback
+    role: claim
+    description: Feedback trapdoor capacity with a fixed state known to both terminals.
+    claim_id: operational-capacity
   proofs: []
-references: [permuter-et-al-2006]
+references:
+- permuter-et-al-2006

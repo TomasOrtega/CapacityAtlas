@@ -3,8 +3,9 @@
 id: degraded-wiretap-channel
 title: Degraded discrete memoryless wiretap channel
 status: solved
-updated: '2026-08-10'
-summary: A sender communicates reliably to a legitimate receiver while hiding the message from a degraded eavesdropper.
+updated: '2026-09-14'
+summary: A sender communicates reliably to a legitimate receiver while hiding the message from a degraded
+  eavesdropper.
 tags:
   model:
   - wiretap
@@ -50,10 +51,25 @@ bounds:
   references:
   - wyner-1975
 formalization:
-  status: none
-  claims: []
-  notes: Secrecy criteria and mutual-information converses are not yet formalized.
-  files: []
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: The degraded finite wiretap formula with unnormalized leakage tending to zero.
+    bound_ids:
+    - random-binning-achievability
+    - degraded-secrecy-converse
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion.
+  files:
+  - path: lean/CapacityAtlas/Claims/DegradedWiretap.lean
+    declaration: CapacityAtlas.Claims.degradedWiretap
+    role: claim
+    description: The degraded finite wiretap formula with unnormalized leakage tending to zero.
+    claim_id: operational-capacity
   proofs: []
 references:
 - wyner-1975

@@ -170,26 +170,66 @@ def test_every_problem_statement_is_registered() -> None:
     assert declared == registered
 
 
-def test_only_faithful_problem_statements_are_registered() -> None:
+def test_registered_statement_inventory_matches_expected_problems() -> None:
     atlas = load_atlas()
     expected = {
+        "additive-white-gaussian-noise-channel",
+        "amplitude-constrained-gaussian-channel",
+        "arbitrarily-varying-discrete-memoryless-channel",
+        "awgn-channel-with-feedback",
+        "binary-deletion-channel",
         "binary-erasure-channel",
+        "binary-memory-with-stuck-defects",
+        "binary-skew-symmetric-broadcast-channel",
         "binary-symmetric-channel",
         "binary-z-channel",
+        "blackwell-broadcast-channel",
         "causal-state-information-channel",
         "compound-discrete-memoryless-channel",
+        "constrained-bec-with-feedback",
+        "costa-dirty-paper-channel",
+        "degraded-gaussian-broadcast-channel",
+        "degraded-wiretap-channel",
+        "directed-cycle-index-coding",
         "discrete-memoryless-channel",
         "discrete-memoryless-channel-with-feedback",
+        "discrete-memoryless-two-way-channel",
+        "erasure-wiretap-channel",
         "finite-common-message-broadcast-channel",
         "finite-dmc-decoder-state",
         "finite-dmc-input-cost",
         "finite-group-additive-noise-channel",
+        "finite-group-markov-noise-channel",
+        "five-cycle-index-coding",
+        "gaussian-fading-receiver-state",
+        "gaussian-mimo-channel",
+        "gaussian-wiretap-channel",
+        "gelfand-pinsker-channel",
+        "general-finite-wiretap-channel",
+        "general-relay-channel",
+        "general-two-receiver-broadcast-channel",
+        "general-two-user-interference-channel",
+        "less-noisy-broadcast-channel",
+        "modulo-additive-two-way-channel",
+        "more-capable-broadcast-channel",
+        "multiple-access-channel-with-feedback",
+        "no-consecutive-ones-noiseless-channel",
+        "noiseless-multicast-network",
         "noiseless-q-ary-channel",
+        "pentagon-zero-error-channel",
+        "physically-degraded-broadcast-channel",
+        "physically-degraded-relay-channel",
+        "primitive-relay-channel",
         "q-ary-symmetric-channel",
         "seven-cycle-zero-error-channel",
+        "strong-interference-two-user-dmc",
         "sun-jafar-11-message-index-coding",
         "sun-jafar-six-message-groupcast-index-coding",
+        "trapdoor-channel-with-feedback",
+        "trapdoor-channel-without-feedback",
         "two-user-discrete-memoryless-mac",
+        "two-user-gaussian-mac",
+        "two-user-gaussian-mac-with-feedback",
     }
 
     stated = {
@@ -203,19 +243,11 @@ def test_only_faithful_problem_statements_are_registered() -> None:
 
 def test_removed_statement_shells_are_definitions_only() -> None:
     atlas = load_atlas()
+    # The remaining two models still lack concrete operational claims.
+    # The other former shells now have code-level statements in CapacityAtlas.Claims.
     downgraded = {
         "binary-insertion-channel",
-        "binary-skew-symmetric-broadcast-channel",
-        "blackwell-broadcast-channel",
-        "gaussian-mimo-channel",
-        "general-finite-wiretap-channel",
         "index-coding-at-most-five-messages",
-        "less-noisy-broadcast-channel",
-        "more-capable-broadcast-channel",
-        "primitive-relay-channel",
-        "strong-interference-two-user-dmc",
-        "trapdoor-channel-with-feedback",
-        "trapdoor-channel-without-feedback",
     }
 
     for problem_id in downgraded:

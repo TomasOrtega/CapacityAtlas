@@ -3,13 +3,20 @@
 id: more-capable-broadcast-channel
 title: More-capable two-receiver broadcast channel
 status: solved
-updated: '2026-08-13'
-summary: A more-capable ordering compares the receivers for every input distribution and yields an exact superposition-coding capacity region.
+updated: '2026-09-14'
+summary: A more-capable ordering compares the receivers for every input distribution and yields an exact
+  superposition-coding capacity region.
 tags:
-  model: [broadcast]
-  features: [finite-alphabet, discrete-memoryless]
-  quantity: [capacity-region]
-  knowledge: [exact, single-letter-characterization]
+  model:
+  - broadcast
+  features:
+  - finite-alphabet
+  - discrete-memoryless
+  quantity:
+  - capacity-region
+  knowledge:
+  - exact
+  - single-letter-characterization
 model:
   input: A finite common channel input \(X\).
   output: Finite receiver outputs \(Y_1\) and \(Y_2\).
@@ -24,22 +31,39 @@ quantity:
   criterion: Closure of achievable private-message rate pairs.
 capacity:
   kind: region
-  display: \mathcal C_{\mathrm{MC}}=\bigcup_{P_U P_{X|U}}\{R_2\le I(U;Y_2),\ R_1+R_2\le\min[I(X;Y_1),I(X;Y_1\mid U)+I(U;Y_2)]\}
+  display: \mathcal C_{\mathrm{MC}}=\bigcup_{P_U P_{X|U}}\{R_2\le I(U;Y_2),\ R_1+R_2\le\min[I(X;Y_1),I(X;Y_1\mid
+    U)+I(U;Y_2)]\}
 bounds:
 - id: superposition-region
   direction: exact
   relation: R_2\le I(U;Y_2),\quad R_1+R_2\le\min\{I(X;Y_1),I(X;Y_1\mid U)+I(U;Y_2)\}
   method: Superposition coding and a more-capable converse.
   year: 1979
-  references: [elgamal-1979]
+  references:
+  - elgamal-1979
 formalization:
-  status: definitions
-  claims: []
-  notes: Concrete definitions are retained; no capacity or bound claim is formally stated.
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: The more-capable private-message region, including its sum-rate condition.
+    bound_ids:
+    - superposition-region
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion.
   files:
   - path: lean/CapacityAtlasForMathlib/InformationTheory/FiniteBroadcastChannel.lean
     declaration: CapacityAtlas.FiniteBroadcastChannel.IsMoreCapable
     role: definition
     description: More-capable ordering for every input distribution.
+  - path: lean/CapacityAtlas/Claims/MoreCapableBroadcast.lean
+    declaration: CapacityAtlas.Claims.moreCapableBroadcast
+    role: claim
+    description: The more-capable private-message region, including its sum-rate condition.
+    claim_id: operational-capacity
   proofs: []
-references: [elgamal-1979]
+references:
+- elgamal-1979

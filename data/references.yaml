@@ -2,409 +2,537 @@
 # SPDX-License-Identifier: CC-BY-4.0
 shannon-1948:
   title: A Mathematical Theory of Communication
-  authors: [Claude E. Shannon]
+  authors:
+  - Claude E. Shannon
   year: 1948
   venue: Bell System Technical Journal
   doi: 10.1002/j.1538-7305.1948.tb01338.x
   url: https://doi.org/10.1002/j.1538-7305.1948.tb01338.x
-
 shannon-1956:
   title: The Zero Error Capacity of a Noisy Channel
-  authors: [Claude E. Shannon]
+  authors:
+  - Claude E. Shannon
   year: 1956
   venue: IRE Transactions on Information Theory
   doi: 10.1109/TIT.1956.1056798
   url: https://doi.org/10.1109/TIT.1956.1056798
-
 shannon-1958:
   title: Channels with Side Information at the Transmitter
-  authors: [Claude E. Shannon]
+  authors:
+  - Claude E. Shannon
   year: 1958
   venue: IBM Journal of Research and Development
   doi: 10.1147/rd.24.0289
   url: https://doi.org/10.1147/rd.24.0289
-
 heegard-elgamal-1983:
   title: On the Capacity of Computer Memory with Defects
-  authors: [Chris Heegard, Abbas A. El Gamal]
+  authors:
+  - Chris Heegard
+  - Abbas A. El Gamal
   year: 1983
   venue: IEEE Transactions on Information Theory
   url: https://isl.stanford.edu/groups/elgamal/abbas_publications/J015.pdf
-
 blackwell-breiman-thomasian-1959:
   title: The Capacity of a Class of Channels
-  authors: [David Blackwell, Leo Breiman, A. J. Thomasian]
+  authors:
+  - David Blackwell
+  - Leo Breiman
+  - A. J. Thomasian
   year: 1959
   venue: Annals of Mathematical Statistics
   doi: 10.1214/aoms/1177706106
   url: https://doi.org/10.1214/aoms/1177706106
-
 lapidoth-telatar-1998:
   title: The Compound Channel Capacity of a Class of Finite-State Channels
-  authors: [Amos Lapidoth, İ. Emre Telatar]
+  authors:
+  - Amos Lapidoth
+  - İ. Emre Telatar
   year: 1998
   venue: IEEE Transactions on Information Theory
   url: https://infoscience.epfl.ch/server/api/core/bitstreams/86a85253-ceb6-45ea-970f-ab907c765f69/content
-
 shannon-1961:
   title: Two-Way Communication Channels
-  authors: [Claude E. Shannon]
+  authors:
+  - Claude E. Shannon
   year: 1961
   venue: Proceedings of the Fourth Berkeley Symposium on Mathematical Statistics and Probability
   url: https://projecteuclid.org/euclid.bsmsp/1200516691
-
 cover-thomas-2006:
   title: Elements of Information Theory
-  authors: [Thomas M. Cover, Joy A. Thomas]
+  authors:
+  - Thomas M. Cover
+  - Joy A. Thomas
   year: 2006
   venue: Wiley, second edition
   doi: 10.1002/047174882X
   url: https://doi.org/10.1002/047174882X
-
 elgamal-kim-2011:
   title: Network Information Theory
-  authors: [Abbas El Gamal, Young-Han Kim]
+  authors:
+  - Abbas El Gamal
+  - Young-Han Kim
   year: 2011
   venue: Cambridge University Press
   doi: 10.1017/CBO9781139030687
   arxiv: '1001.3404'
   url: https://arxiv.org/abs/1001.3404
-
 cover-1972:
   title: Broadcast Channels
-  authors: [Thomas M. Cover]
+  authors:
+  - Thomas M. Cover
   year: 1972
   venue: IEEE Transactions on Information Theory 18(1), 2–14
   doi: 10.1109/TIT.1972.1054727
   url: https://isl.stanford.edu/~cover/papers/transIT/0002cove.pdf
-
 ahlswede-1971:
   title: Multi-way communication channels
-  authors: [Rudolf Ahlswede]
+  authors:
+  - Rudolf Ahlswede
   year: 1973
-  venue: Proceedings of the Second International Symposium on Information Theory (September 1971), Akadémiai Kiadó, pp. 23–52
+  venue: Proceedings of the Second International Symposium on Information Theory (September 1971), Akadémiai
+    Kiadó, pp. 23–52
   url: https://www.math.uni-bielefeld.de/ahlswede/homepage/public/12.pdf
-
 liao-1972:
   title: Multiple Access Channels
-  authors: [Henry Herng-Jiunn Liao]
+  authors:
+  - Henry Herng-Jiunn Liao
   year: 1972
   venue: PhD thesis, University of Hawaii
-
 bergmans-1973:
   title: Random Coding Theorem for Broadcast Channels with Degraded Components
-  authors: [Peter P. Bergmans]
+  authors:
+  - Peter P. Bergmans
   year: 1973
   venue: IEEE Transactions on Information Theory
   doi: 10.1109/TIT.1973.1054980
   url: https://doi.org/10.1109/TIT.1973.1054980
-
 bergmans-1974:
   title: A Simple Converse for Broadcast Channels with Additive White Gaussian Noise
-  authors: [Peter P. Bergmans]
+  authors:
+  - Peter P. Bergmans
   year: 1974
   venue: IEEE Transactions on Information Theory
   doi: 10.1109/TIT.1974.1055170
   url: https://doi.org/10.1109/TIT.1974.1055170
-
 wyner-1975:
   title: The Wire-Tap Channel
-  authors: [Aaron D. Wyner]
+  authors:
+  - Aaron D. Wyner
   year: 1975
   venue: Bell System Technical Journal
   doi: 10.1002/j.1538-7305.1975.tb02040.x
   url: https://doi.org/10.1002/j.1538-7305.1975.tb02040.x
-
 leung-yan-cheong-hellman-1978:
   title: The Gaussian Wire-Tap Channel
-  authors: [S. K. Leung-Yan-Cheong, Martin E. Hellman]
+  authors:
+  - S. K. Leung-Yan-Cheong
+  - Martin E. Hellman
   year: 1978
   venue: IEEE Transactions on Information Theory
   doi: 10.1109/TIT.1978.1055917
   url: https://doi.org/10.1109/TIT.1978.1055917
-
 ahlswede-1978:
   title: Elimination of Correlation in Random Codes for Arbitrarily Varying Channels
-  authors: [Rudolf Ahlswede]
+  authors:
+  - Rudolf Ahlswede
   year: 1978
   venue: Zeitschrift für Wahrscheinlichkeitstheorie und Verwandte Gebiete
   doi: 10.1007/BF00533053
   url: https://doi.org/10.1007/BF00533053
-
 marton-1979:
   title: A Coding Theorem for the Discrete Memoryless Broadcast Channel
-  authors: [Katalin Marton]
+  authors:
+  - Katalin Marton
   year: 1979
   venue: IEEE Transactions on Information Theory
   doi: 10.1109/TIT.1979.1056046
   url: https://doi.org/10.1109/TIT.1979.1056046
-
 lovasz-1979:
   title: On the Shannon Capacity of a Graph
-  authors: [László Lovász]
+  authors:
+  - László Lovász
   year: 1979
   venue: IEEE Transactions on Information Theory
   doi: 10.1109/TIT.1979.1055985
   url: https://doi.org/10.1109/TIT.1979.1055985
-
 cover-elgamal-1979:
   title: Capacity Theorems for the Relay Channel
-  authors: [Thomas M. Cover, Abbas El Gamal]
+  authors:
+  - Thomas M. Cover
+  - Abbas El Gamal
   year: 1979
   venue: IEEE Transactions on Information Theory
   doi: 10.1109/TIT.1979.1056084
   url: https://doi.org/10.1109/TIT.1979.1056084
-
 gelfand-pinsker-1980:
   title: Coding for Channel with Random Parameters
-  authors: [Sergei I. Gel'fand, Mark S. Pinsker]
+  authors:
+  - Sergei I. Gel'fand
+  - Mark S. Pinsker
   year: 1980
   venue: Problems of Control and Information Theory
   url: https://www.mathnet.ru/eng/ppi1189
-
 han-kobayashi-1981:
   title: A New Achievable Rate Region for the Interference Channel
-  authors: [Te Sun Han, Kingo Kobayashi]
+  authors:
+  - Te Sun Han
+  - Kingo Kobayashi
   year: 1981
   venue: IEEE Transactions on Information Theory
   doi: 10.1109/TIT.1981.1056307
   url: https://doi.org/10.1109/TIT.1981.1056307
-
 cover-leung-1981:
   title: An Achievable Rate Region for the Multiple-Access Channel with Feedback
-  authors: [Thomas M. Cover, Cyril S. K. Leung]
+  authors:
+  - Thomas M. Cover
+  - Cyril S. K. Leung
   year: 1981
   venue: IEEE Transactions on Information Theory
   doi: 10.1109/TIT.1981.1056357
   url: https://doi.org/10.1109/TIT.1981.1056357
-
 costa-1983:
   title: Writing on Dirty Paper
-  authors: [Max H. M. Costa]
+  authors:
+  - Max H. M. Costa
   year: 1983
   venue: IEEE Transactions on Information Theory
   doi: 10.1109/TIT.1983.1056659
   url: https://doi.org/10.1109/TIT.1983.1056659
-
 ozarow-1984:
   title: The Capacity of the White Gaussian Multiple Access Channel with Feedback
-  authors: [Lawrence H. Ozarow]
+  authors:
+  - Lawrence H. Ozarow
   year: 1984
   venue: IEEE Transactions on Information Theory
   doi: 10.1109/TIT.1984.1056935
   url: https://doi.org/10.1109/TIT.1984.1056935
-
 csiszar-narayan-1988:
   title: The Capacity of the Arbitrarily Varying Channel Revisited
-  authors: [Imre Csiszár, Prakash Narayan]
+  authors:
+  - Imre Csiszár
+  - Prakash Narayan
   year: 1988
   venue: IEEE Transactions on Information Theory
   doi: 10.1109/18.2627
   url: https://doi.org/10.1109/18.2627
-
 hekstra-willems-1989:
   title: Dependence Balance Bounds for Single-Output Two-Way Channels
-  authors: [Andries P. Hekstra, Frans M. J. Willems]
+  authors:
+  - Andries P. Hekstra
+  - Frans M. J. Willems
   year: 1989
   venue: IEEE Transactions on Information Theory
   doi: 10.1109/18.42175
   url: https://doi.org/10.1109/18.42175
-
 nair-elgamal-2007:
   title: An Outer Bound to the Capacity Region of the Broadcast Channel
-  authors: [Chandra Nair, Abbas El Gamal]
+  authors:
+  - Chandra Nair
+  - Abbas El Gamal
   year: 2007
   venue: IEEE Transactions on Information Theory
   doi: 10.1109/TIT.2006.887492
   arxiv: cs/0605105
   url: https://arxiv.org/abs/cs/0605105
-
 lavi-sason-2026:
   title: Advances in the Shannon Capacity of Graphs
-  authors: [Nitay Lavi, Igal Sason]
+  authors:
+  - Nitay Lavi
+  - Igal Sason
   year: 2026
   venue: AIMS Mathematics
   doi: 10.3934/math.2026111
   arxiv: '2509.24600'
   url: https://doi.org/10.3934/math.2026111
-
 rubinstein-con-2023:
   title: Improved Upper and Lower Bounds on the Capacity of the Binary Deletion Channel
-  authors: [Ittai Rubinstein, Roni Con]
+  authors:
+  - Ittai Rubinstein
+  - Roni Con
   year: 2023
   venue: arXiv preprint
   arxiv: '2305.07156'
   url: https://arxiv.org/abs/2305.07156
-
 pinto-ribeiro-2026:
   title: Improved Capacity Upper Bounds for the Deletion Channel using a Parallelized Blahut-Arimoto Algorithm
-  authors: [Martim Pinto, João Ribeiro]
+  authors:
+  - Martim Pinto
+  - João Ribeiro
   year: 2026
   venue: arXiv preprint; presented at ISIT 2026
   arxiv: '2604.05867'
   url: https://arxiv.org/abs/2604.05867
-
 sun-jafar-2015:
   title: 'Index Coding Capacity: How Far Can One Go With Only Shannon Inequalities?'
-  authors: [Hua Sun, Syed A. Jafar]
+  authors:
+  - Hua Sun
+  - Syed A. Jafar
   year: 2015
   venue: IEEE Transactions on Information Theory
   doi: 10.1109/TIT.2015.2418289
   arxiv: '1303.7000'
   url: https://arxiv.org/abs/1303.7000
-
 zhang-yeung-1998:
   title: On Characterization of Entropy Function via Information Inequalities
-  authors: [Zhen Zhang, Raymond W. Yeung]
+  authors:
+  - Zhen Zhang
+  - Raymond W. Yeung
   year: 1998
   venue: IEEE Transactions on Information Theory
   doi: 10.1109/18.681320
   url: https://doi.org/10.1109/18.681320
-
 sutter-et-al-2015:
   title: Efficient Approximation of Channel Capacities
-  authors: [Tobias Sutter, David Sutter, Peyman Mohajerin Esfahani, John Lygeros]
+  authors:
+  - Tobias Sutter
+  - David Sutter
+  - Peyman Mohajerin Esfahani
+  - John Lygeros
   year: 2015
   venue: IEEE Transactions on Information Theory
   doi: 10.1109/TIT.2015.2401002
   arxiv: '1407.7629'
   url: https://arxiv.org/abs/1407.7629
-
 kostina-verdu-2015:
   title: 'Channels with Cost Constraints: Strong Converse and Dispersion'
-  authors: [Victoria Kostina, Sergio Verdú]
+  authors:
+  - Victoria Kostina
+  - Sergio Verdú
   year: 2015
   venue: IEEE Transactions on Information Theory
   arxiv: '1401.5124'
   url: https://arxiv.org/abs/1401.5124
-
 csiszar-korner-1978:
   title: Broadcast Channels with Confidential Messages
-  authors: [Imre Csiszár, János Körner]
+  authors:
+  - Imre Csiszár
+  - János Körner
   year: 1978
   venue: IEEE Transactions on Information Theory
   doi: 10.1109/TIT.1978.1055892
   url: https://doi.org/10.1109/TIT.1978.1055892
-
 sreekumar-et-al-2020:
   title: The Secrecy Capacity of Cost-Constrained Wiretap Channels
-  authors: [Sreejith Sreekumar, Alexander Bunin, Ziv Goldfeld, Haim H. Permuter, Shlomo Shamai]
+  authors:
+  - Sreejith Sreekumar
+  - Alexander Bunin
+  - Ziv Goldfeld
+  - Haim H. Permuter
+  - Shlomo Shamai
   year: 2020
   venue: arXiv preprint
   arxiv: '2004.04330'
   url: https://arxiv.org/abs/2004.04330
-
 gelfand-pinsker-broadcast-1980:
   title: Capacity of a Broadcast Channel with One Deterministic Component
-  authors: [Sergei I. Gel'fand, Mark S. Pinsker]
+  authors:
+  - Sergei I. Gel'fand
+  - Mark S. Pinsker
   year: 1980
   venue: Problems of Information Transmission
   url: https://www.mathnet.ru/eng/ppi1427
-
 carleial-1975:
   title: A Case Where Interference Does Not Reduce Capacity
-  authors: [A. B. Carleial]
+  authors:
+  - A. B. Carleial
   year: 1975
   venue: IEEE Transactions on Information Theory
   doi: 10.1109/TIT.1975.1055352
   url: https://doi.org/10.1109/TIT.1975.1055352
-
 elgamal-1979:
   title: The Capacity of a Class of Broadcast Channels
-  authors: [Abbas El Gamal]
+  authors:
+  - Abbas El Gamal
   year: 1979
   venue: IEEE Transactions on Information Theory
   doi: 10.1109/TIT.1979.1056014
   url: https://doi.org/10.1109/TIT.1979.1056014
-
 geng-et-al-2010:
   title: On Broadcast Channels with Binary Inputs and Symmetric Outputs
-  authors: [Yanlin Geng, Chandra Nair, Shlomo Shamai, Zizhou Vincent Wang]
+  authors:
+  - Yanlin Geng
+  - Chandra Nair
+  - Shlomo Shamai
+  - Zizhou Vincent Wang
   year: 2010
   venue: arXiv preprint
   arxiv: '1001.2062'
   url: https://arxiv.org/abs/1001.2062
-
 tandon-ulukus-2008:
   title: A New Upper Bound on the Capacity of a Class of Primitive Relay Channels
-  authors: [Ravi Tandon, Sennur Ulukus]
+  authors:
+  - Ravi Tandon
+  - Sennur Ulukus
   year: 2008
   venue: Allerton Conference on Communication, Control, and Computing
   arxiv: '0810.0747'
   url: https://arxiv.org/abs/0810.0747
-
 polak-schrijver-2019:
   title: New Lower Bound on the Shannon Capacity of C7 from Circular Graphs
-  authors: [Sven Polak, Alexander Schrijver]
+  authors:
+  - Sven Polak
+  - Alexander Schrijver
   year: 2019
   venue: Information Processing Letters
   doi: 10.1016/j.ipl.2018.11.006
   arxiv: '1808.07438'
   url: https://arxiv.org/abs/1808.07438
-
 permuter-et-al-2006:
   title: Capacity of the Trapdoor Channel with Feedback
-  authors: [Haim H. Permuter, Paul Cuff, Benjamin Van Roy, Tsachy Weissman]
+  authors:
+  - Haim H. Permuter
+  - Paul Cuff
+  - Benjamin Van Roy
+  - Tsachy Weissman
   year: 2006
   venue: arXiv preprint
   arxiv: cs/0610047
   url: https://arxiv.org/abs/cs/0610047
-
 kobayashi-morita-hoshi-2003:
   title: Some Considerations on the Trapdoor Channel
-  authors: [Kingo Kobayashi, Hiroyoshi Morita, Mamoru Hoshi]
+  authors:
+  - Kingo Kobayashi
+  - Hiroyoshi Morita
+  - Mamoru Hoshi
   year: 2003
   venue: Proceedings of the 3rd Asian-European Workshop on Information Theory
   url: https://researchers.uec.ac.jp/search/detail.html?lang=en&systemId=80ca06b10cd3121f520e17560c007669
-
 kobayashi-2006:
   title: Capacity Problem of Trapdoor Channel
-  authors: [Kingo Kobayashi]
+  authors:
+  - Kingo Kobayashi
   year: 2006
   venue: General Theory of Information Transfer and Combinatorics, Lecture Notes in Computer Science 4123
   doi: 10.1007/11889342_76
   url: https://doi.org/10.1007/11889342_76
-
 huleihel-et-al-2021:
   title: Computable Upper Bounds on the Capacity of Finite-State Channels
-  authors: [Bashar Huleihel, Oron Sabag, Haim H. Permuter, Navin Kashyap, Shlomo Shamai]
+  authors:
+  - Bashar Huleihel
+  - Oron Sabag
+  - Haim H. Permuter
+  - Navin Kashyap
+  - Shlomo Shamai
   year: 2021
   venue: IEEE Transactions on Information Theory
   doi: 10.1109/TIT.2021.3091691
   arxiv: '1911.02113'
   url: https://arxiv.org/abs/1911.02113
-
 huleihel-et-al-2024:
   title: Capacity of Finite-State Channels With Delayed Feedback
-  authors: [Bashar Huleihel, Oron Sabag, Haim H. Permuter, Victoria Kostina]
+  authors:
+  - Bashar Huleihel
+  - Oron Sabag
+  - Haim H. Permuter
+  - Victoria Kostina
   year: 2024
   venue: IEEE Transactions on Information Theory
   doi: 10.1109/TIT.2023.3304408
   arxiv: '2303.18008'
   url: https://arxiv.org/abs/2303.18008
-
 tegin-duman-2025:
   title: Capacity Approximations for Insertion Channels with Small Insertion Probabilities
-  authors: [Busra Tegin, Tolga M. Duman]
+  authors:
+  - Busra Tegin
+  - Tolga M. Duman
   year: 2025
   venue: IEEE Transactions on Information Theory
   doi: 10.1109/TIT.2025.3644665
   arxiv: '2411.14771'
   url: https://arxiv.org/abs/2411.14771
-
 arbabjolfaei-et-al-2013:
   title: On the Capacity Region for Index Coding
-  authors: [Fatemeh Arbabjolfaei, Bernd Bandemer, Young-Han Kim, Eren Sasoglu, Lele Wang]
+  authors:
+  - Fatemeh Arbabjolfaei
+  - Bernd Bandemer
+  - Young-Han Kim
+  - Eren Sasoglu
+  - Lele Wang
   year: 2013
   venue: IEEE International Symposium on Information Theory
   doi: 10.1109/ISIT.2013.6620369
   arxiv: '1302.1601'
   url: https://arxiv.org/abs/1302.1601
-
 telatar-1999:
   title: Capacity of Multi-antenna Gaussian Channels
-  authors: [Emre Telatar]
+  authors:
+  - Emre Telatar
   year: 1999
   venue: European Transactions on Telecommunications
   doi: 10.1002/ett.4460100604
   url: https://doi.org/10.1002/ett.4460100604
+bloch-laneman-2013:
+  title: Strong Secrecy from Channel Resolvability
+  authors:
+  - Matthieu R. Bloch
+  - J. Nicholas Laneman
+  year: 2013
+  venue: IEEE Transactions on Information Theory
+  url: https://arxiv.org/abs/1105.5419
+  arxiv: '1105.5419'
+ahlswede-et-al-2000:
+  title: Network Information Flow
+  authors:
+  - Rudolf Ahlswede
+  - Ning Cai
+  - Shuo-Yen Robert Li
+  - Raymond W. Yeung
+  year: 2000
+  venue: IEEE Transactions on Information Theory
+  url: https://doi.org/10.1109/18.850663
+  doi: 10.1109/18.850663
+song-alajaji-linder-2016:
+  title: Adaptation is Useless for Two Discrete Additive-Noise Two-Way Channels
+  authors:
+  - Lin Song
+  - Fady Alajaji
+  - Tamas Linder
+  year: 2016
+  venue: IEEE International Symposium on Information Theory
+  url: https://arxiv.org/abs/1606.01985
+  arxiv: '1606.01985'
+goldsmith-varaiya-1997:
+  title: Capacity of Fading Channels with Channel Side Information
+  authors:
+  - Andrea J. Goldsmith
+  - Pravin P. Varaiya
+  year: 1997
+  venue: IEEE Transactions on Information Theory
+  url: https://doi.org/10.1109/18.641562
+  doi: 10.1109/18.641562
+smith-1971:
+  title: The Information Capacity of Amplitude- and Variance-Constrained Scalar Gaussian Channels
+  authors:
+  - Joel G. Smith
+  year: 1971
+  venue: Information and Control
+  url: https://doi.org/10.1016/S0019-9958(71)90346-9
+  doi: 10.1016/S0019-9958(71)90346-9
+alajaji-1995:
+  title: Feedback Does Not Increase the Capacity of Discrete Channels with Additive Noise
+  authors:
+  - Fady Alajaji
+  year: 1995
+  venue: IEEE Transactions on Information Theory
+  url: https://doi.org/10.1109/18.370168
+  doi: 10.1109/18.370168
+sabag-permuter-kashyap-2015:
+  title: The Feedback Capacity of the (1,infinity)-RLL Input-Constrained Erasure Channel
+  authors:
+  - Oron Sabag
+  - Haim H. Permuter
+  - Navin Kashyap
+  year: 2015
+  venue: arXiv preprint
+  url: https://arxiv.org/abs/1503.03359
+  arxiv: '1503.03359'
+blasiak-kleinberg-lubetzky-2010:
+  title: Index Coding via Linear Programming
+  authors:
+  - Anna Blasiak
+  - Robert Kleinberg
+  - Eyal Lubetzky
+  year: 2010
+  venue: arXiv preprint, revised 2011
+  url: https://arxiv.org/abs/1004.1379
+  arxiv: '1004.1379'
