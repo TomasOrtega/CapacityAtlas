@@ -1,0 +1,65 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: five-cycle-index-coding
+title: Undirected five-cycle index-coding problem
+status: solved
+updated: '2026-09-14'
+summary: Each of five receivers knows its two neighbours and asks for its own independent message.
+tags:
+  model:
+  - index-coding
+  features:
+  - finite-alphabet
+  - side-information
+  - multiple-unicast
+  - nonlinear-coding
+  quantity:
+  - symmetric-capacity
+  knowledge:
+  - exact
+model:
+  input: Five independent equal-length messages.
+  output: A common noiseless broadcast word and the two adjacent side-information messages.
+  law: Receiver r requests message r and knows messages r-1 and r+1 modulo five.
+  assumptions:
+  - Zero error is required for every message tuple.
+  - Finite alphabets and vector block codes are unrestricted and need not be linear.
+  - This is an index-coding problem, not the pentagon confusability-channel problem.
+quantity:
+  name: Undirected five-cycle index-coding problem capacity
+  symbol: C_{\mathrm{sym}}
+  units: message symbols per broadcast symbol
+  criterion: Unrestricted zero-error block codes.
+capacity:
+  kind: exact
+  display: C_{\mathrm{sym}}=2/5
+bounds:
+- id: published-capacity
+  direction: exact
+  relation: C_{\mathrm{sym}}=2/5
+  method: Vector coding achievability and an entropy-submodularity converse.
+  year: 2010
+  references:
+  - blasiak-kleinberg-lubetzky-2010
+formalization:
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: The undirected five-cycle has unrestricted zero-error symmetric capacity 2/5.
+    bound_ids:
+    - published-capacity
+  files:
+  - path: lean/CapacityAtlas/Claims/FiveIndexCycle.lean
+    declaration: CapacityAtlas.Claims.fiveIndexCycle
+    role: claim
+    description: The undirected five-cycle has unrestricted zero-error symmetric capacity 2/5.
+    claim_id: operational-capacity
+  proofs: []
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion.
+references:
+- blasiak-kleinberg-lubetzky-2010

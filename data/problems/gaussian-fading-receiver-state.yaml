@@ -1,0 +1,71 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: gaussian-fading-receiver-state
+title: Gaussian fading channel with receiver-only state information
+status: solved
+updated: '2026-09-14'
+summary: Iid real fading gains known only to the receiver determine ergodic capacity under a fixed power
+  budget.
+tags:
+  model:
+  - point-to-point
+  features:
+  - continuous-alphabet
+  - gaussian
+  - side-information
+  - power-constraint
+  quantity:
+  - capacity
+  knowledge:
+  - single-letter-characterization
+model:
+  input: Real symbols with a maximum-codeword block-average power limit P.
+  output: The receiver observes each fading gain H and the corresponding real output Y.
+  law: Y=HX+Z, with iid gains of a fixed Borel probability law and independent iid N(0,N) noise.
+  assumptions:
+  - P >= 0 and N > 0.
+  - The encoder has no gain information. The receiver sees the complete gain and output words.
+  - The expected value of log2(1+H^2 P/N) is finite.
+  - This is ergodic capacity, not outage capacity. Decoder decision regions are measurable.
+  - For every message m, sum_t x_t(m)^2 <= n P. Inputs do not depend on the fading gains. There is no
+    gain-dependent power adaptation or averaging of the power constraint over gains.
+quantity:
+  name: Gaussian fading channel with receiver-only state information capacity
+  symbol: C
+  units: bits per channel use
+  criterion: Vanishing average block error, with the constraints specified in the model. Resource averaging
+    is fixed by the explicit model assumption below.
+capacity:
+  kind: characterization
+  display: C=\mathbb E[\tfrac12\log_2(1+H^2P/N)]
+bounds:
+- id: published-capacity
+  direction: exact
+  relation: C=\mathbb E[\tfrac12\log_2(1+H^2P/N)]
+  method: Receiver-state channel coding and a Gaussian conditional-entropy converse.
+  year: 1997
+  references:
+  - goldsmith-varaiya-1997
+formalization:
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Iid ergodic real fading known only to the receiver, with finite expected information.
+    bound_ids:
+    - published-capacity
+  files:
+  - path: lean/CapacityAtlas/Claims/Fading.lean
+    declaration: CapacityAtlas.Claims.fading
+    role: claim
+    description: Iid ergodic real fading known only to the receiver, with finite expected information.
+    claim_id: operational-capacity
+  proofs: []
+  notes: 'Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion. Power convention:
+    FadingCodewordPowerAdmissible. No equivalence to another power convention is assumed.'
+references:
+- goldsmith-varaiya-1997

@@ -5,8 +5,9 @@ title: Finite arbitrarily varying discrete memoryless channel
 abbreviation: AVC
 status: solved
 featured: true
-updated: '2026-08-10'
-summary: An adversary selects a channel state at every use; deterministic capacity exhibits a symmetrizability dichotomy.
+updated: '2026-09-14'
+summary: An adversary selects a channel state at every use; deterministic average-error capacity exhibits
+  a symmetrizability dichotomy.
 tags:
   model:
   - arbitrarily-varying
@@ -24,18 +25,22 @@ model:
   output: \(Y_t\in\mathcal Y\)
   law: At each use an adversary selects \(s_t\in\mathcal S\), producing \(W_{s_t}(y_t|x_t)\).
   assumptions:
-  - Finite alphabets and no state-cost constraint.
-  - The adversary knows the code but not the message or encoder randomness.
+  - Finite nonempty alphabets and no input-cost or state-cost constraint.
+  - Encoding and decoding are deterministic, with no feedback or shared randomness.
+  - The adversary knows the code but not the uniform message. Neither terminal observes the state sequence.
+  - Error is averaged over messages before taking the supremum over state sequences.
 quantity:
-  name: Deterministic-code capacity
+  name: Deterministic-code average-error capacity
   symbol: C_{\mathrm{det}}
   units: bits per channel use
-  criterion: Maximal or average error under every state sequence, in the standard unconstrained finite AVC setting.
+  criterion: Vanishing average decoding error uniformly over state sequences, for deterministic block
+    codes.
 capacity:
   kind: characterization
-  display: C_{\mathrm{det}}=\begin{cases}0,&\text{if the AVC is symmetrizable},\\\max_{P_X}\min_{q\in\mathcal P(\mathcal
-    S)}I(P_X,W_q),&\text{otherwise.}\end{cases}
-  notes: Here \(W_q=\sum_s q(s)W_s\).
+  display: C_{\mathrm{det}}=\begin{cases}0,&\text{if the AVC is symmetrizable},\\\max_{P_X}\min_{q\in\mathcal
+    P(\mathcal S)}I(P_X,W_q),&\text{otherwise.}\end{cases}
+  notes: Here \(W_q=\sum_s q(s)W_s\). This characterization fixes the average-error criterion and does
+    not assert an identical maximal-error theorem.
 bounds:
 - id: symmetrizability-zero
   direction: upper
@@ -53,10 +58,28 @@ bounds:
   - ahlswede-1978
   - csiszar-narayan-1988
 formalization:
-  status: none
-  claims: []
-  notes: Adversarial state sequences and symmetrizability are high-value shared definitions.
-  files: []
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: The unconstrained deterministic average-error AVC dichotomy. The jammer does not see
+      the message.
+    bound_ids:
+    - symmetrizability-zero
+    - elimination-dichotomy
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion. The new claim uses
+    deterministic coding and average error, with an oblivious state sequence.
+  files:
+  - path: lean/CapacityAtlas/Claims/AVC.lean
+    declaration: CapacityAtlas.Claims.arbitrarilyVarying
+    role: claim
+    description: The unconstrained deterministic average-error AVC dichotomy. The jammer does not see
+      the message.
+    claim_id: operational-capacity
   proofs: []
 references:
 - ahlswede-1978

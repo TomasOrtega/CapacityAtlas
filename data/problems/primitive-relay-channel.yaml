@@ -4,16 +4,23 @@ id: primitive-relay-channel
 title: Primitive relay channel
 status: open
 featured: true
-updated: '2026-08-13'
-summary: A relay observes a noisy channel output and sends information over a separate noiseless finite-capacity link, but capacity is unknown in general.
+updated: '2026-09-14'
+summary: A relay observes a noisy channel output and sends information over a separate noiseless finite-capacity
+  link, but capacity is unknown in general.
 tags:
-  model: [relay]
-  features: [finite-alphabet, discrete-memoryless]
-  quantity: [capacity]
-  knowledge: [bounds]
+  model:
+  - relay
+  features:
+  - finite-alphabet
+  - discrete-memoryless
+  quantity:
+  - capacity
+  knowledge:
+  - bounds
 model:
   input: A finite source input \(X\).
-  output: Destination observation \(Y\), relay observation \(Z\), and a relay-to-destination bit-pipe of capacity \(R_0\).
+  output: Destination observation \(Y\), relay observation \(Z\), and a relay-to-destination bit-pipe
+    of capacity \(R_0\).
   law: A finite memoryless broadcast law \(P_{Y,Z|X}\) followed by an orthogonal noiseless relay link.
   assumptions:
   - The relay encoder is causal in its observations.
@@ -33,26 +40,80 @@ bounds:
   relation: R_{\mathrm{CF}}\le C(R_0)
   method: Compress-and-forward relay coding.
   year: 1979
-  references: [cover-elgamal-1979]
+  references:
+  - cover-elgamal-1979
 - id: improved-converse
   direction: upper
   relation: C(R_0)\le C_{\mathrm{TU}}\le C_{\mathrm{cut}}
   method: Primitive-relay auxiliary-variable converse.
   year: 2008
-  references: [tandon-ulukus-2008]
+  references:
+  - tandon-ulukus-2008
+- id: cut-set
+  direction: upper
+  relation: C(R_0)\le \max_{P_X}\min\{I(X;Y,Z),I(X;Y)+R_0\}
+  method: Cooperation across the two source-destination cuts. Distinct from the stronger auxiliary converse.
+  year: 1979
+  references:
+  - cover-elgamal-1979
 frontier:
-  question: Determine capacity for the general primitive relay channel and characterize when the cut-set bound is tight.
-  bottleneck: Relay compression and destination side information interact beyond the standard cut-set constraints.
+  question: Determine capacity for the general primitive relay channel and characterize when the cut-set
+    bound is tight.
+  bottleneck: Relay compression and destination side information interact beyond the standard cut-set
+    constraints.
   progress:
   - Close the inner-outer gap for a concrete finite subclass.
 formalization:
-  status: definitions
-  claims: []
-  notes: Concrete definitions are retained; no capacity or bound claim is formally stated.
+  status: stated
+  claims:
+  - id: cf-cut-set
+    kind: capacity-bounds
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Primitive-relay compress-and-forward and cut-set bounds with a causal rate-limited link.
+    bound_ids:
+    - compress-forward
+    - cut-set
+  - id: compress-forward-achievability
+    kind: achievability
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Independently tracked compress forward achievability.
+    bound_ids:
+    - compress-forward
+  - id: cut-set-converse
+    kind: converse
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Independently tracked cut set converse.
+    bound_ids:
+    - cut-set
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion.
   files:
   - path: lean/CapacityAtlas/Network/PrimitiveRelay.lean
     declaration: CapacityAtlas.Network.PrimitiveRelayChannel
     role: definition
     description: Finite broadcast observation and orthogonal relay bit-pipe.
+  - path: lean/CapacityAtlas/Claims/PrimitiveRelayBounds.lean
+    declaration: CapacityAtlas.Claims.primitiveRelayBounds
+    role: claim
+    description: Primitive-relay compress-and-forward and cut-set bounds with a causal rate-limited link.
+    claim_id: cf-cut-set
+  - path: lean/CapacityAtlas/Claims/PrimitiveRelayBounds.lean
+    declaration: CapacityAtlas.Claims.primitiveRelayCompressForward
+    role: claim
+    description: Independently tracked compress forward achievability.
+    claim_id: compress-forward-achievability
+  - path: lean/CapacityAtlas/Claims/PrimitiveRelayBounds.lean
+    declaration: CapacityAtlas.Claims.primitiveRelayCutSet
+    role: claim
+    description: Independently tracked cut set converse.
+    claim_id: cut-set-converse
   proofs: []
-references: [cover-elgamal-1979, tandon-ulukus-2008]
+references:
+- cover-elgamal-1979
+- tandon-ulukus-2008

@@ -4,7 +4,7 @@ id: gelfand-pinsker-channel
 title: DMC with noncausal state information at the encoder
 abbreviation: Gel'fand-Pinsker channel
 status: solved
-updated: '2026-09-11'
+updated: '2026-09-14'
 summary: The entire iid state sequence is known noncausally to the encoder but not the decoder.
 tags:
   model:
@@ -50,10 +50,25 @@ bounds:
   references:
   - gelfand-pinsker-1980
 formalization:
-  status: none
-  claims: []
-  notes: This theorem is a target for formalization in this repository, reusing shared state and entropy APIs.
-  files: []
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: The Gel'fand--Pinsker formula for iid state seen noncausally only by the encoder.
+    bound_ids:
+    - binning-achievability
+    - gp-converse
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion.
+  files:
+  - path: lean/CapacityAtlas/Claims/GelfandPinsker.lean
+    declaration: CapacityAtlas.Claims.gelfandPinsker
+    role: claim
+    description: The Gel'fand--Pinsker formula for iid state seen noncausally only by the encoder.
+    claim_id: operational-capacity
   proofs: []
 references:
 - gelfand-pinsker-1980

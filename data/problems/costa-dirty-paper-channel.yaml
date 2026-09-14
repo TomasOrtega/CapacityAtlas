@@ -4,7 +4,7 @@ id: costa-dirty-paper-channel
 title: Gaussian dirty-paper channel
 status: solved
 featured: true
-updated: '2026-08-10'
+updated: '2026-09-14'
 summary: Additive Gaussian interference known noncausally to the encoder causes no capacity loss.
 tags:
   model:
@@ -27,11 +27,13 @@ model:
   assumptions:
   - The decoder does not know S.
   - State and noise are iid Gaussian.
+  - For every message m, E_{S^n}[sum_t x_t(m,S^n)^2] <= n P. Energy is integrable under the iid state
+    law. The bound is not pathwise in the state and is not averaged over messages.
 quantity:
   name: Dirty-paper capacity
   symbol: C_{\mathrm{DPC}}
   units: bits per channel use
-  criterion: Average-error capacity.
+  criterion: Average-error capacity. Resource averaging is fixed by the explicit model assumption below.
 capacity:
   kind: exact
   display: C_{\mathrm{DPC}}=\frac12\log_2\!\left(1+\frac PN\right)
@@ -52,10 +54,26 @@ bounds:
   references:
   - costa-1983
 formalization:
-  status: none
-  claims: []
-  notes: A faithful proof needs Gaussian conditional distributions and the Gel'fand-Pinsker theorem.
-  files: []
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Noncausal independent Gaussian interference at the encoder causes no capacity loss.
+    bound_ids:
+    - dirty-paper-achievability
+    - genie-converse
+  notes: 'Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion. Power convention:
+    PerMessageStateAveragePowerAdmissible. No equivalence to another power convention is assumed.'
+  files:
+  - path: lean/CapacityAtlas/Claims/DirtyPaper.lean
+    declaration: CapacityAtlas.Claims.dirtyPaper
+    role: claim
+    description: Noncausal independent Gaussian interference at the encoder causes no capacity loss.
+    claim_id: operational-capacity
   proofs: []
 references:
 - costa-1983

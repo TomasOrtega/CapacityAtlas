@@ -1,0 +1,1317 @@
+{
+  "base_commit": "0b8c9595f1b4e457c2256588ab25a954303cef52",
+  "note": "Completion requires the explicitly selected target_claims. Context claims and unproved interface obligations are tracked separately. Snapshot labels do not determine live proof status.",
+  "problems": [
+    {
+      "order": 1,
+      "problem": "binary-z-channel",
+      "title": "Binary Z-channel",
+      "reuse": [],
+      "new_entry": false,
+      "initial_state": "proved-existing",
+      "target_claims": [
+        "information-capacity",
+        "operational-capacity"
+      ],
+      "context_claims": [
+        "optimizing-input"
+      ],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [],
+      "interface_obligations": []
+    },
+    {
+      "order": 2,
+      "problem": "finite-dmc-input-cost",
+      "title": "Finite discrete memoryless channel with input cost",
+      "reuse": [],
+      "new_entry": false,
+      "initial_state": "proved-existing",
+      "target_claims": [
+        "exact-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [],
+      "interface_obligations": []
+    },
+    {
+      "order": 3,
+      "problem": "finite-dmc-decoder-state",
+      "title": "Finite DMC with state known only to the decoder",
+      "reuse": [],
+      "new_entry": false,
+      "initial_state": "proved-existing",
+      "target_claims": [
+        "exact-capacity"
+      ],
+      "context_claims": [
+        "optimizing-input"
+      ],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [],
+      "interface_obligations": []
+    },
+    {
+      "order": 4,
+      "problem": "causal-state-information-channel",
+      "title": "DMC with causal state information at the encoder",
+      "reuse": [
+        3
+      ],
+      "new_entry": false,
+      "initial_state": "proved-existing",
+      "target_claims": [
+        "exact-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [],
+      "interface_obligations": []
+    },
+    {
+      "order": 5,
+      "problem": "compound-discrete-memoryless-channel",
+      "title": "Finite compound discrete memoryless channel",
+      "reuse": [],
+      "new_entry": false,
+      "initial_state": "proved-existing",
+      "target_claims": [
+        "exact-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [],
+      "interface_obligations": []
+    },
+    {
+      "order": 6,
+      "problem": "discrete-memoryless-channel-with-feedback",
+      "title": "Finite discrete memoryless channel with noiseless feedback",
+      "reuse": [
+        4
+      ],
+      "new_entry": false,
+      "initial_state": "proved-existing",
+      "target_claims": [
+        "exact-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [],
+      "interface_obligations": []
+    },
+    {
+      "order": 7,
+      "problem": "two-user-discrete-memoryless-mac",
+      "title": "Two-user discrete memoryless multiple-access channel",
+      "reuse": [
+        3
+      ],
+      "new_entry": false,
+      "initial_state": "proved-existing",
+      "target_claims": [
+        "exact-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [],
+      "interface_obligations": []
+    },
+    {
+      "order": 8,
+      "problem": "finite-common-message-broadcast-channel",
+      "title": "Finite broadcast channel with a common message",
+      "reuse": [
+        5
+      ],
+      "new_entry": false,
+      "initial_state": "proved-existing",
+      "target_claims": [
+        "exact-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [],
+      "interface_obligations": []
+    },
+    {
+      "order": 9,
+      "problem": "physically-degraded-broadcast-channel",
+      "title": "Physically degraded two-receiver broadcast channel",
+      "reuse": [
+        7,
+        8
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "superposition-inner",
+        "degraded-broadcast-converse"
+      ],
+      "interface_obligations": [
+        "finite-dmc-rate-closure",
+        "finite-dmc-capacity-bridge",
+        "channel-information-bridge",
+        "conditional-information-bridge",
+        "broadcast-error-convention-bridge"
+      ]
+    },
+    {
+      "order": 10,
+      "problem": "less-noisy-broadcast-channel",
+      "title": "Less-noisy two-receiver broadcast channel",
+      "reuse": [
+        9
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "superposition-region"
+      ],
+      "interface_obligations": [
+        "broadcast-error-convention-bridge"
+      ]
+    },
+    {
+      "order": 11,
+      "problem": "more-capable-broadcast-channel",
+      "title": "More-capable two-receiver broadcast channel",
+      "reuse": [
+        9,
+        10
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "superposition-region"
+      ],
+      "interface_obligations": [
+        "broadcast-error-convention-bridge"
+      ]
+    },
+    {
+      "order": 12,
+      "problem": "binary-memory-with-stuck-defects",
+      "title": "Binary memory with encoder-known stuck-at defects",
+      "reuse": [
+        3,
+        4
+      ],
+      "new_entry": true,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "published-capacity"
+      ],
+      "interface_obligations": [
+        "finite-dmc-rate-closure",
+        "finite-dmc-capacity-bridge"
+      ]
+    },
+    {
+      "order": 13,
+      "problem": "gelfand-pinsker-channel",
+      "title": "DMC with noncausal state information at the encoder",
+      "reuse": [
+        11,
+        12
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "binning-achievability",
+        "gp-converse"
+      ],
+      "interface_obligations": [
+        "finite-dmc-rate-closure",
+        "finite-dmc-capacity-bridge",
+        "channel-information-bridge",
+        "conditional-information-bridge"
+      ]
+    },
+    {
+      "order": 14,
+      "problem": "blackwell-broadcast-channel",
+      "title": "Blackwell deterministic broadcast channel",
+      "reuse": [
+        7,
+        13
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "deterministic-region"
+      ],
+      "interface_obligations": [
+        "broadcast-error-convention-bridge"
+      ]
+    },
+    {
+      "order": 15,
+      "problem": "general-two-receiver-broadcast-channel",
+      "title": "General two-receiver discrete memoryless broadcast channel",
+      "reuse": [
+        9,
+        11,
+        13,
+        14
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "marton-achievability",
+        "uv-converse"
+      ],
+      "context_claims": [
+        "marton-uv-bounds"
+      ],
+      "completion": {
+        "kind": "published-bounds",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "marton-inner",
+        "uv-outer"
+      ],
+      "interface_obligations": [
+        "channel-information-bridge",
+        "conditional-information-bridge",
+        "broadcast-error-convention-bridge"
+      ]
+    },
+    {
+      "order": 16,
+      "problem": "binary-skew-symmetric-broadcast-channel",
+      "title": "Binary skew-symmetric broadcast channel",
+      "reuse": [
+        15
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "marton-achievability",
+        "uv-converse"
+      ],
+      "context_claims": [
+        "marton-uv-bounds"
+      ],
+      "completion": {
+        "kind": "published-bounds",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "marton-inner",
+        "uv-outer"
+      ],
+      "interface_obligations": [
+        "broadcast-error-convention-bridge"
+      ]
+    },
+    {
+      "order": 17,
+      "problem": "erasure-wiretap-channel",
+      "title": "Erasure wiretap channel with noiseless legitimate reception",
+      "reuse": [
+        12,
+        13
+      ],
+      "new_entry": true,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "published-capacity"
+      ],
+      "interface_obligations": [
+        "finite-dmc-rate-closure",
+        "finite-dmc-capacity-bridge"
+      ]
+    },
+    {
+      "order": 18,
+      "problem": "degraded-wiretap-channel",
+      "title": "Degraded discrete memoryless wiretap channel",
+      "reuse": [
+        9,
+        13,
+        17
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "random-binning-achievability",
+        "degraded-secrecy-converse"
+      ],
+      "interface_obligations": [
+        "channel-information-bridge",
+        "conditional-information-bridge"
+      ]
+    },
+    {
+      "order": 19,
+      "problem": "general-finite-wiretap-channel",
+      "title": "General finite wiretap channel",
+      "reuse": [
+        13,
+        18
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "auxiliary-characterization"
+      ],
+      "interface_obligations": []
+    },
+    {
+      "order": 20,
+      "problem": "strong-interference-two-user-dmc",
+      "title": "Two-user DMC in the strong-interference regime",
+      "reuse": [
+        7,
+        8
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "decode-both-region"
+      ],
+      "interface_obligations": [
+        "finite-dmc-rate-closure",
+        "finite-dmc-capacity-bridge",
+        "channel-information-bridge",
+        "conditional-information-bridge"
+      ]
+    },
+    {
+      "order": 21,
+      "problem": "general-two-user-interference-channel",
+      "title": "General two-user discrete memoryless interference channel",
+      "reuse": [
+        7,
+        9,
+        20
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "han-kobayashi-achievability",
+        "cut-set-converse"
+      ],
+      "context_claims": [
+        "han-kobayashi-cut-set"
+      ],
+      "completion": {
+        "kind": "published-bounds",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "han-kobayashi-inner",
+        "cooperative-cut-set"
+      ],
+      "interface_obligations": []
+    },
+    {
+      "order": 22,
+      "problem": "noiseless-multicast-network",
+      "title": "Noiseless single-source multicast network",
+      "reuse": [
+        8
+      ],
+      "new_entry": true,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "published-capacity"
+      ],
+      "interface_obligations": []
+    },
+    {
+      "order": 23,
+      "problem": "physically-degraded-relay-channel",
+      "title": "Physically degraded relay channel",
+      "reuse": [
+        6,
+        7,
+        9,
+        22
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "degraded-decode-forward",
+        "degraded-cut-set"
+      ],
+      "interface_obligations": [
+        "relay-likelihood-normalization"
+      ]
+    },
+    {
+      "order": 24,
+      "problem": "general-relay-channel",
+      "title": "General discrete memoryless relay channel",
+      "reuse": [
+        13,
+        23
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "decode-forward-achievability",
+        "compress-forward-achievability",
+        "cut-set-converse"
+      ],
+      "context_claims": [
+        "df-cf-cut-set"
+      ],
+      "completion": {
+        "kind": "published-bounds",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "decode-forward",
+        "compress-forward",
+        "cut-set"
+      ],
+      "interface_obligations": [
+        "relay-likelihood-normalization"
+      ]
+    },
+    {
+      "order": 25,
+      "problem": "primitive-relay-channel",
+      "title": "Primitive relay channel",
+      "reuse": [
+        22,
+        24
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "compress-forward-achievability",
+        "cut-set-converse"
+      ],
+      "context_claims": [
+        "cf-cut-set"
+      ],
+      "completion": {
+        "kind": "published-bounds",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "compress-forward",
+        "cut-set"
+      ],
+      "deferred_bound_ids": [
+        "improved-converse"
+      ],
+      "interface_obligations": []
+    },
+    {
+      "order": 26,
+      "problem": "multiple-access-channel-with-feedback",
+      "title": "Discrete memoryless multiple-access channel with feedback",
+      "reuse": [
+        6,
+        7,
+        23
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "cover-leung-achievability",
+        "dependence-balance-converse"
+      ],
+      "context_claims": [
+        "cover-leung-dependence-balance"
+      ],
+      "completion": {
+        "kind": "published-bounds",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "cover-leung-inner",
+        "dependence-balance-outer"
+      ],
+      "interface_obligations": [
+        "feedback-mac-likelihood-normalization"
+      ]
+    },
+    {
+      "order": 27,
+      "problem": "modulo-additive-two-way-channel",
+      "title": "Modulo-additive two-way channel",
+      "reuse": [
+        6
+      ],
+      "new_entry": true,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "published-capacity"
+      ],
+      "interface_obligations": [
+        "two-way-likelihood-normalization"
+      ]
+    },
+    {
+      "order": 28,
+      "problem": "discrete-memoryless-two-way-channel",
+      "title": "Discrete memoryless two-way channel",
+      "reuse": [
+        26,
+        27
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "shannon-achievability",
+        "shannon-converse"
+      ],
+      "context_claims": [
+        "shannon-inner-outer"
+      ],
+      "completion": {
+        "kind": "published-bounds",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "shannon-two-way-inner",
+        "shannon-two-way-outer"
+      ],
+      "interface_obligations": [
+        "two-way-likelihood-normalization"
+      ]
+    },
+    {
+      "order": 29,
+      "problem": "arbitrarily-varying-discrete-memoryless-channel",
+      "title": "Finite arbitrarily varying discrete memoryless channel",
+      "reuse": [
+        5
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "symmetrizability-zero",
+        "elimination-dichotomy"
+      ],
+      "interface_obligations": []
+    },
+    {
+      "order": 30,
+      "problem": "additive-white-gaussian-noise-channel",
+      "title": "Real additive white Gaussian noise channel",
+      "reuse": [
+        2
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "gaussian-achievability",
+        "entropy-maximization-converse"
+      ],
+      "interface_obligations": []
+    },
+    {
+      "order": 31,
+      "problem": "gaussian-mimo-channel",
+      "title": "Point-to-point Gaussian MIMO channel",
+      "reuse": [
+        30
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity",
+        "optimizer-attainment",
+        "water-filling-optimizer"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "water-filling-capacity"
+      ],
+      "interface_obligations": [
+        "covariance-api-bridge",
+        "scalar-mimo-capacity-bridge"
+      ]
+    },
+    {
+      "order": 32,
+      "problem": "two-user-gaussian-mac",
+      "title": "Two-user Gaussian multiple-access channel",
+      "reuse": [
+        7,
+        30,
+        31
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "gaussian-mac-inner",
+        "gaussian-mac-outer"
+      ],
+      "interface_obligations": []
+    },
+    {
+      "order": 33,
+      "problem": "degraded-gaussian-broadcast-channel",
+      "title": "Degraded Gaussian broadcast channel",
+      "reuse": [
+        9,
+        30,
+        32
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "gaussian-superposition",
+        "gaussian-broadcast-converse"
+      ],
+      "interface_obligations": []
+    },
+    {
+      "order": 34,
+      "problem": "gaussian-wiretap-channel",
+      "title": "Degraded Gaussian wiretap channel",
+      "reuse": [
+        18,
+        30,
+        33
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "gaussian-wiretap-achievability",
+        "gaussian-wiretap-converse"
+      ],
+      "interface_obligations": []
+    },
+    {
+      "order": 35,
+      "problem": "costa-dirty-paper-channel",
+      "title": "Gaussian dirty-paper channel",
+      "reuse": [
+        13,
+        30,
+        31
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "dirty-paper-achievability",
+        "genie-converse"
+      ],
+      "interface_obligations": []
+    },
+    {
+      "order": 36,
+      "problem": "awgn-channel-with-feedback",
+      "title": "AWGN channel with noiseless feedback",
+      "reuse": [
+        6,
+        30
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "ignore-feedback",
+        "memoryless-feedback-converse"
+      ],
+      "interface_obligations": [
+        "causal-run-nonanticipative"
+      ]
+    },
+    {
+      "order": 37,
+      "problem": "two-user-gaussian-mac-with-feedback",
+      "title": "Two-user Gaussian multiple-access channel with feedback",
+      "reuse": [
+        26,
+        32,
+        36
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "ozarow-achievability",
+        "ozarow-converse"
+      ],
+      "interface_obligations": [
+        "causal-run-nonanticipative"
+      ]
+    },
+    {
+      "order": 38,
+      "problem": "gaussian-fading-receiver-state",
+      "title": "Gaussian fading channel with receiver-only state information",
+      "reuse": [
+        3,
+        30
+      ],
+      "new_entry": true,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "published-capacity"
+      ],
+      "interface_obligations": []
+    },
+    {
+      "order": 39,
+      "problem": "amplitude-constrained-gaussian-channel",
+      "title": "Amplitude-constrained scalar Gaussian channel",
+      "reuse": [
+        30,
+        31
+      ],
+      "new_entry": true,
+      "initial_state": "stated",
+      "target_claims": [
+        "capacity-formula",
+        "finite-support-attainment",
+        "power-relaxation-converse"
+      ],
+      "context_claims": [
+        "operational-capacity"
+      ],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "published-capacity",
+        "power-relaxation-upper"
+      ],
+      "interface_obligations": []
+    },
+    {
+      "order": 40,
+      "problem": "no-consecutive-ones-noiseless-channel",
+      "title": "Noiseless binary channel with no consecutive ones",
+      "reuse": [],
+      "new_entry": true,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "published-capacity"
+      ],
+      "interface_obligations": [
+        "finite-state-path-sum",
+        "finite-state-one-step"
+      ]
+    },
+    {
+      "order": 41,
+      "problem": "finite-group-markov-noise-channel",
+      "title": "Finite-group additive channel with Markov noise",
+      "reuse": [],
+      "new_entry": true,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "published-capacity"
+      ],
+      "interface_obligations": [
+        "finite-state-path-sum",
+        "finite-state-one-step"
+      ]
+    },
+    {
+      "order": 42,
+      "problem": "constrained-bec-with-feedback",
+      "title": "Input-constrained binary erasure channel with feedback",
+      "reuse": [
+        6,
+        40
+      ],
+      "new_entry": true,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "published-capacity"
+      ],
+      "interface_obligations": [
+        "finite-state-path-sum",
+        "finite-state-one-step"
+      ]
+    },
+    {
+      "order": 43,
+      "problem": "trapdoor-channel-with-feedback",
+      "title": "Trapdoor channel with feedback",
+      "reuse": [
+        6,
+        40,
+        42
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "dynamic-programming-solution"
+      ],
+      "interface_obligations": [
+        "finite-state-path-sum",
+        "finite-state-one-step"
+      ]
+    },
+    {
+      "order": 44,
+      "problem": "trapdoor-channel-without-feedback",
+      "title": "Trapdoor channel without feedback",
+      "reuse": [
+        41,
+        43
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "repetition-achievability",
+        "analytic-converse"
+      ],
+      "context_claims": [
+        "analytic-capacity-bounds"
+      ],
+      "completion": {
+        "kind": "published-bounds",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "zero-error-repetition-lower",
+        "q-graph-duality-upper-2021"
+      ],
+      "deferred_bound_ids": [
+        "finite-block-ba-lower-2003",
+        "delayed-feedback-q-graph-upper-2024"
+      ],
+      "interface_obligations": [
+        "finite-state-path-sum",
+        "finite-state-one-step"
+      ]
+    },
+    {
+      "order": 45,
+      "problem": "binary-deletion-channel",
+      "title": "Binary deletion channel",
+      "reuse": [],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "run-length-achievability",
+        "high-deletion-converse"
+      ],
+      "context_claims": [
+        "published-capacity-bounds"
+      ],
+      "completion": {
+        "kind": "published-bounds",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "run-length-lower-2023",
+        "parallel-ba-upper-2026"
+      ],
+      "interface_obligations": []
+    },
+    {
+      "order": 46,
+      "problem": "pentagon-zero-error-channel",
+      "title": "Pentagon zero-error channel",
+      "reuse": [],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "graph-capacity",
+        "typewriter-capacity"
+      ],
+      "context_claims": [
+        "operational-capacity"
+      ],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "two-use-code",
+        "lovasz-theta"
+      ],
+      "interface_obligations": []
+    },
+    {
+      "order": 47,
+      "problem": "seven-cycle-zero-error-channel",
+      "title": "Seven-cycle zero-error channel",
+      "reuse": [
+        46
+      ],
+      "new_entry": false,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-achievability",
+        "operational-converse"
+      ],
+      "context_claims": [
+        "capacity-bounds",
+        "operational-capacity-bounds"
+      ],
+      "completion": {
+        "kind": "published-bounds",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "fifth-power-independent-set",
+        "lovasz-theta"
+      ],
+      "interface_obligations": []
+    },
+    {
+      "order": 48,
+      "problem": "directed-cycle-index-coding",
+      "title": "Directed-cycle index-coding problem",
+      "reuse": [],
+      "new_entry": true,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "published-capacity"
+      ],
+      "interface_obligations": []
+    },
+    {
+      "order": 49,
+      "problem": "five-cycle-index-coding",
+      "title": "Undirected five-cycle index-coding problem",
+      "reuse": [
+        48
+      ],
+      "new_entry": true,
+      "initial_state": "stated",
+      "target_claims": [
+        "operational-capacity"
+      ],
+      "context_claims": [],
+      "completion": {
+        "kind": "published-characterization",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [
+        "published-capacity"
+      ],
+      "interface_obligations": []
+    },
+    {
+      "order": 50,
+      "problem": "sun-jafar-11-message-index-coding",
+      "title": "Sun-Jafar 11-message multiple-unicast index-coding instance",
+      "reuse": [
+        48,
+        49
+      ],
+      "new_entry": false,
+      "initial_state": "stated-existing",
+      "target_claims": [
+        "linear-achievability",
+        "unrestricted-achievability",
+        "linear-converse",
+        "nonlinear-converse"
+      ],
+      "context_claims": [
+        "exact-capacity",
+        "shannon-relaxation-value",
+        "shannon-outer-bound"
+      ],
+      "completion": {
+        "kind": "published-bounds",
+        "requires": "all-target-claims-proved",
+        "closes_open_problem": false
+      },
+      "selected_bound_ids": [],
+      "scope_note": "The conjectured exact unrestricted capacity is context only, not a completion requirement.",
+      "interface_obligations": []
+    }
+  ],
+  "schema_version": 2
+}

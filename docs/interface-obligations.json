@@ -1,0 +1,172 @@
+[
+  {
+    "id": "finite-dmc-rate-closure",
+    "declaration": "CapacityAtlas.Obligations.finiteDMCRateClosure",
+    "path": "lean/CapacityAtlas/Obligations/Interfaces.lean",
+    "status": "specified-unproved",
+    "required_before": [
+      9,
+      12,
+      13,
+      17,
+      20
+    ],
+    "role": "interface-proof-task"
+  },
+  {
+    "id": "finite-dmc-capacity-bridge",
+    "declaration": "CapacityAtlas.Obligations.finiteDMCCapacityBridge",
+    "path": "lean/CapacityAtlas/Obligations/Interfaces.lean",
+    "status": "specified-unproved",
+    "required_before": [
+      9,
+      12,
+      13,
+      17,
+      20
+    ],
+    "role": "interface-proof-task"
+  },
+  {
+    "id": "channel-information-bridge",
+    "declaration": "CapacityAtlas.Obligations.channelInformationBridge",
+    "path": "lean/CapacityAtlas/Obligations/Interfaces.lean",
+    "status": "specified-unproved",
+    "required_before": [
+      9,
+      13,
+      15,
+      18,
+      20
+    ],
+    "role": "interface-proof-task"
+  },
+  {
+    "id": "conditional-information-bridge",
+    "declaration": "CapacityAtlas.Obligations.conditionalInformationBridge",
+    "path": "lean/CapacityAtlas/Obligations/Interfaces.lean",
+    "status": "specified-unproved",
+    "required_before": [
+      9,
+      13,
+      15,
+      18,
+      20
+    ],
+    "role": "interface-proof-task"
+  },
+  {
+    "id": "finite-state-path-sum",
+    "declaration": "CapacityAtlas.Obligations.finiteStatePathSum",
+    "path": "lean/CapacityAtlas/Obligations/Interfaces.lean",
+    "status": "specified-unproved",
+    "required_before": [
+      40,
+      41,
+      42,
+      43,
+      44
+    ],
+    "role": "interface-proof-task"
+  },
+  {
+    "id": "finite-state-one-step",
+    "declaration": "CapacityAtlas.Obligations.finiteStateOneStep",
+    "path": "lean/CapacityAtlas/Obligations/Interfaces.lean",
+    "status": "specified-unproved",
+    "required_before": [
+      40,
+      41,
+      42,
+      43,
+      44
+    ],
+    "role": "interface-proof-task"
+  },
+  {
+    "id": "causal-run-nonanticipative",
+    "declaration": "CapacityAtlas.Obligations.causalRunNonanticipative",
+    "path": "lean/CapacityAtlas/Obligations/Interfaces.lean",
+    "status": "specified-unproved",
+    "required_before": [
+      36,
+      37
+    ],
+    "role": "interface-proof-task"
+  },
+  {
+    "id": "relay-likelihood-normalization",
+    "declaration": "CapacityAtlas.Obligations.relayLikelihoodNormalized",
+    "path": "lean/CapacityAtlas/Obligations/Interfaces.lean",
+    "status": "specified-unproved",
+    "required_before": [
+      23,
+      24
+    ],
+    "role": "interface-proof-task"
+  },
+  {
+    "id": "feedback-mac-likelihood-normalization",
+    "declaration": "CapacityAtlas.Obligations.feedbackMACLikelihoodNormalized",
+    "path": "lean/CapacityAtlas/Obligations/Interfaces.lean",
+    "status": "specified-unproved",
+    "required_before": [
+      26
+    ],
+    "role": "interface-proof-task"
+  },
+  {
+    "id": "two-way-likelihood-normalization",
+    "declaration": "CapacityAtlas.Obligations.twoWayLikelihoodNormalized",
+    "path": "lean/CapacityAtlas/Obligations/Interfaces.lean",
+    "status": "specified-unproved",
+    "required_before": [
+      27,
+      28
+    ],
+    "role": "interface-proof-task"
+  },
+  {
+    "id": "covariance-api-bridge",
+    "declaration": "CapacityAtlas.Obligations.covarianceBridge",
+    "path": "lean/CapacityAtlas/Obligations/Interfaces.lean",
+    "status": "specified-unproved",
+    "required_before": [
+      31
+    ],
+    "role": "interface-proof-task"
+  },
+  {
+    "id": "awgn-power-convention-bridge",
+    "declaration": "CapacityAtlas.Obligations.awgnPowerConventionBridge",
+    "path": "lean/CapacityAtlas/Obligations/Interfaces.lean",
+    "status": "specified-unproved",
+    "required_before": [],
+    "role": "interface-proof-task"
+  },
+  {
+    "id": "scalar-mimo-capacity-bridge",
+    "declaration": "CapacityAtlas.Obligations.scalarMIMOCapacityBridge",
+    "path": "lean/CapacityAtlas/Obligations/Interfaces.lean",
+    "status": "specified-unproved",
+    "required_before": [
+      31
+    ],
+    "role": "interface-proof-task"
+  },
+  {
+    "id": "broadcast-error-convention-bridge",
+    "declaration": "CapacityAtlas.Obligations.broadcastErrorConventionBridge",
+    "path": "lean/CapacityAtlas/Obligations/Interfaces.lean",
+    "status": "specified-unproved",
+    "required_before": [
+      9,
+      10,
+      11,
+      14,
+      15,
+      16
+    ],
+    "role": "interface-proof-task"
+  }
+]

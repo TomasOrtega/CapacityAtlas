@@ -3,13 +3,20 @@
 id: less-noisy-broadcast-channel
 title: Less-noisy two-receiver broadcast channel
 status: solved
-updated: '2026-08-13'
-summary: A less-noisy ordering compares every finite stochastic prefix and yields the exact superposition-coding capacity region.
+updated: '2026-09-14'
+summary: A less-noisy ordering compares every finite stochastic prefix and yields the exact superposition-coding
+  capacity region.
 tags:
-  model: [broadcast]
-  features: [finite-alphabet, discrete-memoryless]
-  quantity: [capacity-region]
-  knowledge: [exact, single-letter-characterization]
+  model:
+  - broadcast
+  features:
+  - finite-alphabet
+  - discrete-memoryless
+  quantity:
+  - capacity-region
+  knowledge:
+  - exact
+  - single-letter-characterization
 model:
   input: A finite common channel input \(X\).
   output: Finite receiver outputs \(Y_1\) and \(Y_2\).
@@ -31,15 +38,31 @@ bounds:
   relation: \mathcal C_{\mathrm{LN}}=\mathcal R_{\mathrm{superposition}}
   method: Superposition coding and a less-noisy converse.
   year: 1979
-  references: [elgamal-1979]
+  references:
+  - elgamal-1979
 formalization:
-  status: definitions
-  claims: []
-  notes: Concrete definitions are retained; no capacity or bound claim is formally stated.
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: The private-message capacity region when receiver 1 is less noisy.
+    bound_ids:
+    - superposition-region
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion.
   files:
   - path: lean/CapacityAtlasForMathlib/InformationTheory/FiniteBroadcastChannel.lean
     declaration: CapacityAtlas.FiniteBroadcastChannel.IsLessNoisy
     role: definition
     description: Less-noisy ordering through every finite stochastic prefix.
+  - path: lean/CapacityAtlas/Claims/LessNoisyBroadcast.lean
+    declaration: CapacityAtlas.Claims.lessNoisyBroadcast
+    role: claim
+    description: The private-message capacity region when receiver 1 is less noisy.
+    claim_id: operational-capacity
   proofs: []
-references: [elgamal-1979]
+references:
+- elgamal-1979

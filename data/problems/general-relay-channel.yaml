@@ -4,8 +4,9 @@ id: general-relay-channel
 title: General discrete memoryless relay channel
 status: open
 featured: true
-updated: '2026-08-10'
-summary: A causal relay assists a source, but decode-forward and the cut-set bound do not coincide in general.
+updated: '2026-09-14'
+summary: A causal relay assists a source, but decode-forward and the cut-set bound do not coincide in
+  general.
 tags:
   model:
   - relay
@@ -49,19 +50,81 @@ bounds:
   year: 1979
   references:
   - cover-elgamal-1979
+- id: compress-forward
+  direction: lower
+  relation: C\ge R_{\mathrm{CF}}
+  method: Compress-and-forward with I(Z;Zhat|R,Y) <= I(R;Y), product source/relay input distributions.
+  year: 1979
+  references:
+  - cover-elgamal-1979
 frontier:
   question: Find a computable exact capacity characterization for the unrestricted relay channel.
-  bottleneck: A relay can mix decoding, compression, and coherent cooperation across blocks, while standard cut
-    arguments discard causal structure.
+  bottleneck: A relay can mix decoding, compression, and coherent cooperation across blocks, while standard
+    cut arguments discard causal structure.
   progress:
   - Identify a new subclass where inner and outer bounds coincide.
   - Strengthen the converse using relay causality.
   - Formalize the causal relay code model and cut-set theorem.
 formalization:
-  status: none
-  claims: []
-  notes: A reusable causal network-code layer is required.
-  files: []
+  status: stated
+  claims:
+  - id: df-cf-cut-set
+    kind: capacity-bounds
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Decode-and-forward and compress-and-forward are lower bounds, cut set is an upper bound.
+    bound_ids:
+    - decode-forward
+    - compress-forward
+    - cut-set
+  - id: decode-forward-achievability
+    kind: achievability
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Independently tracked decode forward achievability.
+    bound_ids:
+    - decode-forward
+  - id: compress-forward-achievability
+    kind: achievability
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Independently tracked compress forward achievability.
+    bound_ids:
+    - compress-forward
+  - id: cut-set-converse
+    kind: converse
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Independently tracked cut set converse.
+    bound_ids:
+    - cut-set
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion.
+  files:
+  - path: lean/CapacityAtlas/Claims/RelayBounds.lean
+    declaration: CapacityAtlas.Claims.relayBounds
+    role: claim
+    description: Decode-and-forward and compress-and-forward are lower bounds, cut set is an upper bound.
+    claim_id: df-cf-cut-set
+  - path: lean/CapacityAtlas/Claims/RelayBounds.lean
+    declaration: CapacityAtlas.Claims.relayDecodeForward
+    role: claim
+    description: Independently tracked decode forward achievability.
+    claim_id: decode-forward-achievability
+  - path: lean/CapacityAtlas/Claims/RelayBounds.lean
+    declaration: CapacityAtlas.Claims.relayCompressForward
+    role: claim
+    description: Independently tracked compress forward achievability.
+    claim_id: compress-forward-achievability
+  - path: lean/CapacityAtlas/Claims/RelayBounds.lean
+    declaration: CapacityAtlas.Claims.relayCutSet
+    role: claim
+    description: Independently tracked cut set converse.
+    claim_id: cut-set-converse
   proofs: []
 references:
 - cover-elgamal-1979

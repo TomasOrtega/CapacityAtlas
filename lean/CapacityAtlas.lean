@@ -26,3 +26,6 @@ import CapacityAtlas.Channels.Compound
 import CapacityAtlas.Channels.Feedback
 import CapacityAtlas.Channels.MultipleAccess
 import CapacityAtlas.Channels.CommonMessageBroadcast
+import CapacityAtlas.Claims
+import CapacityAtlas.Obligations.Interfaces
+import CapacityAtlas.Tests.ModelSanity

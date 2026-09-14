@@ -4,8 +4,9 @@ id: general-two-receiver-broadcast-channel
 title: General two-receiver discrete memoryless broadcast channel
 status: open
 featured: true
-updated: '2026-08-10'
-summary: The capacity region for two arbitrary broadcast receivers remains unknown outside important ordered subclasses.
+updated: '2026-09-14'
+summary: The capacity region for two arbitrary broadcast receivers remains unknown outside important ordered
+  subclasses.
 tags:
   model:
   - broadcast
@@ -51,17 +52,58 @@ bounds:
   - nair-elgamal-2007
 frontier:
   question: Determine the private-message capacity region of the general two-receiver DMC broadcast channel.
-  bottleneck: The transmitter must coordinate incompatible receiver-specific descriptions, and known converses do
-    not capture the full binning structure of the best inner bounds.
+  bottleneck: The transmitter must coordinate incompatible receiver-specific descriptions, and known converses
+    do not capture the full binning structure of the best inner bounds.
   progress:
   - Find a channel separating or matching Marton's inner region and current outer bounds.
   - Discover a tighter computable outer region.
   - Formalize a sharply stated benchmark subclass.
 formalization:
-  status: none
-  claims: []
-  notes: The canonical statement should follow a shared broadcast-code and rate-region API.
-  files: []
+  status: stated
+  claims:
+  - id: marton-uv-bounds
+    kind: capacity-bounds
+    category: solved
+    formal_status: stated
+    version: 1
+    description: The fixed two-auxiliary Marton inner bound and UV outer bound, with closures.
+    bound_ids:
+    - marton-inner
+    - uv-outer
+  - id: marton-achievability
+    kind: achievability
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Independently tracked marton achievability.
+    bound_ids:
+    - marton-inner
+  - id: uv-converse
+    kind: converse
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Independently tracked uv converse.
+    bound_ids:
+    - uv-outer
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion.
+  files:
+  - path: lean/CapacityAtlas/Claims/BroadcastBounds.lean
+    declaration: CapacityAtlas.Claims.broadcastBounds
+    role: claim
+    description: The fixed two-auxiliary Marton inner bound and UV outer bound, with closures.
+    claim_id: marton-uv-bounds
+  - path: lean/CapacityAtlas/Claims/BroadcastBounds.lean
+    declaration: CapacityAtlas.Claims.broadcastMarton
+    role: claim
+    description: Independently tracked marton achievability.
+    claim_id: marton-achievability
+  - path: lean/CapacityAtlas/Claims/BroadcastBounds.lean
+    declaration: CapacityAtlas.Claims.broadcastUV
+    role: claim
+    description: Independently tracked uv converse.
+    claim_id: uv-converse
   proofs: []
 references:
 - marton-1979

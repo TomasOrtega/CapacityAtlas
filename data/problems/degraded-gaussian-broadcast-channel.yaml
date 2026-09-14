@@ -3,8 +3,9 @@
 id: degraded-gaussian-broadcast-channel
 title: Degraded Gaussian broadcast channel
 status: solved
-updated: '2026-08-10'
-summary: A power-constrained Gaussian transmitter serves a strong and a weak receiver by superposition coding.
+updated: '2026-09-14'
+summary: A power-constrained Gaussian transmitter serves a strong and a weak receiver by superposition
+  coding.
 tags:
   model:
   - broadcast
@@ -24,11 +25,14 @@ model:
   assumptions:
   - Receiver 1 is stronger.
   - Each receiver requests a private message.
+  - For every pair (m_1,m_2), sum_t x_t(m_1,m_2)^2 <= n P. The constraint is not merely an expectation
+    over the message pair.
 quantity:
   name: Capacity region
   symbol: \mathcal C
   units: rate pairs in bits per channel use
-  criterion: Vanishing average error at both receivers.
+  criterion: Vanishing average error at both receivers. Resource averaging is fixed by the explicit model
+    assumption below.
 capacity:
   kind: region
   display: \bigcup_{0\le\alpha\le1}\!\left\{\begin{array}{l}R_1\le\frac12\log_2(1+\alpha P/N_1),\\R_2\le\frac12\log_2\!\left(1+\frac{(1-\alpha)P}{\alpha
@@ -49,10 +53,26 @@ bounds:
   references:
   - bergmans-1974
 formalization:
-  status: none
-  claims: []
-  notes: Entropy power and Gaussian multi-user coding are not yet formalized.
-  files: []
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: The scalar Gaussian broadcast power-splitting capacity region, stronger receiver first.
+    bound_ids:
+    - gaussian-superposition
+    - gaussian-broadcast-converse
+  notes: 'Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion. Power convention:
+    MessagePairPowerAdmissible. No equivalence to another power convention is assumed.'
+  files:
+  - path: lean/CapacityAtlas/Claims/GaussianBroadcast.lean
+    declaration: CapacityAtlas.Claims.gaussianBroadcast
+    role: claim
+    description: The scalar Gaussian broadcast power-splitting capacity region, stronger receiver first.
+    claim_id: operational-capacity
   proofs: []
 references:
 - bergmans-1973

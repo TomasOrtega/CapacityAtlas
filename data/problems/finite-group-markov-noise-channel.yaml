@@ -1,0 +1,68 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: finite-group-markov-noise-channel
+title: Finite-group additive channel with Markov noise
+status: solved
+updated: '2026-09-14'
+summary: Stationary irreducible aperiodic Markov noise subtracts its entropy rate from the group alphabet
+  rate.
+tags:
+  model:
+  - point-to-point
+  features:
+  - finite-alphabet
+  - memory
+  - additive-noise
+  quantity:
+  - capacity
+  knowledge:
+  - exact
+model:
+  input: Elements of a fixed nonempty finite abelian group.
+  output: An element of the same group at each time.
+  law: Y_t=X_t+S_t. The noise state then transitions according to a fixed Markov kernel K.
+  assumptions:
+  - The initial noise law p is stationary for K.
+  - 'K is primitive: all entries of every sufficiently large power are strictly positive.'
+  - The noise process is independent of the message. Neither terminal observes the state.
+  - There is no feedback and no input cost constraint.
+quantity:
+  name: Finite-group additive channel with Markov noise capacity
+  symbol: C
+  units: bits per channel use
+  criterion: Vanishing average block error, with the constraints specified in the model.
+capacity:
+  kind: exact
+  display: C=\log_2|G|-\sum_s p(s)H(K(\cdot\mid s))
+bounds:
+- id: published-capacity
+  direction: exact
+  relation: C=\log_2|G|-\sum_s p(s)H(K(\cdot\mid s))
+  method: Additive-noise information-rate coding and an entropy-rate converse.
+  year: 1995
+  references:
+  - alajaji-1995
+formalization:
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 2
+    description: Stationary primitive Markov additive noise subtracts its entropy rate from log alphabet
+      size.
+    bound_ids:
+    - published-capacity
+  files:
+  - path: lean/CapacityAtlas/Claims/MarkovNoise.lean
+    declaration: CapacityAtlas.Claims.markovNoise
+    role: claim
+    description: Stationary primitive Markov additive noise subtracts its entropy rate from log alphabet
+      size.
+    claim_id: operational-capacity
+  proofs: []
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion.
+references:
+- alajaji-1995

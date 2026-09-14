@@ -5,8 +5,9 @@ title: Pentagon zero-error channel
 abbreviation: C5
 status: solved
 featured: true
-updated: '2026-08-10'
-summary: The confusability graph is a five-cycle, whose Shannon capacity is exactly the square root of five.
+updated: '2026-09-14'
+summary: The confusability graph is a five-cycle, whose Shannon capacity is exactly the square root of
+  five.
 tags:
   model:
   - zero-error
@@ -21,7 +22,8 @@ tags:
 model:
   input: Five symbols represented by the vertices of the cycle graph C5.
   output: Channel outputs induce confusability exactly along the edges of C5.
-  law: Two input symbols can share an output if and only if they are adjacent in the pentagon confusability graph.
+  law: Two input symbols can share an output if and only if they are adjacent in the pentagon confusability
+    graph.
   assumptions:
   - Decoding error must be exactly zero.
   - Independent channel uses correspond to strong graph products.
@@ -50,10 +52,53 @@ bounds:
   references:
   - lovasz-1979
 formalization:
-  status: none
-  claims: []
-  notes: This is a good first substantial formal proof after graph products and Lovász theta are available.
-  files: []
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Both the graph growth constant and operational zero-error capacity of the pentagon typewriter.
+    bound_ids:
+    - two-use-code
+    - lovasz-theta
+  - id: graph-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Independently tracked graph capacity.
+    bound_ids:
+    - two-use-code
+    - lovasz-theta
+  - id: typewriter-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Independently tracked typewriter capacity.
+    bound_ids:
+    - two-use-code
+    - lovasz-theta
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion.
+  files:
+  - path: lean/CapacityAtlas/Claims/Pentagon.lean
+    declaration: CapacityAtlas.Claims.pentagon
+    role: claim
+    description: Both the graph growth constant and operational zero-error capacity of the pentagon typewriter.
+    claim_id: operational-capacity
+  - path: lean/CapacityAtlas/Claims/Pentagon.lean
+    declaration: CapacityAtlas.Claims.pentagonGraph
+    role: claim
+    description: Independently tracked graph capacity.
+    claim_id: graph-capacity
+  - path: lean/CapacityAtlas/Claims/Pentagon.lean
+    declaration: CapacityAtlas.Claims.pentagonTypewriter
+    role: claim
+    description: Independently tracked typewriter capacity.
+    claim_id: typewriter-capacity
   proofs: []
 references:
 - shannon-1956

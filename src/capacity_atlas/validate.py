@@ -113,6 +113,16 @@ def validate_atlas(
                 issues.append(ValidationIssue(source, f"duplicate formal claim id {claim_id!r}"))
             if isinstance(claim_id, str):
                 claim_by_id[claim_id] = claim
+            bound_ids = {bound.get("id") for bound in problem.get("bounds", [])}
+            for bound_id in claim.get("bound_ids", []):
+                if bound_id not in bound_ids:
+                    issues.append(
+                        ValidationIssue(
+                            source,
+                            f"formal claim {claim_id!r} links unknown literature "
+                            f"bound {bound_id!r}",
+                        )
+                    )
             if claim.get("category") == "open" and claim.get("formal_status") == "proved":
                 issues.append(
                     ValidationIssue(

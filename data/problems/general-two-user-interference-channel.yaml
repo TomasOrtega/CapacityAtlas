@@ -4,7 +4,7 @@ id: general-two-user-interference-channel
 title: General two-user discrete memoryless interference channel
 status: open
 featured: true
-updated: '2026-08-10'
+updated: '2026-09-14'
 summary: Two transmitter-receiver pairs interfere, and the exact capacity region is unknown in general.
 tags:
   model:
@@ -50,19 +50,69 @@ bounds:
   references:
   - han-kobayashi-1981
   - elgamal-kim-2011
+- id: cooperative-cut-set
+  direction: outer-region
+  relation: \mathcal C\subseteq\mathcal R_{\mathrm{cut}}
+  method: The fixed cooperative cut-set region defined in Interference.cutSet, with a conditionally independent
+    coupling of the two receiver marginals.
+  year: 2011
+  references:
+  - elgamal-kim-2011
+  notes: This selected region is not a formalization of every cut-and-genie bound listed above.
 frontier:
   question: Determine the capacity region of the general two-user interference channel.
-  bottleneck: The optimal extent of partial interference decoding depends delicately on the channel, while existing
-    outer bounds lose the distributed decoding structure.
+  bottleneck: The optimal extent of partial interference decoding depends delicately on the channel, while
+    existing outer bounds lose the distributed decoding structure.
   progress:
   - Close the region for a new nontrivial subclass.
   - Separate Han-Kobayashi from a known outer bound on an explicit channel.
   - Formalize one exact-capacity regime before the general problem.
 formalization:
-  status: none
-  claims: []
-  notes: This needs a shared interference-network model and independent-message code definitions.
-  files: []
+  status: stated
+  claims:
+  - id: han-kobayashi-cut-set
+    kind: capacity-bounds
+    category: solved
+    formal_status: stated
+    version: 1
+    description: A fixed Han--Kobayashi inner region and cooperative cut-set outer region.
+    bound_ids:
+    - han-kobayashi-inner
+    - cooperative-cut-set
+  - id: han-kobayashi-achievability
+    kind: achievability
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Independently tracked han kobayashi achievability.
+    bound_ids:
+    - han-kobayashi-inner
+  - id: cut-set-converse
+    kind: converse
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Independently tracked cut set converse.
+    bound_ids:
+    - cooperative-cut-set
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion.
+  files:
+  - path: lean/CapacityAtlas/Claims/InterferenceBounds.lean
+    declaration: CapacityAtlas.Claims.interferenceBounds
+    role: claim
+    description: A fixed Han--Kobayashi inner region and cooperative cut-set outer region.
+    claim_id: han-kobayashi-cut-set
+  - path: lean/CapacityAtlas/Claims/InterferenceBounds.lean
+    declaration: CapacityAtlas.Claims.interferenceHanKobayashi
+    role: claim
+    description: Independently tracked han kobayashi achievability.
+    claim_id: han-kobayashi-achievability
+  - path: lean/CapacityAtlas/Claims/InterferenceBounds.lean
+    declaration: CapacityAtlas.Claims.interferenceCutSet
+    role: claim
+    description: Independently tracked cut set converse.
+    claim_id: cut-set-converse
   proofs: []
 references:
 - han-kobayashi-1981

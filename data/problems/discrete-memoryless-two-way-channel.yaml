@@ -3,7 +3,7 @@
 id: discrete-memoryless-two-way-channel
 title: Discrete memoryless two-way channel
 status: open
-updated: '2026-08-10'
+updated: '2026-09-14'
 summary: Two terminals exchange messages while adapting each input to their own past observations.
 tags:
   model:
@@ -48,18 +48,60 @@ bounds:
   references:
   - shannon-1961
 frontier:
-  question: Determine when interaction enlarges the two-way capacity region and characterize the general region.
-  bottleneck: The terminals create input dependence dynamically through noisy observations, which is difficult to
-    summarize by a single-letter distribution.
+  question: Determine when interaction enlarges the two-way capacity region and characterize the general
+    region.
+  bottleneck: The terminals create input dependence dynamically through noisy observations, which is difficult
+    to summarize by a single-letter distribution.
   progress:
   - Find a sharper dependence-aware converse.
   - Close an explicit channel where Shannon's bounds differ.
   - Formalize interactive two-way codes.
 formalization:
-  status: none
-  claims: []
-  notes: Interactive causal encoders are not yet in the shared Lean layer.
-  files: []
+  status: stated
+  claims:
+  - id: shannon-inner-outer
+    kind: capacity-bounds
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Shannon's fixed nonadaptive inner region and adaptive outer region.
+    bound_ids:
+    - shannon-two-way-inner
+    - shannon-two-way-outer
+  - id: shannon-achievability
+    kind: achievability
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Independently tracked shannon achievability.
+    bound_ids:
+    - shannon-two-way-inner
+  - id: shannon-converse
+    kind: converse
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Independently tracked shannon converse.
+    bound_ids:
+    - shannon-two-way-outer
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion.
+  files:
+  - path: lean/CapacityAtlas/Claims/TwoWayBounds.lean
+    declaration: CapacityAtlas.Claims.twoWayBounds
+    role: claim
+    description: Shannon's fixed nonadaptive inner region and adaptive outer region.
+    claim_id: shannon-inner-outer
+  - path: lean/CapacityAtlas/Claims/TwoWayBounds.lean
+    declaration: CapacityAtlas.Claims.twoWayShannonInner
+    role: claim
+    description: Independently tracked shannon achievability.
+    claim_id: shannon-achievability
+  - path: lean/CapacityAtlas/Claims/TwoWayBounds.lean
+    declaration: CapacityAtlas.Claims.twoWayShannonOuter
+    role: claim
+    description: Independently tracked shannon converse.
+    claim_id: shannon-converse
   proofs: []
 references:
 - shannon-1961

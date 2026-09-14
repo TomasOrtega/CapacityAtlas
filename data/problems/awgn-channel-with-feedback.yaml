@@ -3,8 +3,9 @@
 id: awgn-channel-with-feedback
 title: AWGN channel with noiseless feedback
 status: solved
-updated: '2026-08-10'
-summary: Noiseless feedback dramatically improves reliability schemes but leaves the ordinary AWGN capacity unchanged.
+updated: '2026-09-14'
+summary: Noiseless feedback dramatically improves reliability schemes but leaves the ordinary AWGN capacity
+  unchanged.
 tags:
   model:
   - point-to-point
@@ -30,13 +31,16 @@ model:
   output: \(Y_t=X_t+Z_t\), with \(Y_t\) returned noiselessly to the encoder.
   law: \(Z_t\sim\mathcal N(0,N)\) iid.
   assumptions:
-  - Average power \(P\).
   - Vanishing average decoding error.
+  - E_{M,Z^n}[sum_t x_t(M,Y^{t-1})^2] <= n P, with M uniform and independent of the Gaussian noise. Each
+    message-conditional energy is integrable. This is an expected block-power bound, not a pathwise bound
+    on feedback realizations.
 quantity:
   name: Feedback capacity
   symbol: C_{\mathrm{AWGN,fb}}
   units: bits per channel use
-  criterion: Average-error capacity with causal feedback.
+  criterion: Average-error capacity with causal feedback. Resource averaging is fixed by the explicit
+    model assumption below.
 capacity:
   kind: exact
   display: C_{\mathrm{AWGN,fb}}=\frac12\log_2\!\left(1+\frac PN\right)
@@ -57,10 +61,26 @@ bounds:
   - shannon-1956
   - cover-thomas-2006
 formalization:
-  status: none
-  claims: []
-  notes: Continuous feedback codes are outside the current finite Lean core.
-  files: []
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Real AWGN feedback capacity under expected block-average power.
+    bound_ids:
+    - ignore-feedback
+    - memoryless-feedback-converse
+  notes: 'Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion. Power convention:
+    MessageNoiseAveragePowerAdmissible. No equivalence to another power convention is assumed.'
+  files:
+  - path: lean/CapacityAtlas/Claims/AWGNFeedback.lean
+    declaration: CapacityAtlas.Claims.awgnFeedback
+    role: claim
+    description: Real AWGN feedback capacity under expected block-average power.
+    claim_id: operational-capacity
   proofs: []
 references:
 - shannon-1956

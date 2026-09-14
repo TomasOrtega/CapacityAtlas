@@ -1,0 +1,64 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: noiseless-multicast-network
+title: Noiseless single-source multicast network
+status: solved
+updated: '2026-09-14'
+summary: One source sends a common message to every designated receiver in a finite directed acyclic network.
+tags:
+  model:
+  - broadcast
+  features:
+  - finite-alphabet
+  quantity:
+  - capacity
+  knowledge:
+  - single-letter-characterization
+model:
+  input: Binary packets on directed links with specified nonnegative rate budgets.
+  output: Incoming packets at each designated sink.
+  law: Every link transmits its packet without error. Nodes process incoming packets in topological order.
+  assumptions:
+  - The finite vertex order is acyclic and vertex zero is the unique source.
+  - There is at least one designated sink and the source is not a sink.
+  - An n-use code sends exactly floor(n r_e) bits on edge e. Packet lengths and schedules convey no information.
+  - Only the source observes the message. Other nodes use only incoming packets.
+  - All designated sinks decode the same uniform message.
+quantity:
+  name: Noiseless single-source multicast network capacity
+  symbol: C
+  units: bits per channel use
+  criterion: Vanishing average block error, with the constraints specified in the model.
+capacity:
+  kind: characterization
+  display: C=\min_{t\in T}\min_{S:0\in S,\ t\notin S}\sum_{e\in\delta^+(S)}r_e
+bounds:
+- id: published-capacity
+  direction: exact
+  relation: C=\min_{t\in T}\min_{S:0\in S,\ t\notin S}\sum_{e\in\delta^+(S)}r_e
+  method: Linear network coding and a cut-set converse.
+  year: 2000
+  references:
+  - ahlswede-et-al-2000
+formalization:
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Single-source topological processing on a finite noiseless acyclic network.
+    bound_ids:
+    - published-capacity
+  files:
+  - path: lean/CapacityAtlas/Claims/Multicast.lean
+    declaration: CapacityAtlas.Claims.multicast
+    role: claim
+    description: Single-source topological processing on a finite noiseless acyclic network.
+    claim_id: operational-capacity
+  proofs: []
+  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion.
+references:
+- ahlswede-et-al-2000

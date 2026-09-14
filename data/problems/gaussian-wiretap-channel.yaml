@@ -3,8 +3,9 @@
 id: gaussian-wiretap-channel
 title: Degraded Gaussian wiretap channel
 status: solved
-updated: '2026-08-10'
-summary: A Gaussian receiver has a lower noise variance than the eavesdropper, yielding a closed-form secrecy capacity.
+updated: '2026-09-14'
+summary: A Gaussian receiver has a lower noise variance than the eavesdropper, yielding a closed-form
+  secrecy capacity.
 tags:
   model:
   - wiretap
@@ -24,12 +25,16 @@ model:
   law: Gaussian noise variances satisfy \(\sigma_1^2<\sigma_2^2\).
   assumptions:
   - The eavesdropper channel is degraded.
-  - Weak or strong secrecy gives the same asymptotic value under standard formulations.
+  - For every message m and every private seed s, sum_t x_t(m,s)^2 <= n P. This constraint is not averaged
+    over the message or the seed.
+  - The finite private seed is uniform and independent of the uniform message.
+  - Strong secrecy means unnormalized I(M;Z^n) tends to zero, simultaneously with legitimate average decoding
+    error.
 quantity:
   name: Secrecy capacity
   symbol: C_s
   units: secret bits per channel use
-  criterion: Reliable communication with vanishing leakage.
+  criterion: Strong-secrecy capacity with the per-message-and-seed block-power constraint stated above.
 capacity:
   kind: exact
   display: C_s=\frac12\log_2\!\left(1+\frac{P}{\sigma_1^2}\right)-\frac12\log_2\!\left(1+\frac{P}{\sigma_2^2}\right)
@@ -49,10 +54,26 @@ bounds:
   references:
   - leung-yan-cheong-hellman-1978
 formalization:
-  status: none
-  claims: []
-  notes: A future continuous secrecy layer should share definitions with the discrete wiretap channel.
-  files: []
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: Degraded Gaussian strong-secrecy capacity with private finite randomization.
+    bound_ids:
+    - gaussian-wiretap-achievability
+    - gaussian-wiretap-converse
+  notes: 'Concrete operational definitions and admitted research statements are present. Existing proofs
+    are preserved. New statements require mathematical review and proof completion. Power convention:
+    MessageSeedPowerAdmissible. No equivalence to another power convention is assumed.'
+  files:
+  - path: lean/CapacityAtlas/Claims/GaussianWiretap.lean
+    declaration: CapacityAtlas.Claims.gaussianWiretap
+    role: claim
+    description: Degraded Gaussian strong-secrecy capacity with private finite randomization.
+    claim_id: operational-capacity
   proofs: []
 references:
 - leung-yan-cheong-hellman-1978
