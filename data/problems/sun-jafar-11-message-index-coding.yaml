@@ -6,8 +6,7 @@ abbreviation: SJ11
 status: open
 featured: true
 updated: '2026-08-13'
-summary: A multiple-unicast instance where the exact nonlinear symmetric capacity is separated from the known linear-encoder
-  answer.
+summary: The linear-encoder symmetric capacity is known, while unrestricted nonlinear capacity remains open.
 tags:
   model:
   - index-coding
@@ -78,9 +77,7 @@ frontier:
   bottleneck: Linear-rank inequalities close the linear-encoder problem, while known entropic inequalities do not close
     the nonlinear gap.
   progress:
-  - Improve either endpoint with an auditable certificate.
   - Rule out a concrete nonlinear code family.
-  - Formalize the linear code or entropic converse.
   subproblems:
   - title: Formalize the operational zero-error and linear-encoder capacity quantities.
     status: done
@@ -147,8 +144,6 @@ formalization:
     formal_status: proved
     version: 1
     description: Every internal conflict has alignment-graph distance two.
-  notes: The canonical propositions fix zero error, alphabet scope, arbitrary blocklength, nonlinear capacity,
-    and global linear-encoder capacity. Linear decoders are not required by the current formal quantity.
   files:
   - path: lean/CapacityAtlas/Network/SunJafar11.lean
     declaration: CapacityAtlas.IndexCoding.sunJafar11_exact_capacity_conjecture

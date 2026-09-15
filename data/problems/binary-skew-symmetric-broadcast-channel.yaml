@@ -6,8 +6,7 @@ abbreviation: BSSC
 status: open
 featured: true
 updated: '2026-09-14'
-summary: This minimal binary-input broadcast channel isolates a persistent gap between Marton-type inner
-  bounds and UV-type outer bounds.
+summary: The capacity region of this binary-input broadcast channel remains unknown.
 tags:
   model:
   - broadcast
@@ -86,8 +85,7 @@ formalization:
     description: Independently tracked uv converse.
     bound_ids:
     - uv-outer
-  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
-    are preserved. New statements require mathematical review and proof completion.
+  notes: New statements await mathematical review and proofs.
   files:
   - path: lean/CapacityAtlas/Channels/Broadcast.lean
     declaration: CapacityAtlas.Channel.binarySkewSymmetricBroadcastChannel

@@ -50,7 +50,8 @@ formalization:
     formal_status: proved
     version: 1
     description: The complete average-error capacity region with separate deterministic encoders equals the three single-letter inequalities over arbitrary finite time sharing, including boundary rates and zero-rate axes.
-  notes: The local proof uses separate random codebooks and a fixed-schedule time-sharing reduction. Three Fano bounds share one time coordinate; compactness supplies exact boundary witnesses. The canonical region retains arbitrary finite Q. The proof is included in this repository's build and transitive axiom audit; the linked upstream certificate is retained as provenance.
+  notes: The local proof uses separate random codebooks and a fixed time-sharing schedule. Three Fano bounds
+    share one time coordinate; compactness handles boundary rates. The region allows arbitrary finite Q.
   files:
   - path: lean/CapacityAtlasForMathlib/InformationTheory/MultipleAccess.lean
     declaration: CapacityAtlas.MultipleAccess.BlockCode

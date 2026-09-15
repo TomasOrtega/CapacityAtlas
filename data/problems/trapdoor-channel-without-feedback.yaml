@@ -4,8 +4,7 @@ id: trapdoor-channel-without-feedback
 title: Trapdoor channel without feedback
 status: open
 updated: '2026-09-14'
-summary: Removing output feedback from the same binary finite-state trapdoor channel leaves its exact
-  feedforward capacity unresolved.
+summary: The binary trapdoor channel’s exact capacity without feedback remains unknown.
 tags:
   model:
   - point-to-point
@@ -111,10 +110,8 @@ formalization:
     description: Independently tracked analytic converse.
     bound_ids:
     - q-graph-duality-upper-2021
-  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
-    are preserved. New statements require mathematical review and proof completion. The admitted analytic
-    claim uses 1/2 and log2(3/2). The separately displayed 0.572 and 0.5765 numerical endpoints are not
-    certified by this claim.
+  notes: New statements await mathematical review and proofs. The admitted analytic claim uses 1/2 and log2(3/2).
+    The separately displayed 0.572 and 0.5765 numerical endpoints are not certified by this claim.
   files:
   - path: lean/CapacityAtlas/Channels/Trapdoor.lean
     declaration: CapacityAtlas.Channel.trapdoorFeedforwardModel

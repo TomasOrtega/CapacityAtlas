@@ -7,21 +7,56 @@
 
   <section id="status"><h2>Current status</h2><div class="capacity-display">\[{{ problem.capacity.display }}\]</div>{% if problem.capacity.conditions %}<p><strong>Conditions.</strong> {{ problem.capacity.conditions }}</p>{% endif %}{% if problem.capacity.notes %}<p>{{ problem.capacity.notes }}</p>{% endif %}<div class="table-wrap"><table><caption>Known results and bounds for {{ problem.title }}</caption><thead><tr><th>Result</th><th>Relation</th><th>Method</th><th>Year</th></tr></thead><tbody>{% for item in problem.bounds %}<tr><td>{{ item.direction|replace('-', ' ')|title }}</td><td>\({{ item.relation }}\){% if item.conditions %}<small>{{ item.conditions }}</small>{% endif %}</td><td>{{ item.method }}{% if item.notes %}<small>{{ item.notes }}</small>{% endif %}</td><td>{{ item.year }}</td></tr>{% endfor %}</tbody></table></div></section>
 
-  {% if problem.frontier %}<section id="frontier"><h2>Research frontier</h2><p class="lead">{{ problem.frontier.question }}</p><p><strong>Why it remains open.</strong> {{ problem.frontier.bottleneck }}</p><h3>What would count as progress</h3><ul>{% for item in problem.frontier.progress %}<li>{{ item }}</li>{% endfor %}</ul>{% if problem.frontier.subproblems %}<h3>Concrete tasks</h3><ul class="task-list">{% for item in problem.frontier.subproblems %}<li><span class="task task--{{ item.status }}">{{ item.status|replace('-', ' ') }}</span>{% if item.url %}<a href="{{ item.url }}">{{ item.title }}</a>{% else %}{{ item.title }}{% endif %}</li>{% endfor %}</ul>{% endif %}</section>{% endif %}
+  {% if problem.frontier %}
+  <section id="frontier">
+    <h2>Open question</h2>
+    <p class="lead">{{ problem.frontier.question }}</p>
+    <p>{{ problem.frontier.bottleneck }}</p>
+    {% if problem.frontier.progress|length == 1 %}
+    <p>{{ problem.frontier.progress[0] }}</p>
+    {% else %}
+    <h3>Research directions</h3>
+    <ul>{% for item in problem.frontier.progress %}<li>{{ item }}</li>{% endfor %}</ul>
+    {% endif %}
+    {% if problem.frontier.subproblems %}
+    <h3>Tasks</h3>
+    <ul class="task-list">{% for item in problem.frontier.subproblems %}<li><span class="task task--{{ item.status }}">{{ item.status|replace('-', ' ') }}</span>{% if item.url %}<a href="{{ item.url }}">{{ item.title }}</a>{% else %}{{ item.title }}{% endif %}</li>{% endfor %}</ul>
+    {% endif %}
+  </section>
+  {% endif %}
 
-  <section id="formalization"><h2>Formal verification</h2>
-    <div class="formal-record"><div><strong>Formal coverage</strong><span class="status status--lean">{% if problem.formalization.status == 'stated' %}Formally stated{% elif problem.formalization.status == 'definitions' %}Definitions only{% else %}Not formally stated{% endif %}</span></div><p>{{ problem.formalization.notes }}</p>{% if problem.formalization.claims %}<h3>Claims</h3><ul>{% for claim in problem.formalization.claims %}<li><strong>{{ claim.description }}</strong><br><code>{{ claim.id }}</code> · {{ claim.kind|replace('-', ' ') }} · {{ claim.category }} · Formally {{ claim.formal_status }} · v{{ claim.version }}</li>{% endfor %}</ul>{% endif %}{% if problem.formalization.files %}<h3>Declarations</h3><ul>{% for file in problem.formalization.files %}<li><code>{{ file.declaration }}</code> <span class="muted">{{ file.role }}{% if file.claim_id|default('') %} · {{ file.claim_id }}{% endif %}</span><br><a href="{{ site.repository_url }}/blob/main/{{ file.path }}">{{ file.path }}</a> — {{ file.description }}</li>{% endfor %}</ul>{% endif %}</div>
-    <div class="formal-record"><div><strong>Formal proof provenance</strong><span class="muted">{{ problem.formalization.proofs|length }} linked</span></div>{% if problem.formalization.proofs %}<ul>{% for proof in problem.formalization.proofs %}<li><a href="{{ proof.url }}"><strong>{{ proof.claim_id }}</strong></a> · {{ proof.status }} · claim v{{ proof.claim_version }}<br><code>{{ proof.repository }}@{{ proof.commit[:8] }}</code> · <code>{{ proof.declaration }}</code>{% if proof.notes %}<br>{{ proof.notes }}{% endif %}</li>{% endfor %}</ul>{% else %}<p>No external formal proof is linked. Contribute proofs to this repository by default, or link a proof from another repository at an immutable commit targeting the exact claim identifier and version.</p>{% endif %}</div>
+  <section id="formalization">
+    <h2>Formal verification</h2>
+    <div class="formal-record">
+      <div><strong>Lean coverage</strong><span class="status status--lean">{% if problem.formalization.status == 'stated' %}Formally stated{% elif problem.formalization.status == 'definitions' %}Definitions only{% else %}Not formally stated{% endif %}</span></div>
+      {% if problem.formalization.notes %}<p>{{ problem.formalization.notes }}</p>{% endif %}
+      {% if problem.formalization.claims %}
+      <h3>Claims</h3>
+      <ul>{% for claim in problem.formalization.claims %}<li><strong>{{ claim.description }}</strong><br><code>{{ claim.id }}</code> · {{ claim.kind|replace('-', ' ') }} · {{ claim.category }} · Formally {{ claim.formal_status }} · v{{ claim.version }}</li>{% endfor %}</ul>
+      {% endif %}
+      {% if problem.formalization.files %}
+      <details class="formal-details">
+        <summary>Lean declarations ({{ problem.formalization.files|length }})</summary>
+        <ul>{% for file in problem.formalization.files %}<li><code>{{ file.declaration }}</code> <span class="muted">{{ file.role }}{% if file.claim_id|default('') %} · {{ file.claim_id }}{% endif %}</span><br><a href="{{ site.repository_url }}/blob/main/{{ file.path }}">{{ file.path }}</a> — {{ file.description }}</li>{% endfor %}</ul>
+      </details>
+      {% endif %}
+      {% if problem.formalization.proofs %}
+      <details class="formal-details">
+        <summary>Linked proofs ({{ problem.formalization.proofs|length }})</summary>
+        <ul>{% for proof in problem.formalization.proofs %}<li><a href="{{ proof.url }}"><strong>{{ proof.claim_id }}</strong></a> · {{ proof.status }} · claim v{{ proof.claim_version }}<br><code>{{ proof.repository }}@{{ proof.commit[:8] }}</code> · <code>{{ proof.declaration }}</code>{% if proof.notes %}<br>{{ proof.notes }}{% endif %}</li>{% endfor %}</ul>
+      </details>
+      {% endif %}
+    </div>
   </section>
 
   {% if problem.timeline %}<section id="history"><h2>History</h2><ol class="timeline">{% for event in problem.timeline %}<li><time>{{ event.year }}</time><span>{{ event.event }}</span></li>{% endfor %}</ol></section>{% endif %}
 
   <section id="references"><h2>References</h2><ol class="references">{% for reference in problem.resolved_references %}<li><span>{{ reference.authors|authors }} ({{ reference.year }}).</span> {% if reference.url|default('') %}<a href="{{ reference.url }}">{{ reference.title }}</a>{% else %}{{ reference.title }}{% endif %}. <em>{{ reference.venue }}</em>{% if reference.doi|default('') %}. DOI {{ reference.doi }}{% endif %}.</li>{% endfor %}</ol></section>
 
-  <section id="discussion"><h2>Discussion</h2><p class="discussion-key">Thread key: <code>{{ problem.discussion_term }}</code></p><div class="discussion-actions"><a class="button" href="{{ discussion_url(problem) }}">Find discussion</a><a class="button button--quiet" href="{{ new_discussion_url(problem) }}">Start discussion</a></div>
-    {% if giscus_ready %}<script src="https://giscus.app/client.js" data-repo="{{ giscus.repo }}" data-repo-id="{{ giscus.repo_id }}" data-category="{{ giscus.category }}" data-category-id="{{ giscus.category_id }}" data-mapping="specific" data-term="{{ giscus.term_prefix }}{{ problem.id }}" data-strict="{% if giscus.strict %}1{% else %}0{% endif %}" data-reactions-enabled="{% if giscus.reactions_enabled %}1{% else %}0{% endif %}" data-emit-metadata="0" data-input-position="{{ giscus.input_position }}" data-theme="{{ giscus.theme }}" data-lang="{{ giscus.language }}" crossorigin="anonymous" async></script>{% else %}<div class="discussion-placeholder"><p>GitHub Discussions is enabled. Inline comments will appear here after the <a href="{{ giscus.install_url }}">giscus GitHub App</a> is installed and the embed flag is enabled. The links above work now.</p></div>{% endif %}
+  <section id="discussion"><h2>Discussion</h2><div class="discussion-actions"><a class="button" href="{{ discussion_url(problem) }}">Find discussion</a><a class="button button--quiet" href="{{ new_discussion_url(problem) }}">Start discussion</a></div>
+    {% if giscus_ready %}<script src="https://giscus.app/client.js" data-repo="{{ giscus.repo }}" data-repo-id="{{ giscus.repo_id }}" data-category="{{ giscus.category }}" data-category-id="{{ giscus.category_id }}" data-mapping="specific" data-term="{{ giscus.term_prefix }}{{ problem.id }}" data-strict="{% if giscus.strict %}1{% else %}0{% endif %}" data-reactions-enabled="{% if giscus.reactions_enabled %}1{% else %}0{% endif %}" data-emit-metadata="0" data-input-position="{{ giscus.input_position }}" data-theme="{{ giscus.theme }}" data-lang="{{ giscus.language }}" crossorigin="anonymous" async></script>{% endif %}
   </section>
 </article>
-<aside class="on-this-page"><strong>On this page</strong><a href="#question">Channel</a><a href="#status">Status</a>{% if problem.frontier %}<a href="#frontier">Frontier</a>{% endif %}<a href="#formalization">Formal verification</a>{% if problem.timeline %}<a href="#history">History</a>{% endif %}<a href="#references">References</a><a href="#discussion">Discussion</a></aside></div>
+<aside class="on-this-page"><strong>On this page</strong><a href="#question">Channel</a><a href="#status">Status</a>{% if problem.frontier %}<a href="#frontier">Open question</a>{% endif %}<a href="#formalization">Formal verification</a>{% if problem.timeline %}<a href="#history">History</a>{% endif %}<a href="#references">References</a><a href="#discussion">Discussion</a></aside></div>
 {% if related %}<section class="section section--alt"><div class="container"><h2>Related problems</h2><div class="problem-list">{% for item in related %}{{ problem_row(item) }}{% endfor %}</div></div></section>{% endif %}
 {% endblock %}

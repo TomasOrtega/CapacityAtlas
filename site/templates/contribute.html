@@ -2,30 +2,30 @@
 {% block content %}
 <header class="page-header">
   <div class="container">
-    <h1>Choose one small contribution.</h1>
-    <p>Share evidence, propose a record, or help with formal verification. No local setup is required.</p>
+    <h1>Contribute</h1>
+    <p>You can contribute through GitHub. No local setup is required.</p>
   </div>
 </header>
 <section class="section">
   <div class="container policy-grid contribution-grid">
     <div>
       <h2>Correct an entry</h2>
-      <p>Report a factual, citation, accessibility, or site error.</p>
+      <p>Point out an error in an entry or the site.</p>
       <a class="button" href="{{ issue_url('bug_report.yml') }}">Report a correction</a>
     </div>
     <div>
       <h2>Add a bound</h2>
-      <p>Share the exact claim, assumptions, method, and primary source.</p>
+      <p>State the bound and its assumptions, with a primary source.</p>
       <a class="button" href="{{ issue_url('add_bound.yml') }}">Add a bound</a>
     </div>
     <div>
       <h2>Propose a problem</h2>
-      <p>Describe the channel, quantity, current result, and primary sources.</p>
+      <p>Describe the capacity question and cite a primary source.</p>
       <a class="button" href="{{ issue_url('new_problem.yml') }}">Propose a problem</a>
     </div>
     <div>
       <h2>Formalize a claim</h2>
-      <p>Coordinate a definition, formal statement, or proof.</p>
+      <p>Propose a Lean contribution.</p>
       <a class="button" href="{{ issue_url('formalization.yml') }}">Plan a formalization</a>
     </div>
   </div>
@@ -33,12 +33,11 @@
 <section class="section section--alt">
   <div class="container prose">
     <h2>Prefer a pull request?</h2>
-    <p>Create a starter record, edit it, and check only that file:</p>
+    <p>To add a problem, create a record, edit it, then validate it:</p>
     <pre><code>uv run --locked capacity-atlas new my-problem
 uv run --locked capacity-atlas validate data/problems/my-problem.yaml</code></pre>
     <p><a href="{{ site.repository_url }}/blob/main/CONTRIBUTING.md">Read the contribution guide</a> · <a href="{{ site.repository_url }}/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22">Find a starter task</a></p>
-    <h2>How contributions work</h2>
-    <p>Discussions hold research conversation. Issues collect actionable evidence. Pull requests update the registry.</p>
+    <p>For research questions and proof ideas, use <a href="{{ site.social.discussions_url }}">Discussions</a>.</p>
   </div>
 </section>
 {% endblock %}

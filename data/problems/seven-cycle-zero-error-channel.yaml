@@ -6,8 +6,7 @@ abbreviation: C7
 status: open
 featured: true
 updated: '2026-09-14'
-summary: The exact Shannon capacity of the seven-cycle remains unknown between a finite fifth-power certificate
-  and the Lovász theta bound.
+summary: The Shannon capacity of the seven-cycle remains unknown.
 tags:
   model:
   - zero-error

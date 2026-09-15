@@ -102,7 +102,7 @@ def build_site(
         public_url = f"{atlas.site['canonical_url'].rstrip('/')}/problems/{problem['id']}/"
         body = quote(
             f"Discussion for [{problem['title']}]({public_url}).\n\n"
-            "Please cite specific bounds, assumptions, references, or formalization targets."
+            "Please state the claim you want to discuss and cite a source where possible."
         )
         return (
             f"{atlas.site['repository_url']}/discussions/new"

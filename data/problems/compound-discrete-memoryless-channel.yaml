@@ -50,7 +50,9 @@ formalization:
     formal_status: proved
     version: 1
     description: Operational capacity with one common encoder and decoder equals the maximum, over input distributions, of the least mutual information across the finite channel family.
-  notes: The locally proved canonical claim fixes a member-independent code and uniform average error. The shared API proves attainment of the max–min information target. The direct proof selects a common decoder using a uniform mixture of whole-block channels, and its converse retains one averaged input distribution across the family. The proof is included in this repository's build and transitive axiom audit; the linked upstream certificate is retained as provenance.
+  notes: The local proof uses a common decoder for a uniform mixture of whole-block channels. The converse
+    keeps one averaged input distribution across the family. The proof also establishes that the max–min is
+    attained.
   files:
   - path: lean/CapacityAtlasForMathlib/InformationTheory/CompoundChannel.lean
     declaration: CapacityAtlas.CompoundChannel.BlockCode

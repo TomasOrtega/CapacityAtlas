@@ -52,8 +52,7 @@ formalization:
     description: Feedback trapdoor capacity with a fixed state known to both terminals.
     bound_ids:
     - dynamic-programming-solution
-  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
-    are preserved. New statements require mathematical review and proof completion.
+  notes: New statements await mathematical review and proofs.
   files:
   - path: lean/CapacityAtlas/Channels/Trapdoor.lean
     declaration: CapacityAtlas.Channel.trapdoorFeedbackModel

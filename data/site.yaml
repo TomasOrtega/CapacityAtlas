@@ -1,7 +1,7 @@
 # Copyright 2026 The Capacity Atlas Authors
 # SPDX-License-Identifier: CC-BY-4.0
 name: Capacity Atlas
-description: Capacity Atlas records precise channel models, exact capacities, best known bounds, research frontiers, formally stated claims, and formally proved results.
+description: A registry of channel-capacity problems and their known bounds, with primary sources.
 repository: TomasOrtega/CapacityAtlas
 repository_url: https://github.com/TomasOrtega/CapacityAtlas
 canonical_url: https://capacityatlas.org

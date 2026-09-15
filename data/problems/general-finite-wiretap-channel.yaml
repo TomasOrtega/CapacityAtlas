@@ -54,8 +54,7 @@ formalization:
     description: The general auxiliary-variable strong-secrecy capacity formula.
     bound_ids:
     - auxiliary-characterization
-  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
-    are preserved. New statements require mathematical review and proof completion.
+  notes: New statements await mathematical review and proofs.
   files:
   - path: lean/CapacityAtlasForMathlib/InformationTheory/FiniteWiretapChannel.lean
     declaration: CapacityAtlas.FiniteWiretapChannel

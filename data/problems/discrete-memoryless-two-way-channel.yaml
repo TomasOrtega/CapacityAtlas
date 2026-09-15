@@ -55,7 +55,6 @@ frontier:
   progress:
   - Find a sharper dependence-aware converse.
   - Close an explicit channel where Shannon's bounds differ.
-  - Formalize interactive two-way codes.
 formalization:
   status: stated
   claims:

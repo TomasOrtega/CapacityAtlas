@@ -61,8 +61,7 @@ formalization:
     bound_ids:
     - binning-achievability
     - gp-converse
-  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
-    are preserved. New statements require mathematical review and proof completion.
+  notes: New statements await mathematical review and proofs.
   files:
   - path: lean/CapacityAtlas/Claims/GelfandPinsker.lean
     declaration: CapacityAtlas.Claims.gelfandPinsker

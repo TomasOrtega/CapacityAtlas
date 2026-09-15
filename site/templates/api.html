@@ -1,6 +1,20 @@
 {% extends "base.html" %}
-{% block content %}<header class="page-header"><div class="container"><h1>The atlas is machine-readable.</h1><p>Static JSON endpoints are rebuilt from the reviewed YAML registry on every deployment.</p></div></header><section class="section"><div class="container prose"><h2>Endpoints</h2><pre><code>/api/problems.json
+{% block content %}
+<header class="page-header">
+  <div class="container">
+    <h1>JSON API</h1>
+    <p>Download the registry as static JSON files.</p>
+  </div>
+</header>
+<section class="section">
+  <div class="container prose">
+    <h2>Endpoints</h2>
+    <pre><code>/api/problems.json
 /api/problems/&lt;problem-id&gt;.json
 /api/references.json
 /api/tags.json
-/api/problem.schema.json</code></pre><p>Problem URLs and IDs are stable. Each formal claim carries its own identifier and version so formal proof provenance and benchmark snapshots can identify the exact proposition they target.</p></div></section>{% endblock %}
+/api/problem.schema.json</code></pre>
+    <p>Problem IDs are permanent. Formal claims have their own IDs and versions to identify the proposition a proof targets.</p>
+  </div>
+</section>
+{% endblock %}

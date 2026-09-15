@@ -60,8 +60,7 @@ formalization:
     bound_ids:
     - degraded-decode-forward
     - degraded-cut-set
-  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
-    are preserved. New statements require mathematical review and proof completion.
+  notes: New statements await mathematical review and proofs.
   files:
   - path: lean/CapacityAtlas/Claims/DegradedRelay.lean
     declaration: CapacityAtlas.Claims.degradedRelay

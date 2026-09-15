@@ -91,8 +91,7 @@ formalization:
     description: Independently tracked cut set converse.
     bound_ids:
     - cut-set
-  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
-    are preserved. New statements require mathematical review and proof completion.
+  notes: New statements await mathematical review and proofs.
   files:
   - path: lean/CapacityAtlas/Network/PrimitiveRelay.lean
     declaration: CapacityAtlas.Network.PrimitiveRelayChannel

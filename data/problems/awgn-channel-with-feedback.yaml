@@ -4,8 +4,7 @@ id: awgn-channel-with-feedback
 title: AWGN channel with noiseless feedback
 status: solved
 updated: '2026-09-14'
-summary: Noiseless feedback dramatically improves reliability schemes but leaves the ordinary AWGN capacity
-  unchanged.
+summary: Noiseless output feedback improves reliability without changing AWGN capacity.
 tags:
   model:
   - point-to-point

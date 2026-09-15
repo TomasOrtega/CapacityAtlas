@@ -51,7 +51,8 @@ formalization:
     formal_status: proved
     version: 1
     description: Operational capacity of arbitrary deterministic causal-state codes equals the information capacity of the finite Shannon-strategy channel.
-  notes: The local proof embeds strategy codes and bounds arbitrary causal policies by an inductive entropy argument and Fano's inequality. It proves the canonical claim and also establishes optimizer attainment. The proof is included in this repository's build and transitive axiom audit; the linked upstream certificate is retained as provenance.
+  notes: The local proof embeds strategy codes and bounds arbitrary causal policies using entropy and Fano’s
+    inequality. It also proves that an optimizing strategy distribution exists.
   files:
   - path: lean/CapacityAtlasForMathlib/InformationTheory/CausalState.lean
     declaration: CapacityAtlas.CausalState.Policy
