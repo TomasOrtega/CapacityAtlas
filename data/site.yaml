@@ -1,7 +1,7 @@
 # Copyright 2026 The Capacity Atlas Authors
 # SPDX-License-Identifier: CC-BY-4.0
 name: Capacity Atlas
-description: A registry of channel-capacity problems and their known bounds, with primary sources.
+description: Channel-capacity problems and their known bounds
 repository: TomasOrtega/CapacityAtlas
 repository_url: https://github.com/TomasOrtega/CapacityAtlas
 canonical_url: https://capacityatlas.org
