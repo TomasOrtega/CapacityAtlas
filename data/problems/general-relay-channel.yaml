@@ -64,7 +64,6 @@ frontier:
   progress:
   - Identify a new subclass where inner and outer bounds coincide.
   - Strengthen the converse using relay causality.
-  - Formalize the causal relay code model and cut-set theorem.
 formalization:
   status: stated
   claims:

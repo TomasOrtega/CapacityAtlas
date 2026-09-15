@@ -4,7 +4,7 @@ id: noiseless-q-ary-channel
 title: Noiseless finite-alphabet channel
 status: solved
 updated: '2026-08-13'
-summary: A q-symbol input is reproduced exactly, providing the basic normalization for channel capacity.
+summary: A q-symbol input is reproduced exactly.
 tags:
   model:
   - point-to-point

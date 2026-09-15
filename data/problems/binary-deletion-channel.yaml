@@ -61,14 +61,12 @@ bounds:
   - pinto-ribeiro-2026
   conditions: \(d\ge0.64\)
 frontier:
-  question: Determine \(C_{\mathrm{del}}(d)\), even at a benchmark value such as \(d=1/2\), or substantially
-    narrow the gap.
+  question: Determine \(C_{\mathrm{del}}(d)\), even at \(d=1/2\).
   bottleneck: Deletions destroy alignment, and finite-letter optimizations grow exponentially without
     a known single-letter reduction.
   progress:
   - Improve a certified pointwise bound.
   - Prove structure of capacity-achieving stationary inputs.
-  - Develop compact certificates suitable for formal checking.
 formalization:
   status: stated
   claims:

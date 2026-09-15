@@ -76,9 +76,8 @@ formalization:
     description: A spectral basis and water level produce an optimal covariance, including zero-gain modes.
     bound_ids:
     - water-filling-capacity
-  notes: 'Concrete operational definitions and admitted research statements are present. Existing proofs
-    are preserved. New statements require mathematical review and proof completion. Power convention:
-    CodewordVectorPowerAdmissible. No equivalence to another power convention is assumed.'
+  notes: 'New statements await mathematical review and proofs. Power convention: CodewordVectorPowerAdmissible.
+    No equivalence to another power convention is assumed.'
   files:
   - path: lean/CapacityAtlas/Channels/GaussianMIMO.lean
     declaration: CapacityAtlas.Channel.RealGaussianMIMOModel

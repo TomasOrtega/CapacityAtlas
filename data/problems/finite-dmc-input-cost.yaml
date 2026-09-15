@@ -43,10 +43,8 @@ formalization:
     version: 1
     description: For nonnegative cost with a feasible symbol, maximum-codeword-cost operational capacity
       equals constrained information capacity.
-  notes: The local proof establishes the unchanged operational claim using cost-controlled random
-    coding and a finite-mixture converse. It covers the minimum feasible budget and proves that an
-    admissible input attains the information supremum. The proof is included in this repository's
-    build and transitive axiom audit; the linked upstream certificate is retained as provenance.
+  notes: The local proof uses cost-controlled random coding and a finite-mixture converse. It covers the
+    minimum feasible budget and proves that an admissible input attains the information supremum.
   files:
   - path: lean/CapacityAtlas/Channels/InputCost.lean
     declaration: CapacityAtlas.FiniteChannel.finiteDMCInputCostCapacityStatement

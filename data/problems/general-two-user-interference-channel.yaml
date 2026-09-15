@@ -66,7 +66,6 @@ frontier:
   progress:
   - Close the region for a new nontrivial subclass.
   - Separate Han-Kobayashi from a known outer bound on an explicit channel.
-  - Formalize one exact-capacity regime before the general problem.
 formalization:
   status: stated
   claims:

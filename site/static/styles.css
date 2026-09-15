@@ -142,15 +142,14 @@ td small { display: block; margin-top: .25rem; color: var(--muted); font-size: v
 .formal-record { padding: 1rem 0; border-top: 1px solid var(--line); }
 .formal-record > div { display: flex; justify-content: space-between; gap: 1rem; }
 .formal-record ul { padding-left: 1.2rem; }
+.formal-details { margin-top: 1rem; }
+.formal-details summary { cursor: pointer; font-weight: 700; }
 .timeline { padding: 0; list-style: none; }
 .timeline li { display: grid; grid-template-columns: 5rem 1fr; gap: 1rem; padding: .65rem 0; border-top: 1px solid var(--line); }
 .timeline time { color: var(--muted); font-weight: 700; }
 .references { padding-left: 1.35rem; }
 .references li { margin: .75rem 0; }
-.discussion-key { color: var(--muted); font-size: var(--text-md); }
 .discussion-actions { margin: .75rem 0 1rem; }
-.discussion-placeholder { padding: 1.1rem 1.2rem; border: 1px dashed #aeb8c7; border-radius: var(--radius); background: var(--soft); }
-.discussion-placeholder p { margin: 0; }
 .giscus { margin-top: 1rem; }
 
 .policy-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }

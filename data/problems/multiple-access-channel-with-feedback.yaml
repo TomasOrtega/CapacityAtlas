@@ -56,7 +56,6 @@ frontier:
   progress:
   - Close the gap for a new explicit finite channel.
   - Strengthen dependence balance without losing computability.
-  - Relate local or linked formal proofs to a versioned canonical feedback-code claim.
 formalization:
   status: stated
   claims:
@@ -86,8 +85,7 @@ formalization:
     description: Independently tracked dependence balance converse.
     bound_ids:
     - dependence-balance-outer
-  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
-    are preserved. New statements require mathematical review and proof completion.
+  notes: New statements await mathematical review and proofs.
   files:
   - path: lean/CapacityAtlas/Claims/MACFeedbackBounds.lean
     declaration: CapacityAtlas.Claims.macFeedbackBounds

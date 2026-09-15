@@ -81,8 +81,7 @@ formalization:
     bound_ids:
     - two-use-code
     - lovasz-theta
-  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
-    are preserved. New statements require mathematical review and proof completion.
+  notes: New statements await mathematical review and proofs.
   files:
   - path: lean/CapacityAtlas/Claims/Pentagon.lean
     declaration: CapacityAtlas.Claims.pentagon

@@ -6,7 +6,7 @@ abbreviation: BSC
 status: solved
 featured: true
 updated: '2026-08-13'
-summary: Each bit is independently flipped with probability p, giving the canonical finite noisy channel.
+summary: Each bit is independently flipped with probability \(p\).
 tags:
   model:
   - point-to-point

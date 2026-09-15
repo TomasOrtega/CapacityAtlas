@@ -78,10 +78,8 @@ formalization:
     version: 1
     description: An explicit Bernoulli input attains capacity, with probability of input 1 equal to
       p^(p/(1-p))/(1+(1-p)p^(p/(1-p))) in the interior.
-  notes: The optimization uses a general binary entropy log-partition inequality and its equality case.
-    The operational result reuses the finite-DMC coding theorem. Both endpoints are proved directly;
-    the explicit input is uniform at p=0 and deterministic at p=1, where every input attains zero capacity.
-    The Lean formula uses totalized powers and division to give the stated endpoint values.
+  notes: The proof uses a binary entropy log-partition inequality and the finite-DMC coding theorem. Both
+    endpoints are proved directly. Lean’s totalized powers and division give the endpoint values.
   files:
   - path: lean/CapacityAtlas/Channels/Binary.lean
     declaration: CapacityAtlas.Channel.binaryZ

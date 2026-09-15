@@ -70,9 +70,8 @@ formalization:
     bound_ids:
     - symmetrizability-zero
     - elimination-dichotomy
-  notes: Concrete operational definitions and admitted research statements are present. Existing proofs
-    are preserved. New statements require mathematical review and proof completion. The new claim uses
-    deterministic coding and average error, with an oblivious state sequence.
+  notes: New statements await mathematical review and proofs. The new claim uses deterministic coding and average
+    error, with an oblivious state sequence.
   files:
   - path: lean/CapacityAtlas/Claims/AVC.lean
     declaration: CapacityAtlas.Claims.arbitrarilyVarying
