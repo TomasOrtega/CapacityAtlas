@@ -1,0 +1,93 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: gaussian-mimo-broadcast-channel
+title: Gaussian MIMO broadcast channel
+status: solved
+updated: '2026-10-11'
+summary: A Gaussian vector transmitter sends independent private messages to multiple receivers, and dirty-paper coding achieves the full capacity region.
+tags:
+  model:
+  - broadcast
+  features:
+  - continuous-alphabet
+  - gaussian
+  - additive-noise
+  - power-constraint
+  quantity:
+  - capacity-region
+  knowledge:
+  - exact
+  - single-letter-characterization
+parameters:
+- symbol: K,t,r_i
+  description: Number of receivers, transmit antennas, and receive antennas at receiver i.
+  range: K\ge2,\quad t,r_i\ge1
+- symbol: P
+  description: Total average transmit power per channel use.
+  range: P\ge0
+model:
+  input: A real vector \(X\in\mathbb R^t\) carrying independent uniform private messages \(M_1,\ldots,M_K\).
+  output: Receiver i observes \(Y_i\in\mathbb R^{r_i}\) and decodes only \(M_i\).
+  law: \(Y_i=H_iX+Z_i\), with fixed \(H_i\in\mathbb R^{r_i\times t}\) and \(Z_i\sim\mathcal N(0,N_i)\), where \(N_i\succ0\).
+  assumptions:
+  - The matrices H_i and N_i are known to the encoder and all receivers.
+  - Noise vectors are independent across uses and receivers and independent of the messages.
+  - One encoder knows all messages. There is no feedback, receiver cooperation, or common message.
+  - >-
+    Arbitrary deterministic block encoders and measurable decoders are allowed. For each blocklength n,
+    \(\frac1n\sum_{s=1}^n\mathbb E[\|X_s(M_1,\ldots,M_K)\|_2^2]\le P\),
+    where the expectation is over the uniform message tuple. Power is shared across transmit antennas
+    and averaged over time and messages.
+quantity:
+  name: Private-message capacity region
+  symbol: \mathcal C(P)
+  units: rate tuples in bits per real vector channel use
+  criterion: >-
+    Closure of achievable nonnegative rate tuples, with \(R_i=\liminf_{n\to\infty}\frac1n\log_2|\mathcal M_i^{(n)}|\)
+    and the average probability that any receiver decodes incorrectly tending to zero.
+capacity:
+  kind: region
+  display: >-
+    \begin{gathered}
+    \mathcal C(P)=\overline{\operatorname{conv}}\!
+    \bigcup_{\substack{\pi,\ Q_1,\ldots,Q_K\succeq0\\\sum_i\operatorname{tr}Q_i\le P}}
+    \{R\in\mathbb R_+^K:R_{\pi(k)}\le r_{\pi(k)},\ k=1,\ldots,K\},\\
+    r_{\pi(k)}=\frac12\log_2
+    \frac{\det(N_{\pi(k)}+H_{\pi(k)}S_kH_{\pi(k)}^{\mathsf T})}
+    {\det(N_{\pi(k)}+H_{\pi(k)}S_{k-1}H_{\pi(k)}^{\mathsf T})}
+    \end{gathered}
+  conditions: >-
+    Here \(\pi\) ranges over permutations of the receivers, each \(Q_i\) is a real symmetric
+    transmit covariance matrix, \(S_0=0\), and \(S_k=\sum_{j=1}^kQ_{\pi(j)}\).
+  notes: >-
+    Write the displayed region as \(\mathcal R_{\rm DPC}(P)\). With this indexing, encode in order
+    \(\pi(K),\ldots,\pi(1)\); dirty-paper coding cancels the already encoded layers, leaving
+    interference with receive covariance \(H_{\pi(k)}S_{k-1}H_{\pi(k)}^{\mathsf T}\).
+    Convex closure allows time sharing.
+    The factor one half is for real signals. The source's Definition 6 and Corollary 4 give the
+    dirty-paper region and its equality to capacity under total average power.
+bounds:
+- id: dirty-paper-inner
+  direction: inner-region
+  relation: \mathcal R_{\rm DPC}(P)\subseteq\mathcal C(P)
+  method: Gaussian dirty-paper coding over all covariance allocations and encoding orders, with time sharing.
+  year: 2006
+  conditions: The fixed real Gaussian model and message-averaged total-power constraint specified above.
+  references:
+  - weingarten-steinberg-shamai-2006
+- id: channel-enhancement-converse
+  direction: outer-region
+  relation: \mathcal C(P)\subseteq\mathcal R_{\rm DPC}(P)
+  method: Channel enhancement and the entropy-power inequality, followed by the reduction from covariance constraints to total power.
+  year: 2006
+  conditions: The fixed real Gaussian model and message-averaged total-power constraint specified above.
+  references:
+  - weingarten-steinberg-shamai-2006
+formalization:
+  status: none
+  claims: []
+  notes: The operational MIMO broadcast model and dirty-paper capacity region have not yet been registered in Lean.
+  files: []
+  proofs: []
+references:
+- weingarten-steinberg-shamai-2006
