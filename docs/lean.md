@@ -39,20 +39,23 @@ capacity definitions and proofs, network models, graph zero-error capacity, and
 finite index coding. It is part of the trusted layer and may not contain `sorry`
 or `admit`.
 
-The input-cost, compound-channel, causal-state, feedback, and multiple-access
-proof developments live under `InformationTheory/` in the `InputCost`,
-`CompoundChannel`, `CausalState`, `Feedback`, and `MultipleAccess` subdirectories.
+The input-cost, compound-channel, causal-state, feedback, multiple-access, and
+common-message proof developments live under `InformationTheory/` in the `InputCost`,
+`CompoundChannel`, `CausalState`, `Feedback`, `MultipleAccess`, and
+`CommonMessageBroadcast` subdirectories.
 These modules retain their original declaration namespaces so proofs and lemmas
 can be reused directly. Shared input-cost definitions live in
 `InformationTheory/InputCost.lean`; proof modules depend on this layer without
 importing problem statements.
 
-These developments were imported from the five registered proof repositories;
+These developments were imported from the six registered proof repositories;
 [the acknowledgements](../ACKNOWLEDGEMENTS.md#imported-lean-proof-developments)
 record their source commits and paths. Their original immutable proof records
 remain as historical provenance. The common environment audit checks the local
 sources. Canonical claim theorems apply the shared proofs directly, so Lean
 checks their types without a separate external-certificate comparison.
+The common-message proof reduces receiver-specific output alphabets to tagged
+compound channels and applies the local compound-channel capacity theorem.
 
 Common proof steps are shared across channel models:
 
@@ -72,9 +75,10 @@ operational criterion, rate normalization, and claimed capacity or bound.
 Statements parameterized by an arbitrary operational theory, capacity function,
 region, or bound do not qualify.
 
-The canonical input-cost, compound-channel, causal-state, feedback, and
-multiple-access claims are locally proved theorems that import the shared proof
-modules. Their declaration names, propositions, and claim versions are preserved.
+The canonical input-cost, compound-channel, causal-state, feedback,
+multiple-access, and common-message claims are locally proved theorems that
+import the shared proof modules. Their declaration names, propositions, and claim
+versions are preserved.
 
 ## Mathlib reuse
 

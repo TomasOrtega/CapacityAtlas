@@ -80,6 +80,11 @@ filenames and declaration namespaces are preserved.
 - [TomasOrtega/CapacityAtlasMAC](https://github.com/TomasOrtega/CapacityAtlasMAC/tree/ec5be554b9644df94dd58190963793f3f1d1da52),
   commit `ec5be554b9644df94dd58190963793f3f1d1da52`:
   `CapacityAtlasMAC/` maps to `MultipleAccess/`.
+- [TomasOrtega/CapacityAtlasCommonMessage](https://github.com/TomasOrtega/CapacityAtlasCommonMessage/tree/83923a9a73280ff2d24c71411398438edcc20e4b),
+  commit `83923a9a73280ff2d24c71411398438edcc20e4b`:
+  `CapacityAtlasCommonMessage/Reduction.lean` maps to
+  `CommonMessageBroadcast/Reduction.lean`, and the root capacity theorems map to
+  `CommonMessageBroadcast/Capacity.lean`.
 
 The compound, feedback, and multiple-access repositories' root
 libraries map to `Capacity.lean` in their corresponding local directories.
@@ -93,6 +98,11 @@ and input-cost definitions move from the problem layer into
 and redundant certificate aliases are unnecessary for directly proved local claims.
 Package manifests and CI are provided by this monorepo. The original immutable
 proof records remain in the registry for provenance.
+
+The common-message proof uses the local compound-channel theorem. Its standalone
+certificate wrapper and audit are replaced by the canonical claim theorem and
+the common environment audit; neither external repository is needed to build or
+audit these proofs.
 
 Repeated Fano bounds, random-coding estimates, and output-relabeling arguments
 are consolidated in shared modules. Multiple-access proofs reuse sender-swap

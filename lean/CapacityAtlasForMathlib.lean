@@ -46,6 +46,7 @@ import CapacityAtlasForMathlib.InformationTheory.OutputRelabeling
 
 import CapacityAtlasForMathlib.InformationTheory.InputCost.Capacity
 import CapacityAtlasForMathlib.InformationTheory.CompoundChannel.Capacity
+import CapacityAtlasForMathlib.InformationTheory.CommonMessageBroadcast.Capacity
 import CapacityAtlasForMathlib.InformationTheory.CausalState.Converse
 import CapacityAtlasForMathlib.InformationTheory.Feedback.Capacity
 import CapacityAtlasForMathlib.InformationTheory.MultipleAccess.Capacity
