@@ -60,26 +60,32 @@ The copied code is distributed under PFR's Apache-2.0 license, reproduced in
 
 ## Imported Lean proof developments
 
-The following proof developments were imported from the registered external
-repositories at their immutable proof commits. Local paths below are relative to
+The following proof developments were imported from standalone repositories at
+the source commits recorded below. Local paths are relative to
 `lean/CapacityAtlasForMathlib/InformationTheory/`; individual mathematical source
 filenames and declaration namespaces are preserved.
 
-- [TomasOrtega/CapacityAtlasInputCost](https://github.com/TomasOrtega/CapacityAtlasInputCost/tree/5e6a432bc276aa4e08b7f27658daf40e029cda48),
+- `TomasOrtega/CapacityAtlasInputCost`,
   commit `5e6a432bc276aa4e08b7f27658daf40e029cda48`:
-  `CapacityAtlasCost/` maps to `InputCost/`.
-- [TomasOrtega/CapacityAtlasCompound](https://github.com/TomasOrtega/CapacityAtlasCompound/tree/1d5cbdc0a8cfb5d034facdb8d1e2473bb3c40ebe),
+  `CapacityAtlasCost/` maps to [InputCost/](lean/CapacityAtlasForMathlib/InformationTheory/InputCost/).
+- `TomasOrtega/CapacityAtlasCompound`,
   commit `1d5cbdc0a8cfb5d034facdb8d1e2473bb3c40ebe`:
-  `CapacityAtlasCompound/` maps to `CompoundChannel/`.
-- [TomasOrtega/CapacityAtlasCausalState](https://github.com/TomasOrtega/CapacityAtlasCausalState/tree/0176a0e9fed6ec13fd2f566d9906c3ea8103d1cc),
+  `CapacityAtlasCompound/` maps to [CompoundChannel/](lean/CapacityAtlasForMathlib/InformationTheory/CompoundChannel/).
+- `TomasOrtega/CapacityAtlasCausalState`,
   commit `0176a0e9fed6ec13fd2f566d9906c3ea8103d1cc`:
-  `CapacityAtlasCausal/` maps to `CausalState/`.
-- [TomasOrtega/CapacityAtlasFeedback](https://github.com/TomasOrtega/CapacityAtlasFeedback/tree/b35299f221ad1c17ccbafb45082c22a5379a99e9),
+  `CapacityAtlasCausal/` maps to [CausalState/](lean/CapacityAtlasForMathlib/InformationTheory/CausalState/).
+- `TomasOrtega/CapacityAtlasFeedback`,
   commit `b35299f221ad1c17ccbafb45082c22a5379a99e9`:
-  `CapacityAtlasFeedback/` maps to `Feedback/`.
-- [TomasOrtega/CapacityAtlasMAC](https://github.com/TomasOrtega/CapacityAtlasMAC/tree/ec5be554b9644df94dd58190963793f3f1d1da52),
+  `CapacityAtlasFeedback/` maps to [Feedback/](lean/CapacityAtlasForMathlib/InformationTheory/Feedback/).
+- `TomasOrtega/CapacityAtlasMAC`,
   commit `ec5be554b9644df94dd58190963793f3f1d1da52`:
-  `CapacityAtlasMAC/` maps to `MultipleAccess/`.
+  `CapacityAtlasMAC/` maps to [MultipleAccess/](lean/CapacityAtlasForMathlib/InformationTheory/MultipleAccess/).
+- `TomasOrtega/CapacityAtlasCommonMessage`,
+  commit `83923a9a73280ff2d24c71411398438edcc20e4b`:
+  `CapacityAtlasCommonMessage/Reduction.lean` maps to
+  [CommonMessageBroadcast/Reduction.lean](lean/CapacityAtlasForMathlib/InformationTheory/CommonMessageBroadcast/Reduction.lean),
+  and the root capacity theorems map to
+  [CommonMessageBroadcast/Capacity.lean](lean/CapacityAtlasForMathlib/InformationTheory/CommonMessageBroadcast/Capacity.lean).
 
 The compound, feedback, and multiple-access repositories' root
 libraries map to `Capacity.lean` in their corresponding local directories.
@@ -91,8 +97,13 @@ and input-cost definitions move from the problem layer into
 `InformationTheory/InputCost.lean`. The common axiom audit replaces standalone
 `Audit.lean` and `AuditFixtures.lean` files. External-certificate comparison code
 and redundant certificate aliases are unnecessary for directly proved local claims.
-Package manifests and CI are provided by this monorepo. The original immutable
-proof records remain in the registry for provenance.
+Package manifests and CI are provided by this monorepo. The original repository
+names, source commits, and paths are retained here and in source headers for attribution.
+
+The common-message proof uses the local compound-channel theorem. Its standalone
+certificate wrapper and audit are replaced by the canonical claim theorem and
+the common environment audit; neither external repository is needed to build or
+audit these proofs.
 
 Repeated Fano bounds, random-coding estimates, and output-relabeling arguments
 are consolidated in shared modules. Multiple-access proofs reuse sender-swap

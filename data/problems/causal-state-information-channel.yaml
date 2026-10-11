@@ -3,7 +3,7 @@
 id: causal-state-information-channel
 title: DMC with causal state information at the encoder
 status: solved
-updated: '2026-09-11'
+updated: '2026-10-11'
 summary: An iid channel state is revealed causally to the encoder but not to the decoder.
 tags:
   model: [point-to-point]
@@ -79,16 +79,5 @@ formalization:
     role: claim
     claim_id: exact-capacity
     description: Canonical proposition equating causal operational capacity with strategy information capacity.
-  proofs:
-  - id: shannon-causal-capacity-proof
-    claim_id: exact-capacity
-    claim_version: 1
-    status: complete
-    system: Lean
-    repository: TomasOrtega/CapacityAtlasCausalState
-    commit: 0176a0e9fed6ec13fd2f566d9906c3ea8103d1cc
-    url: https://github.com/TomasOrtega/CapacityAtlasCausalState/commit/0176a0e9fed6ec13fd2f566d9906c3ea8103d1cc
-    file: CapacityAtlasCausal.lean
-    declaration: CapacityAtlasCausal.capacityCertificate
-    notes: Historical upstream certificate imported into this repository. The upstream proof pins Atlas commit 661affbfb9241fcc2b926db78564d81731a42f14 and audits every transitive proof axiom and exact canonical-proposition correspondence.
+  proofs: []
 references: [shannon-1958, elgamal-kim-2011]

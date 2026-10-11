@@ -62,6 +62,7 @@ def test_registry_is_valid() -> None:
         "causal-state-information-channel",
         "discrete-memoryless-channel-with-feedback",
         "two-user-discrete-memoryless-mac",
+        "finite-common-message-broadcast-channel",
     ],
 )
 @pytest.mark.parametrize("compiled", [False, True])

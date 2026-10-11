@@ -27,9 +27,10 @@ repository.
 
 Reusable proof developments live in `CapacityAtlasForMathlib`, and registered
 claim theorems in `CapacityAtlas` import them. The imported input-cost,
-compound-channel, causal-state, feedback, and multiple-access proofs build and
-run through the same axiom audit as the rest of the shared library. Original
-immutable proof records remain available as historical provenance.
+compound-channel, causal-state, feedback, multiple-access, and common-message
+proofs build and run through the same axiom audit as the rest of the shared
+library. The [acknowledgements](../ACKNOWLEDGEMENTS.md#imported-lean-proof-developments)
+preserve their original repository names, source commits, and paths.
 
 Contributors may use external repositories when they prefer independent
 development, dependencies, or release schedules. An external repository proves

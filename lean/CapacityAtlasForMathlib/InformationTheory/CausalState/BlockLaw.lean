@@ -2,7 +2,8 @@
 Copyright 2026 The Capacity Atlas Authors
 Licensed under the Apache License, Version 2.0 (the "License").
 See the License for the specific language governing permissions and limitations.
-Source: https://github.com/TomasOrtega/CapacityAtlasCausalState/blob/0176a0e9fed6ec13fd2f566d9906c3ea8103d1cc/CapacityAtlasCausal/BlockLaw.lean
+Adapted from TomasOrtega/CapacityAtlasCausalState, commit 0176a0e9fed6ec13fd2f566d9906c3ea8103d1cc,
+original file CapacityAtlasCausal/BlockLaw.lean.
 Adapted imports and reused shared product distributions.
 -/
 

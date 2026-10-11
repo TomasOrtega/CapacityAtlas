@@ -4,7 +4,7 @@ id: two-user-discrete-memoryless-mac
 title: Two-user discrete memoryless multiple-access channel
 abbreviation: DM-MAC
 status: solved
-updated: '2026-09-11'
+updated: '2026-10-11'
 summary: Two independent senders communicate to one receiver through a finite memoryless channel.
 tags:
   model: [multiple-access]
@@ -70,16 +70,5 @@ formalization:
     role: claim
     claim_id: exact-capacity
     description: Canonical operational MAC capacity-region equality.
-  proofs:
-  - id: finite-mac-capacity-region-proof
-    claim_id: exact-capacity
-    claim_version: 1
-    status: complete
-    system: Lean
-    repository: TomasOrtega/CapacityAtlasMAC
-    commit: ec5be554b9644df94dd58190963793f3f1d1da52
-    url: https://github.com/TomasOrtega/CapacityAtlasMAC/commit/ec5be554b9644df94dd58190963793f3f1d1da52
-    file: CapacityAtlasMAC.lean
-    declaration: CapacityAtlasMAC.capacityCertificate
-    notes: Historical upstream certificate imported into this repository. Pins Atlas commit f1ffd9d31dfa462010be6a95ab79bfd2f911ca76. The upstream audit checks every external proof declaration and full canonical-proposition correspondence with rigid universes; negative controls reject a different proposition and a universe-restricted certificate.
+  proofs: []
 references: [ahlswede-1971, liao-1972, elgamal-kim-2011]

@@ -2,8 +2,8 @@
 Copyright 2026 The Capacity Atlas Authors
 Licensed under the Apache License, Version 2.0 (the "License").
 See the License for the specific language governing permissions and limitations.
-Shared Fano normalization adapts CapacityAtlasMAC/Converse.lean from:
-https://github.com/TomasOrtega/CapacityAtlasMAC/blob/ec5be554b9644df94dd58190963793f3f1d1da52/CapacityAtlasMAC/Converse.lean
+Adapted from TomasOrtega/CapacityAtlasMAC, commit ec5be554b9644df94dd58190963793f3f1d1da52,
+original file CapacityAtlasMAC/Converse.lean, for shared Fano normalization.
 -/
 
 import CapacityAtlasForMathlib.InformationTheory.FiniteEntropy
