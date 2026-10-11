@@ -27,6 +27,7 @@ import CapacityAtlas.Claims.TwoWayBounds
 import CapacityAtlas.Claims.AVC
 import CapacityAtlas.Claims.AWGN
 import CapacityAtlas.Claims.GaussianMIMO
+import CapacityAtlas.Claims.GaussianMIMOBroadcast
 import CapacityAtlas.Claims.GaussianMAC
 import CapacityAtlas.Claims.GaussianBroadcast
 import CapacityAtlas.Claims.GaussianWiretap

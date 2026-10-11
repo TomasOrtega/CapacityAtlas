@@ -39,4 +39,25 @@ def achievableRegion (Code : ℕ → Type*)
       ∃ code : Code n, admissible n code ∧ error n code ≤ ε ∧
         target.1 - ε ≤ (rates n code).1 ∧ target.2 - ε ≤ (rates n code).2}
 
+/-- Indexed achievability with one code and one tolerance for every rate coordinate. -/
+def achievableVectorRegion {ι : Type*} (Code : ℕ → Type*)
+    (admissible : ∀ n, Code n → Prop) (error : ∀ n, Code n → ℝ)
+    (rates : ∀ n, Code n → ι → ℝ) : Set (ι → ℝ) :=
+  {target | (∀ i, 0 ≤ target i) ∧
+    ∀ ε : ℝ, 0 < ε → ∃ N : ℕ, 0 < N ∧ ∀ n, N ≤ n →
+      ∃ code : Code n, admissible n code ∧ error n code ≤ ε ∧
+        ∀ i, target i - ε ≤ rates n code i}
+
+theorem achievableVectorRegion_downward {ι : Type*} {Code : ℕ → Type*}
+    {admissible : ∀ n, Code n → Prop} {error : ∀ n, Code n → ℝ}
+    {rates : ∀ n, Code n → ι → ℝ} {lower upper : ι → ℝ}
+    (hupper : upper ∈ achievableVectorRegion Code admissible error rates)
+    (hlower : ∀ i, 0 ≤ lower i) (hle : ∀ i, lower i ≤ upper i) :
+    lower ∈ achievableVectorRegion Code admissible error rates := by
+  refine ⟨hlower, fun ε hε ↦ ?_⟩
+  obtain ⟨N, hN, hcodes⟩ := hupper.2 ε hε
+  refine ⟨N, hN, fun n hn ↦ ?_⟩
+  obtain ⟨code, hadmissible, herror, hrates⟩ := hcodes n hn
+  exact ⟨code, hadmissible, herror, fun i ↦ (sub_le_sub_right (hle i) ε).trans (hrates i)⟩
+
 end CapacityAtlas.Operational

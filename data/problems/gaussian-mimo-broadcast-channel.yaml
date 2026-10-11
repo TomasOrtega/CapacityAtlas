@@ -84,10 +84,32 @@ bounds:
   references:
   - weingarten-steinberg-shamai-2006
 formalization:
-  status: none
-  claims: []
-  notes: The operational MIMO broadcast model and dirty-paper capacity region have not yet been registered in Lean.
-  files: []
+  status: stated
+  claims:
+  - id: operational-capacity
+    kind: exact-capacity
+    category: solved
+    formal_status: stated
+    version: 1
+    description: The real Gaussian MIMO broadcast private-message capacity region equals the closed convex dirty-paper coding region under message-averaged total power.
+    bound_ids:
+    - dirty-paper-inner
+    - channel-enhancement-converse
+  notes: >-
+    The exact capacity equality is a proposition definition; its proof is pending.
+    The operational model uses mathlib multivariate Gaussian noise, joint decoding error,
+    and power averaged over time and uniform message tuples. Supporting covariance and
+    measurability lemmas and structural tests are kernel checked.
+  files:
+  - path: lean/CapacityAtlas/Channels/GaussianMIMOBroadcast.lean
+    declaration: CapacityAtlas.Channel.RealGaussianMIMOBroadcastModel
+    role: definition
+    description: Fixed real channel matrices, positive-definite noise covariances, positive antenna counts, and total power.
+  - path: lean/CapacityAtlas/Claims/GaussianMIMOBroadcast.lean
+    declaration: CapacityAtlas.Claims.gaussianMIMOBroadcast
+    role: claim
+    claim_id: operational-capacity
+    description: Operational capacity equality with the explicit dirty-paper coding region.
   proofs: []
 references:
 - weingarten-steinberg-shamai-2006

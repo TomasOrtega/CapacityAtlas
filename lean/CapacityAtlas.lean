@@ -13,6 +13,7 @@ import CapacityAtlas.Channels.Broadcast
 import CapacityAtlas.Channels.CausalState
 import CapacityAtlas.Channels.DecoderState
 import CapacityAtlas.Channels.GaussianMIMO
+import CapacityAtlas.Channels.GaussianMIMOBroadcast
 import CapacityAtlas.Channels.InputCost
 import CapacityAtlas.Channels.Insertion
 import CapacityAtlas.Channels.Noiseless
@@ -29,3 +30,5 @@ import CapacityAtlas.Channels.CommonMessageBroadcast
 import CapacityAtlas.Claims
 import CapacityAtlas.Obligations.Interfaces
 import CapacityAtlas.Tests.ModelSanity
+import CapacityAtlas.Tests.GaussianMIMOBroadcast
+import CapacityAtlas.Tests.GaussianMIMOBroadcastRegion
