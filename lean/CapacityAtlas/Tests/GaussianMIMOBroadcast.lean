@@ -4,13 +4,30 @@ Licensed under the Apache License, Version 2.0 (the "License").
 See https://www.apache.org/licenses/LICENSE-2.0
 -/
 
-import CapacityAtlasUtil.Metadata
-import CapacityAtlasForMathlib.InformationTheory.GaussianMIMOBroadcast
+import CapacityAtlas.Claims.GaussianMIMOBroadcast
+import CapacityAtlasForMathlib.InformationTheory.GaussianMIMOBroadcast.Boundary
 
 open MeasureTheory ProbabilityTheory
 open scoped BigOperators
 
 namespace CapacityAtlas.Tests
+
+@[capacity_test]
+theorem gaussianMIMOBroadcast_zero_power {K tx : ℕ} {rx : Fin K → ℕ}
+    (W : Channel.RealGaussianMIMOBroadcastModel K tx rx) (hP : W.totalPower = 0) :
+    Claims.gaussianMIMOBroadcast W := by
+  unfold Claims.gaussianMIMOBroadcast
+  rw [hP]
+  exact Gaussian.MIMOBroadcast.capacityRegion_eq_region_zero_power _ _ W.noiseCovariance_posDef
+
+@[capacity_test]
+theorem gaussianMIMOBroadcast_zero_channel {K tx : ℕ} {rx : Fin K → ℕ}
+    (W : Channel.RealGaussianMIMOBroadcastModel K tx rx) (hH : W.channelMatrix = 0) :
+    Claims.gaussianMIMOBroadcast W := by
+  unfold Claims.gaussianMIMOBroadcast
+  rw [hH]
+  exact Gaussian.MIMOBroadcast.capacityRegion_eq_region_zero_channel _
+    W.noiseCovariance_posDef W.totalPower_nonnegative
 
 private def constantDecoder {Observation : Type*} [MeasurableSpace Observation]
     {messages : ℕ} (m : Fin messages) : Gaussian.Decoder Observation messages where

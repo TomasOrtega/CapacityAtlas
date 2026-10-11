@@ -96,10 +96,12 @@ formalization:
     - dirty-paper-inner
     - channel-enhancement-converse
   notes: >-
-    The exact capacity equality is a proposition definition; its proof is pending.
+    The general capacity equality is a proposition definition; its proof is pending.
+    Complete local proofs establish the equality for zero power and for zero channel matrices.
     The operational model uses mathlib multivariate Gaussian noise, joint decoding error,
-    and power averaged over time and uniform message tuples. Supporting covariance and
-    measurability lemmas and structural tests are kernel checked.
+    and power averaged over time and uniform message tuples. Supporting proofs cover
+    error probabilities, operational closedness, input second moments, covariance compactness,
+    and determinant monotonicity. The proofs and structural tests are kernel checked.
   files:
   - path: lean/CapacityAtlas/Channels/GaussianMIMOBroadcast.lean
     declaration: CapacityAtlas.Channel.RealGaussianMIMOBroadcastModel

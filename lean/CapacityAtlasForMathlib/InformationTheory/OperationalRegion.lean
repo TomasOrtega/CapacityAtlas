@@ -5,6 +5,7 @@ See https://www.apache.org/licenses/LICENSE-2.0
 -/
 
 import CapacityAtlasForMathlib.InformationTheory.RateRegion
+import Mathlib.Topology.MetricSpace.Pseudo.Pi
 
 namespace CapacityAtlas.Operational
 
@@ -59,5 +60,36 @@ theorem achievableVectorRegion_downward {ι : Type*} {Code : ℕ → Type*}
   refine ⟨N, hN, fun n hn ↦ ?_⟩
   obtain ⟨code, hadmissible, herror, hrates⟩ := hcodes n hn
   exact ⟨code, hadmissible, herror, fun i ↦ (sub_le_sub_right (hle i) ε).trans (hrates i)⟩
+
+/-- Finite rate vectors already include their boundary through the shared rate tolerance. -/
+theorem isClosed_achievableVectorRegion {ι : Type*} [Fintype ι] (Code : ℕ → Type*)
+    (admissible : ∀ n, Code n → Prop) (error : ∀ n, Code n → ℝ)
+    (rates : ∀ n, Code n → ι → ℝ) :
+    IsClosed (achievableVectorRegion Code admissible error rates) := by
+  apply isClosed_of_closure_subset
+  intro target htarget
+  have hnonneg : ∀ i, 0 ≤ target i := by
+    intro i
+    have hclosed : IsClosed {r : ι → ℝ | 0 ≤ r i} :=
+      isClosed_le continuous_const (continuous_apply i)
+    exact closure_minimal (fun _ hr ↦ hr.1 i) hclosed htarget
+  refine ⟨hnonneg, fun ε hε ↦ ?_⟩
+  obtain ⟨nearby, hnearby, hdist⟩ :=
+    Metric.mem_closure_iff.mp htarget (ε / 2) (half_pos hε)
+  obtain ⟨N, hN, hcodes⟩ := hnearby.2 (ε / 2) (half_pos hε)
+  refine ⟨N, hN, fun n hn ↦ ?_⟩
+  obtain ⟨code, hadmissible, herror, hrates⟩ := hcodes n hn
+  refine ⟨code, hadmissible, herror.trans (by linarith), fun i ↦ ?_⟩
+  have hcoordinate := (dist_le_pi_dist target nearby i).trans_lt hdist
+  rw [Real.dist_eq] at hcoordinate
+  have := (abs_lt.mp hcoordinate).2
+  linarith [hrates i]
+
+theorem closure_achievableVectorRegion {ι : Type*} [Fintype ι] (Code : ℕ → Type*)
+    (admissible : ∀ n, Code n → Prop) (error : ∀ n, Code n → ℝ)
+    (rates : ∀ n, Code n → ι → ℝ) :
+    closure (achievableVectorRegion Code admissible error rates) =
+      achievableVectorRegion Code admissible error rates :=
+  (isClosed_achievableVectorRegion Code admissible error rates).closure_eq
 
 end CapacityAtlas.Operational
