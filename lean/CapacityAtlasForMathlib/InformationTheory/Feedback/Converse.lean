@@ -2,7 +2,8 @@
 Copyright 2026 The Capacity Atlas Authors
 Licensed under the Apache License, Version 2.0 (the "License").
 See the License for the specific language governing permissions and limitations.
-Source: https://github.com/TomasOrtega/CapacityAtlasFeedback/blob/b35299f221ad1c17ccbafb45082c22a5379a99e9/CapacityAtlasFeedback/Converse.lean
+Adapted from TomasOrtega/CapacityAtlasFeedback, commit b35299f221ad1c17ccbafb45082c22a5379a99e9,
+original file CapacityAtlasFeedback/Converse.lean.
 Reuses shared Fano normalization and the vanishing-error rate converse.
 -/
 

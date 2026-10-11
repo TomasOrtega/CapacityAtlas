@@ -2,7 +2,8 @@
 Copyright 2026 The Capacity Atlas Authors
 Licensed under the Apache License, Version 2.0 (the "License").
 See the License for the specific language governing permissions and limitations.
-Source: https://github.com/TomasOrtega/CapacityAtlasCommonMessage/blob/83923a9a73280ff2d24c71411398438edcc20e4b/CapacityAtlasCommonMessage/Reduction.lean
+Adapted from TomasOrtega/CapacityAtlasCommonMessage, commit 83923a9a73280ff2d24c71411398438edcc20e4b,
+original file CapacityAtlasCommonMessage/Reduction.lean.
 -/
 
 import CapacityAtlasForMathlib.InformationTheory.CommonMessageBroadcastInformation

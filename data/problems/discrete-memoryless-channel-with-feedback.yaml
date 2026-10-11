@@ -3,7 +3,7 @@
 id: discrete-memoryless-channel-with-feedback
 title: Finite discrete memoryless channel with noiseless feedback
 status: solved
-updated: '2026-09-11'
+updated: '2026-10-11'
 summary: Causal noiseless output feedback changes coding strategies and reliability but not ordinary DMC capacity.
 tags:
   model: [point-to-point]
@@ -74,16 +74,5 @@ formalization:
     role: claim
     claim_id: exact-capacity
     description: Canonical ordinary feedback-capacity proposition.
-  proofs:
-  - id: finite-dmc-feedback-capacity-proof
-    claim_id: exact-capacity
-    claim_version: 1
-    status: complete
-    system: Lean
-    repository: TomasOrtega/CapacityAtlasFeedback
-    commit: b35299f221ad1c17ccbafb45082c22a5379a99e9
-    url: https://github.com/TomasOrtega/CapacityAtlasFeedback/commit/b35299f221ad1c17ccbafb45082c22a5379a99e9
-    file: CapacityAtlasFeedback.lean
-    declaration: CapacityAtlasFeedback.capacityCertificate
-    notes: Historical upstream certificate imported into this repository. Pins Atlas commit c0d665982bab3c4840bac511e950cdf3fc48b50c. The upstream audit checks transitive proof axioms and full canonical-proposition correspondence with rigid universes; negative controls reject a different proposition and a universe-restricted certificate.
+  proofs: []
 references: [shannon-1956, cover-thomas-2006]

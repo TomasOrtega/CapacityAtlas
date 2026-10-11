@@ -4,8 +4,9 @@ Develop proofs and their supporting infrastructure in this monorepo by default
 so other proofs can reuse them. Local proofs build against the shared definitions
 and are checked by the repository's transitive axiom audit. A complete local
 claim theorem carries `capacity_formal_proof`; see [the Lean guide](lean.md).
-When an external proof is brought into the monorepo, its immutable record may
-remain as historical provenance alongside the locally proved claim.
+When an external proof is brought into the monorepo, retain its attribution,
+source commit, and original path in the source headers and acknowledgements.
+Keep a linked historical proof record only while its repository remains available.
 
 Contributors may maintain proofs in external repositories when they prefer.
 Capacity Atlas records those proofs as evidence for stable, versioned claims

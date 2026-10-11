@@ -48,12 +48,12 @@ can be reused directly. Shared input-cost definitions live in
 `InformationTheory/InputCost.lean`; proof modules depend on this layer without
 importing problem statements.
 
-These developments were imported from the six registered proof repositories;
+These developments were imported from six standalone proof repositories;
 [the acknowledgements](../ACKNOWLEDGEMENTS.md#imported-lean-proof-developments)
-record their source commits and paths. Their original immutable proof records
-remain as historical provenance. The common environment audit checks the local
-sources. Canonical claim theorems apply the shared proofs directly, so Lean
-checks their types without a separate external-certificate comparison.
+record their original repository names, source commits, and paths for attribution.
+The common environment audit checks the local sources. Canonical claim theorems
+apply the shared proofs directly, so Lean checks their types without a separate
+external-certificate comparison.
 The common-message proof reduces receiver-specific output alphabets to tagged
 compound channels and applies the local compound-channel capacity theorem.
 
