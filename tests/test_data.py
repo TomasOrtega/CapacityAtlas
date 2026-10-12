@@ -212,6 +212,7 @@ def test_registered_statement_inventory_matches_expected_problems() -> None:
         "general-relay-channel",
         "general-two-receiver-broadcast-channel",
         "general-two-user-interference-channel",
+        "k-user-gaussian-interference-channel",
         "less-noisy-broadcast-channel",
         "modulo-additive-two-way-channel",
         "more-capable-broadcast-channel",

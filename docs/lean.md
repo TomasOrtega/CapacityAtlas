@@ -89,6 +89,13 @@ packet bits, causal routes, subchannel service, and delivered endpoint distance.
 Receiver-disk packing supplies the converse; a separated grid supplies the lower
 bound for every node count at least four. The constants are nonsharp.
 
+`GaussianInterference` proves K/2 sum degrees of freedom for independent bounded
+nonatomic fading with global causal channel knowledge. Monomial alignment,
+almost-sure invertibility, and QAM with finite-channel outer codes give the lower
+bound. A Gaussian genie and finite-message Fano give the pairwise converse.
+The operational model averages total power over messages and fading, counts
+joint decoding error, and permits every sufficiently large blocklength.
+
 ### `CapacityAtlas`
 
 This layer contains concrete channel definitions, problem claims, proofs, and

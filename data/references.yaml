@@ -578,3 +578,12 @@ gupta-kumar-2000:
   year: 2000
   venue: IEEE Transactions on Information Theory 46(2), 388–404
   url: https://pdos.csail.mit.edu/archive/decouto/papers/gupta00.pdf
+cadambe-jafar-2008:
+  title: Interference Alignment and Degrees of Freedom of the K-User Interference Channel
+  authors:
+  - Viveck R. Cadambe
+  - Syed Ali Jafar
+  year: 2008
+  venue: IEEE Transactions on Information Theory 54(8), 3425–3441
+  doi: 10.1109/TIT.2008.926344
+  url: https://www.mit.edu/~6.454/papers/cadambe_jafar_interf_alignment.pdf
