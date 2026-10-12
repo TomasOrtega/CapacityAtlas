@@ -1,0 +1,83 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: k-user-gaussian-interference-channel
+title: K-user Gaussian interference channel
+status: partially-solved
+updated: '2026-10-12'
+summary: Independent transmitters on a fully connected fading interference channel achieve K/2 sum degrees of freedom with global causal channel knowledge.
+tags:
+  model: [interference]
+  features: [continuous-alphabet, gaussian, additive-noise, causal-state, power-constraint, multiple-unicast]
+  quantity: [capacity]
+  knowledge: [bounds]
+parameters:
+- symbol: K
+  description: Number of transmitter–receiver pairs.
+  range: K\ge2
+- symbol: P
+  description: Total average transmit power across all users.
+  range: P\ge0
+model:
+  input: Transmitter j sends a complex scalar \(X_j(t)\) carrying its own independent uniform message.
+  output: Receiver i observes \(Y_i(t)\) and decodes its own message.
+  law: \(Y_i(t)=\sum_{j=1}^K H_{ij}(t)X_j(t)+Z_i(t)\), where the noise is independent circular complex Gaussian with \(\mathbb E|Z_i(t)|^2=1\).
+  assumptions:
+  - The coefficients are independent across links and times, with a common nonatomic law supported on \(0<h_{\min}\le|H|\le h_{\max}<\infty\).
+  - All terminals know all current and past channel coefficients. Encoders use only their own message and this causal channel knowledge.
+  - Messages, fading, and noise are independent. Noise is independent across receivers and times.
+  - The total power constraint is \(\frac1n\sum_{t=1}^n\sum_{j=1}^K\mathbb E|X_j(t)|^2\le P\), averaged over messages and fading. There is no output feedback or terminal cooperation.
+quantity:
+  name: Sum capacity
+  symbol: C_\Sigma(P)
+  units: bits per complex channel use
+  criterion: Supremum of the sum of achievable nonnegative user rates, with the average probability that any receiver decodes incorrectly tending to zero.
+capacity:
+  kind: bounds
+  display: C_\Sigma(P)=\frac K2\log_2 P+o(\log P)
+  conditions: Fixed K and fading law, as \(P\to\infty\).
+  notes: Theorem 1 determines the sum degrees of freedom. It does not determine the exact sum capacity at finite power. Section III-A's constant-coefficient example is a different channel model.
+bounds:
+- id: alignment-prelog
+  direction: lower
+  relation: \liminf_{P\to\infty}\frac{C_\Sigma(P)}{\log_2 P}\ge\frac K2
+  method: Interference alignment over increasingly long symbol extensions; the beam at each time uses only current channel coefficients.
+  year: 2008
+  references: [cadambe-jafar-2008]
+- id: pairwise-prelog-converse
+  direction: upper
+  relation: \limsup_{P\to\infty}\frac{C_\Sigma(P)}{\log_2 P}\le\frac K2
+  method: Sum the two-user interference bounds over all user pairs.
+  year: 2008
+  references: [cadambe-jafar-2008]
+frontier:
+  question: Determine the finite-power sum capacity of this fading interference channel.
+  bottleneck: The degrees-of-freedom theorem identifies only the coefficient of log power.
+  progress:
+  - Sharpen the finite-power gap between achievable rates and the converse.
+formalization:
+  status: stated
+  claims:
+  - id: sum-degrees-of-freedom
+    kind: capacity-bounds
+    category: solved
+    formal_status: proved
+    version: 1
+    description: The operational sum capacity divided by log base two of power converges to K/2.
+    bound_ids: [alignment-prelog, pairwise-prelog-converse]
+  notes: The local proof uses monomials in the independent primitive cross-link coefficients, almost-sure matrix invertibility, QAM with finite-channel outer codes, and an operational Gaussian pairwise converse. Its symbol extension differs from the paper's construction but gives the same limiting rate. The model uses total power, joint average error, and causal global channel knowledge.
+  files:
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/GaussianInterference/Basic.lean
+    declaration: CapacityAtlas.Gaussian.Interference.Code
+    role: definition
+    description: Independent-message codes with measurable causal encoders and receiver decoders.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/GaussianInterference/Basic.lean
+    declaration: CapacityAtlas.Gaussian.Interference.sumCapacity
+    role: definition
+    description: Operational sum capacity under total average power and vanishing joint error.
+  - path: lean/CapacityAtlas/Claims/GaussianInterference.lean
+    declaration: CapacityAtlas.Claims.gaussianInterferenceDegreesOfFreedom
+    role: claim
+    claim_id: sum-degrees-of-freedom
+    description: Complete local proof of K/2 sum degrees of freedom.
+  proofs: []
+references: [cadambe-jafar-2008]
