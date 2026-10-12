@@ -101,7 +101,10 @@ formalization:
     The operational model uses mathlib multivariate Gaussian noise, joint decoding error,
     and power averaged over time and uniform message tuples. Supporting proofs cover
     error probabilities, operational closedness, input second moments, covariance compactness,
-    and determinant monotonicity. The proofs and structural tests are kernel checked.
+    and determinant monotonicity. Further infrastructure proves Fano's inequality for the
+    actual codes, measurable-channel random coding, native Gaussian densities and entropy,
+    and Gaussian maximum entropy under mean and covariance constraints.
+    The proofs and structural tests are kernel checked.
   files:
   - path: lean/CapacityAtlas/Channels/GaussianMIMOBroadcast.lean
     declaration: CapacityAtlas.Channel.RealGaussianMIMOBroadcastModel
