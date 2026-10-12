@@ -89,22 +89,20 @@ formalization:
   - id: operational-capacity
     kind: exact-capacity
     category: solved
-    formal_status: stated
+    formal_status: proved
     version: 1
     description: The real Gaussian MIMO broadcast private-message capacity region equals the closed convex dirty-paper coding region under message-averaged total power.
     bound_ids:
     - dirty-paper-inner
     - channel-enhancement-converse
   notes: >-
-    The general capacity equality is a proposition definition; its proof is pending.
-    Complete local proofs establish the equality for zero power and for zero channel matrices.
+    The general capacity equality has a complete local Lean proof under the original model assumptions.
     The operational model uses mathlib multivariate Gaussian noise, joint decoding error,
-    and power averaged over time and uniform message tuples. Supporting proofs cover
-    error probabilities, operational closedness, input second moments, covariance compactness,
-    and determinant monotonicity. Further infrastructure proves Fano's inequality for the
-    actual codes, measurable-channel random coding, native Gaussian densities and entropy,
-    and Gaussian maximum entropy under mean and covariance constraints.
-    The proofs and structural tests are kernel checked.
+    and power averaged over time and uniform message tuples. Achievability constructs
+    deterministic layered random-binning codes and proves time sharing and boundary approximation.
+    The converse combines finite-message Fano bounds, channel enhancement, Gaussian entropy power,
+    and a compact alignment limit. The canonical theorem and its dependencies are kernel checked
+    with only the standard Lean axioms.
   files:
   - path: lean/CapacityAtlas/Channels/GaussianMIMOBroadcast.lean
     declaration: CapacityAtlas.Channel.RealGaussianMIMOBroadcastModel

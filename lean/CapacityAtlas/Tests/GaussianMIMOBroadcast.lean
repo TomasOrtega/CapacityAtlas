@@ -15,16 +15,16 @@ namespace CapacityAtlas.Tests
 @[capacity_test]
 theorem gaussianMIMOBroadcast_zero_power {K tx : ℕ} {rx : Fin K → ℕ}
     (W : Channel.RealGaussianMIMOBroadcastModel K tx rx) (hP : W.totalPower = 0) :
-    Claims.gaussianMIMOBroadcast W := by
-  unfold Claims.gaussianMIMOBroadcast
+    Gaussian.MIMOBroadcast.capacityRegion W.channelMatrix W.noiseCovariance W.totalPower =
+      Gaussian.MIMOBroadcast.region W.channelMatrix W.noiseCovariance W.totalPower := by
   rw [hP]
   exact Gaussian.MIMOBroadcast.capacityRegion_eq_region_zero_power _ _ W.noiseCovariance_posDef
 
 @[capacity_test]
 theorem gaussianMIMOBroadcast_zero_channel {K tx : ℕ} {rx : Fin K → ℕ}
     (W : Channel.RealGaussianMIMOBroadcastModel K tx rx) (hH : W.channelMatrix = 0) :
-    Claims.gaussianMIMOBroadcast W := by
-  unfold Claims.gaussianMIMOBroadcast
+    Gaussian.MIMOBroadcast.capacityRegion W.channelMatrix W.noiseCovariance W.totalPower =
+      Gaussian.MIMOBroadcast.region W.channelMatrix W.noiseCovariance W.totalPower := by
   rw [hH]
   exact Gaussian.MIMOBroadcast.capacityRegion_eq_region_zero_channel _
     W.noiseCovariance_posDef W.totalPower_nonnegative

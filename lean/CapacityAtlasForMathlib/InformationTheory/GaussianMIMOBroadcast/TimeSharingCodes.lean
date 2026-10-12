@@ -120,7 +120,6 @@ theorem Code.concat_powerAdmissible (c : Code K tx rx n) (d : Code K tx rx q) {P
   rw [havg, Nat.cast_add, add_mul]
   exact add_le_add hc hd
 
-
 lemma concat_errorEvent_subset
     (H : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ)
     (c : Code K tx rx n) (d : Code K tx rx q) (m : MessageTuple (c.concat d)) :
@@ -152,7 +151,9 @@ lemma concat_conditional_error_le
       (blockNoise N n).real (errorEvent H c (concatMessageEquiv c d m).1) +
         (blockNoise N q).real (errorEvent H d (concatMessageEquiv c d m).2) := by
   have hl := blockNoise_precomp N (Fin.castAdd q) (Fin.castAdd_injective n q)
-  have hr := blockNoise_precomp N (Fin.natAdd n : Fin q → Fin (n + q)) (by intro a b h; exact Fin.ext (Nat.add_left_cancel (congrArg Fin.val h)))
+  have hr := blockNoise_precomp N (Fin.natAdd n : Fin q → Fin (n + q)) (by
+    intro a b h
+    exact Fin.ext (Nat.add_left_cancel (congrArg Fin.val h)))
   have hml : (blockNoise N (n + q)).real
       ((fun z i s ↦ z i (Fin.castAdd q s)) ⁻¹' errorEvent H c (concatMessageEquiv c d m).1) =
         (blockNoise N n).real (errorEvent H c (concatMessageEquiv c d m).1) := by

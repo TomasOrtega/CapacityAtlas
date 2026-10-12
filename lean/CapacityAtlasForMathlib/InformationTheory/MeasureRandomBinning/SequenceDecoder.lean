@@ -228,16 +228,16 @@ theorem lintegral_sequenceReceiverBound_le {M : ℕ → Type*} [∀ j, Fintype (
 theorem exists_sequenceBooks_jointBound_le
     {M : ℕ → Type*} [∀ j, Fintype (M j)] {J : Type*} [Fintype J] [Nonempty J]
     (D : ℕ → RejectionStage S U) (initial fallback : S) {C : Set S} (hC : MeasurableSet C)
-    (n : ℕ) {Y : Fin n → Type*} [∀ i, MeasurableSpace (Y i)]
+    (n : ℕ) (active : Finset (Fin n)) {Y : Fin n → Type*} [∀ i, MeasurableSpace (Y i)]
     (W : (i : Fin n) → Kernel S (Y i)) [∀ i, IsMarkovKernel (W i)]
     (aux : Fin n → S → U) (haux : ∀ i, Measurable (aux i))
     (A : (i : Fin n) → Set (U × Y i)) (hA : ∀ i, MeasurableSet (A i))
     (message : J → (j : ℕ) → M j) (c : Fin n → ℝ≥0∞)
     (huniform : ∀ i y, (D i.val).candidate {u | (u, y) ∈ A i} ≤ c i) :
     ∃ books : SequenceSamples (fun j ↦ M j → (D j).Samples) n,
-      (Fintype.card J : ℝ≥0∞)⁻¹ * ∑ m : J, ∑ i : Fin n,
+      (Fintype.card J : ℝ≥0∞)⁻¹ * ∑ m : J, ∑ i ∈ active,
         sequenceReceiverBound D initial fallback C (W i) (aux i) (A i) (message m) n i books ≤
-      ∑ i : Fin n,
+      ∑ i ∈ active,
         (sequenceSampleLaw (fun j ↦ (D j).sampleLaw) n
           (sequenceSuccess initial (fun j ↦ (D j).next) (fun j ↦ (D j).success) n)ᶜ +
         (2 : ℝ≥0∞) ^ n * sequenceReferenceLaw (fun j ↦ (D j).referenceKernel) initial n Cᶜ +
@@ -250,7 +250,7 @@ theorem exists_sequenceBooks_jointBound_le
   have hB (m : J) (i : Fin n) : Measurable (B m i) :=
     measurable_sequenceReceiverBound D initial fallback hC (W i) (haux i) (hA i) (message m) n i
   have hsum : Measurable (fun books ↦ (Fintype.card J : ℝ≥0∞)⁻¹ *
-      ∑ m : J, ∑ i : Fin n, B m i books) :=
+      ∑ m : J, ∑ i ∈ active, B m i books) :=
     measurable_const.mul (Finset.measurable_sum _ (fun m _ ↦
       Finset.measurable_sum _ (fun i _ ↦ hB m i)))
   obtain ⟨books, hbooks⟩ := exists_le_lintegral (μ := μ) hsum.aemeasurable
@@ -260,7 +260,7 @@ theorem exists_sequenceBooks_jointBound_le
     lintegral_finsetSum _ (fun m _ ↦ Finset.measurable_sum _ (fun i _ ↦ hB m i))]
   simp_rw [lintegral_finsetSum _ (fun i _ ↦ hB _ i)]
   calc
-    _ ≤ (Fintype.card J : ℝ≥0∞)⁻¹ * ∑ _m : J, ∑ i : Fin n,
+    _ ≤ (Fintype.card J : ℝ≥0∞)⁻¹ * ∑ _m : J, ∑ i ∈ active,
         (sequenceSampleLaw (fun j ↦ (D j).sampleLaw) n
           (sequenceSuccess initial (fun j ↦ (D j).next) (fun j ↦ (D j).success) n)ᶜ +
         (2 : ℝ≥0∞) ^ n * sequenceReferenceLaw (fun j ↦ (D j).referenceKernel) initial n Cᶜ +
