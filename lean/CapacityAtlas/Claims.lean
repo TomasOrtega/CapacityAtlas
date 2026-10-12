@@ -19,6 +19,7 @@ import CapacityAtlas.Claims.GeneralWiretap
 import CapacityAtlas.Claims.StrongInterference
 import CapacityAtlas.Claims.InterferenceBounds
 import CapacityAtlas.Claims.Multicast
+import CapacityAtlas.Claims.MultisourceMulticast
 import CapacityAtlas.Claims.DegradedRelay
 import CapacityAtlas.Claims.RelayBounds
 import CapacityAtlas.Claims.PrimitiveRelayBounds
