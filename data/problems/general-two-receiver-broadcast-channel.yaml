@@ -4,9 +4,9 @@ id: general-two-receiver-broadcast-channel
 title: General two-receiver discrete memoryless broadcast channel
 status: open
 featured: true
-updated: '2026-09-14'
-summary: The capacity region for two arbitrary broadcast receivers remains unknown outside important ordered
-  subclasses.
+updated: '2026-10-12'
+summary: The general capacity region remains unknown. A 2026 preprint shows that even the full one-letter
+  Marton region can be strictly suboptimal.
 tags:
   model:
   - broadcast
@@ -34,7 +34,8 @@ capacity:
   display: \mathcal R_{\mathrm{Marton}}\subseteq\mathcal C_{\mathrm{BC}}\subseteq\mathcal R_{\mathrm{UV}}
   lower: \mathcal R_{\mathrm{Marton}}
   upper: \mathcal R_{\mathrm{UV}}
-  notes: The two regions coincide for many special classes but not in general.
+  notes: These remain valid bounds. Huang, Liu, and Liu (2026, Theorem 5) exhibit a finite channel where
+    a two-letter Marton scheme exceeds the full one-letter Marton region, including its common auxiliary.
 bounds:
 - id: marton-inner
   direction: inner-region
@@ -50,13 +51,28 @@ bounds:
   year: 2007
   references:
   - nair-elgamal-2007
+- id: two-letter-marton-separation
+  direction: lower
+  relation: \exists T,\quad M(T)<\tfrac12 M(T^{\otimes 2})\le C_{\Sigma}(T)
+  method: Two-letter Marton coding, certified interval arithmetic, and gradient shaping to remove the input constraint.
+  year: 2026
+  conditions: The unconstrained finite broadcast channel constructed in Theorem 5, with private messages
+    and vanishing average error. Here \(M(T)\) is the full one-letter Marton sum rate and \(C_{\Sigma}(T)\)
+    is sum capacity, both in bits per use.
+  notes: The ternary base example fixes the input distribution; the unconstrained construction enlarges
+    the alphabet. This does not settle binary-input channels.
+  references:
+  - huang-liu-liu-2026
 frontier:
   question: Determine the private-message capacity region of the general two-receiver DMC broadcast channel.
-  bottleneck: The transmitter must coordinate incompatible receiver-specific descriptions, and known converses
-    do not capture the full binning structure of the best inner bounds.
+  bottleneck: A capacity characterization must account for gains beyond one-letter Marton coding.
   progress:
-  - Find a channel separating or matching Marton's inner region and current outer bounds.
+  - Huang, Liu, and Liu (2026) establish strict suboptimality of the full one-letter Marton region.
   - Discover a tighter computable outer region.
+  subproblems:
+  - title: Is the full Marton inner region optimal for every binary-input broadcast channel?
+    status: open
+    url: https://arxiv.org/abs/2608.19869v1
 formalization:
   status: stated
   claims:
@@ -107,4 +123,5 @@ formalization:
 references:
 - marton-1979
 - nair-elgamal-2007
+- huang-liu-liu-2026
 - elgamal-kim-2011
