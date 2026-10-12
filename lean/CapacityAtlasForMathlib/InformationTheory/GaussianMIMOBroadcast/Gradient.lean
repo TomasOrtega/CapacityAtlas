@@ -106,6 +106,24 @@ lemma traceObjective_sub (G Q D : Fin K → Matrix (Fin tx) (Fin tx) ℝ) :
     traceObjective G (Q - D) = traceObjective G Q - traceObjective G D := by
   simp only [traceObjective, Pi.sub_apply, Matrix.mul_sub, trace_sub, Finset.sum_sub_distrib]
 
+theorem exists_weightedDpcRate_max_multipliers_for_order (w : Fin K → ℝ)
+    (H : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ)
+    (N : (i : Fin K) → Matrix (Fin (rx i)) (Fin (rx i)) ℝ)
+    (hN : ∀ i, (N i).PosDef) (π : Equiv.Perm (Fin K)) {P : ℝ} (hP : 0 < P) :
+    ∃ Q, AllocationAdmissible P Q ∧
+      (∀ Q', AllocationAdmissible P Q' →
+        weightedDpcRate w H N Q' π ≤ weightedDpcRate w H N Q π) ∧
+      ∃ lam : ℝ, 0 ≤ lam ∧ ∃ M : Fin K → Matrix (Fin tx) (Fin tx) ℝ,
+        (∀ i, (M i).PosSemidef) ∧ (∀ i, dpcGradient w H N Q π i + M i = lam • 1) ∧
+        (∀ i, M i * Q i = 0) ∧ lam * (P - ∑ i, trace (Q i)) = 0 := by
+  obtain ⟨Q, hQ, hmax⟩ := exists_weightedDpcRate_max_for_order w H N hN π hP.le
+  refine ⟨Q, hQ, hmax, exists_traceBudget_multipliers hP _ Q hQ
+    (dpcGradient_isHermitian w H N hN Q hQ.1 π) ?_⟩
+  intro Y hY
+  have h := weightedDpcRate_variation_nonpos w H N hN Q hQ π hmax Y hY
+  rw [weightedDpcRate_variation_eq_traceObjective, traceObjective_sub] at h
+  exact sub_nonpos.mp h
+
 /-- The concrete DPC optimizer has matrix multipliers with no added regularity hypotheses. -/
 theorem exists_weightedDpcRate_max_multipliers (w : Fin K → ℝ)
     (H : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ)
