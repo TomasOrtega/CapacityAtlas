@@ -75,6 +75,14 @@ code using the Csiszár sum identity and time sharing. Both directions include
 zero-rate boundaries. `FiniteInformation/` supplies the finite-observation
 identities, disintegration, and sequence chain rules used in this proof.
 
+`Network/Multisource` proves the cut-constraint capacity region for independent
+messages in finite acyclic noiseless networks. Integral flow decomposition and
+finite-field polynomial specialization give simultaneous linear codes for all
+sinks. Binary packet packing, rate rounding, and code repetition cover real link
+capacities and every sufficiently large blocklength. The converse bounds the
+number of successfully decoded message tuples across each cut. Locality is
+expressed through observation factorization, including sources located at sinks.
+
 ### `CapacityAtlas`
 
 This layer contains concrete channel definitions, problem claims, proofs, and

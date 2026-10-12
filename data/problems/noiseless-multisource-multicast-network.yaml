@@ -1,0 +1,70 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: noiseless-multisource-multicast-network
+title: Noiseless multisource multicast network
+status: solved
+updated: '2026-10-12'
+summary: Every sink recovers independent messages generated at several nodes. Linear network coding achieves exactly the cut constraints.
+tags:
+  model: [multiple-access, broadcast]
+  features: [finite-alphabet]
+  quantity: [capacity-region]
+  knowledge: [exact, single-letter-characterization]
+model:
+  input: Independent uniform messages \(M_i\) originate at specified nodes \(s_i\) of a finite directed acyclic network \(G=(V,E)\).
+  output: Every sink \(t\in T\) decodes the entire message tuple from its incoming packets and any messages generated locally.
+  law: Edge \(e\) transmits exactly \(\lfloor n c_e\rfloor\) noiseless bits in an n-use code, for a fixed nonnegative real capacity \(c_e\).
+  assumptions:
+  - The sink set is nonempty. Multiple messages may originate at the same node, including a sink.
+  - Nodes process packets in topological order using deterministic functions of local messages and incoming packets.
+  - Packet lengths and schedules are fixed and carry no information.
+  - The probability that any sink decodes any message incorrectly vanishes.
+quantity:
+  name: Multisource multicast capacity region
+  symbol: \mathcal C
+  units: bits per network use
+  criterion: Nonnegative rate vectors attainable at every sufficiently large blocklength, with a common vanishing rate tolerance and joint average block error.
+capacity:
+  kind: characterization
+  display: \mathcal C=\{R\ge0:\ \sum_{i:s_i\in U}R_i\le\sum_{e\in\delta^+(U)}c_e\quad\forall t\in T,\ U\subseteq V\setminus\{t\}\}
+  notes: Here \(\delta^+(U)\) contains edges leaving U. Zero-error linear codes over finite binary extension fields achieve the whole region in the limit, including its boundary.
+bounds:
+- id: linear-network-coding-inner
+  direction: lower
+  relation: \{R\ge0:\ \sum_{i:s_i\in U}R_i\le\sum_{e\in\delta^+(U)}c_e\ \forall t\in T,\ U\subseteq V\setminus\{t\}\}\subseteq\mathcal C
+  method: Linear network coding for independent sources, with finite-field symbols represented by binary packets.
+  year: 2006
+  references: [ho-et-al-2006]
+- id: network-cut-outer
+  direction: upper
+  relation: \mathcal C\subseteq\{R\ge0:\ \sum_{i:s_i\in U}R_i\le\sum_{e\in\delta^+(U)}c_e\ \forall t\in T,\ U\subseteq V\setminus\{t\}\}
+  method: Cut-set converse conditioned on the messages originating outside the cut.
+  year: 2006
+  references: [ho-et-al-2006]
+formalization:
+  status: stated
+  claims:
+  - id: capacity-region
+    kind: exact-capacity
+    category: solved
+    formal_status: proved
+    version: 1
+    description: The operational multisource multicast region equals the nonnegative cut-constraint region.
+    bound_ids: [linear-network-coding-inner, network-cut-outer]
+  notes: The local proof constructs zero-error codes for the inner bound and proves the converse for arbitrary deterministic local codes. Real link capacities, zero rates, and sources located at sinks are included.
+  files:
+  - path: lean/CapacityAtlasForMathlib/Network/Multisource/Basic.lean
+    declaration: CapacityAtlas.Multisource.Network.Code
+    role: definition
+    description: Independent message sets and fixed binary packets with local encoder and decoder constraints.
+  - path: lean/CapacityAtlasForMathlib/Network/Multisource/Basic.lean
+    declaration: CapacityAtlas.Multisource.Network.capacityRegion
+    role: definition
+    description: Vanishing joint average error with a shared rate tolerance.
+  - path: lean/CapacityAtlas/Claims/MultisourceMulticast.lean
+    declaration: CapacityAtlas.Claims.multisourceMulticastCapacity
+    role: claim
+    claim_id: capacity-region
+    description: Locally proved equality of operational and cut-constraint regions.
+  proofs: []
+references: [ho-et-al-2006]

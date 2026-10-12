@@ -31,5 +31,6 @@ import CapacityAtlas.Claims
 import CapacityAtlas.Obligations.Interfaces
 import CapacityAtlas.Tests.ModelSanity
 import CapacityAtlas.Tests.ConfidentialBroadcast
+import CapacityAtlas.Tests.MultisourceMulticast
 import CapacityAtlas.Tests.GaussianMIMOBroadcast
 import CapacityAtlas.Tests.GaussianMIMOBroadcastRegion

@@ -491,6 +491,20 @@ ahlswede-et-al-2000:
   venue: IEEE Transactions on Information Theory
   url: https://doi.org/10.1109/18.850663
   doi: 10.1109/18.850663
+ho-et-al-2006:
+  title: A Random Linear Network Coding Approach to Multicast
+  authors:
+  - Tracey Ho
+  - Muriel Médard
+  - Ralf Koetter
+  - David R. Karger
+  - Michelle Effros
+  - Jun Shi
+  - Ben Leong
+  year: 2006
+  venue: IEEE Transactions on Information Theory
+  url: https://authors.library.caltech.edu/records/e9xap-44498
+  doi: 10.1109/TIT.2006.881746
 song-alajaji-linder-2016:
   title: Adaptation is Useless for Two Discrete Additive-Noise Two-Way Channels
   authors:

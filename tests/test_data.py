@@ -218,6 +218,7 @@ def test_registered_statement_inventory_matches_expected_problems() -> None:
         "multiple-access-channel-with-feedback",
         "no-consecutive-ones-noiseless-channel",
         "noiseless-multicast-network",
+        "noiseless-multisource-multicast-network",
         "noiseless-q-ary-channel",
         "pentagon-zero-error-channel",
         "physically-degraded-broadcast-channel",
