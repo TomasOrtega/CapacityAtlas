@@ -48,3 +48,4 @@ import CapacityAtlas.Claims.Pentagon
 import CapacityAtlas.Claims.SevenCycleOperational
 import CapacityAtlas.Claims.DirectedIndexCycle
 import CapacityAtlas.Claims.FiveIndexCycle
+import CapacityAtlas.Claims.WirelessTransport

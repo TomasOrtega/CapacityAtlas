@@ -83,6 +83,12 @@ capacities and every sufficiently large blocklength. The converse bounds the
 number of successfully decoded message tuples across each cut. Locality is
 expressed through observation factorization, including sources located at sinks.
 
+`Network/WirelessTransport` proves matching square-root bounds for arbitrary
+placements under protocol interference. Finite executions account for integer
+packet bits, causal routes, subchannel service, and delivered endpoint distance.
+Receiver-disk packing supplies the converse; a separated grid supplies the lower
+bound for every node count at least four. The constants are nonsharp.
+
 ### `CapacityAtlas`
 
 This layer contains concrete channel definitions, problem claims, proofs, and

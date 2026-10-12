@@ -234,6 +234,7 @@ def test_registered_statement_inventory_matches_expected_problems() -> None:
         "two-user-discrete-memoryless-mac",
         "two-user-gaussian-mac",
         "two-user-gaussian-mac-with-feedback",
+        "wireless-network-transport-capacity",
     }
 
     stated = {

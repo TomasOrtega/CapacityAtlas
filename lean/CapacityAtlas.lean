@@ -34,3 +34,4 @@ import CapacityAtlas.Tests.ConfidentialBroadcast
 import CapacityAtlas.Tests.MultisourceMulticast
 import CapacityAtlas.Tests.GaussianMIMOBroadcast
 import CapacityAtlas.Tests.GaussianMIMOBroadcastRegion
+import CapacityAtlas.Tests.WirelessTransport

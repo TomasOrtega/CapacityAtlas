@@ -570,3 +570,11 @@ weingarten-steinberg-shamai-2006:
   venue: IEEE Transactions on Information Theory 52(9), 3936–3964
   doi: 10.1109/TIT.2006.880064
   url: https://web.stanford.edu/class/ee360/previous/suppRead/read1/WeingartenSteinbergShamai2006.pdf
+gupta-kumar-2000:
+  title: The Capacity of Wireless Networks
+  authors:
+  - Piyush Gupta
+  - P. R. Kumar
+  year: 2000
+  venue: IEEE Transactions on Information Theory 46(2), 388–404
+  url: https://pdos.csail.mit.edu/archive/decouto/papers/gupta00.pdf

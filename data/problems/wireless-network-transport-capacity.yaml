@@ -1,0 +1,78 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: wireless-network-transport-capacity
+title: Wireless network transport capacity
+status: partially-solved
+updated: '2026-10-12'
+summary: Optimally placed nodes under guard-zone interference have transport capacity of square-root order in the number of nodes.
+tags:
+  model: [interference, relay]
+  features: [multiple-unicast]
+  quantity: [capacity]
+  knowledge: [bounds]
+model:
+  input: Unicast packets originate at fixed nodes in a planar disk of radius \(R>0\). The budget of n nodes counts sources, destinations, and relays; unused nodes are idle.
+  output: Each packet reaches its source's chosen destination without error.
+  law: A transmission from x to y succeeds on a subchannel if every other simultaneous transmitter z on that subchannel satisfies \(\|z-y\|\ge(1+\Delta)\|x-y\|\), where \(\Delta>0\).
+  assumptions:
+  - The node budget n is a nonnegative integer and the total link rate satisfies \(W\ge0\).
+  - Node locations, each source's destination, traffic volumes, routes, transmission ranges, and schedules are optimized. Nodes do not move.
+  - A finite set of orthogonal subchannels has fixed nonnegative rates summing to at most W bits per second. A node sends to at most one receiver per subchannel at a time.
+  - Packets are routed without network coding, may wait at intermediate nodes, and traverse their hops in strictly increasing slots. Per-link bit counts obey the slot duration and subchannel rate.
+  - Finite executions start with the packets at their sources and count only fully delivered packets. Repetition gives a sustained transport rate. Schedules carry no information and multicast is not credited.
+quantity:
+  name: Transport capacity
+  symbol: T_n(W,R,\Delta)
+  units: bit-meters per second
+  criterion: Supremum of the sum of delivered packet bit counts times source-to-destination Euclidean distance, divided by elapsed time, over all permitted placements and finite executions.
+capacity:
+  kind: bounds
+  display: T_n(W,R,\Delta)=\Theta_\Delta(WR\sqrt n)
+  lower: c_\Delta WR\sqrt n
+  upper: C_\Delta WR\sqrt n
+  notes: Main Result 1 gives matching order bounds for fixed positive guard parameter. The disk has area \(\pi R^2\); unit area means \(R=1/\sqrt\pi\). The exact finite-n optimum is not determined by these bounds.
+bounds:
+- id: grid-achievability
+  direction: lower
+  relation: T_n(W,R,\Delta)=\Omega_\Delta(WR\sqrt n)
+  method: Place transmitter–receiver pairs on a separated grid and transmit directly and simultaneously; leave unused nodes idle. Gupta–Kumar, Main Result 1 and Section III.
+  year: 2000
+  references: [gupta-kumar-2000]
+- id: packing-converse
+  direction: upper
+  relation: T_n(W,R,\Delta)=O_\Delta(WR\sqrt n)
+  method: Protocol inequalities separate receiver guard disks. Area packing and Cauchy–Schwarz bound simultaneous hop distance; route triangle inequalities bound delivered distance. Gupta–Kumar, Theorem 2.1.
+  year: 2000
+  references: [gupta-kumar-2000]
+frontier:
+  question: Determine the finite-n transport capacity or sharpen its leading constant.
+  bottleneck: The packing converse and explicit grid construction have different constants.
+  progress:
+  - The order in n is settled for this arbitrary-placement protocol model. Random placement and physical interference require separate models.
+formalization:
+  status: stated
+  claims:
+  - id: square-root-bounds
+    kind: capacity-bounds
+    category: solved
+    formal_status: proved
+    version: 1
+    description: For n at least 4, R and Delta positive, and W nonnegative, transport capacity lies between W R sqrt(n)/(32(1+Delta)) and 2(1+Delta) W R sqrt(n)/Delta.
+    bound_ids: [grid-achievability, packing-converse]
+  notes: The local proof gives explicit nonsharp constants for the published order result, including nonsquare node counts. These constants are from the local construction and enclosing-disk proof, not the paper's displayed constants. The model accounts for integer packet bits, causal routes, subchannels, and delivered endpoint distance.
+  files:
+  - path: lean/CapacityAtlasForMathlib/Network/WirelessTransport/Basic.lean
+    declaration: CapacityAtlas.WirelessTransport.Execution
+    role: definition
+    description: Finite store-and-forward executions with protocol interference and per-link service constraints.
+  - path: lean/CapacityAtlasForMathlib/Network/WirelessTransport/Basic.lean
+    declaration: CapacityAtlas.WirelessTransport.capacity
+    role: definition
+    description: Supremum of delivered bit-distance per unit time over node placements and executions.
+  - path: lean/CapacityAtlas/Claims/WirelessTransport.lean
+    declaration: CapacityAtlas.Claims.wirelessTransportBounds
+    role: claim
+    claim_id: square-root-bounds
+    description: Full local proof of the matching square-root transport-capacity bounds.
+  proofs: []
+references: [gupta-kumar-2000]
