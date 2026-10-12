@@ -203,6 +203,7 @@ def test_registered_statement_inventory_matches_expected_problems() -> None:
         "finite-group-markov-noise-channel",
         "five-cycle-index-coding",
         "gaussian-fading-receiver-state",
+        "gaussian-mimo-broadcast-channel",
         "gaussian-mimo-channel",
         "gaussian-wiretap-channel",
         "gelfand-pinsker-channel",

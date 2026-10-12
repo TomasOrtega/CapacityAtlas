@@ -536,3 +536,13 @@ blasiak-kleinberg-lubetzky-2010:
   venue: arXiv preprint, revised 2011
   url: https://arxiv.org/abs/1004.1379
   arxiv: '1004.1379'
+weingarten-steinberg-shamai-2006:
+  title: The Capacity Region of the Gaussian Multiple-Input Multiple-Output Broadcast Channel
+  authors:
+  - Hanan Weingarten
+  - Yossef Steinberg
+  - Shlomo Shamai (Shitz)
+  year: 2006
+  venue: IEEE Transactions on Information Theory 52(9), 3936–3964
+  doi: 10.1109/TIT.2006.880064
+  url: https://web.stanford.edu/class/ee360/previous/suppRead/read1/WeingartenSteinbergShamai2006.pdf
