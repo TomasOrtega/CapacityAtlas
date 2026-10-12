@@ -15,9 +15,24 @@ namespace CapacityAtlas.MeasureInformation
 
 variable {E ι : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [MeasurableSpace E]
 
+/-- The directional score is the density derivative divided by the density. -/
+noncomputable def directionalScore (density : E → ℝ) (v x : E) : ℝ :=
+  lineDeriv ℝ density x v / density x
+
 /-- Directional Fisher information, computed from the density's actual line derivative. -/
 noncomputable def directionalFisherWith (reference : Measure E) (density : E → ℝ) (v : E) : ℝ :=
   ∫ x, (lineDeriv ℝ density x v) ^ 2 / density x ∂reference
+
+theorem directionalFisherWith_eq_integral_score_sq (reference : Measure E)
+    (density : E → ℝ) (v : E) :
+    directionalFisherWith reference density v =
+      ∫ x, density x * directionalScore density v x ^ 2 ∂reference := by
+  apply integral_congr_ae
+  filter_upwards with x
+  by_cases hx : density x = 0
+  · simp [directionalScore, hx]
+  · simp only [directionalScore]
+    field_simp
 
 theorem directionalFisherWith_nonneg (reference : Measure E) (density : E → ℝ) (v : E)
     (hpos : ∀ x, 0 ≤ density x) : 0 ≤ directionalFisherWith reference density v :=
