@@ -1,0 +1,73 @@
+# Copyright 2026 The Capacity Atlas Authors
+# SPDX-License-Identifier: CC-BY-4.0
+id: broadcast-channel-confidential-messages
+title: Broadcast channel with common and confidential messages
+status: solved
+updated: '2026-10-12'
+summary: Both receivers decode a common message; receiver 1 also decodes an independent confidential message kept secret from receiver 2.
+tags:
+  model: [broadcast, wiretap]
+  features: [finite-alphabet, discrete-memoryless, secrecy]
+  quantity: [capacity-region]
+  knowledge: [exact, single-letter-characterization]
+model:
+  input: A stochastic encoder maps independent uniform messages \(M_0,M_1\) to \(X^n\) over a finite alphabet, using private randomness.
+  output: Receiver 1 observes \(Y^n\) and decodes both messages; receiver 2 observes \(Z^n\) and decodes \(M_0\).
+  law: A fixed finite memoryless broadcast channel with marginals \(W_Y(y\mid x)\) and \(W_Z(z\mid x)\).
+  assumptions:
+  - There is no feedback, receiver cooperation, shared secret key, or input-cost constraint.
+  - Each decoder uses only its own output. Arbitrary correlation between receiver outputs within a use does not change this operational region.
+  - Both average decoding errors vanish, and weak secrecy requires \(I(M_1;Z^n)/n\to0\).
+quantity:
+  name: Common-message and confidential-message capacity region
+  symbol: \mathcal C_{\mathrm{BCC}}
+  units: bits per channel use
+  criterion: The closed set of nonnegative rate pairs \((R_0,R_1)\), normalized by blocklength, attainable at every sufficiently large blocklength with vanishing errors and normalized leakage.
+capacity:
+  kind: characterization
+  display: \mathcal C_{\mathrm{BCC}}=\overline{\bigcup_{U-V-X-(Y,Z)}\{(R_0,R_1)\ge0:\ R_0\le\min\{I(U;Y),I(U;Z)\},\ R_1\le I(V;Y\mid U)-I(V;Z\mid U)\}}
+  notes: The union ranges over all finite auxiliaries and stochastic prefixes. This is the perfect-secrecy specialization of the Csiszár–Körner rate-equivocation region; Bloch–Laneman Theorem 3, equation (9), also states this region for weak-secrecy metric S4. No auxiliary-cardinality bound is imposed here.
+bounds:
+- id: superposition-secrecy-inner
+  direction: lower
+  relation: \mathcal C_{\mathrm{BCC}}\supseteq\overline{\bigcup_{U-V-X-(Y,Z)}\{(R_0,R_1)\ge0:\ R_0\le\min\{I(U;Y),I(U;Z)\},\ R_1\le I(V;Y\mid U)-I(V;Z\mid U)\}}
+  method: Superposition coding, stochastic prefixing, and randomization for secrecy.
+  year: 1978
+  references: [csiszar-korner-1978, bloch-laneman-2013]
+- id: auxiliary-secrecy-outer
+  direction: upper
+  relation: \mathcal C_{\mathrm{BCC}}\subseteq\overline{\bigcup_{U-V-X-(Y,Z)}\{(R_0,R_1)\ge0:\ R_0\le\min\{I(U;Y),I(U;Z)\},\ R_1\le I(V;Y\mid U)-I(V;Z\mid U)\}}
+  method: Fano inequalities, the Csiszár sum identity, and time sharing.
+  year: 1978
+  references: [csiszar-korner-1978, bloch-laneman-2013]
+formalization:
+  status: stated
+  claims:
+  - id: capacity-region
+    kind: exact-capacity
+    category: solved
+    formal_status: proved
+    version: 1
+    description: The operational weak-secrecy region equals the closure of the finite-auxiliary common-message and confidential-message region.
+    bound_ids: [superposition-secrecy-inner, auxiliary-secrecy-outer]
+  notes: The local proof constructs stochastic block codes and proves achievability and converse, including zero-rate boundaries. It uses weak secrecy; it does not formalize strong secrecy or auxiliary-cardinality bounds.
+  files:
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/ConfidentialBroadcast/Basic.lean
+    declaration: CapacityAtlas.ConfidentialBroadcast.Code
+    role: definition
+    description: Stochastic encoder with two independent messages and separate receiver decoders.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/ConfidentialBroadcast/Basic.lean
+    declaration: CapacityAtlas.ConfidentialBroadcast.capacityRegion
+    role: definition
+    description: Vanishing average errors and normalized information leakage, with rate closure.
+  - path: lean/CapacityAtlasForMathlib/InformationTheory/ConfidentialBroadcast/Basic.lean
+    declaration: CapacityAtlas.ConfidentialBroadcast.informationRegion
+    role: definition
+    description: Closure of the union over finite auxiliaries and stochastic prefixes.
+  - path: lean/CapacityAtlas/Claims/ConfidentialBroadcast.lean
+    declaration: CapacityAtlas.Claims.confidentialBroadcastCapacity
+    role: claim
+    claim_id: capacity-region
+    description: Locally proved equality of operational and single-letter regions.
+  proofs: []
+references: [csiszar-korner-1978, bloch-laneman-2013]

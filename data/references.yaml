@@ -478,7 +478,7 @@ bloch-laneman-2013:
   - J. Nicholas Laneman
   year: 2013
   venue: IEEE Transactions on Information Theory
-  url: https://arxiv.org/abs/1105.5419
+  url: https://arxiv.org/abs/1105.5419v3
   arxiv: '1105.5419'
 ahlswede-et-al-2000:
   title: Network Information Flow

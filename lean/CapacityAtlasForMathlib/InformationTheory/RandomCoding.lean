@@ -302,7 +302,9 @@ private theorem sum_codebookMass_mul_falseCandidate
       unfold FiniteProductProbability.mean sent candidate
       rfl
 
-private theorem expected_thresholdCode_errorProbability_le
+/-- Each message has the usual error bound before selecting the random codebook. -/
+@[capacity_shared_api]
+theorem expected_thresholdCode_errorProbability_le
     {M : Type*} [Fintype M] [Nonempty M] [DecidableEq M]
     (channel : FiniteChannel A B) (input : FiniteDistribution A) (threshold : ℝ)
     (message : M) :
