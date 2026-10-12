@@ -11,6 +11,7 @@ import CapacityAtlas.Claims.DefectiveMemory
 import CapacityAtlas.Claims.GelfandPinsker
 import CapacityAtlas.Claims.Blackwell
 import CapacityAtlas.Claims.BroadcastBounds
+import CapacityAtlas.Claims.ConfidentialBroadcast
 import CapacityAtlas.Claims.SkewBroadcast
 import CapacityAtlas.Claims.ErasureWiretap
 import CapacityAtlas.Claims.DegradedWiretap

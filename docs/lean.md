@@ -67,6 +67,14 @@ Common proof steps are shared across channel models:
 - `MultipleAccess.swap` exchanges sender roles, letting right-sender bounds reuse
   left-sender proofs.
 
+`ConfidentialBroadcast` proves the finite common-message and confidential-message
+region under weak secrecy. Its stochastic-code model fixes separate receiver
+decoders and normalized leakage. The direct proof uses superposition codebooks,
+seed decoding, and Fano; the converse constructs finite auxiliaries from each
+code using the Csiszár sum identity and time sharing. Both directions include
+zero-rate boundaries. `FiniteInformation/` supplies the finite-observation
+identities, disintegration, and sequence chain rules used in this proof.
+
 ### `CapacityAtlas`
 
 This layer contains concrete channel definitions, problem claims, proofs, and

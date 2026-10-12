@@ -185,6 +185,7 @@ def test_registered_statement_inventory_matches_expected_problems() -> None:
         "binary-symmetric-channel",
         "binary-z-channel",
         "blackwell-broadcast-channel",
+        "broadcast-channel-confidential-messages",
         "causal-state-information-channel",
         "compound-discrete-memoryless-channel",
         "constrained-bec-with-feedback",
