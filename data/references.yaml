@@ -234,6 +234,16 @@ nair-elgamal-2007:
   doi: 10.1109/TIT.2006.887492
   arxiv: cs/0605105
   url: https://arxiv.org/abs/cs/0605105
+huang-liu-liu-2026:
+  title: Sub-optimality of Marton's Inner Bound for the Two-Receiver Broadcast Channel
+  authors:
+  - Mian Huang
+  - Yanxiao Liu
+  - Yi Liu
+  year: 2026
+  venue: arXiv preprint
+  arxiv: '2608.19869'
+  url: https://arxiv.org/abs/2608.19869v1
 lavi-sason-2026:
   title: Advances in the Shannon Capacity of Graphs
   authors:
