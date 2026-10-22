@@ -2,6 +2,7 @@
 
 [![Site, data, and Lean](https://github.com/TomasOrtega/CapacityAtlas/actions/workflows/ci.yml/badge.svg)](https://github.com/TomasOrtega/CapacityAtlas/actions/workflows/ci.yml)
 [![Lean 4](https://img.shields.io/badge/formalization-Lean%204-blue)](lean/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23573821.svg)](https://doi.org/10.5281/zenodo.23573821)
 [![Software: Apache-2.0](https://img.shields.io/badge/software-Apache--2.0-blue)](LICENSE)
 [![Content: CC-BY-4.0](https://img.shields.io/badge/content-CC--BY--4.0-lightgrey)](LICENSES/CC-BY-4.0.txt)
 
