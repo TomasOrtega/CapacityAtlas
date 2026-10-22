@@ -2,6 +2,7 @@ cff-version: 1.2.0
 message: If you use Capacity Atlas, cite the repository and the primary sources attached to the relevant entries.
 title: Capacity Atlas
 version: 0.3.0
+doi: 10.5281/zenodo.23573821
 date-released: 2026-10-22
 authors:
   - family-names: Ortega
