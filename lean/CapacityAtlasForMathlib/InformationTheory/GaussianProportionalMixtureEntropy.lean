@@ -51,7 +51,6 @@ theorem entropyWith_gaussianMixtureMeasure_difference_le_of_proportional
     rw [hpowerD] at hEPI
     have hlog := proportional_log_sub_le
       (entropyPower_pos (gaussianMixtureMeasure w m N))
-      (entropyPower_pos (gaussianMixtureMeasure w m M))
       (entropyPower_pos (multivariateGaussian (0 : EuclideanSpace ℝ ι) A))
       (entropyPower_pos (multivariateGaussian (0 : EuclideanSpace ℝ ι) B))
       ha1 hpowerA hEPI
@@ -90,7 +89,6 @@ theorem entropyWith_gaussianCodebook_weighted_difference_le_of_precision
         g * entropyWith (gaussianCodebookKernel m M ∘ₘ μ) volume ≤
       f * entropyWith (multivariateGaussian (0 : EuclideanSpace ℝ ι) (S + N)) volume -
         g * entropyWith (multivariateGaussian (0 : EuclideanSpace ℝ ι) (S + M)) volume := by
-  have hA : (S + N).PosDef := PosDef.posSemidef_add hS hN
   have hB : (S + M).PosDef := PosDef.posSemidef_add hS hM
   have hp : (S + M)⁻¹ = (f / g) • (S + N)⁻¹ := by
     have h := congrArg (fun Z ↦ g⁻¹ • Z) hprop
@@ -98,7 +96,7 @@ theorem entropyWith_gaussianCodebook_weighted_difference_le_of_precision
   simp only [gaussianCodebookKernel_comp_eq_mixture]
   exact entropyWith_gaussianMixtureMeasure_weighted_difference_le_of_proportional
     (fun a ↦ μ.real {a}) (fun _ ↦ measureReal_nonneg) (sum_real_singleton_eq_one μ)
-    m N M (S + N) (S + M) hN hB hf hg hfg (inv_proportional_smul hA hB hp).symm (by abel)
+    m N M (S + N) (S + M) hN hB hf hg hfg (inv_proportional_smul hB hp).symm (by abel)
 
 theorem entropyWith_gaussianCodebook_weighted_difference_le_of_proportional
     (μ : Measure α) [IsProbabilityMeasure μ]

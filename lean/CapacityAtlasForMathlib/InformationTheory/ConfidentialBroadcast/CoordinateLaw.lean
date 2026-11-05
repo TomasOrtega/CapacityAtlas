@@ -253,7 +253,7 @@ theorem fullJoint_coordinate_eavesdropper (c : Code W n) (i : Fin n) :
     FiniteDistribution.map_joint_snd, receiverPair, FiniteChannel.rowDistribution_ofRows,
     FiniteDistribution.map_snd_joint, FiniteDistribution.mixture_const] using h
 
-omit [DecidableEq Y] [DecidableEq Z] in
+omit [DecidableEq X] [DecidableEq Y] [DecidableEq Z] in
 @[capacity_shared_api]
 theorem fullJoint_observe {O : Type*} [Fintype O] [DecidableEq O]
     (c : Code W n) (V : FiniteChannel X O) (observe : Y × Z → O)
@@ -283,7 +283,7 @@ theorem fullJoint_observe {O : Type*} [Fintype O] [DecidableEq O]
   simpa only [FiniteDistribution.map_map, Function.comp_def, FiniteInformation.joint_comp,
     joint, induced] using h
 
-omit [DecidableEq Z] in
+omit [DecidableEq X] [DecidableEq Z] in
 @[capacity_shared_api]
 theorem fullJoint_legitimate (c : Code W n) :
     c.fullJoint.map (fun z ↦ (z.1.1, fun j ↦ (z.2 j).1)) = c.joint W.receiver₁ := by
@@ -295,7 +295,7 @@ theorem fullJoint_legitimate (c : Code W n) :
   exact FiniteDistribution.map_fst_joint (W.receiver₁.rowDistribution x)
     (fun _ ↦ W.receiver₂.rowDistribution x)
 
-omit [DecidableEq Y] in
+omit [DecidableEq X] [DecidableEq Y] in
 @[capacity_shared_api]
 theorem fullJoint_eavesdropper (c : Code W n) :
     c.fullJoint.map (fun z ↦ (z.1.1, fun j ↦ (z.2 j).2)) = c.joint W.receiver₂ := by

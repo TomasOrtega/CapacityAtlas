@@ -23,7 +23,7 @@ namespace Schedule
 variable {V : Type} [Fintype V] {position : V → Point} {Δ W R : ℝ}
 
 theorem hopWork_le (S : Schedule V position Δ W) {n : ℕ}
-    (hn : Fintype.card V ≤ n) (hR : 0 ≤ R) (hΔ : 0 < Δ) (_hW : 0 ≤ W)
+    (hn : Fintype.card V ≤ n) (hR : 0 ≤ R) (hΔ : 0 < Δ)
     (hposition : ∀ v, ‖position v‖ ≤ R) :
     ∑ r : S.Resource, S.available r * S.length r ≤
       W * upperConstant R Δ * Real.sqrt n := by
@@ -105,27 +105,27 @@ theorem transportRate_le_hopWork (E : Execution V position Δ W) :
       mul_le_mul_of_nonneg_right (E.load_le r) dist_nonneg
 
 theorem transportRate_le [Fintype V] (E : Execution V position Δ W) {n : ℕ} {R : ℝ}
-    (hn : Fintype.card V ≤ n) (hR : 0 ≤ R) (hΔ : 0 < Δ) (hW : 0 ≤ W)
+    (hn : Fintype.card V ≤ n) (hR : 0 ≤ R) (hΔ : 0 < Δ)
     (hposition : ∀ v, ‖position v‖ ≤ R) :
     E.transportRate ≤ W * upperConstant R Δ * Real.sqrt n :=
-  E.transportRate_le_hopWork.trans (E.schedule.hopWork_le hn hR hΔ hW hposition)
+  E.transportRate_le_hopWork.trans (E.schedule.hopWork_le hn hR hΔ hposition)
 
 end Execution
 
 theorem achievable_le {n : ℕ} {R Δ W t : ℝ} (ht : Achievable n R Δ W t)
-    (hR : 0 ≤ R) (hΔ : 0 < Δ) (hW : 0 ≤ W) :
+    (hR : 0 ≤ R) (hΔ : 0 < Δ) :
     t ≤ W * upperConstant R Δ * Real.sqrt n := by
   obtain ⟨V, hV, hn, position, hposition, E, rfl⟩ := ht
-  exact E.transportRate_le hn hR hΔ hW hposition
+  exact E.transportRate_le hn hR hΔ hposition
 
 theorem achievable_bddAbove {n : ℕ} {R Δ W : ℝ}
-    (hR : 0 ≤ R) (hΔ : 0 < Δ) (hW : 0 ≤ W) :
+    (hR : 0 ≤ R) (hΔ : 0 < Δ) :
     BddAbove {t | Achievable n R Δ W t} :=
-  ⟨W * upperConstant R Δ * Real.sqrt n, fun _ ht => achievable_le ht hR hΔ hW⟩
+  ⟨W * upperConstant R Δ * Real.sqrt n, fun _ ht => achievable_le ht hR hΔ⟩
 
 theorem Achievable.le_capacity {n : ℕ} {R Δ W t : ℝ} (ht : Achievable n R Δ W t)
-    (hR : 0 ≤ R) (hΔ : 0 < Δ) (hW : 0 ≤ W) : t ≤ capacity n R Δ W :=
-  le_csSup (achievable_bddAbove hR hΔ hW) ht
+    (hR : 0 ≤ R) (hΔ : 0 < Δ) : t ≤ capacity n R Δ W :=
+  le_csSup (achievable_bddAbove hR hΔ) ht
 
 theorem zero_achievable (n : ℕ) (R Δ W : ℝ) (hW : 0 ≤ W) :
     Achievable n R Δ W 0 := by
@@ -161,12 +161,12 @@ theorem zero_achievable (n : ℕ) (R Δ W : ℝ) (hW : 0 ≤ W) :
 
 theorem capacity_nonneg {n : ℕ} {R Δ W : ℝ}
     (hR : 0 ≤ R) (hΔ : 0 < Δ) (hW : 0 ≤ W) : 0 ≤ capacity n R Δ W :=
-  (zero_achievable n R Δ W hW).le_capacity hR hΔ hW
+  (zero_achievable n R Δ W hW).le_capacity hR hΔ
 
 theorem capacity_le {n : ℕ} {R Δ W : ℝ}
     (hR : 0 ≤ R) (hΔ : 0 < Δ) (hW : 0 ≤ W) :
     capacity n R Δ W ≤ W * upperConstant R Δ * Real.sqrt n :=
-  csSup_le ⟨0, zero_achievable n R Δ W hW⟩ fun _ ht => achievable_le ht hR hΔ hW
+  csSup_le ⟨0, zero_achievable n R Δ W hW⟩ fun _ ht => achievable_le ht hR hΔ
 
 theorem capacity_zero_bandwidth {n : ℕ} {R Δ : ℝ} (hR : 0 ≤ R) (hΔ : 0 < Δ) :
     capacity n R Δ 0 = 0 := by

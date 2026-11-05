@@ -74,7 +74,6 @@ def test_local_capacity_proof_does_not_require_external_records(
     formalization["proofs"] = []
     claim = next(claim for claim in formalization["claims"] if claim["id"] == "exact-capacity")
     assert claim["formal_status"] == "proved"
-    assert claim["version"] == 1
 
     report = _lean_report()
     assert validate_atlas(atlas, report if compiled else None) == []

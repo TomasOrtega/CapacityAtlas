@@ -140,7 +140,7 @@ theorem exists_codes_of_memoryless_likelihood
       (fun y ↦ ENNReal.ofReal (Real.exp (info (x, y)))))
     {cost : X → ℝ} (hcost : Measurable cost) (hcostLp : MemLp cost 2 μ)
     {P R : ℝ} (hP : (∫ x, cost x ∂μ) < P) (x₀ : X) (hx₀ : cost x₀ ≤ P)
-    (hR : 0 ≤ R) (hRate : R * Real.log 2 < ∫ z, info z ∂(μ ⊗ₘ κ)) :
+    (hRate : R * Real.log 2 < ∫ z, info z ∂(μ ⊗ₘ κ)) :
     ∀ ε : ℝ, 0 < ε → ∃ N : ℕ, 0 < N ∧ ∀ n, N ≤ n →
       ∃ code : OneShotCode (Fin n → X) (Fin n → Y)
           (Fin (FiniteChannel.messageCountAtRate R n)),
@@ -149,6 +149,6 @@ theorem exists_codes_of_memoryless_likelihood
           R ≤ Real.logb 2 (FiniteChannel.messageCountAtRate R n : ℝ) / n :=
   exists_codes_of_iid_likelihood (iidKernel κ) μ (μ ⊗ₘ κ) hinfo hinfoLp
     (iidKernel_likelihood κ μ hinfo hrow) (iidKernel_joint κ μ)
-    hcost hcostLp hP x₀ hx₀ hR hRate
+    hcost hcostLp hP x₀ hx₀ hRate
 
 end CapacityAtlas.MeasureChannel

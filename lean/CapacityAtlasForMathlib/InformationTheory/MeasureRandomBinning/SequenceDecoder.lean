@@ -97,7 +97,7 @@ theorem measurable_sequenceReceiverBound {M : ℕ → Type*} [∀ j, Fintype (M 
   exact (hfirst.comp (measurable_selectedRows message n)).add hsecond
 
 theorem sequenceReceiver_error_le {M : ℕ → Type*} [∀ j, Fintype (M j)]
-    [∀ j, Nonempty (M j)] [∀ j, MeasurableSpace (M j)]
+    [∀ j, Nonempty (M j)]
     (D : ℕ → RejectionStage S U) (initial fallback : S) (C : Set S)
     (W : Kernel S Y) [IsMarkovKernel W] (aux : S → U) (A : Set (U × Y))
     (message : (j : ℕ) → M j) (n : ℕ) (i : Fin n) [Nonempty (Fin (D i.val).count)]

@@ -49,7 +49,7 @@ lemma integral_score_fst_mul_sum_gaussianMixture
     measurable_lineDeriv_directionalScore_gaussianMixturePDFReal w hw hw1 _ _ hNS v
   have hC : MemLp C 2 (gaussianMixtureMeasure w (fun a ↦ m a + n) (N + S)) :=
     memLp_two_gaussianMixtureMeasure hCm (fun a ↦
-      memLp_directionalScore_gaussianMixturePDFReal w hw hw1 _ _ hNS v _ _ 2 (by norm_num))
+      memLp_directionalScore_gaussianMixturePDFReal w hw _ _ hNS v _ _ 2 (by norm_num))
   have hC' : MemLp C' 2 (gaussianMixtureMeasure w (fun a ↦ m a + n) (N + S)) :=
     memLp_two_gaussianMixtureMeasure hC'm (fun a ↦
       memLp_two_lineDeriv_directionalScore_gaussianMixturePDFReal w hw hw1 _ _ hNS v _ _)
@@ -58,7 +58,7 @@ lemma integral_score_fst_mul_sum_gaussianMixture
   have hA : MemLp (directionalScore (gaussianMixturePDFReal w m N) v) 2
       (gaussianMixtureMeasure w m N) :=
     memLp_two_gaussianMixtureMeasure (measurable_directionalScore_gaussianMixturePDFReal w m N hN v)
-      (fun a ↦ memLp_directionalScore_gaussianMixturePDFReal w hw hw1 m N hN v _ _ 2 (by norm_num))
+      (fun a ↦ memLp_directionalScore_gaussianMixturePDFReal w hw m N hN v _ _ 2 (by norm_num))
   have hint := (hA.comp_fst (multivariateGaussian n S)).integrable_mul hsum
   have hint' := hsum'.integrable (by norm_num)
   change (∫ z, directionalScore (gaussianMixturePDFReal w m N) v z.1 * C (z.1 + z.2)
@@ -77,7 +77,7 @@ lemma integral_score_fst_mul_sum_gaussianMixture
         simpa only [C, C', q, HasLineDerivAt, add_assoc, add_left_comm, add_comm] using hd
       · intro a
         exact memLp_comp_add_const_multivariateGaussian hCm (m a) y N
-          (memLp_directionalScore_gaussianMixturePDFReal w hw hw1 _ _ hNS v _ _ 2 (by norm_num))
+          (memLp_directionalScore_gaussianMixturePDFReal w hw _ _ hNS v _ _ 2 (by norm_num))
       · intro a
         exact (memLp_comp_add_const_multivariateGaussian hC'm (m a) y N
           (memLp_two_lineDeriv_directionalScore_gaussianMixturePDFReal
@@ -107,7 +107,7 @@ lemma integral_score_snd_mul_sum_gaussianMixture
     measurable_lineDeriv_directionalScore_gaussianMixturePDFReal w hw hw1 _ _ hNS v
   have hC : MemLp C 2 (gaussianMixtureMeasure w (fun a ↦ m a + n) (N + S)) :=
     memLp_two_gaussianMixtureMeasure hCm (fun a ↦
-      memLp_directionalScore_gaussianMixturePDFReal w hw hw1 _ _ hNS v _ _ 2 (by norm_num))
+      memLp_directionalScore_gaussianMixturePDFReal w hw _ _ hNS v _ _ 2 (by norm_num))
   have hC' : MemLp C' 2 (gaussianMixtureMeasure w (fun a ↦ m a + n) (N + S)) :=
     memLp_two_gaussianMixtureMeasure hC'm (fun a ↦
       memLp_two_lineDeriv_directionalScore_gaussianMixturePDFReal w hw hw1 _ _ hNS v _ _)
@@ -131,7 +131,7 @@ lemma integral_score_snd_mul_sum_gaussianMixture
           w hw hw1 (fun a ↦ m a + n) (N + S) hNS v (x + y)).lineDifferentiableAt.hasLineDerivAt
         simpa only [C, C', q, HasLineDerivAt, add_assoc, add_left_comm, add_comm] using hd
       · simpa only [add_comm] using memLp_comp_add_const_multivariateGaussian hCm n x S
-          (memLp_directionalScore_gaussianMixturePDFReal w hw hw1 _ _ hNS v _ _ 2 (by norm_num))
+          (memLp_directionalScore_gaussianMixturePDFReal w hw _ _ hNS v _ _ 2 (by norm_num))
       · have hi := (memLp_comp_add_const_multivariateGaussian hC'm n x S
           (memLp_two_lineDeriv_directionalScore_gaussianMixturePDFReal
             w hw hw1 _ _ hNS v _ _)).integrable (by norm_num)
@@ -203,14 +203,14 @@ theorem directionalFisherWith_gaussianMixture_add_le
   have hNS := hN.add hS
   have hA : MemLp A 2 μ :=
     memLp_two_gaussianMixtureMeasure (measurable_directionalScore_gaussianMixturePDFReal w m N hN v)
-      (fun a ↦ memLp_directionalScore_gaussianMixturePDFReal w hw hw1 m N hN v _ _ 2 (by norm_num))
+      (fun a ↦ memLp_directionalScore_gaussianMixturePDFReal w hw m N hN v _ _ 2 (by norm_num))
   have hB : MemLp B 2 ν :=
     memLp_directionalScore_multivariateGaussianPDFReal n v n S S hS 2 (by norm_num)
   have hCm : Measurable C := measurable_directionalScore_gaussianMixturePDFReal w _ _ hNS v
   have hC : MemLp (fun z : EuclideanSpace ℝ ι × EuclideanSpace ℝ ι ↦ C (z.1 + z.2)) 2
       (μ.prod ν) := memLp_comp_add_gaussianMixture w m n N S hN.posSemidef hS.posSemidef hCm
         (memLp_two_gaussianMixtureMeasure hCm (fun a ↦
-          memLp_directionalScore_gaussianMixturePDFReal w hw hw1 _ _ hNS v _ _ 2 (by norm_num)))
+          memLp_directionalScore_gaussianMixturePDFReal w hw _ _ hNS v _ _ 2 (by norm_num)))
   have hA2 : (∫ z : EuclideanSpace ℝ ι × EuclideanSpace ℝ ι, A z.1 ^ 2 ∂μ.prod ν) =
       directionalFisherWith volume (gaussianMixturePDFReal w m N) v := by
     rw [integral_fun_fst (fun x ↦ A x ^ 2), probReal_univ, one_smul,

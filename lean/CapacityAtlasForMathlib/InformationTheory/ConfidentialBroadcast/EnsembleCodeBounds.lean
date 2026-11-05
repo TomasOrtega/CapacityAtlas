@@ -54,7 +54,7 @@ theorem rawCommonError_nonnegative {A O : Type*} [Fintype A] [Fintype O]
   intro c s l
   exact Finset.sum_nonneg fun y _ ↦ by split_ifs; exact W.nonnegative _ y; rfl
 
-theorem rawSatelliteError_nonnegative {A O : Type*} [Fintype A] [Fintype O]
+theorem rawSatelliteError_nonnegative {A O : Type*} [Fintype O]
     (q : A → FiniteDistribution (Fin n → V)) (tau : A → ℝ)
     (cloud : Fin C → A) (satellites : Fin C → (Fin S × Fin L) → Fin n → V)
     (W : FiniteChannel (Fin n → V) O) :

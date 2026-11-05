@@ -71,11 +71,18 @@ theorem proportional_log_det_difference_le {A B X Y : Matrix ι ι ℝ}
   rw [hprop] at hp
   nlinarith
 
-theorem inv_proportional_smul {A B : Matrix ι ι ℝ} (hA : A.PosDef) (hB : B.PosDef)
+theorem inv_proportional_smul {A B : Matrix ι ι ℝ} (hB : B.PosDef)
     {a : ℝ} (h : B⁻¹ = a • A⁻¹) : a • B = A := by
+  have hBu : IsUnit B.det := isUnit_iff_ne_zero.mpr hB.det_pos.ne'
+  have hiB : (B⁻¹).det ≠ 0 := isUnit_iff_ne_zero.mp (isUnit_nonsing_inv_det B hBu)
+  have hprod : a ^ Fintype.card ι * (A⁻¹).det ≠ 0 := by
+    rw [← Matrix.det_smul, ← h]
+    exact hiB
+  have hAu : IsUnit A.det := isUnit_nonsing_inv_det_iff.mp
+    (isUnit_iff_ne_zero.mpr (right_ne_zero_of_mul hprod))
   have hh := congrArg (fun Z ↦ A * Z * B) h
-  simpa only [nonsing_inv_mul_cancel_right _ _ (isUnit_iff_ne_zero.mpr hB.det_pos.ne'),
-    Matrix.mul_smul, Matrix.smul_mul, mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hA.det_pos.ne'),
+  simpa only [nonsing_inv_mul_cancel_right _ _ hBu,
+    Matrix.mul_smul, Matrix.smul_mul, mul_nonsing_inv _ hAu,
     Matrix.one_mul] using hh.symm
 
 end Matrix

@@ -10,15 +10,14 @@ namespace CapacityAtlas.FiniteChannel
 
 variable {X Y : Type*} [Fintype X] [Fintype Y]
 
-/-- The finite-DMC coding theorem with a feasible nonnegative input-cost constraint. -/
+/-- The finite-DMC coding theorem with a feasible input-cost constraint. -/
 @[capacity_problem "finite-dmc-input-cost", capacity_statement, capacity_solved,
-  capacity_claim "exact-capacity" 1, capacity_formal_proof]
+  capacity_claim "exact-capacity" 2, capacity_formal_proof]
 theorem finiteDMCInputCostCapacityStatement (channel : FiniteChannel X Y)
     (cost : X → ℝ) (budget : ℝ) :
-  (∀ symbol, 0 ≤ cost symbol) →
-    (∃ symbol, cost symbol ≤ budget) →
-      channel.constrainedOperationalCapacityBits cost budget =
-        channel.constrainedInformationCapacityBits cost budget :=
+  (∃ symbol, cost symbol ≤ budget) →
+    channel.constrainedOperationalCapacityBits cost budget =
+      channel.constrainedInformationCapacityBits cost budget :=
   CapacityAtlasCost.finiteDMCInputCostCapacity channel cost budget
 
 end CapacityAtlas.FiniteChannel

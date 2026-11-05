@@ -95,17 +95,24 @@ theorem averageError_eq_zero_of_subsingleton [Subsingleton M]
     simp [Subsingleton.elim (code.decode y) m]
   simp [averageError, errorProbability, herror]
 
+omit [Nonempty M] in
 theorem averageError_le_one (κ : Kernel X Y) [IsMarkovKernel κ]
     (code : OneShotCode X Y M) : averageError κ code ≤ 1 := by
-  unfold averageError
-  calc
-    _ ≤ (Fintype.card M : ℝ≥0∞)⁻¹ * ∑ _m : M, (1 : ℝ≥0∞) := by
-      gcongr
-      exact prob_le_one
-    _ = 1 := by
-      simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one]
-      exact ENNReal.inv_mul_cancel (by exact_mod_cast Fintype.card_ne_zero)
-        (by finiteness)
+  cases isEmpty_or_nonempty M with
+  | inl h =>
+    letI := h
+    simp [averageError]
+  | inr h =>
+    letI := h
+    unfold averageError
+    calc
+      _ ≤ (Fintype.card M : ℝ≥0∞)⁻¹ * ∑ _m : M, (1 : ℝ≥0∞) := by
+        gcongr
+        exact prob_le_one
+      _ = 1 := by
+        simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one]
+        exact ENNReal.inv_mul_cancel (by exact_mod_cast Fintype.card_ne_zero)
+          (by finiteness)
 
 omit [Nonempty M] in
 theorem averageError_toReal (κ : Kernel X Y) [IsMarkovKernel κ]

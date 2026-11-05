@@ -137,7 +137,7 @@ theorem integrable_llr_gaussianMixture_volume :
   have hspec := klDiv_ne_top_iff.mp hfin
   have hγ : γ ≪ volume := multivariateGaussian_absolutelyContinuous 0 1 hI
   have hlog : Integrable (llr γ volume) (κ ∘ₘ μ) := by
-    apply (integrable_log_multivariateGaussianPDFReal 0 1 hI
+    apply (integrable_log_multivariateGaussianPDFReal 0 1
       (integrable_covarianceQuadratic (memLp_eval_gaussianMixture μ κ m N hrows) 0 1⁻¹)).congr
     exact hspec.1.ae_le (llr_multivariateGaussian_volume 0 1 hI).symm
   have hchain := llr_sub_of_absolutelyContinuous (μ := κ ∘ₘ μ) (τ := γ) hspec.1 hγ
@@ -163,7 +163,7 @@ private theorem gaussianMixture_density_facts :
   · apply (Measure.integrable_compProd_iff hf.ennreal_toReal.log.aestronglyMeasurable).mpr
     refine ⟨Filter.Eventually.of_forall (fun a ↦ ?_), Integrable.of_finite⟩
     simp only [ENNReal.toReal_ofReal (multivariateGaussianPDFReal_pos _ N hN _).le, hrows a]
-    exact integrable_log_multivariateGaussianPDFReal (m a) N hN
+    exact integrable_log_multivariateGaussianPDFReal (m a) N
       (integrable_covarianceQuadratic_multivariateGaussian (m a) N hN)
 
 theorem mutualInfo_gaussianMixture_ne_top : mutualInfo (μ ⊗ₘ κ) ≠ ⊤ := by
@@ -196,15 +196,18 @@ theorem mutualInfo_gaussianMixture_le_of_covariance
   rw [entropyWith_multivariateGaussian a S hS] at h
   linarith
 
+omit [IsMarkovKernel κ] in
 theorem mutualInfo_gaussianMixture_le_of_covariance_ennreal
-    (a : EuclideanSpace ℝ ι) (S : Matrix ι ι ℝ) (hS : S.PosDef)
-    (hmean : ∀ i, (∫ y : EuclideanSpace ℝ ι, y i ∂κ ∘ₘ μ) = a i)
+    (S : Matrix ι ι ℝ) (hS : S.PosDef)
     (hcov : ∀ i j, covariance (fun y : EuclideanSpace ℝ ι ↦ y i)
       (fun y ↦ y j) (κ ∘ₘ μ) = S i j) :
     mutualInfo (μ ⊗ₘ κ) ≤ ENNReal.ofReal ((log S.det - log N.det) / 2) := by
+  letI : IsMarkovKernel κ := ⟨fun x ↦ by rw [hrows x]; infer_instance⟩
+  let a : EuclideanSpace ℝ ι := WithLp.toLp 2
+    (fun i ↦ ∫ y : EuclideanSpace ℝ ι, y i ∂κ ∘ₘ μ)
   rw [← ENNReal.ofReal_toReal (mutualInfo_gaussianMixture_ne_top μ κ m N hN hrows)]
   exact ENNReal.ofReal_le_ofReal
-    (mutualInfo_gaussianMixture_le_of_covariance μ κ m N hN hrows a S hS hmean hcov)
+    (mutualInfo_gaussianMixture_le_of_covariance μ κ m N hN hrows a S hS (fun _ ↦ rfl) hcov)
 
 omit hN in
 theorem integral_eval_gaussianMixture (i : ι) :

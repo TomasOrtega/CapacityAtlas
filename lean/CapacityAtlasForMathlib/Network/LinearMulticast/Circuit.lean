@@ -83,17 +83,18 @@ theorem outputMatrix_map {R S : Type*} [CommSemiring R] [CommSemiring S]
 
 /-- Per-receiver routing assignments imply one finite binary-field code
 whose observations recover every input at every receiver. -/
-theorem simultaneous [Fintype I] {T : Type} [Fintype T]
+theorem simultaneous [Fintype I] {T : Type}
     (output : T → I → I ⊕ W)
     (route : ∀ t, ∃ c : G.Variable → ZMod 2, G.outputMatrix c (output t) = 1) :
     ∃ b : ℕ, 0 < b ∧ ∃ c : G.Variable → GaloisField 2 b,
       ∀ t, (G.outputMatrix c (output t)).det ≠ 0 := by
   classical
+  letI : Fintype (Set.range output) := Fintype.ofFinite _
   let x : G.Variable → MvPolynomial G.Variable (ZMod 2) := MvPolynomial.X
-  let p : T → MvPolynomial G.Variable (ZMod 2) :=
-    fun t ↦ (G.outputMatrix x (output t)).det
+  let p : Set.range output → MvPolynomial G.Variable (ZMod 2) :=
+    fun o ↦ (G.outputMatrix x o.val).det
   have hp : ∀ t, p t ≠ 0 := by
-    intro t
+    rintro ⟨_, t, rfl⟩
     obtain ⟨c, hc⟩ := route t
     intro h
     have hh := congrArg (MvPolynomial.eval c) h
@@ -113,7 +114,7 @@ theorem simultaneous [Fintype I] {T : Type} [Fintype T]
     ext v
     simp [x]
   rw [hx] at hm
-  have hh := hc t
+  have hh := hc ⟨output t, ⟨t, rfl⟩⟩
   change (MvPolynomial.eval₂Hom (algebraMap (ZMod 2) (GaloisField 2 b)) c)
     ((G.outputMatrix x (output t)).det) ≠ 0 at hh
   rw [RingHom.map_det] at hh

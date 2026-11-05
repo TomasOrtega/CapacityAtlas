@@ -29,7 +29,7 @@ lemma integrable_log_gaussianChannel_density (H : Matrix ο ι ℝ) (N : Matrix 
   rw [gaussianChannel_compProd_eq_map]
   apply (integrable_map_measure
     (measurable_gaussianChannel_density H N).log.aestronglyMeasurable (by fun_prop)).mpr
-  have hnoise := integrable_log_multivariateGaussianPDFReal 0 N hN
+  have hnoise := integrable_log_multivariateGaussianPDFReal 0 N
     (integrable_covarianceQuadratic_multivariateGaussian 0 N hN)
   simpa only [Function.comp_def, gaussianChannel_density_physical] using hnoise.comp_snd μ
 

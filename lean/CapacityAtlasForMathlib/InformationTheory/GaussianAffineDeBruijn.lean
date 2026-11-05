@@ -142,7 +142,7 @@ theorem hasDerivAt_entropyWith_gaussianMixtureMeasure_add_isotropic
     _ = _ := by
       congr 1
       simpa only [EuclideanSpace.basisFun_apply] using
-        sum_directionalFisherWith_gaussianMixturePDFReal_basis w hw hw1 m _ hNt
+        sum_directionalFisherWith_gaussianMixturePDFReal_basis w hw m _ hNt
           hN.isHermitian.eigenvectorBasis (EuclideanSpace.basisFun ι ℝ)
 
 /-- Every positive covariance direction admits an exact native entropy derivative. -/

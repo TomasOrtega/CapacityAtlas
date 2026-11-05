@@ -72,7 +72,7 @@ theorem exists_layeredCode_error_le
       (sequenceSuccess 0 (fun j ↦ (D j).next) (fun j ↦ (D j).success) K)ᶜ ≤
         layeredFailureBound H N Q π order n L T := by
     simpa only [layeredFailureBound, layeredStateTail, blockLayerStateLikelihood, neg_mul] using
-      gaussianStages_failure_le_terminal H N Q hQ π order e horder hdesc n L T hT 0
+      gaussianStages_failure_le_terminal H N Q hQ π order hdesc n L T hT 0
   have href : sequenceReferenceLaw (fun j ↦ (D j).referenceKernel) (0 : LayerBlocks K tx n) K =
       blockLayerLaw Q π n := gaussianStages_referenceLaw H N Q hQ π order e horder n L T hT 0
   rw [href]

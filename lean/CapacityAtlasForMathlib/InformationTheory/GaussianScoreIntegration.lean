@@ -74,7 +74,7 @@ lemma integral_lineDeriv_directionalScore_gaussianMixture
     (fun x ↦ lineDeriv ℝ (directionalScore (gaussianMixturePDFReal w m N) v) x v)
     (fun x ↦ (hasLineDerivAt_directionalScore_gaussianMixturePDFReal
       w hw hw1 m N hN v x).lineDifferentiableAt.hasLineDerivAt)
-    (fun a ↦ memLp_directionalScore_gaussianMixturePDFReal w hw hw1 m N hN v (m a) N 2 (by norm_num))
+    (fun a ↦ memLp_directionalScore_gaussianMixturePDFReal w hw m N hN v (m a) N 2 (by norm_num))
     (fun a ↦ (memLp_two_lineDeriv_directionalScore_gaussianMixturePDFReal
       w hw hw1 m N hN v (m a) N).integrable (by norm_num))
   rw [directionalFisherWith_eq_gaussianMixtureMeasure w hw m N hN]

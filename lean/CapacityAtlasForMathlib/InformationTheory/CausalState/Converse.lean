@@ -18,7 +18,7 @@ namespace CapacityAtlasCausal
 
 attribute [local instance] Classical.propDecidable
 
-variable {X S Y : Type*} [Fintype X] [Fintype S] [Fintype Y] [Nonempty X]
+variable {X S Y : Type*} [Fintype X] [Fintype S] [Fintype Y]
 
 /-- Fano bounds the message count for every deterministic causal code. -/
 theorem blockCode_log_messageCount_le (state : FiniteDistribution S)
@@ -51,7 +51,7 @@ theorem blockCode_rate_bound (state : FiniteDistribution S)
   exact fano_rate_bound hblocklength (blockCode_log_messageCount_le state channels code)
 
 /-- Past state dependence cannot increase the achievable rate beyond strategy capacity. -/
-theorem achievableRate_le_strategyCapacity (state : FiniteDistribution S)
+theorem achievableRate_le_strategyCapacity [Nonempty X] (state : FiniteDistribution S)
     (channels : S → FiniteChannel X Y) {rate : ℝ}
     (hachievable : CausalState.AchievableRate state channels rate) :
     rate ≤ (CausalState.strategyChannel state channels).informationCapacityBits := by
@@ -65,7 +65,7 @@ theorem achievableRate_le_strategyCapacity (state : FiniteDistribution S)
     (blockCode_rate_bound state channels code (lt_of_lt_of_le hfirstPositive hn))
 
 /-- Shannon strategy coding and the causal converse identify operational capacity. -/
-theorem causalStateCapacity (state : FiniteDistribution S)
+theorem causalStateCapacity [Nonempty X] (state : FiniteDistribution S)
     (channels : S → FiniteChannel X Y) :
     CausalState.operationalCapacityBits state channels =
       (CausalState.strategyChannel state channels).informationCapacityBits := by
@@ -85,7 +85,7 @@ theorem causalStateCapacity (state : FiniteDistribution S)
       (strategy.achievableRate_of_lt_informationCapacityBits hrate))
 
 /-- The finite strategy alphabet admits an input attaining causal operational capacity. -/
-theorem exists_capacityAchieving_strategy (state : FiniteDistribution S)
+theorem exists_capacityAchieving_strategy [Nonempty X] (state : FiniteDistribution S)
     (channels : S → FiniteChannel X Y) :
     ∃ input : FiniteDistribution (S → X),
       (CausalState.strategyChannel state channels).mutualInformationBits input =

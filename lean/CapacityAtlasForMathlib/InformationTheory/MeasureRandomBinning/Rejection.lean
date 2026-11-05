@@ -38,7 +38,7 @@ theorem measurableSet_seededAcceptance {g : U → ℝ≥0∞} (hg : Measurable g
   (hB.preimage measurable_fst).inter
     (measurableSet_le measurable_snd ((hg.comp measurable_fst).ennreal_toReal.div_const T))
 
-theorem measure_seededAcceptance_inter (μ : Measure U) [SFinite μ]
+theorem measure_seededAcceptance_inter (μ : Measure U)
     {g : U → ℝ≥0∞} (hg : Measurable g) {B E : Set U}
     (hB : MeasurableSet B) (hE : MeasurableSet E) {T : ℝ} (hT : 0 < T)
     (hcut : ∀ u ∈ B, g u ≤ ENNReal.ofReal T) :
@@ -70,7 +70,7 @@ theorem measure_seededAcceptance_inter (μ : Measure U) [SFinite μ]
   simp_rw [div_eq_mul_inv]
   rw [lintegral_mul_const _ hg, withDensity_apply _ (hB.inter hE)]
 
-theorem measure_seededAcceptance (μ : Measure U) [SFinite μ]
+theorem measure_seededAcceptance (μ : Measure U)
     {g : U → ℝ≥0∞} (hg : Measurable g) {B : Set U} (hB : MeasurableSet B)
     {T : ℝ} (hT : 0 < T) (hcut : ∀ u ∈ B, g u ≤ ENNReal.ofReal T) :
     (μ.prod seedLaw) (seededAcceptance g B T) =

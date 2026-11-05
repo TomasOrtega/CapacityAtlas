@@ -160,7 +160,7 @@ theorem multivariateGaussian_conv (m n : EuclideanSpace ℝ ο) (Q N : Matrix ο
   ring
 
 theorem gaussianChannel_comp_eq_map (H : Matrix ο ι ℝ) (N : Matrix ο ο ℝ)
-    (μ : Measure (EuclideanSpace ℝ ι)) [SFinite μ] :
+    (μ : Measure (EuclideanSpace ℝ ι)) :
     gaussianChannel H N ∘ₘ μ =
       (μ.prod (multivariateGaussian 0 N)).map (fun p ↦ H.toEuclideanLin p.1 + p.2) := by
   ext s hs

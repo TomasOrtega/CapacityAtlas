@@ -33,11 +33,10 @@ private theorem sum_ite_zero (q : ℕ) [NeZero q] (a b : ℝ) :
 
 /-- The atlas q-ary noise range is contained in the probability interval. -/
 @[capacity_api]
-theorem qarySymmetric_p_le_one (q : ℕ) (hq : 2 ≤ q) {p : ℝ}
+theorem qarySymmetric_p_le_one (q : ℕ) {p : ℝ}
     (hp : p ≤ ((q - 1 : ℕ) : ℝ) / q) : p ≤ 1 := by
-  have hqpos : (0 : ℝ) < q := by exact_mod_cast (lt_of_lt_of_le (by norm_num) hq)
   have hsuble : ((q - 1 : ℕ) : ℝ) ≤ q := by exact_mod_cast Nat.sub_le q 1
-  exact hp.trans ((div_le_one hqpos).2 hsuble)
+  exact hp.trans (div_le_one_of_le₀ hsuble (Nat.cast_nonneg q))
 
 /-- The q-ary symmetric noise distribution on the cyclic group with `q` elements. -/
 @[capacity_problem "q-ary-symmetric-channel", capacity_definition]
@@ -103,7 +102,7 @@ theorem qarySymmetricNoise_entropy (q : ℕ) [NeZero q] (hq : 2 ≤ q)
   capacity_formal_proof, capacity_claim "information-capacity" 1]
 theorem qarySymmetric_informationCapacity (q : ℕ) [NeZero q] (hq : 2 ≤ q)
     (p : ℝ) (hp0 : 0 ≤ p) (hpMax : p ≤ ((q - 1 : ℕ) : ℝ) / q) :
-    (qarySymmetric q hq p hp0 (qarySymmetric_p_le_one q hq hpMax)).informationCapacityBits =
+    (qarySymmetric q hq p hp0 (qarySymmetric_p_le_one q hpMax)).informationCapacityBits =
       Real.log q / Real.log 2 - Real.binEntropy p / Real.log 2 -
         p * Real.log ((q - 1 : ℕ) : ℝ) / Real.log 2 := by
   rw [qarySymmetric, additiveNoise_informationCapacity, ZMod.card,
@@ -115,15 +114,15 @@ theorem qarySymmetric_informationCapacity (q : ℕ) [NeZero q] (hq : 2 ≤ q)
   capacity_formal_proof, capacity_claim "operational-capacity" 1]
 theorem qarySymmetric_operationalCapacity (q : ℕ) [NeZero q] (hq : 2 ≤ q)
     (p : ℝ) (hp0 : 0 ≤ p) (hpMax : p ≤ ((q - 1 : ℕ) : ℝ) / q) :
-    (qarySymmetric q hq p hp0 (qarySymmetric_p_le_one q hq hpMax)).operationalCapacityBits =
+    (qarySymmetric q hq p hp0 (qarySymmetric_p_le_one q hpMax)).operationalCapacityBits =
       Real.log q / Real.log 2 - Real.binEntropy p / Real.log 2 -
         p * Real.log ((q - 1 : ℕ) : ℝ) / Real.log 2 := by
   calc
-    (qarySymmetric q hq p hp0 (qarySymmetric_p_le_one q hq hpMax)).operationalCapacityBits =
+    (qarySymmetric q hq p hp0 (qarySymmetric_p_le_one q hpMax)).operationalCapacityBits =
         (qarySymmetric q hq p hp0
-          (qarySymmetric_p_le_one q hq hpMax)).informationCapacityBits :=
+          (qarySymmetric_p_le_one q hpMax)).informationCapacityBits :=
       FiniteChannel.codingTheorem
-        (qarySymmetric q hq p hp0 (qarySymmetric_p_le_one q hq hpMax))
+        (qarySymmetric q hq p hp0 (qarySymmetric_p_le_one q hpMax))
     _ = Real.log q / Real.log 2 - Real.binEntropy p / Real.log 2 -
         p * Real.log ((q - 1 : ℕ) : ℝ) / Real.log 2 :=
       qarySymmetric_informationCapacity q hq p hp0 hpMax

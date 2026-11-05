@@ -77,7 +77,7 @@ theorem adjacent_logObjective_le
     (prefix_add_noise_posDef Y E hY hE k.succ k.succ)
     (div_pos (hγ k.castSucc) (hγ k.succ))
     ((div_le_one (hγ k.succ)).mpr (hm k.castSucc_lt_succ.le))
-    (inv_proportional_smul ha hb hp) (by abel)
+    (inv_proportional_smul hb hp) (by abel)
   have hh := mul_le_mul_of_nonneg_left h (hγ k.succ).le
   have he : γ k.succ * (γ k.castSucc / γ k.succ) = γ k.castSucc :=
     mul_div_cancel₀ _ (hγ k.succ).ne'

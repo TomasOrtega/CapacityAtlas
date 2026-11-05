@@ -110,16 +110,26 @@ lemma integrable_gaussianMixture_lineDeriv_lineDeriv_mul (w : α → ℝ)
     (integrable_gaussian_lineDeriv_lineDeriv_mul (m k) v N hN f (hf k)).const_mul (w k))
 
 lemma hasLineDerivAt_one_add_log_gaussianMixturePDFReal
-    (w : α → ℝ) (hw : ∀ a, 0 ≤ w a) (hw1 : ∑ a, w a = 1)
+    (w : α → ℝ) (hw : ∀ a, 0 ≤ w a)
     (m : α → EuclideanSpace ℝ ι) (N : Matrix ι ι ℝ) (hN : N.PosDef)
     (x v : EuclideanSpace ℝ ι) :
     HasLineDerivAt ℝ (fun y ↦ 1 + log (gaussianMixturePDFReal w m N y))
       (lineDeriv ℝ (gaussianMixturePDFReal w m N) x v / gaussianMixturePDFReal w m N x) x v := by
-  have hp := hasLineDerivAt_gaussianMixturePDFReal w m N hN x v
-  have hpos := gaussianMixturePDFReal_pos w hw hw1 m N hN x
-  unfold HasLineDerivAt at hp ⊢
-  have hd := hp.log (by simpa only [zero_smul, add_zero] using hpos.ne')
-  simpa only [zero_smul, add_zero] using hd.const_add 1
+  by_cases hpos : ∃ j, 0 < w j
+  · obtain ⟨j, hj⟩ := hpos
+    have hp := hasLineDerivAt_gaussianMixturePDFReal w m N hN x v
+    have hpositive := gaussianMixturePDFReal_pos_of_pos_weight w hw m N hN j hj x
+    unfold HasLineDerivAt at hp ⊢
+    have hd := hp.log (by simpa only [zero_smul, add_zero] using hpositive.ne')
+    simpa only [zero_smul, add_zero] using hd.const_add 1
+  · have hwzero : ∀ j, w j = 0 := fun j ↦ le_antisymm
+      (le_of_not_gt (fun hj ↦ hpos ⟨j, hj⟩)) (hw j)
+    have hdensity : gaussianMixturePDFReal w m N = fun _ ↦ 0 := by
+      funext y
+      simp [gaussianMixturePDFReal, hwzero]
+    simp only [hdensity, Real.log_zero, add_zero, div_zero]
+    unfold HasLineDerivAt
+    simpa using (hasDerivAt_const (0 : ℝ) (1 : ℝ))
 
 /-- Integration by parts identifies the entropy's directional second-derivative term. -/
 theorem integral_one_add_log_mul_secondDeriv_gaussianMixture
@@ -152,7 +162,7 @@ theorem integral_one_add_log_mul_secondDeriv_gaussianMixture
     (B := ContinuousLinearMap.mul ℝ ℝ) (μ := volume) hfisher
     (by simpa only [ContinuousLinearMap.mul_apply', mul_comm] using hsecond)
     (by simpa only [ContinuousLinearMap.mul_apply', mul_comm] using hfirst)
-    (fun x _ ↦ hasLineDerivAt_one_add_log_gaussianMixturePDFReal w hw hw1 m (t • N) (hN.smul ht) x v)
+    (fun x _ ↦ hasLineDerivAt_one_add_log_gaussianMixturePDFReal w hw m (t • N) (hN.smul ht) x v)
     (fun x _ ↦ hasLineDerivAt_lineDeriv_gaussianMixturePDFReal w m (t • N) (hN.smul ht) x v)
   convert! h using 1
   congr 1

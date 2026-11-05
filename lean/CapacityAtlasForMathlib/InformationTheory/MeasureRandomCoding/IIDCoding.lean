@@ -77,7 +77,7 @@ theorem exists_codes_of_iid_likelihood
       Measure.pi (fun _ : Fin n ↦ ν))
     {cost : X → ℝ} (hcost : Measurable cost) (hcostLp : MemLp cost 2 μ)
     {P R : ℝ} (hP : (∫ x, cost x ∂μ) < P) (x₀ : X) (hx₀ : cost x₀ ≤ P)
-    (hR : 0 ≤ R) (hRate : R * Real.log 2 < ∫ z, info z ∂ν) :
+    (hRate : R * Real.log 2 < ∫ z, info z ∂ν) :
     ∀ ε : ℝ, 0 < ε → ∃ N : ℕ, 0 < N ∧ ∀ n, N ≤ n →
       ∃ code : OneShotCode (Fin n → X) (Fin n → Y)
           (Fin (FiniteChannel.messageCountAtRate R n)),
@@ -91,7 +91,7 @@ theorem exists_codes_of_iid_likelihood
     (fun n ↦ {x | iidSum cost n x ≤ (n : ℝ) * P})
     (fun n ↦ measurableSet_le
       (Finset.measurable_sum _ (fun i _ ↦ hcost.comp (measurable_pi_apply i))) measurable_const)
-    (fun n ↦ ⟨fun _ ↦ x₀, ?_⟩) hR hRa
+    (fun n ↦ ⟨fun _ ↦ x₀, ?_⟩) hRa
     (likelihood_tail_tendsto_zero_of_iid_joint κ μ ν hjoint hinfo hinfoLp ha)
     (iidCost_rejection_tendsto_zero μ hcostLp hP)
   change iidSum cost n (fun _ ↦ x₀) ≤ (n : ℝ) * P

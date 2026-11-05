@@ -63,24 +63,24 @@ theorem grid_hop_length {R Δ : ℝ} {m : ℕ}
   simp [gridTx, gridRx, Fin.sum_univ_two, Real.dist_eq, Real.sqrt_sq_eq_abs,
     abs_of_pos hp]
 
-theorem grid_coord_bounds {R : ℝ} {m : ℕ} (hR : 0 < R) (hm : 0 < m) (i : Fin m) :
+theorem grid_coord_bounds {R : ℝ} {m : ℕ} (hR : 0 < R) (i : Fin m) :
     0 ≤ (i.val : ℝ) * gridStep R m ∧
       (i.val : ℝ) * gridStep R m + gridStep R m ≤ R / 2 := by
-  have hs := gridStep_pos hR hm
+  have hs := gridStep_pos hR i.pos
   have hi : (i.val : ℝ) + 1 ≤ (m : ℝ) := by exact_mod_cast i.isLt
   have he : (m : ℝ) * gridStep R m = R / 2 := by
     unfold gridStep
-    have hm' : (m : ℝ) ≠ 0 := by exact_mod_cast Nat.ne_of_gt hm
+    have hm' : (m : ℝ) ≠ 0 := by exact_mod_cast Nat.ne_of_gt i.pos
     field_simp
   constructor
   · positivity
   · nlinarith
 
 theorem gridTx_norm_le {R Δ : ℝ} {m : ℕ}
-    (hR : 0 < R) (hm : 0 < m) (i : GridIndex m) : ‖gridTx R Δ m i‖ ≤ R := by
-  have hx := grid_coord_bounds hR hm i.1
-  have hy := grid_coord_bounds hR hm i.2
-  have hs := gridStep_pos hR hm
+    (hR : 0 < R) (i : GridIndex m) : ‖gridTx R Δ m i‖ ≤ R := by
+  have hx := grid_coord_bounds hR i.1
+  have hy := grid_coord_bounds hR i.2
+  have hs := gridStep_pos hR i.1.pos
   have he : ‖gridTx R Δ m i‖ ^ 2 =
       ((i.1.val : ℝ) * gridStep R m) ^ 2 + ((i.2.val : ℝ) * gridStep R m) ^ 2 := by
     simpa [gridTx, Fin.sum_univ_two] using
@@ -92,8 +92,8 @@ theorem gridTx_norm_le {R Δ : ℝ} {m : ℕ}
 theorem gridRx_norm_le {R Δ : ℝ} {m : ℕ}
     (hR : 0 < R) (hΔ : 0 < Δ) (hm : 0 < m) (i : GridIndex m) :
     ‖gridRx R Δ m i‖ ≤ R := by
-  have hx := grid_coord_bounds hR hm i.1
-  have hy := grid_coord_bounds hR hm i.2
+  have hx := grid_coord_bounds hR i.1
+  have hy := grid_coord_bounds hR i.2
   have hs := gridStep_pos hR hm
   have hp := gridHop_pos hR hΔ hm
   have hps := gridHop_le_step hR hΔ hm

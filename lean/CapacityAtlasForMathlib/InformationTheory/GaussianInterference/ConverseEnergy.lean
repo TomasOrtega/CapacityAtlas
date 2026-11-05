@@ -30,7 +30,7 @@ theorem pairEnergy_nonneg (c : Code K n) (H : StateBlock K n) (i j : Fin K)
     (m : c.Message) : 0 ≤ pairEnergy c H i j m := sq_nonneg _
 
 theorem pairEnergy_le_energy (c : Code K n) (H : StateBlock K n) (i j : Fin K)
-    (hij : i ≠ j) (m : c.Message) {U : ℝ} (_hU : 0 ≤ U)
+    (hij : i ≠ j) (m : c.Message) {U : ℝ}
     (hHi : ∀ s, ‖H s i i‖ ≤ U) (hHj : ∀ s, ‖H s i j‖ ≤ U) :
     pairEnergy c H i j m ≤ 2 * U ^ 2 * energy c m H := by
   unfold pairEnergy userSignal
@@ -65,14 +65,14 @@ theorem pairEnergy_le_energy (c : Code K n) (H : StateBlock K n) (i j : Fin K)
   nlinarith
 
 theorem integrable_pairEnergy (μ : Measure ℂ) (c : Code K n) {P U : ℝ}
-    (hc : PowerAdmissible μ P c) (hU : 0 ≤ U) (i j : Fin K) (hij : i ≠ j)
+    (hc : PowerAdmissible μ P c) (i j : Fin K) (hij : i ≠ j)
     (hH : ∀ᵐ H ∂stateLaw μ K n, (∀ s, ‖H s i i‖ ≤ U) ∧ (∀ s, ‖H s i j‖ ≤ U))
     (m : c.Message) : Integrable (fun H ↦ pairEnergy c H i j m) (stateLaw μ K n) := by
   apply Integrable.mono' ((hc.1 m).const_mul (2 * U ^ 2))
     (measurable_pairEnergy c i j m).aestronglyMeasurable
   filter_upwards [hH] with H hh
   rw [Real.norm_eq_abs, abs_of_nonneg (pairEnergy_nonneg c H i j m)]
-  exact pairEnergy_le_energy c H i j hij m hU hh.1 hh.2
+  exact pairEnergy_le_energy c H i j hij m hh.1 hh.2
 
 theorem integrable_messageAverage (μ : Measure ℂ) (c : Code K n)
     (f : c.Message → StateBlock K n → ℝ)
@@ -90,18 +90,18 @@ theorem integral_state_messageAverage (μ : Measure ℂ) (c : Code K n)
   rw [integral_const_mul, integral_finsetSum Finset.univ (fun m _ ↦ hf m)]
 
 theorem integral_pairEnergy_le (μ : Measure ℂ) (c : Code K n) {P U : ℝ}
-    (hc : PowerAdmissible μ P c) (hU : 0 ≤ U) (i j : Fin K) (hij : i ≠ j)
+    (hc : PowerAdmissible μ P c) (i j : Fin K) (hij : i ≠ j)
     (hH : ∀ᵐ H ∂stateLaw μ K n, (∀ s, ‖H s i i‖ ≤ U) ∧ (∀ s, ‖H s i j‖ ≤ U)) :
     (∫ H, ∫ m, pairEnergy c H i j m ∂messageLaw c ∂stateLaw μ K n) ≤
       2 * U ^ 2 * ((n : ℝ) * P) := by
-  have hp (m : c.Message) := integrable_pairEnergy μ c hc hU i j hij hH m
+  have hp (m : c.Message) := integrable_pairEnergy μ c hc i j hij hH m
   rw [integral_state_messageAverage μ c _ hp, integral_messageLaw]
   have hi (m : c.Message) : (∫ H, pairEnergy c H i j m ∂stateLaw μ K n) ≤
       2 * U ^ 2 * (∫ H, energy c m H ∂stateLaw μ K n) := by
     rw [← integral_const_mul]
     apply integral_mono_ae (hp m) ((hc.1 m).const_mul _)
     filter_upwards [hH] with H hh
-    exact pairEnergy_le_energy c H i j hij m hU hh.1 hh.2
+    exact pairEnergy_le_energy c H i j hij m hh.1 hh.2
   calc
     _ ≤ (∏ i, (c.messages i : ℝ))⁻¹ *
         ∑ m, 2 * U ^ 2 * (∫ H, energy c m H ∂stateLaw μ K n) :=

@@ -12,22 +12,33 @@ open scoped ENNReal Topology
 
 namespace CapacityAtlas.MeasureChannel
 
-theorem roundedMessage_threshold_le (R a : ℝ) (hR : 0 ≤ R) (n : ℕ) :
+theorem roundedMessage_threshold_le (R a : ℝ) (n : ℕ) :
     (FiniteChannel.messageCountAtRate R n - 1 : ℕ) *
         (ENNReal.ofReal (Real.exp ((n : ℝ) * a)))⁻¹ ≤
       ENNReal.ofReal (2 * Real.exp (-((n : ℝ) * (a - R * Real.log 2)))) := by
-  calc
-    _ ≤ (FiniteChannel.messageCountAtRate R n : ℝ≥0∞) *
-        (ENNReal.ofReal (Real.exp ((n : ℝ) * a)))⁻¹ := by
-      gcongr
-      exact Nat.sub_le (FiniteChannel.messageCountAtRate R n) 1
-    _ = ENNReal.ofReal ((FiniteChannel.messageCountAtRate R n : ℝ) *
-        Real.exp (-((n : ℝ) * a))) := by
-      rw [Real.exp_neg, ENNReal.ofReal_mul (Nat.cast_nonneg _), ENNReal.ofReal_natCast,
-        ENNReal.ofReal_inv_of_pos (Real.exp_pos _)]
-    _ ≤ _ := ENNReal.ofReal_le_ofReal
-      (FiniteChannel.messageCountAtRate_mul_exp_neg_le R (a - R * Real.log 2) hR n
-        (by ring_nf; rfl))
+  by_cases hR : 0 ≤ R
+  · calc
+      _ ≤ (FiniteChannel.messageCountAtRate R n : ℝ≥0∞) *
+          (ENNReal.ofReal (Real.exp ((n : ℝ) * a)))⁻¹ := by
+        gcongr
+        exact Nat.sub_le (FiniteChannel.messageCountAtRate R n) 1
+      _ = ENNReal.ofReal ((FiniteChannel.messageCountAtRate R n : ℝ) *
+          Real.exp (-((n : ℝ) * a))) := by
+        rw [Real.exp_neg, ENNReal.ofReal_mul (Nat.cast_nonneg _), ENNReal.ofReal_natCast,
+          ENNReal.ofReal_inv_of_pos (Real.exp_pos _)]
+      _ ≤ _ := ENNReal.ofReal_le_ofReal
+        (FiniteChannel.messageCountAtRate_mul_exp_neg_le R (a - R * Real.log 2) hR n
+          (by ring_nf; rfl))
+  · have he : (n : ℝ) * R * Real.log 2 ≤ 0 :=
+      mul_nonpos_of_nonpos_of_nonneg
+        (mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg n) (le_of_lt (lt_of_not_ge hR)))
+        (by positivity)
+    have hcount : FiniteChannel.messageCountAtRate R n ≤ 1 := by
+      unfold FiniteChannel.messageCountAtRate
+      apply Nat.ceil_le.mpr
+      simpa only [Nat.cast_one] using Real.exp_le_one_iff.mpr he
+    simp only [Nat.sub_eq_zero_of_le hcount, Nat.cast_zero, zero_mul]
+    exact zero_le
 
 theorem exponential_gap_tendsto_zero {δ : ℝ} (hδ : 0 < δ) :
     Tendsto (fun n : ℕ ↦ ENNReal.ofReal (2 * Real.exp (-((n : ℝ) * δ))))
@@ -46,7 +57,7 @@ theorem exists_codes_of_likelihood_tail_tendsto_zero
     (hκ : ∀ n x, κ n x = (κ n ∘ₘ μ n).withDensity (fun y ↦ f n (x, y)))
     (allowed : (n : ℕ) → Set (X n)) (hallowed : ∀ n, MeasurableSet (allowed n))
     (hne : ∀ n, (allowed n).Nonempty)
-    {R a : ℝ} (hR : 0 ≤ R) (hgap : R * Real.log 2 < a)
+    {R a : ℝ} (hgap : R * Real.log 2 < a)
     (htail : Tendsto (fun n ↦ ∫⁻ x, κ n x
       {y | f n (x, y) ≤ ENNReal.ofReal (Real.exp ((n : ℝ) * a))} ∂μ n) atTop (𝓝 0))
     (hcost : Tendsto (fun n ↦ μ n (allowed n)ᶜ) atTop (𝓝 0)) :
@@ -76,7 +87,7 @@ theorem exists_codes_of_likelihood_tail_tendsto_zero
   have hbound : averageError (κ n) code ≤ ENNReal.ofReal ε := by
     apply herror.trans
     apply le_trans (add_le_add (add_le_add le_rfl ?_) le_rfl) (hN n (by omega)).le
-    simpa only [Fintype.card_fin] using roundedMessage_threshold_le R a hR n
+    simpa only [Fintype.card_fin] using roundedMessage_threshold_le R a n
   exact (ENNReal.toReal_le_toReal (ne_top_of_le_ne_top ENNReal.ofReal_ne_top hbound)
     ENNReal.ofReal_ne_top).mpr hbound |>.trans_eq (ENNReal.toReal_ofReal hε.le)
 

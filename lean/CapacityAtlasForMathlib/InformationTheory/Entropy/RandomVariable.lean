@@ -121,7 +121,7 @@ lemma condEntropy_two_eq_kernel_entropy (hX : Measurable X) (hY : Measurable Y) 
       Hk[Kernel.condKernel (condDistrib (fun a ↦ (Y a, X a)) Z μ),
         Measure.map Z μ ⊗ₘ Kernel.fst (condDistrib (fun a ↦ (Y a, X a)) Z μ)] := by
   rw [Measure.compProd_congr (condDistrib_fst_ae_eq hY hX hZ μ),
-      map_compProd_condDistrib hY hZ,
+      map_compProd_condDistrib hY,
       Kernel.entropy_congr (condKernel_condDistrib_ae_eq hY hX hZ μ),
       ← Kernel.entropy_congr (swap_condDistrib_ae_eq hY hX hZ μ)]
   have : μ.map (fun ω ↦ (Z ω, Y ω)) = (μ.map (fun ω ↦ (Y ω, Z ω))).comap Prod.swap := by

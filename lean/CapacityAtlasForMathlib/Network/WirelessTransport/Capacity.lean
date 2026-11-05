@@ -17,7 +17,7 @@ theorem capacity_lower {n : ℕ} {R Δ W : ℝ}
   obtain ⟨m, hm, hcount, hroot⟩ := exists_grid_size hn
   have hc : 2 * Fintype.card (GridIndex m) ≤ n := by simpa using hcount
   have ha := oneHop_achievable (GridIndex m) (gridTx R Δ m) (gridRx R Δ m) R Δ W hc hW
-    (gridTx_norm_le hR hm) (gridRx_norm_le hR hΔ hm)
+    (gridTx_norm_le hR) (gridRx_norm_le hR hΔ hm)
     (fun _ _ hij => grid_protocol hR hΔ hm hij)
   rw [grid_total_length hR hΔ hm] at ha
   have hlower : W * R * Real.sqrt n / (32 * (1 + Δ)) ≤
@@ -31,7 +31,7 @@ theorem capacity_lower {n : ℕ} {R Δ W : ℝ}
       ring
     rw [he]
     exact mul_le_mul_of_nonneg_left hroot (mul_nonneg hW hR.le)
-  exact hlower.trans (ha.le_capacity hR.le hΔ hW)
+  exact hlower.trans (ha.le_capacity hR.le hΔ)
 
 /-- Nonsharp constants give matching order bounds for every node count at least four. -/
 theorem capacity_bounds {n : ℕ} {R Δ W : ℝ}

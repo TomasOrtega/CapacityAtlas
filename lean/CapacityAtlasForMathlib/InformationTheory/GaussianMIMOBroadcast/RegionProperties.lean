@@ -124,22 +124,24 @@ theorem rawRegion_zero_power
 theorem dpcRate_zero_channel
     (N : (i : Fin K) → Matrix (Fin (rx i)) (Fin (rx i)) ℝ)
     (Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ)
-    (hN : ∀ i, (N i).PosDef) (π : Equiv.Perm (Fin K)) (k : Fin K) :
+    (π : Equiv.Perm (Fin K)) (k : Fin K) :
     dpcRate 0 N Q π k = 0 := by
-  simp [dpcRate, receivedCovariance, (hN (π k)).det_pos.ne']
+  by_cases hd : (N (π k)).det = 0 <;> simp [dpcRate, receivedCovariance, hd]
 
 theorem rawRegion_zero_channel
     (N : (i : Fin K) → Matrix (Fin (rx i)) (Fin (rx i)) ℝ)
-    (hN : ∀ i, (N i).PosDef) {P : ℝ} (hP : 0 ≤ P) :
+    {P : ℝ} (hP : 0 ≤ P) :
     rawRegion (0 : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ) N P = {0} := by
   apply Set.Subset.antisymm
   · rintro R ⟨hR, Q, _, π, hbound⟩
     apply Set.mem_singleton_iff.mpr
     funext i
     apply le_antisymm _ (hR i)
-    simpa [dpcRate_zero_channel N Q hN] using hbound (π.symm i)
+    simpa [dpcRate_zero_channel N Q] using hbound (π.symm i)
   · rintro R rfl
-    exact zero_mem_rawRegion 0 N hN hP
+    refine ⟨fun _ ↦ le_rfl, 0, allocationAdmissible_zero hP, Equiv.refl _, ?_⟩
+    intro k
+    simp [dpcRate_zero_channel N]
 
 theorem zero_mem_region
     (H : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ)
@@ -162,9 +164,9 @@ theorem region_zero_power
 
 theorem region_zero_channel
     (N : (i : Fin K) → Matrix (Fin (rx i)) (Fin (rx i)) ℝ)
-    (hN : ∀ i, (N i).PosDef) {P : ℝ} (hP : 0 ≤ P) :
+    {P : ℝ} (hP : 0 ≤ P) :
     region (0 : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ) N P = {0} := by
-  simp [region, rawRegion_zero_channel N hN hP, convexHull_singleton]
+  simp [region, rawRegion_zero_channel N hP, convexHull_singleton]
 
 theorem isClosed_region
     (H : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ)

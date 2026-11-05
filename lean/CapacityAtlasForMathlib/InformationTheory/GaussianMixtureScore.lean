@@ -13,19 +13,23 @@ namespace CapacityAtlas.MeasureInformation
 
 variable {ι α : Type*} [Fintype ι] [DecidableEq ι] [Fintype α]
 
-lemma abs_weighted_average_le_sum_abs (a s : α → ℝ) (ha : ∀ k, 0 ≤ a k)
-    (hpos : 0 < ∑ k, a k) :
+lemma abs_weighted_average_le_sum_abs (a s : α → ℝ) (ha : ∀ k, 0 ≤ a k) :
     |(∑ k, a k * s k) / ∑ k, a k| ≤ ∑ k, |s k| := by
-  rw [abs_div, abs_of_pos hpos, div_le_iff₀ hpos]
-  calc
-    _ ≤ ∑ k, |a k * s k| := Finset.abs_sum_le_sum_abs _ _
-    _ = ∑ k, a k * |s k| := by simp only [abs_mul, abs_of_nonneg (ha _)]
-    _ ≤ ∑ k, a k * (∑ i, |s i|) := by
-      apply Finset.sum_le_sum
-      intro k _
-      exact mul_le_mul_of_nonneg_left
-        (Finset.single_le_sum (fun i _ ↦ abs_nonneg (s i)) (Finset.mem_univ k)) (ha k)
-    _ = _ := by rw [← Finset.sum_mul, mul_comm]
+  by_cases hzero : (∑ k, a k) = 0
+  · simp only [hzero, div_zero, abs_zero]
+    exact Finset.sum_nonneg (fun k _ ↦ abs_nonneg (s k))
+  · have hnonneg : 0 ≤ ∑ k, a k := Finset.sum_nonneg (fun k _ ↦ ha k)
+    have hpos : 0 < ∑ k, a k := lt_of_le_of_ne hnonneg (Ne.symm hzero)
+    rw [abs_div, abs_of_pos hpos, div_le_iff₀ hpos]
+    calc
+      _ ≤ ∑ k, |a k * s k| := Finset.abs_sum_le_sum_abs _ _
+      _ = ∑ k, a k * |s k| := by simp only [abs_mul, abs_of_nonneg (ha _)]
+      _ ≤ ∑ k, a k * (∑ i, |s i|) := by
+        apply Finset.sum_le_sum
+        intro k _
+        exact mul_le_mul_of_nonneg_left
+          (Finset.single_le_sum (fun i _ ↦ abs_nonneg (s i)) (Finset.mem_univ k)) (ha k)
+      _ = _ := by rw [← Finset.sum_mul, mul_comm]
 
 lemma directionalScore_gaussianMixturePDFReal (w : α → ℝ) (m : α → EuclideanSpace ℝ ι)
     (N : Matrix ι ι ℝ) (hN : N.PosDef) (v x : EuclideanSpace ℝ ι) :
@@ -40,7 +44,7 @@ lemma directionalScore_gaussianMixturePDFReal (w : α → ℝ) (m : α → Eucli
   ring
 
 lemma abs_directionalScore_gaussianMixturePDFReal_le
-    (w : α → ℝ) (hw : ∀ a, 0 ≤ w a) (hw1 : ∑ a, w a = 1)
+    (w : α → ℝ) (hw : ∀ a, 0 ≤ w a)
     (m : α → EuclideanSpace ℝ ι) (N : Matrix ι ι ℝ) (hN : N.PosDef)
     (v x : EuclideanSpace ℝ ι) :
     |directionalScore (gaussianMixturePDFReal w m N) v x| ≤
@@ -50,7 +54,6 @@ lemma abs_directionalScore_gaussianMixturePDFReal_le
     (fun k ↦ w k * multivariateGaussianPDFReal (m k) N x)
     (fun k ↦ -(v ⬝ᵥ N⁻¹ *ᵥ (x - m k)))
     (fun k ↦ mul_nonneg (hw k) (multivariateGaussianPDFReal_pos (m k) N hN x).le)
-    (gaussianMixturePDFReal_pos w hw hw1 m N hN x)
 
 @[fun_prop]
 lemma measurable_directionalScore_gaussianMixturePDFReal (w : α → ℝ)
@@ -79,7 +82,7 @@ lemma memLp_gaussian_directional_score (m v k : EuclideanSpace ℝ ι)
 
 /-- Every finite Gaussian-mixture score has all finite moments under any native Gaussian law. -/
 theorem memLp_directionalScore_gaussianMixturePDFReal
-    (w : α → ℝ) (hw : ∀ a, 0 ≤ w a) (hw1 : ∑ a, w a = 1)
+    (w : α → ℝ) (hw : ∀ a, 0 ≤ w a)
     (m : α → EuclideanSpace ℝ ι) (N : Matrix ι ι ℝ) (hN : N.PosDef)
     (v k : EuclideanSpace ℝ ι) (S : Matrix ι ι ℝ) (p : ℝ≥0∞) (hp : p ≠ ⊤) :
     MemLp (directionalScore (gaussianMixturePDFReal w m N) v) p
@@ -90,7 +93,7 @@ theorem memLp_directionalScore_gaussianMixturePDFReal
   apply hbound.mono' (measurable_directionalScore_gaussianMixturePDFReal w m N hN v).aestronglyMeasurable
   filter_upwards with x
   exact (Real.norm_eq_abs _).trans_le
-    (abs_directionalScore_gaussianMixturePDFReal_le w hw hw1 m N hN v x)
+    (abs_directionalScore_gaussianMixturePDFReal_le w hw m N hN v x)
 
 lemma secondDeriv_div_gaussianMixturePDFReal (w : α → ℝ) (m : α → EuclideanSpace ℝ ι)
     (N : Matrix ι ι ℝ) (hN : N.PosDef) (v x : EuclideanSpace ℝ ι) :
@@ -137,7 +140,7 @@ lemma measurable_secondDeriv_div_gaussianMixturePDFReal (w : α → ℝ)
   fun_prop
 
 lemma memLp_two_secondDeriv_div_gaussianMixturePDFReal
-    (w : α → ℝ) (hw : ∀ a, 0 ≤ w a) (hw1 : ∑ a, w a = 1)
+    (w : α → ℝ) (hw : ∀ a, 0 ≤ w a)
     (m : α → EuclideanSpace ℝ ι) (N : Matrix ι ι ℝ) (hN : N.PosDef)
     (v k : EuclideanSpace ℝ ι) (S : Matrix ι ι ℝ) :
     MemLp (fun x ↦ lineDeriv ℝ
@@ -156,7 +159,6 @@ lemma memLp_two_secondDeriv_div_gaussianMixturePDFReal
     (fun a ↦ w a * multivariateGaussianPDFReal (m a) N x)
     (fun a ↦ (v ⬝ᵥ N⁻¹ *ᵥ (x - m a)) ^ 2 - v ⬝ᵥ N⁻¹ *ᵥ v)
     (fun a ↦ mul_nonneg (hw a) (multivariateGaussianPDFReal_pos (m a) N hN x).le)
-    (gaussianMixturePDFReal_pos w hw hw1 m N hN x)
 
 /-- The actual score derivative is square-integrable under every Gaussian law. -/
 theorem memLp_two_lineDeriv_directionalScore_gaussianMixturePDFReal
@@ -168,12 +170,12 @@ theorem memLp_two_lineDeriv_directionalScore_gaussianMixturePDFReal
   letI : ENNReal.HolderTriple 4 4 2 := ⟨by
     apply (ENNReal.toReal_eq_toReal_iff' (by finiteness) (by finiteness)).mp
     norm_num [ENNReal.toReal_add]⟩
-  have hs := memLp_directionalScore_gaussianMixturePDFReal w hw hw1 m N hN v k S 4 (by norm_num)
+  have hs := memLp_directionalScore_gaussianMixturePDFReal w hw m N hN v k S 4 (by norm_num)
   have hsq : MemLp (fun x ↦ directionalScore (gaussianMixturePDFReal w m N) v x ^ 2) 2
       (multivariateGaussian k S) := by
     simpa only [pow_two] using hs.mul' hs
   simp_rw [(hasLineDerivAt_directionalScore_gaussianMixturePDFReal w hw hw1 m N hN v _).lineDeriv]
-  exact (memLp_two_secondDeriv_div_gaussianMixturePDFReal w hw hw1 m N hN v k S).sub hsq
+  exact (memLp_two_secondDeriv_div_gaussianMixturePDFReal w hw m N hN v k S).sub hsq
 
 @[fun_prop]
 lemma measurable_lineDeriv_directionalScore_gaussianMixturePDFReal
