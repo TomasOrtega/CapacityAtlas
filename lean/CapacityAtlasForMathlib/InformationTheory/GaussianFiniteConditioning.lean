@@ -18,6 +18,7 @@ variable {α β υ ι : Type*} [MeasurableSpace α] [MeasurableSpace β] [Measur
   [MeasurableSingletonClass α] [MeasurableSingletonClass β] [MeasurableSingletonClass υ]
   [Fintype ι] [DecidableEq ι]
 
+/-- Gaussian output kernel with an index-dependent mean and common covariance. -/
 noncomputable def gaussianCodebookKernel (m : α → EuclideanSpace ℝ ι) (N : Matrix ι ι ℝ) :
     Kernel α (EuclideanSpace ℝ ι) :=
   Kernel.ofFunOfCountable (fun a ↦ multivariateGaussian (m a) N)
@@ -63,6 +64,7 @@ theorem gaussianCodebookKernel_output_integrable_llr (μ : Measure α) [IsProbab
       (gaussianCodebookKernel m N ∘ₘ μ) :=
   integrable_llr_gaussianMixture_volume μ _ m N hN (fun _ ↦ rfl)
 
+/-- Gaussian codebook kernel after averaging its latent index against `ν`. -/
 noncomputable def gaussianMarginalCodebookKernel (ν : Measure β)
     (m : α → β → EuclideanSpace ℝ ι) (N : Matrix ι ι ℝ) :
     Kernel α (EuclideanSpace ℝ ι) :=

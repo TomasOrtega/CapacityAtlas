@@ -15,6 +15,7 @@ namespace CapacityAtlas.Gaussian.MIMOBroadcast
 
 variable {K tx n : ℕ} {rx : Fin K → ℕ}
 
+/-- Uniform probability measure on the nonempty finite message alphabet `Fin m`. -/
 noncomputable def uniformFinLaw (m : ℕ) (hm : 0 < m) : Measure (Fin m) :=
   letI : Nonempty (Fin m) := ⟨⟨0, hm⟩⟩
   (PMF.uniformOfFintype (Fin m)).toMeasure
@@ -28,8 +29,10 @@ theorem uniformFinLaw_singleton (m : ℕ) (hm : 0 < m) (a : Fin m) :
     uniformFinLaw m hm {a} = (m : ℝ≥0∞)⁻¹ := by
   simp [uniformFinLaw]
 
+/-- One message index for each receiver of the broadcast code. -/
 abbrev MessageTuple (c : Code K tx rx n) := (i : Fin K) → Fin (c.messages i)
 
+/-- A complete message tuple together with every receiver noise block. -/
 abbrev ExperimentSpace (c : Code K tx rx n) :=
   MessageTuple c × ((i : Fin K) → Fin n → EuclideanSpace ℝ (Fin (rx i)))
 
@@ -63,9 +66,11 @@ instance experiment_isProbabilityMeasure
   unfold experiment
   infer_instance
 
+/-- Project the message intended for receiver `i` from the coding experiment. -/
 def messageRV (c : Code K tx rx n) (i : Fin K) : ExperimentSpace c → Fin (c.messages i) :=
   fun p ↦ p.1 i
 
+/-- Receiver output block in the coding experiment for the chosen message tuple and noise. -/
 noncomputable def receivedRV
     (H : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ)
     (c : Code K tx rx n) (i : Fin K) :

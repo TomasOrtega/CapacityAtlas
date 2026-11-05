@@ -14,6 +14,7 @@ namespace CapacityAtlas.Gaussian.Interference
 
 variable {K n : ℕ}
 
+/-- Message tuple with the two specified users' coordinates replaced in order. -/
 def pairMessage (c : Code K n) (m : c.Message) (i j : Fin K)
     (a : Fin (c.messages i)) (b : Fin (c.messages j)) : c.Message :=
   Function.update (Function.update m i a) j b
@@ -41,10 +42,12 @@ theorem integral_pairMessage (c : Code K n) (i j : Fin K) (f : c.Message → ℝ
   exact integral_updateProduct
     (fun k ↦ uniformFinLaw (c.messages k) (c.messages_pos k)) j f
 
+/-- One user's contribution at a receiver, represented as a real block vector. -/
 noncomputable def userSignal (c : Code K n) (H : StateBlock K n) (r i : Fin K)
     (a : Fin (c.messages i)) : EuclideanSpace ℝ (Fin 2 × Fin n) :=
   realBlock fun t ↦ H t r i * c.encode i a H t
 
+/-- Real received block from all users other than the two singled out for the converse. -/
 noncomputable def pairBackground (c : Code K n) (m : c.Message) (H : StateBlock K n)
     (r i j : Fin K) : EuclideanSpace ℝ (Fin 2 × Fin n) :=
   realBlock fun t ↦ ∑ k, if k = i ∨ k = j then 0 else H t r k * c.encode k (m k) H t

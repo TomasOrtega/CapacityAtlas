@@ -13,6 +13,7 @@ open scoped BigOperators
 
 namespace CapacityAtlas.Gaussian.Interference
 
+/-- Number of channel uses in an alignment extension with K users and exponent order n. -/
 def extensionLength (K n : ℕ) : ℕ := Fintype.card (Columns (Fin K) n)
 
 theorem extensionLength_pos (K n : ℕ) : 0 < extensionLength K n := by
@@ -20,12 +21,15 @@ theorem extensionLength_pos (K n : ℕ) : 0 < extensionLength K n := by
   have hp : 0 < (n + 1) ^ Fintype.card (Cross (Fin K)) := Nat.pow_pos (by omega)
   omega
 
+/-- Bijection between alignment-extension row indices and physical time slots. -/
 noncomputable def slotEquiv (K n : ℕ) : Columns (Fin K) n ≃ Fin (extensionLength K n) :=
   Fintype.equivFin _
 
+/-- Channel state block reindexed by alignment rows and receiver-sender pairs. -/
 noncomputable def stateFading {K n : ℕ} (H : StateBlock K (extensionLength K n)) :
     FadingBlock (Fin K) n ℂ := fun c p ↦ H (slotEquiv K n c) p.1 p.2
 
+/-- Flattened coefficient vector used to evaluate alignment determinant polynomials. -/
 noncomputable def flatState {K n : ℕ} (H : StateBlock K (extensionLength K n)) :
     Columns (Fin K) n × (Fin K × Fin K) → ℂ := fun p ↦ stateFading H p.1 p.2
 
@@ -59,6 +63,7 @@ theorem ae_stateFading_nonsingular (μ : Measure ℂ) [IsProbabilityMeasure μ]
   (measurePreserving_flatState μ K n).quasiMeasurePreserving.ae
     (ae_decodingMatrix_nonsingular (fun _ ↦ μ))
 
+/-- Monomial-beam transmission expressed at a physical time slot of the alignment extension. -/
 noncomputable def alignedTransmit {K n : ℕ} (H : StateBlock K (extensionLength K n))
     (x : Box (Fin K) n → ℂ) (t : Fin (extensionLength K n)) : ℂ :=
   transmitted (stateFading H) x ((slotEquiv K n).symm t)
@@ -86,6 +91,7 @@ theorem norm_alignedTransmit_le {K n : ℕ} (H : StateBlock K (extensionLength K
     ‖alignedTransmit H x t‖ ≤ Fintype.card (Box (Fin K) n) * beamBound (Fin K) n M * Q :=
   norm_transmitted_le (stateFading H) M Q (fun _ _ ↦ hh _ _ _) x hx _
 
+/-- Desired stream vector obtained by reindexing the received block and applying its alignment decoder. -/
 noncomputable def alignedDecode {K n : ℕ} (H : StateBlock K (extensionLength K n))
     (i : Fin K) (y : Fin (extensionLength K n) → ℂ) : Box (Fin K) n → ℂ :=
   decoder (stateFading H) i (fun c ↦ y (slotEquiv K n c))

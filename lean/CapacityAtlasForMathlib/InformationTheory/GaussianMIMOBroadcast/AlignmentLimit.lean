@@ -14,6 +14,7 @@ namespace CapacityAtlas.Gaussian.MIMOBroadcast
 
 variable {ι ο : Type*} [Fintype ι] [Fintype ο] [DecidableEq ι] [DecidableEq ο]
 
+/-- Determinant `det (I + S (δ I + Hᵀ N⁻¹ H))` for the aligned-channel limit. -/
 noncomputable def regularizedDet (H : Matrix ο ι ℝ) (N : Matrix ο ο ℝ)
     (δ : ℝ) (S : Matrix ι ι ℝ) : ℝ :=
   (1 + S * (δ • 1 + H.transpose * N⁻¹ * H)).det
@@ -53,6 +54,7 @@ theorem continuous_regularizedDet (H : Matrix ο ι ℝ) (N : Matrix ο ο ℝ) 
 
 variable {K tx : ℕ} {rx : Fin K → ℕ}
 
+/-- Dirty-paper layer rate in bits using the regularized aligned determinant ratio. -/
 noncomputable def regularizedDpcRate
     (H : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ)
     (N : (i : Fin K) → Matrix (Fin (rx i)) (Fin (rx i)) ℝ)

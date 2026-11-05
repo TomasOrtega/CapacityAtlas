@@ -13,6 +13,7 @@ namespace CapacityAtlas.MeasureBinning
 
 variable {S U Y : Type*} [MeasurableSpace S] [MeasurableSpace U] [MeasurableSpace Y]
 
+/-- Return the final sampled state only when all stages succeed and it is admissible; otherwise fall back. -/
 noncomputable def safeSequenceState (D : ℕ → RejectionStage S U) (initial fallback : S)
     (C : Set S) (n : ℕ) (samples : SequenceSamples (fun i ↦ (D i).Samples) n) : S :=
   if samples ∈ sequenceSuccess initial (fun i ↦ (D i).next) (fun i ↦ (D i).success) n ∧
@@ -37,6 +38,7 @@ theorem safeSequenceState_mem (D : ℕ → RejectionStage S U) (initial fallback
   · exact h.2
   · exact hfallback
 
+/-- Sum of sequential failure, inadmissibility, missed-detection, and competing-message terms. -/
 noncomputable def sequenceReceiverBound {M : ℕ → Type*} [∀ j, Fintype (M j)]
     (D : ℕ → RejectionStage S U) (initial fallback : S) (C : Set S)
     (W : Kernel S Y) (aux : S → U) (A : Set (U × Y))

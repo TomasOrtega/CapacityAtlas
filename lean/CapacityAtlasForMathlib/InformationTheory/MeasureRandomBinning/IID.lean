@@ -42,6 +42,7 @@ theorem iidKernel_expDensity_base (κ : Kernel X Y) [IsMarkovKernel κ]
   simp_rw [iidLikelihood_eq_prod]
   exact iidKernel_withDensity_base κ μ _ hinfo.exp.ennreal_ofReal hrow n x
 
+/-- Independent repeated state-input channel, with paired state and input words as arguments. -/
 noncomputable def blockChannel (κ : Kernel (S × X) Y) [IsMarkovKernel κ] (n : ℕ) :
     Kernel ((Fin n → S) × (Fin n → X)) (Fin n → Y) :=
   (iidKernel κ n).comap (pairBlock n) (measurable_pairBlock n)
@@ -49,6 +50,7 @@ noncomputable def blockChannel (κ : Kernel (S × X) Y) [IsMarkovKernel κ] (n :
 instance (κ : Kernel (S × X) Y) [IsMarkovKernel κ] (n : ℕ) :
     IsMarkovKernel (blockChannel κ n) := by unfold blockChannel; infer_instance
 
+/-- Apply the one-symbol state-auxiliary encoder at every block coordinate. -/
 def blockInput (input : S × U → X) (n : ℕ) (z : (Fin n → S) × (Fin n → U)) : Fin n → X :=
   fun i ↦ input (z.1 i, z.2 i)
 
@@ -58,6 +60,7 @@ theorem measurable_blockInput {input : S × U → X} (hinput : Measurable input)
     (((measurable_pi_apply i).comp measurable_fst).prodMk
       ((measurable_pi_apply i).comp measurable_snd)))
 
+/-- Output kernel obtained by substituting the state-auxiliary input map into the channel. -/
 noncomputable def auxiliaryChannel (κ : Kernel (S × X) Y) (input : S × U → X)
     (hinput : Measurable input) : Kernel (S × U) Y :=
   κ.comap (fun z ↦ (z.1, input z)) (measurable_fst.prodMk hinput)

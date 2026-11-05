@@ -15,6 +15,7 @@ variable {U V Y C S L : Type*} [Fintype U] [Fintype V] [Fintype Y]
   [Fintype C] [Fintype S] [Fintype L]
   [DecidableEq C] [DecidableEq S] [DecidableEq L]
 
+/-- Independent satellite symbols conditioned on a fixed common-auxiliary word. -/
 def conditionalProduct (q : U → FiniteDistribution V) (n : ℕ) (u : Fin n → U) :
     FiniteDistribution (Fin n → V) :=
   FiniteDistribution.productFamily fun i ↦ q (u i)
@@ -24,10 +25,12 @@ theorem conditionalProduct_channel (q : U → FiniteDistribution V) (n : ℕ) :
   ext u v
   rfl
 
+/-- Block conditional-information mean minus the block threshold slack, in nats. -/
 noncomputable def densityThreshold (W : FiniteChannel V Y) (p : FiniteDistribution U)
     (q : U → FiniteDistribution V) (n : ℕ) (δ : ℝ) : ℝ :=
   (n : ℝ) * conditionalMean W p q - (n : ℝ) * δ
 
+/-- Conditional threshold-coding estimate from variance and competing-message terms. -/
 noncomputable def conditionalCodingBound (W : FiniteChannel V Y) (p : FiniteDistribution U)
     (q : U → FiniteDistribution V) (n messages : ℕ) (δ : ℝ) : ℝ :=
   ((n : ℝ) * conditionalVariance W p q) / (((n : ℝ) * δ) ^ 2) +
@@ -118,10 +121,12 @@ theorem expected_block_leakage_le [Nonempty S] [Nonempty L]
   · exact expected_conditional_block_information_le W p q n
   · exact conditional_block_packing_le W p q hn hδ (Fintype.card L)
 
+/-- Block mutual-information threshold for decoding the common auxiliary, in nats. -/
 noncomputable def commonThreshold (W : FiniteChannel V Y) (p : FiniteDistribution U)
     (q : U → FiniteDistribution V) (n : ℕ) (δ : ℝ) : ℝ :=
   (n : ℝ) * (W.comp (FiniteChannel.ofRows q)).mutualInformation p - (n : ℝ) * δ
 
+/-- Threshold-coding estimate for the channel obtained by averaging satellite inputs. -/
 noncomputable def commonCodingBound (W : FiniteChannel V Y) (p : FiniteDistribution U)
     (q : U → FiniteDistribution V) (n messages : ℕ) (δ : ℝ) : ℝ :=
   ((n : ℝ) * (W.comp (FiniteChannel.ofRows q)).informationVariance p) / (((n : ℝ) * δ) ^ 2) +

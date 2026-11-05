@@ -58,18 +58,22 @@ namespace CapacityAtlas.ConfidentialBroadcast
 
 variable {U V Y : Type*} [Fintype U] [Fintype V] [Fintype Y]
 
+/-- Joint law of the common auxiliary, satellite input, and channel output. -/
 def conditionalJoint (W : FiniteChannel V Y) (p : FiniteDistribution U)
     (q : U → FiniteDistribution V) : FiniteDistribution (U × (V × Y)) :=
   p.joint fun u ↦ (q u).joint W.rowDistribution
 
+/-- Conditional mutual information averaged over the common auxiliary, in nats. -/
 noncomputable def conditionalMean (W : FiniteChannel V Y) (p : FiniteDistribution U)
     (q : U → FiniteDistribution V) : ℝ :=
   ∑ u, p u * W.mutualInformation (q u)
 
+/-- Information density for the satellite channel at the given common auxiliary. -/
 noncomputable def conditionalDensity (W : FiniteChannel V Y)
     (q : U → FiniteDistribution V) (a : U × (V × Y)) : ℝ :=
   W.informationDensity (q a.1) a.2
 
+/-- Second centered moment of conditional information density under the joint law. -/
 noncomputable def conditionalVariance (W : FiniteChannel V Y) (p : FiniteDistribution U)
     (q : U → FiniteDistribution V) : ℝ :=
   ∑ a, conditionalJoint W p q a *
@@ -138,6 +142,7 @@ theorem conditionalDensity_lowerTail_le (W : FiniteChannel V Y)
   rw [hmoment'] at htail
   exact htail
 
+/-- Regroup three coordinate words as one word of common, satellite, and output triples. -/
 def conditionalWordEquiv (n : ℕ) :
     ((Fin n → U) × ((Fin n → V) × (Fin n → Y))) ≃ (Fin n → U × (V × Y)) :=
   (Equiv.prodCongr (Equiv.refl (Fin n → U))

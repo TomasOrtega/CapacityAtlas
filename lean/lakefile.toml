@@ -4,15 +4,19 @@ defaultTargets = ["CapacityAtlas"]
 
 [leanOptions]
 autoImplicit = false
+linter.missingDocs = true
 
 [[lean_lib]]
 name = "CapacityAtlasUtil"
+globs = ["CapacityAtlasUtil.*"]
 
 [[lean_lib]]
 name = "CapacityAtlasForMathlib"
+globs = ["CapacityAtlasForMathlib.*"]
 
 [[lean_lib]]
 name = "CapacityAtlas"
+globs = ["CapacityAtlas.*"]
 [lean_lib.leanOptions]
 warn.sorry = false
 
@@ -23,9 +27,11 @@ supportInterpreter = true
 
 [[lean_lib]]
 name = "CapacityAtlasAuditCore"
+globs = ["CapacityAtlasAuditCore.*"]
 
 [[lean_lib]]
 name = "CapacityAtlasAuditTests"
+globs = ["CapacityAtlasAuditTests.*"]
 
 [[require]]
 name = "mathlib"

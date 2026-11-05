@@ -13,6 +13,7 @@ namespace CapacityAtlas.MeasureInformation
 
 variable {ι α : Type*} [Fintype ι] [DecidableEq ι] [Fintype α]
 
+/-- Sum of directional Fisher information along the standard coordinate vectors. -/
 noncomputable def traceFisherWith (reference : Measure (EuclideanSpace ℝ ι))
     (density : EuclideanSpace ℝ ι → ℝ) : ℝ :=
   ∑ i, directionalFisherWith reference density (EuclideanSpace.single i 1)

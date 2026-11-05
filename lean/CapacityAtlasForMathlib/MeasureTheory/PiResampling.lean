@@ -14,6 +14,7 @@ namespace MeasureTheory
 
 variable {ι : Type*} {α : ι → Type*} [Fintype ι] [∀ i, MeasurableSpace (α i)]
 
+/-- Product point choosing coordinates from x where p holds and from y elsewhere. -/
 def spliceProduct (p : ι → Prop) [DecidablePred p] (x y : ∀ i, α i) : ∀ i, α i :=
   fun i ↦ if p i then x i else y i
 

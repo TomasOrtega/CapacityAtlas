@@ -12,6 +12,7 @@ open Filter Topology
 
 namespace CapacityAtlas.Gaussian.Interference
 
+/-- Integer constellation order obtained by rounding down the square root of the power-to-scale ratio. -/
 noncomputable def qamOrder (C P : ℝ) : ℕ := ⌊Real.sqrt (P / C)⌋₊
 
 theorem qamOrder_tendsto {C : ℝ} (hC : 0 < C) :

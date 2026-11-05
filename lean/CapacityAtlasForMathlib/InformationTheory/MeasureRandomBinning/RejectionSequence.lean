@@ -13,6 +13,7 @@ namespace CapacityAtlas.MeasureBinning
 
 variable {S U : Type*} [MeasurableSpace S] [MeasurableSpace U]
 
+/-- Push the sampled auxiliary through the measurable state-update map. -/
 noncomputable def updateKernel (η : Kernel S U) [IsSFiniteKernel η]
     {update : S × U → S} (hupdate : Measurable update) : Kernel S S where
   toFun s := (η s).map (fun u ↦ update (s, u))
@@ -38,22 +39,39 @@ instance (η : Kernel S U) [IsMarkovKernel η]
     rw [updateKernel_apply]
     exact Measure.isProbabilityMeasure_map (hupdate.comp measurable_prodMk_left).aemeasurable
 
+/-- A rejection-sampling stage with a density bound on admissible pairs and a state update. -/
 structure RejectionStage (S U : Type*) [MeasurableSpace S] [MeasurableSpace U] where
+  /-- Ideal auxiliary law for each current state. -/
   target : Kernel S U
+  /-- Each target row is a probability measure. -/
   target_markov : IsMarkovKernel target
+  /-- Reference law from which auxiliary candidates are drawn. -/
   candidate : Measure U
+  /-- The candidate law is a probability measure. -/
   candidate_probability : IsProbabilityMeasure candidate
+  /-- Density of each target row relative to the candidate law. -/
   density : S × U → ℝ≥0∞
+  /-- The density is jointly measurable in state and auxiliary. -/
   measurable_density : Measurable density
+  /-- Every target row is the candidate law weighted by its density. -/
   target_eq_density : ∀ s, target s = candidate.withDensity (fun u ↦ density (s, u))
+  /-- Admissible state-auxiliary pairs used to control rejection failure. -/
   good : Set (S × U)
+  /-- The admissibility condition is measurable. -/
   measurable_good : MeasurableSet good
+  /-- Density cutoff used to accept candidate-seed pairs. -/
   threshold : ℝ
+  /-- The density cutoff is strictly positive. -/
   threshold_pos : 0 < threshold
+  /-- The density is bounded by the cutoff on admissible pairs. -/
   density_le : ∀ z ∈ good, density z ≤ ENNReal.ofReal threshold
+  /-- Next state determined by the current state and selected auxiliary. -/
   update : S × U → S
+  /-- The state-update map is jointly measurable. -/
   measurable_update : Measurable update
+  /-- Fallback auxiliary-seed pair for the selection map. -/
   fallback : U × ℝ
+  /-- Number of candidate-seed pairs sampled in this stage. -/
   count : ℕ
 
 namespace RejectionStage
@@ -63,18 +81,22 @@ variable (D : RejectionStage S U)
 instance : IsMarkovKernel D.target := D.target_markov
 instance : IsProbabilityMeasure D.candidate := D.candidate_probability
 
+/-- Candidate auxiliary-seed pairs for all rejection attempts in this stage. -/
 abbrev Samples := Fin D.count → U × ℝ
 
+/-- Independent candidate and unit-interval seed draws for every attempt. -/
 noncomputable def sampleLaw : Measure D.Samples :=
   Measure.pi (fun _ : Fin D.count ↦ D.candidate.prod seedLaw)
 
 instance : IsProbabilityMeasure D.sampleLaw := by unfold sampleLaw; infer_instance
 
+/-- State update using the first accepted candidate, or the stage's fallback candidate. -/
 noncomputable def next (p : S × D.Samples) : S :=
   D.update (p.1, (firstHit
     (seededAcceptance (fun u ↦ D.density (p.1, u)) {u | (p.1, u) ∈ D.good} D.threshold)
       D.fallback D.count p.2).1)
 
+/-- Good-state sample tuples containing an accepted candidate-seed pair. -/
 def success : Set (S × D.Samples) :=
   {p | p.1 ∈ goodState D.target D.good ∧
     hasHit (seededAcceptance (fun u ↦ D.density (p.1, u))
@@ -92,6 +114,7 @@ theorem measurableSet_success : MeasurableSet D.success :=
       (measurableSet_seededAcceptanceSection D.measurable_density D.measurable_good D.threshold)
         D.count)
 
+/-- Ideal state transition obtained by sampling from the target auxiliary kernel. -/
 noncomputable def referenceKernel : Kernel S S := updateKernel D.target D.measurable_update
 
 instance : IsMarkovKernel D.referenceKernel := by unfold referenceKernel; infer_instance
@@ -132,6 +155,7 @@ theorem sample_failure_eq (s : S) :
     rfl
   · simp [success, hs, rejectionFailure]
 
+/-- Bound combining bad target mass with the finite-attempt rejection tail. -/
 noncomputable def failureBound (σ : Measure S) : ℝ≥0∞ :=
   2 * (σ ⊗ₘ D.target) D.goodᶜ +
     ENNReal.ofReal (Real.exp (-((D.count : ℝ) * ((1 / 2) / D.threshold))))

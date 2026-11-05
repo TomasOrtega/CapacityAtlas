@@ -12,6 +12,7 @@ namespace CapacityAtlas.ZeroError
 
 open CapacityAtlas
 
+/-- Confusability adjacency in the cycle graph on seven vertices. -/
 def sevenCycleAdjacent (left right : Fin 7) : Prop :=
   (SimpleGraph.cycleGraph 7).Adj left right
 
@@ -26,6 +27,7 @@ theorem sevenCycleAdjacent_iff (left right : Fin 7) :
   revert left right
   decide
 
+/-- Zero-error Shannon capacity of the seven-cycle confusability graph. -/
 @[capacity_problem "seven-cycle-zero-error-channel", capacity_definition]
 noncomputable def sevenCycleShannonCapacity : ℝ :=
   graphShannonCapacity sevenCycleAdjacent

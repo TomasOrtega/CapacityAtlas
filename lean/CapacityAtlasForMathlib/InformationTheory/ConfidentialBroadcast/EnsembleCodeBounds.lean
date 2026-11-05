@@ -35,6 +35,7 @@ theorem average_const (r : ℝ) : (average (C := C) (S := S) (L := L) fun _ _ _ 
   simp only [average, ← Finset.sum_mul,
     FiniteDistribution.sum_probability_eq_one, one_mul]
 
+/-- Superposition block-code ensemble with common, secret, and random-seed indices. -/
 def blockEnsemble (p : FiniteDistribution U) (q : U → FiniteDistribution V) (n C S L : ℕ) :=
   superpositionEnsemble (C := Fin C) (S := Fin S × Fin L) (p.iid n) (conditionalProduct q n)
 
@@ -102,6 +103,7 @@ theorem expected_rawSatelliteError_le {O : Type*} [Fintype O]
   simpa only [blockEnsemble, Fintype.card_prod, Fintype.card_fin] using
     expected_block_satellite_error_le W p q hn hδ c (s, l)
 
+/-- Unnormalized secrecy estimate from conditional information and seed-decoding error. -/
 noncomputable def leakageBound (W : FiniteChannel V Z) (p : FiniteDistribution U)
     (q : U → FiniteDistribution V) (n L : ℕ) (δ : ℝ) : ℝ :=
   (n : ℝ) * (conditionalMean W p q / Real.log 2) - Real.log L / Real.log 2 + 1 +
@@ -136,10 +138,12 @@ theorem expected_upperLeakage_le (W : FiniteBroadcastChannel V Y Z)
         expected_block_leakage_le (S := Fin S) (L := Fin L) W.receiver₂ p q hn hδ c
     _ = _ := by rw [← Finset.sum_mul, FiniteDistribution.sum_probability_eq_one, one_mul]
 
+/-- Common-message coding bound, set to zero when there is only one common message. -/
 noncomputable def commonErrorBound {O : Type*} [Fintype O] (W : FiniteChannel V O)
     (p : FiniteDistribution U) (q : U → FiniteDistribution V) (n C : ℕ) (δ : ℝ) : ℝ :=
   if C = 1 then 0 else commonCodingBound W p q n C δ
 
+/-- Satellite coding bound, set to zero when the combined secret and seed index is unique. -/
 noncomputable def satelliteErrorBound {O : Type*} [Fintype O] (W : FiniteChannel V O)
     (p : FiniteDistribution U) (q : U → FiniteDistribution V) (n S L : ℕ) (δ : ℝ) : ℝ :=
   if S * L = 1 then 0 else conditionalCodingBound W p q n (S * L) δ
@@ -198,6 +202,7 @@ theorem defect_le_raw_bounds {A : Type*} [Fintype A]
   · dsimp [commonYError, commonZError, satelliteError] at *
     linarith
 
+/-- Combined finite-block bound on both common decoders, satellite error, and leakage. -/
 noncomputable def finiteCodingBound (W : FiniteBroadcastChannel V Y Z)
     (p : FiniteDistribution U) (q : U → FiniteDistribution V) (n C S L : ℕ) (δ : ℝ) : ℝ :=
   commonErrorBound W.receiver₁ p q n C δ + commonErrorBound W.receiver₂ p q n C δ +

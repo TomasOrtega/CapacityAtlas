@@ -25,6 +25,7 @@ noncomputable def rowExponent (r : C) (e : V → ℕ) : C × V →₀ ℕ :=
 noncomputable def matrix (e : C → V → ℕ) : Matrix C C (MvPolynomial (C × V) R) :=
   fun r c ↦ MvPolynomial.monomial (rowExponent r (e c)) 1
 
+/-- Exponent vector of the determinant term obtained by assigning each column its permuted row. -/
 noncomputable def permutationExponent (e : C → V → ℕ) (p : Equiv.Perm C) :
     C × V →₀ ℕ :=
   ∑ c, rowExponent (p c) (e c)

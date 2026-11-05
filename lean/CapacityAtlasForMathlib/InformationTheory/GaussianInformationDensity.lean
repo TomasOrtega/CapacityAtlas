@@ -41,6 +41,7 @@ theorem memLp_two_log_multivariateGaussianPDFReal [DecidableEq ι]
 
 variable [DecidableEq ι] [DecidableEq ο]
 
+/-- Gaussian log-likelihood ratio in nats between a channel row and a reference output law. -/
 noncomputable def gaussianInformationDensity (H : Matrix ο ι ℝ) (N : Matrix ο ο ℝ)
     (m : EuclideanSpace ℝ ο) (C : Matrix ο ο ℝ)
     (x : EuclideanSpace ℝ ι) (y : EuclideanSpace ℝ ο) : ℝ :=

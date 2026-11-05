@@ -15,12 +15,16 @@ namespace CapacityAtlas.Gaussian.DirtyPaper
 
 variable {ι ο : Type*} [Fintype ι] [Fintype ο] [DecidableEq ι] [DecidableEq ο]
 
+/-- Pair of an input-space Gaussian vector and an output-space noise vector. -/
 abbrev BaseSpace (ι ο : Type*) := EuclideanSpace ℝ ι × EuclideanSpace ℝ ο
+/-- Base input/noise pair together with an input-space additive state vector. -/
 abbrev SourceSpace (ι ο : Type*) := BaseSpace ι ο × EuclideanSpace ℝ ι
 
+/-- Independent centered Gaussian input and noise vectors with covariances `Q` and `N`. -/
 noncomputable def baseLaw (Q : Matrix ι ι ℝ) (N : Matrix ο ο ℝ) : Measure (BaseSpace ι ο) :=
   (multivariateGaussian 0 Q).prod (multivariateGaussian 0 N)
 
+/-- Independent centered Gaussian input, noise, and state with covariances `Q`, `N`, and `S`. -/
 noncomputable def sourceLaw (Q S : Matrix ι ι ℝ) (N : Matrix ο ο ℝ) :
     Measure (SourceSpace ι ο) := (baseLaw Q N).prod (multivariateGaussian 0 S)
 
@@ -33,22 +37,27 @@ instance sourceLaw_isGaussian (Q S : Matrix ι ι ℝ) (N : Matrix ο ο ℝ) :
   unfold sourceLaw
   infer_instance
 
+/-- Linear map sending an input/noise pair to `H x + z`. -/
 noncomputable def baseOutput (H : Matrix ο ι ℝ) : BaseSpace ι ο →L[ℝ] EuclideanSpace ℝ ο :=
   matrixPair H 1
 
+/-- Linear map sending an input/noise pair to its residual `x - A (H x + z)`. -/
 noncomputable def baseResidual (H : Matrix ο ι ℝ) (Q : Matrix ι ι ℝ) (N : Matrix ο ο ℝ) :
     BaseSpace ι ο →L[ℝ] EuclideanSpace ℝ ι :=
   matrixPair (1 - costaCoefficient H Q N * H) (-costaCoefficient H Q N)
 
+/-- Linear observation `H (x + s) + z` of the Gaussian input, state, and noise. -/
 noncomputable def observation (H : Matrix ο ι ℝ) : SourceSpace ι ο →L[ℝ] EuclideanSpace ℝ ο :=
   (baseOutput H).comp (.fst ℝ _ _) +
     (H.toEuclideanLin.toContinuousLinearMap).comp (.snd ℝ _ _)
 
+/-- Dirty-paper auxiliary variable `x + A H s` formed with the Costa coefficient `A`. -/
 noncomputable def auxiliary (H : Matrix ο ι ℝ) (Q : Matrix ι ι ℝ) (N : Matrix ο ο ℝ) :
     SourceSpace ι ο →L[ℝ] EuclideanSpace ℝ ι :=
   (ContinuousLinearMap.fst ℝ _ _).comp (.fst ℝ _ _) +
     ((costaCoefficient H Q N * H).toEuclideanLin.toContinuousLinearMap).comp (.snd ℝ _ _)
 
+/-- Input residual `x - A (H x + z)`, which does not depend on the additive state. -/
 noncomputable def residual (H : Matrix ο ι ℝ) (Q : Matrix ι ι ℝ) (N : Matrix ο ο ℝ) :
     SourceSpace ι ο →L[ℝ] EuclideanSpace ℝ ι :=
   (baseResidual H Q N).comp (.fst ℝ _ _)
@@ -173,6 +182,7 @@ theorem sourceLaw_map_state_auxiliary (H : Matrix ο ι ℝ) (Q S : Matrix ι ι
     (costaCoefficient H Q N * H) Q (sourceLaw_map_input Q S N)
   simpa only [sourceLaw_map_state, auxiliary_apply, add_comm] using h
 
+/-- Covariance of `x + A H s` when the input and state are independent. -/
 noncomputable def auxiliaryCovariance (H : Matrix ο ι ℝ) (Q S : Matrix ι ι ℝ)
     (N : Matrix ο ο ℝ) : Matrix ι ι ℝ :=
   Q + (costaCoefficient H Q N * H) * S * (costaCoefficient H Q N * H).transpose

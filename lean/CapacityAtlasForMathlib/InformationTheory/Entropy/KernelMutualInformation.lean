@@ -21,6 +21,7 @@ noncomputable
 def mutualInfo (κ : Kernel T (S × U)) (μ : Measure T) : ℝ :=
   Hk[fst κ, μ] + Hk[snd κ, μ] - Hk[κ, μ]
 
+/-- Mutual information between kernel output coordinates, averaged over the input measure. -/
 notation3:100 "Ik[" κ " , " μ "]" => ProbabilityTheory.Kernel.mutualInfo κ μ
 
 lemma mutualInfo_congr {κ η : Kernel T (S × U)} {μ : Measure T} (h : κ =ᵐ[μ] η) :

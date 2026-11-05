@@ -56,12 +56,14 @@ theorem blockNoise_map_flatten_output
       measurable_flattenGaussianBlock.comp (measurable_pi_apply i)),
     blockNoise_map_flatten_receiver N i hN, multivariateGaussian_map_const_add, add_zero]
 
+/-- Receiver mean for the encoded block, flattened into one Euclidean vector. -/
 noncomputable def receiverBlockMean
     (H : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ)
     (c : Code K tx rx n) (i : Fin K) (m : MessageTuple c) :
     EuclideanSpace ℝ (Fin (rx i) × Fin n) :=
   flattenGaussianBlock (fun s ↦ (H i).toEuclideanLin (c.encode m s))
 
+/-- Gaussian receiver-output law for each message tuple, with independent noise across time. -/
 noncomputable def receiverBlockKernel
     (H : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ)
     (N : (i : Fin K) → Matrix (Fin (rx i)) (Fin (rx i)) ℝ)

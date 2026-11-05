@@ -13,15 +13,20 @@ noncomputable section
 
 namespace CapacityAtlas.WirelessTransport
 
+/-- Row and column indices of an m-by-m transmitter grid. -/
 abbrev GridIndex (m : ℕ) := Fin m × Fin m
 
+/-- Spacing between adjacent transmitter grid positions inside the placement radius. -/
 def gridStep (R : ℝ) (m : ℕ) : ℝ := R / (2 * (m : ℝ))
 
+/-- Horizontal transmitter-to-receiver displacement used by the separated-grid construction. -/
 def gridHop (R Δ : ℝ) (m : ℕ) : ℝ := R / (8 * (1 + Δ) * (m : ℝ))
 
+/-- Transmitter location at a grid row and column. -/
 def gridTx (R _Δ : ℝ) (m : ℕ) (i : GridIndex m) : EuclideanSpace ℝ (Fin 2) :=
   WithLp.toLp 2 ![(i.1.val : ℝ) * gridStep R m, (i.2.val : ℝ) * gridStep R m]
 
+/-- Receiver location displaced horizontally from its paired grid transmitter. -/
 def gridRx (R Δ : ℝ) (m : ℕ) (i : GridIndex m) : EuclideanSpace ℝ (Fin 2) :=
   WithLp.toLp 2 ![(i.1.val : ℝ) * gridStep R m + gridHop R Δ m,
     (i.2.val : ℝ) * gridStep R m]

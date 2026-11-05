@@ -32,8 +32,11 @@ Capacity Atlas. Operational coding definitions live in
 -/
 @[capacity_shared_api]
 structure FiniteChannel (X Y : Type*) [Fintype X] [Fintype Y] where
+  /-- Conditional probability of each output given the input. -/
   transition : X → Y → ℝ
+  /-- All transition probabilities are nonnegative. -/
   nonnegative : ∀ x y, 0 ≤ transition x y
+  /-- The output probabilities sum to one for each input. -/
   row_sum : ∀ x, ∑ y, transition x y = 1
 
 namespace FiniteChannel

@@ -4,7 +4,7 @@
   `prek -a --quiet`, and the production site build.
 - Run `lake --wfail build CapacityAtlasForMathlib CapacityAtlasUtil` and
   `lake --wfail build CapacityAtlas`.
-- Run `lake exe capacity_audit`, then pass its JSON report to
+- Run `lake --wfail exe capacity_audit`, then pass its JSON report to
   `capacity-atlas validate --lean-report`.
 - Confirm each claim proposition, `capacity_claim` identity, YAML identity, and
   version agree; materially changed propositions must increment their version.

@@ -14,6 +14,7 @@ namespace CapacityAtlas.MeasureChannel
 
 variable {X Y : Type*} [MeasurableSpace X] [MeasurableSpace Y]
 
+/-- Pair input and output words coordinate by coordinate. -/
 def pairBlock (n : ℕ) (xy : (Fin n → X) × (Fin n → Y)) : Fin n → X × Y :=
   fun i ↦ (xy.1 i, xy.2 i)
 
@@ -22,6 +23,7 @@ theorem measurable_pairBlock (n : ℕ) : Measurable (pairBlock (X := X) (Y := Y)
     ((measurable_pi_apply i).comp measurable_fst).prodMk
       ((measurable_pi_apply i).comp measurable_snd))
 
+/-- Nonnegative exponential of the accumulated block information density. -/
 noncomputable def iidLikelihood (info : X × Y → ℝ) (n : ℕ)
     (xy : (Fin n → X) × (Fin n → Y)) : ℝ≥0∞ :=
   ENNReal.ofReal (Real.exp (iidSum info n (pairBlock n xy)))

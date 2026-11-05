@@ -20,6 +20,7 @@ def superpositionEnsemble (p : FiniteDistribution U) (q : U → FiniteDistributi
     FiniteDistribution.productFamily fun c : C ↦
       FiniteDistribution.productFamily fun _ : S ↦ q (cloud c)
 
+/-- Independent satellite codebooks drawn conditionally on each fixed cloud center. -/
 def satelliteEnsemble (q : U → FiniteDistribution V) (cloud : C → U) :
     FiniteDistribution (C → S → V) :=
   FiniteDistribution.productFamily fun c : C ↦

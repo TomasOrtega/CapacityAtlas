@@ -13,8 +13,11 @@ open CapacityAtlas
 /-- A relay observation and destination output followed by an orthogonal noiseless bit-pipe. -/
 @[capacity_problem "primitive-relay-channel", capacity_definition]
 structure PrimitiveRelayChannel (X Y Z : Type*) [Fintype X] [Fintype Y] [Fintype Z] where
+  /-- Joint destination and relay observation law for one source input. -/
   broadcast : FiniteChannel X (Y × Z)
+  /-- Noiseless relay-to-destination link budget in bits per broadcast-channel use. -/
   relayLinkCapacityBits : ℝ
+  /-- The relay-link bit budget is nonnegative. -/
   relayLinkCapacity_nonnegative : 0 ≤ relayLinkCapacityBits
 
 end CapacityAtlas.Network

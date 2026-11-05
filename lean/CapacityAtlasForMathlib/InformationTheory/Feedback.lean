@@ -135,9 +135,13 @@ theorem blockChannel_transition_ofWord (channel : FiniteChannel X Y) (n : ℕ)
 /-- A fixed-length deterministic code with strictly causal noiseless output feedback. -/
 @[capacity_shared_api]
 structure BlockCode (channel : FiniteChannel X Y) (blocklength : ℕ) where
+  /-- Number of distinct messages. -/
   messageCount : ℕ
+  /-- The message set is nonempty. -/
   messageCount_pos : 0 < messageCount
+  /-- Input policy selected by the message and strictly earlier outputs. -/
   encode : Fin messageCount → Policy X Y blocklength
+  /-- Message estimate obtained from the output word. -/
   decode : (Fin blocklength → Y) → Fin messageCount
 
 namespace BlockCode

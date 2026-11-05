@@ -14,11 +14,16 @@ variable {I W : Type} [Fintype W] (G : Circuit I W)
 
 /-- Edge-disjoint routes label each used wire by the input symbol it carries. -/
 structure Routing (output : I → I ⊕ W) where
+  /-- Input-symbol label carried by each used wire, with none for unused wires. -/
   label : W → Option I
+  /-- Predecessor wire along a route, with none for the first wire. -/
   previous : W → Option W
+  /-- A first routed wire has direct access to its labelled input symbol. -/
   start : ∀ e i, label e = some i → previous e = none → G.input e i
+  /-- A routed predecessor is an allowed parent carrying the same input-symbol label. -/
   step : ∀ e i p, label e = some i → previous e = some p →
     G.parent e p ∧ label p = some i
+  /-- Every requested output is the input itself or a routed wire carrying that input. -/
   finish : ∀ i, output i = Sum.inl i ∨
     ∃ e, output i = Sum.inr e ∧ label e = some i
 
@@ -26,6 +31,7 @@ namespace Routing
 
 variable {G} {output : I → I ⊕ W} (r : G.Routing output)
 
+/-- Zero-one circuit coefficients selecting precisely the routed input and predecessor connections. -/
 noncomputable def coefficient {R : Type*} [Semiring R] : G.Variable → R :=
   fun (e, port) ↦ match port with
     | Sum.inl j => if r.label e = some j ∧ r.previous e = none then 1 else 0

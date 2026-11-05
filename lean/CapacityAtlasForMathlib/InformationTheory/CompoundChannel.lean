@@ -16,9 +16,13 @@ namespace CapacityAtlas.CompoundChannel
 /-- One encoder and one decoder, independent of the unknown channel member. -/
 @[capacity_shared_api]
 structure BlockCode (X Y : Type*) (blocklength : ℕ) where
+  /-- Number of distinct messages. -/
   messageCount : ℕ
+  /-- The message set is nonempty. -/
   messageCount_pos : 0 < messageCount
+  /-- Input word transmitted for each message. -/
   encode : Fin messageCount → Fin blocklength → X
+  /-- Message estimate obtained from the output word. -/
   decode : (Fin blocklength → Y) → Fin messageCount
 
 variable {X Y S : Type*} [Fintype X] [Fintype Y] [Fintype S]

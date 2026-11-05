@@ -15,10 +15,12 @@ namespace CapacityAtlas.MeasureInformation
 
 variable {ι α : Type*} [Fintype ι] [DecidableEq ι] [Fintype α]
 
+/-- Log-density derivative factor for the covariance scaling `t • N`. -/
 noncomputable def gaussianHeatTimeScore (m : EuclideanSpace ℝ ι) (N : Matrix ι ι ℝ)
     (t : ℝ) (x : EuclideanSpace ℝ ι) : ℝ :=
   -Fintype.card ι / (2 * t) + ((x - m) ⬝ᵥ N⁻¹ *ᵥ (x - m)) / (2 * t ^ 2)
 
+/-- Weighted component density derivatives when the common covariance is `t • N`. -/
 noncomputable def gaussianMixtureHeatDeriv (w : α → ℝ) (m : α → EuclideanSpace ℝ ι)
     (N : Matrix ι ι ℝ) (t : ℝ) (x : EuclideanSpace ℝ ι) : ℝ :=
   ∑ a, w a * (gaussianHeatTimeScore (m a) N t x *
@@ -79,15 +81,18 @@ lemma memLp_two_gaussianHeatQuadratic (m k : EuclideanSpace ℝ ι)
     (IsGaussian.memLp_id (multivariateGaussian k S) 4 (by norm_num)).continuousLinearMap_comp
       (EuclideanSpace.proj (𝕜 := ℝ) i)
 
+/-- Quadratic bound used for the Gaussian time score on a positive time interval. -/
 noncomputable def gaussianHeatScoreBound (m : EuclideanSpace ℝ ι) (N : Matrix ι ι ℝ)
     (a : ℝ) (x : EuclideanSpace ℝ ι) : ℝ :=
   (Fintype.card ι : ℝ) / (2 * a) + ((x - m) ⬝ᵥ N⁻¹ *ᵥ (x - m)) / (2 * a ^ 2)
 
+/-- Pointwise logarithmic bound using one mixture component and the interval endpoints. -/
 noncomputable def gaussianMixtureLogBound (w : α → ℝ) (m : α → EuclideanSpace ℝ ι)
     (N : Matrix ι ι ℝ) (j : α) (a b : ℝ) (x : EuclideanSpace ℝ ι) : ℝ :=
   |gaussianHeatLogNormalizer N a| + |gaussianHeatLogNormalizer N b| + |log (w j)| +
     ((x - m j) ⬝ᵥ N⁻¹ *ᵥ (x - m j)) / (2 * a)
 
+/-- Integrable-envelope candidate for the derivative of Gaussian mixture entropy. -/
 noncomputable def gaussianMixtureEntropyDerivBound (w : α → ℝ)
     (m : α → EuclideanSpace ℝ ι) (N : Matrix ι ι ℝ) (j : α) (a b : ℝ)
     (x : EuclideanSpace ℝ ι) : ℝ :=

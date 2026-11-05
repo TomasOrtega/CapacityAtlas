@@ -14,6 +14,7 @@ namespace CapacityAtlas.Gaussian.Interference
 
 variable {K n : ℕ}
 
+/-- Squared norm of two users' combined contribution at the first specified receiver. -/
 noncomputable def pairEnergy (c : Code K n) (H : StateBlock K n) (i j : Fin K)
     (m : c.Message) : ℝ :=
   ‖userSignal c H i i (m i) + userSignal c H i j (m j)‖ ^ 2

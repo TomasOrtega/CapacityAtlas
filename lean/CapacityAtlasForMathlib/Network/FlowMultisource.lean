@@ -13,14 +13,17 @@ namespace CapacityAtlas.NetworkFlow
 variable {V E I : Type*} [Fintype V] [Fintype E] [Fintype I]
   [DecidableEq V] [DecidableEq E] [DecidableEq I]
 
+/-- Source map after adjoining a new source with one edge for each supply index. -/
 def augmentedSource (src : E → V) : I ⊕ E → Option V
   | .inl _ => none
   | .inr e => some (src e)
 
+/-- Target map sending each added source edge to its designated supply vertex. -/
 def augmentedTarget (supply : I → V) (dst : E → V) : I ⊕ E → Option V
   | .inl i => some (supply i)
   | .inr e => some (dst e)
 
+/-- Capacities of the augmented network, with unit capacity on every added source edge. -/
 def augmentedCapacity (cap : E → ℕ) : I ⊕ E → ℕ
   | .inl _ => 1
   | .inr e => cap e

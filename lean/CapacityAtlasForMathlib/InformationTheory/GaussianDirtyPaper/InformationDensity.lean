@@ -15,10 +15,12 @@ namespace CapacityAtlas.Gaussian.DirtyPaper
 
 variable {ι ο : Type*} [Fintype ι] [Fintype ο] [DecidableEq ι] [DecidableEq ο]
 
+/-- Information density in nats between the Gaussian state and dirty-paper auxiliary variable. -/
 noncomputable def stateInformationDensity (H : Matrix ο ι ℝ) (Q S : Matrix ι ι ℝ)
     (N : Matrix ο ο ℝ) (s u : EuclideanSpace ℝ ι) : ℝ :=
   gaussianInformationDensity (costaCoefficient H Q N * H) Q 0 (auxiliaryCovariance H Q S N) s u
 
+/-- Information density in nats between the Gaussian observation and auxiliary variable. -/
 noncomputable def observationInformationDensity (H : Matrix ο ι ℝ) (Q S : Matrix ι ι ℝ)
     (N : Matrix ο ο ℝ) (y : EuclideanSpace ℝ ο) (u : EuclideanSpace ℝ ι) : ℝ :=
   gaussianInformationDensity (costaCoefficient H Q N) (residualCovariance H Q N) 0
@@ -103,10 +105,12 @@ theorem integral_observationInformationDensity (H : Matrix ο ι ℝ) (Q S : Mat
   rw [regression_output_eq_auxiliary H Q S N hQ.posSemidef hN,
     sourceLaw_map_auxiliary H Q S N hQ.posSemidef hS]
 
+/-- Recover the physical encoder input `u - A H s` from state and auxiliary vectors. -/
 noncomputable def encoderInput (H : Matrix ο ι ℝ) (Q : Matrix ι ι ℝ)
     (N : Matrix ο ο ℝ) (s u : EuclideanSpace ℝ ι) : EuclideanSpace ℝ ι :=
   u - (costaCoefficient H Q N * H).toEuclideanLin s
 
+/-- Squared Euclidean norm of the physical dirty-paper encoder input. -/
 noncomputable def inputCost (H : Matrix ο ι ℝ) (Q : Matrix ι ι ℝ)
     (N : Matrix ο ο ℝ) (s u : EuclideanSpace ℝ ι) : ℝ := ‖encoderInput H Q N s u‖ ^ 2
 
@@ -148,6 +152,7 @@ theorem integral_inputCost (H : Matrix ο ι ℝ) (Q S : Matrix ι ι ℝ) (N : 
   simpa [dotProduct, pow_two] using
     integral_quadratic_multivariateGaussian (0 : EuclideanSpace ℝ ι) 0 Q (1 : Matrix ι ι ℝ) hQ
 
+/-- Gaussian channel applied to the recovered encoder input plus the additive state. -/
 noncomputable def physicalKernel (H : Matrix ο ι ℝ) (Q : Matrix ι ι ℝ) (N : Matrix ο ο ℝ) :
     Kernel (EuclideanSpace ℝ ι × EuclideanSpace ℝ ι) (EuclideanSpace ℝ ο) :=
   (gaussianChannel H N).comap (fun p ↦ encoderInput H Q N p.1 p.2 + p.1)

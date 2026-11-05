@@ -5,6 +5,7 @@ See https://www.apache.org/licenses/LICENSE-2.0
 -/
 
 import CapacityAtlasAuditCore
+import CapacityAtlasAuditTests.Documentation
 import CapacityAtlasAuditTests.Fixtures
 
 open Lean CapacityAtlas.Audit

@@ -17,6 +17,7 @@ namespace CapacityAtlas.FiniteChannel
 
 variable {X Y : Type*} [Fintype X] [Fintype Y]
 
+/-- Input distribution concentrated at one symbol, used to witness cost feasibility. -/
 noncomputable def inputCostPointMass (symbol : X) : FiniteDistribution X := by
   classical
   exact (FiniteDistribution.uniform (Fin 1)).map (fun _ ↦ symbol)
@@ -83,6 +84,7 @@ theorem exists_input_of_lt_constrainedInformationCapacityBits
 
 namespace BlockCode
 
+/-- One-message block code that transmits the same symbol at every coordinate. -/
 def inputCostConstant (channel : FiniteChannel X Y) (n : ℕ) (symbol : X) :
     BlockCode channel n where
   messageCount := 1
@@ -158,6 +160,7 @@ theorem block_mutualInformation_le_sum_coordinateMutualInformation
 
 namespace BlockCode
 
+/-- Input law obtained by choosing a uniform message and a uniform codeword coordinate. -/
 noncomputable def inputCoordinateMixture [DecidableEq X] {channel : FiniteChannel X Y} {n : ℕ}
     (code : BlockCode channel n) (hn : 0 < n) : FiniteDistribution X := by
   letI : NeZero n := ⟨hn.ne'⟩

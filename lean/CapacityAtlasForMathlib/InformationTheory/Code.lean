@@ -26,7 +26,9 @@ variable [Fintype X] [Fintype Y]
 /-- A deterministic one-use code for a fixed finite channel. -/
 @[capacity_shared_api]
 structure OneShotCode (W : FiniteChannel X Y) (M : Type*) [Fintype M] where
+  /-- Channel input selected by each message. -/
   encode : M → X
+  /-- Message estimate obtained from one channel output. -/
   decode : Y → M
 
 namespace OneShotCode

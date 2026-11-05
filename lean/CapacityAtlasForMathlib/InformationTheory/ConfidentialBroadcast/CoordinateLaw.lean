@@ -163,23 +163,29 @@ namespace Code
 
 variable {W : FiniteBroadcastChannel X Y Z} {n : ℕ}
 
+/-- A complete sample containing messages, encoder input word, and both receiver output words. -/
 abbrev FullSample (c : Code W n) :=
   ((Fin c.commonCount × Fin c.secretCount) × (Fin n → X)) × (Fin n → Y × Z)
 
+/-- Joint law of the messages, stochastic encoder output, and paired receiver outputs. -/
 noncomputable def fullJoint (c : Code W n) : FiniteDistribution c.FullSample :=
   (FiniteInformation.joint c.messages c.encode).joint fun a ↦
     FiniteDistribution.productFamily (fun i ↦ (receiverPair W).rowDistribution (a.2 i))
 
+/-- Common message together with padded legitimate-output past and other-receiver output future. -/
 abbrev CommonAux (c : Code W n) :=
   Fin c.commonCount × (Fin n → Option Y) × (Fin n → Option Z)
 
+/-- Secret message paired with the common converse auxiliary. -/
 abbrev SecretAux (c : Code W n) := Fin c.secretCount × c.CommonAux
 
+/-- Common-message converse auxiliary at a selected channel coordinate. -/
 def commonObservation (c : Code W n) (i : Fin n) (z : c.FullSample) : c.CommonAux :=
   (z.1.1.1,
     FiniteInformation.sequencePrefix (fun z : c.FullSample ↦ fun j ↦ (z.2 j).1) i.val z,
     FiniteInformation.sequenceSuffix (fun z : c.FullSample ↦ fun j ↦ (z.2 j).2) (i.val + 1) z)
 
+/-- Secret-message converse auxiliary at a selected channel coordinate. -/
 def secretObservation (c : Code W n) (i : Fin n) (z : c.FullSample) : c.SecretAux :=
   (z.1.1.2, c.commonObservation i z)
 

@@ -19,15 +19,24 @@ variable [Fintype X₁] [Fintype X₂] [Fintype Y₁] [Fintype Y₂]
 
 /-- Independent messages and separate nonfeedback encoders. -/
 structure Code (W : FiniteInterferenceChannel X₁ X₂ Y₁ Y₂) (n : ℕ) where
+  /-- Number of messages available to the first sender. -/
   messages₁ : ℕ
+  /-- Number of messages available to the second sender. -/
   messages₂ : ℕ
+  /-- The first sender's message alphabet is nonempty. -/
   messages₁_pos : 0 < messages₁
+  /-- The second sender's message alphabet is nonempty. -/
   messages₂_pos : 0 < messages₂
+  /-- First sender's codeword determined solely by its own message. -/
   encode₁ : Fin messages₁ → Fin n → X₁
+  /-- Second sender's codeword determined solely by its own message. -/
   encode₂ : Fin messages₂ → Fin n → X₂
+  /-- First receiver's estimate of the first sender's message. -/
   decode₁ : (Fin n → Y₁) → Fin messages₁
+  /-- Second receiver's estimate of the second sender's message. -/
   decode₂ : (Fin n → Y₂) → Fin messages₂
 
+/-- Maximum of the two receiver error probabilities, averaged over independent uniform messages. -/
 noncomputable def error {W : FiniteInterferenceChannel X₁ X₂ Y₁ Y₂} {n : ℕ}
     (c : Code W n) : ℝ := by
   classical
@@ -39,10 +48,12 @@ noncomputable def error {W : FiniteInterferenceChannel X₁ X₂ Y₁ Y₂} {n :
       (W.receiver₂.block n).transition (fun t ↦ (c.encode₁ a t, c.encode₂ b t)) y
   exact max e₁ e₂
 
+/-- The two sender rates in bits per physical interference-channel use. -/
 noncomputable def rates {W : FiniteInterferenceChannel X₁ X₂ Y₁ Y₂} {n : ℕ}
     (c : Code W n) : RatePair :=
   (Operational.messageRate c.messages₁ n, Operational.messageRate c.messages₂ n)
 
+/-- Closed nonnegative rate region achievable with both average receiver errors vanishing. -/
 noncomputable def capacityRegion (W : FiniteInterferenceChannel X₁ X₂ Y₁ Y₂) : Set RatePair :=
   Operational.achievableRegion (Code W) (fun _ _ ↦ True)
     (fun _ c ↦ error c) (fun _ c ↦ rates c)
@@ -65,16 +76,26 @@ noncomputable def strongRegion (W : FiniteInterferenceChannel X₁ X₂ Y₁ Y�
 
 /-- Independent private/common auxiliaries and deterministic channel inputs. -/
 structure HKData (X₁ X₂ : Type*) where
+  /-- Size of the finite time-sharing alphabet. -/
   timeCard : ℕ
+  /-- Common finite alphabet size used for the private and common auxiliaries. -/
   auxCard : ℕ
+  /-- Distribution of the time-sharing variable. -/
   time : FiniteDistribution (Fin timeCard)
+  /-- First sender's private auxiliary law conditioned on the time-sharing value. -/
   private₁ : FiniteChannel (Fin timeCard) (Fin auxCard)
+  /-- First sender's common auxiliary law conditioned on the time-sharing value. -/
   common₁ : FiniteChannel (Fin timeCard) (Fin auxCard)
+  /-- Second sender's private auxiliary law conditioned on the time-sharing value. -/
   private₂ : FiniteChannel (Fin timeCard) (Fin auxCard)
+  /-- Second sender's common auxiliary law conditioned on the time-sharing value. -/
   common₂ : FiniteChannel (Fin timeCard) (Fin auxCard)
+  /-- First channel input as a function of time sharing and its private/common auxiliaries. -/
   input₁ : Fin timeCard → Fin auxCard → Fin auxCard → X₁
+  /-- Second channel input as a function of time sharing and its private/common auxiliaries. -/
   input₂ : Fin timeCard → Fin auxCard → Fin auxCard → X₂
 
+/-- Joint auxiliary law with private and common variables conditionally independent given time sharing. -/
 def HKData.law (a : HKData X₁ X₂) :=
   FiniteInformation.joint a.time (FiniteChannel.ofRows fun q ↦
     FiniteInformation.independent (a.private₁.rowDistribution q)
@@ -82,10 +103,12 @@ def HKData.law (a : HKData X₁ X₂) :=
         (FiniteInformation.independent (a.private₂.rowDistribution q)
           (a.common₂.rowDistribution q))))
 
+/-- Channel input pair obtained from the time-sharing and four private/common auxiliary values. -/
 def HKData.inputs (a : HKData X₁ X₂)
     (z : Fin a.timeCard × Fin a.auxCard × Fin a.auxCard × Fin a.auxCard × Fin a.auxCard) :=
   (a.input₁ z.1 z.2.1 z.2.2.1, a.input₂ z.1 z.2.2.2.1 z.2.2.2.2)
 
+/-- Retain selected auxiliary coordinates as optional values and erase the remaining coordinates. -/
 noncomputable def selected {k : ℕ} (s : Finset (Fin 3)) (v : Fin 3 → Fin k) :
     Fin 3 → Option (Fin k) :=
   fun j ↦ if j ∈ s then some (v j) else none
@@ -99,6 +122,7 @@ noncomputable def packingRegion {Ω Y : Type*} [Fintype Ω] [Fintype Y]
       (fun z ↦ selected s (observables z.1)) Prod.snd
       (fun z ↦ (time z.1, selected (Finset.univ \ s) (observables z.1)))
 
+/-- Closed convex hull of rates satisfying both receivers' private/common-message packing constraints. -/
 noncomputable def hanKobayashi (W : FiniteInterferenceChannel X₁ X₂ Y₁ Y₂) : Set RatePair :=
   closure (convexHull ℝ {r | ∃ a : HKData X₁ X₂, ∃ s₁ t₁ s₂ t₂ : ℝ,
     0 ≤ s₁ ∧ 0 ≤ t₁ ∧ 0 ≤ s₂ ∧ 0 ≤ t₂ ∧ r.1 = s₁ + t₁ ∧ r.2 = s₂ + t₂ ∧

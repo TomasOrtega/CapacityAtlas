@@ -13,10 +13,15 @@ namespace CapacityAtlas.Gaussian
 /-- Squared singular gains and an orthogonal transmit basis for a fixed real matrix.
 Existence is not assumed by a channel model. The water-filling claim supplies a witness. -/
 structure MIMOSpectrum {tx rx : ℕ} (H : Matrix (Fin rx) (Fin tx) ℝ) where
+  /-- Matrix whose columns give the orthogonal transmit basis. -/
   basis : Matrix (Fin tx) (Fin tx) ℝ
+  /-- The transmit-basis columns are orthonormal. -/
   orthogonal : basis.transpose * basis = 1
+  /-- Squared channel gain assigned to each transmit mode. -/
   gain : Fin tx → ℝ
+  /-- Every squared channel gain is nonnegative. -/
   gain_nonnegative : ∀ k, 0 ≤ gain k
+  /-- The channel Gram matrix diagonalizes in the supplied transmit basis. -/
   gram : H.transpose * H = basis * Matrix.diagonal gain * basis.transpose
 
 /-- Allocate no power to a zero-gain mode, avoiding totalized division by zero. -/
@@ -30,6 +35,7 @@ def IsWaterLevel {tx : ℕ} (gain : Fin tx → ℝ) (P N level : ℝ) : Prop :=
   0 ≤ level ∧ (∑ k, waterFillingPower gain N level k) ≤ P ∧
     ((∃ k, 0 < gain k) → (∑ k, waterFillingPower gain N level k) = P)
 
+/-- Input covariance obtained by placing water-filling powers in the supplied channel eigenbasis. -/
 noncomputable def waterFillingCovariance {tx rx : ℕ}
     {H : Matrix (Fin rx) (Fin tx) ℝ} (spectrum : MIMOSpectrum H)
     (N level : ℝ) : Matrix (Fin tx) (Fin tx) ℝ :=

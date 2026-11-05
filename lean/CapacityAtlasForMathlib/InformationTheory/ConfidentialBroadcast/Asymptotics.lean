@@ -130,6 +130,7 @@ theorem commonCodingBound_tendsto_zero (W : FiniteChannel V Y)
   packing_bound_tendsto_zero ((W.comp (FiniteChannel.ofRows q)).informationVariance_nonnegative p)
     hδ hgap _ (FiniteChannel.messageCountAtRate_le r hr)
 
+/-- Normalized leakage estimate combining conditional information and seed-decoding error. -/
 noncomputable def seedLeakageBound (W : FiniteChannel V Y)
     (p : FiniteDistribution U) (q : U → FiniteDistribution V) (n seeds : ℕ) (δ : ℝ) : ℝ :=
   ((n : ℝ) * (conditionalMean W p q / Real.log 2) - Real.log seeds / Real.log 2 + 1 +

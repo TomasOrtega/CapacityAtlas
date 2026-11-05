@@ -14,8 +14,10 @@ namespace CapacityAtlas.MeasureChannel
 
 variable {Ω : Type*} [MeasurableSpace Ω]
 
+/-- Sum of a real observable over the coordinates of a finite sample word. -/
 def iidSum (Z : Ω → ℝ) (n : ℕ) (x : Fin n → Ω) : ℝ := ∑ i, Z (x i)
 
+/-- Coordinate average of a real observable, with Lean's zero-denominator convention at length zero. -/
 noncomputable def iidMean (Z : Ω → ℝ) (n : ℕ) (x : Fin n → Ω) : ℝ := iidSum Z n x / n
 
 theorem memLp_iidSum (μ : Measure Ω) [IsProbabilityMeasure μ]

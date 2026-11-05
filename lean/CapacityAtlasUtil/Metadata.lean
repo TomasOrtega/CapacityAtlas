@@ -29,7 +29,9 @@ open Lean
 
 namespace Lean.Parser.Attr
 
+/-- Attach the permanent problem identifier to an atlas declaration. -/
 syntax (name := capacityProblem) "capacity_problem" str : attr
+/-- Attach the claim identifier and proposition version to a declaration. -/
 syntax (name := capacityClaim) "capacity_claim" str num : attr
 
 end Lean.Parser.Attr
@@ -38,7 +40,9 @@ namespace CapacityAtlas.Metadata
 
 /-- Stable identity and proposition version for a registered claim. -/
 structure Claim where
+  /-- Claim identifier within its problem record. -/
   id : String
+  /-- Proposition version matched by the proof provenance. -/
   version : Nat
   deriving Inhabited
 

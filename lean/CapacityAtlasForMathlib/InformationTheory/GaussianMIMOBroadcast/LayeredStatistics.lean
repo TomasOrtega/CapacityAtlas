@@ -20,6 +20,7 @@ theorem measurePreserving_blockLayerTranspose
       (blockLayerLaw Q π n) (Measure.pi (fun _ : Fin n ↦ layerLaw Q π)) :=
   measurePreserving_pi_transpose (fun j _ ↦ multivariateGaussian 0 (Q (π j)))
 
+/-- Reindex layer blocks and receiver noise into a sequence of single-use source samples. -/
 def blockLayerSource {r : ℕ} (n : ℕ)
     (p : LayerBlocks K tx n × (Fin n → EuclideanSpace ℝ (Fin r))) :
     Fin n → (Fin K → EuclideanSpace ℝ (Fin tx)) × EuclideanSpace ℝ (Fin r) :=
@@ -89,6 +90,7 @@ theorem blockLayerState_upperTail_tendsto_zero {r : ℕ}
   intro z hz
   exact (show (n : ℝ) * a < iidSum (layerStateStatistic H N Q π k) n z from hz).le
 
+/-- Apply the receiver observation map separately at each block coordinate. -/
 noncomputable def blockLayerObservation {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ) (n : ℕ)
     (p : LayerBlocks K tx n × (Fin n → EuclideanSpace ℝ (Fin r))) :
     Fin n → EuclideanSpace ℝ (Fin r) := fun t ↦ layerObservation H (blockLayerSource n p t)
@@ -128,6 +130,7 @@ theorem blockLayerObservation_lowerTail_tendsto_zero {r : ℕ}
   exact iidLikelihood_lowerTail_tendsto_zero (layerSourceLaw Q π N)
     (memLp_two_layerObservationStatistic H N Q hQ hN π k hk) hd
 
+/-- Squared Euclidean norm of the sum of all single-use input layers. -/
 noncomputable def layerTotalCost (x : Fin K → EuclideanSpace ℝ (Fin tx)) : ℝ :=
   ‖∑ j, x j‖ ^ 2
 
@@ -173,6 +176,7 @@ theorem integral_layerTotalCost
     (0 : EuclideanSpace ℝ (Fin tx)) 0 (∑ j, Q j) (1 : Matrix (Fin tx) (Fin tx) ℝ)
       (posSemidef_sum _ (fun j _ ↦ hQ j))
 
+/-- Transmitted sequence obtained by summing all input layers at each time coordinate. -/
 noncomputable def blockTotalInput (n : ℕ) (x : LayerBlocks K tx n) :
     Fin n → EuclideanSpace ℝ (Fin tx) := fun t ↦ ∑ j, x j t
 

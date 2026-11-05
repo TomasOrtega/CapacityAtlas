@@ -14,12 +14,15 @@ namespace CapacityAtlas.Gaussian.DirtyPaper
 
 variable {ι ο : Type*} [Fintype ι] [Fintype ο] [DecidableEq ι] [DecidableEq ο]
 
+/-- Output covariance `N + H Q Hᵀ` contributed by the input and channel noise. -/
 def outputCovariance (H : Matrix ο ι ℝ) (Q : Matrix ι ι ℝ) (N : Matrix ο ο ℝ) :
     Matrix ο ο ℝ := N + H * Q * H.transpose
 
+/-- Linear coefficient `Q Hᵀ (N + H Q Hᵀ)⁻¹` used in the dirty-paper auxiliary variable. -/
 noncomputable def costaCoefficient (H : Matrix ο ι ℝ) (Q : Matrix ι ι ℝ)
     (N : Matrix ο ο ℝ) : Matrix ι ο ℝ := Q * H.transpose * (outputCovariance H Q N)⁻¹
 
+/-- Covariance expression for the input residual after the linear Gaussian observation update. -/
 noncomputable def residualCovariance (H : Matrix ο ι ℝ) (Q : Matrix ι ι ℝ)
     (N : Matrix ο ο ℝ) : Matrix ι ι ℝ := Q - costaCoefficient H Q N * H * Q
 

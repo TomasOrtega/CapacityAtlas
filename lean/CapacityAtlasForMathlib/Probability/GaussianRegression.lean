@@ -153,6 +153,7 @@ theorem covariance_gaussian_prod_matrix [DecidableEq ι] [DecidableEq κ]
     covariance_matrix_multivariateGaussian n N hN]
   rfl
 
+/-- Continuous linear map sending a vector pair to the sum of its two specified matrix images. -/
 noncomputable def matrixPair [DecidableEq ι] [DecidableEq κ]
     (A : Matrix ο ι ℝ) (D : Matrix ο κ ℝ) :
     EuclideanSpace ℝ ι × EuclideanSpace ℝ κ →L[ℝ] EuclideanSpace ℝ ο :=

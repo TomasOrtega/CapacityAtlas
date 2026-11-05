@@ -14,21 +14,35 @@ namespace CapacityAtlas.Audit
 
 open CapacityAtlas.Metadata
 
+/-- Compiled identity, classification, and trust dependencies of an audited declaration. -/
 structure DeclarationRecord where
+  /-- Fully qualified Lean declaration name. -/
   declaration : String
+  /-- Module that defines the declaration. -/
   module : String
+  /-- Permanent problem identifier, when attached. -/
   problemId : Option String
+  /-- Registered claim identifier within the problem. -/
   claimId : Option String
+  /-- Proposition version carried by the claim metadata. -/
   claimVersion : Option Nat
+  /-- Unique research, API, or test classification, when present. -/
   category : Option String
+  /-- Whether the declaration is tagged as a complete local proof. -/
   formalProof : Bool
+  /-- Whether the declaration defines a canonical proposition rather than proving it. -/
   proposition : Bool
+  /-- Whether the declaration is tagged as a structural test. -/
   test : Bool
+  /-- Transitive axioms used by the declaration. -/
   axioms : Array String
   deriving ToJson
 
+/-- Audited declaration records and violations of the registry or trust boundary. -/
 structure Report where
+  /-- Classified claims, proposition definitions, local proofs, and tests. -/
   declarations : Array DeclarationRecord
+  /-- Human-readable diagnostics for rejected declarations. -/
   errors : Array String
   deriving ToJson
 

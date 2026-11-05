@@ -78,6 +78,10 @@ Capacity Atlas uses Lean 4 for formal verification.
 - Reuse definitions and proofs in `CapacityAtlasForMathlib`.
 - Put channel-specific definitions, statements, and proofs in `CapacityAtlas`.
 - Put metadata attributes and generator utilities in `CapacityAtlasUtil`.
+- Document public definitions, abbreviations, structures, and their fields with
+  nonempty Lean docstrings (`/-- ... -/`), or use `@[inherit_doc source]` when the
+  meaning is shared. State the purpose, domain, and units when they are not clear
+  from the type. The documentation linter runs with warnings as errors in CI.
 - Attach `@[capacity_problem "problem-id"]` to problem-specific declarations.
 - Mark declaration roles with `@[capacity_definition]`,
   `@[capacity_statement]`, or `@[capacity_shared_api]`.

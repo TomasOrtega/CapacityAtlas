@@ -29,6 +29,7 @@ theorem measurable_iidKernel (κ : Kernel X Y) [IsMarkovKernel κ] (n : ℕ) :
       Measurable.const_sub hmeas 1
   · simpa only [measure_iUnion hdisj hs] using Measurable.tsum hmeas
 
+/-- Independent repeated kernel assigning one output coordinate law to each input coordinate. -/
 noncomputable def iidKernel (κ : Kernel X Y) [IsMarkovKernel κ] (n : ℕ) :
     Kernel (Fin n → X) (Fin n → Y) where
   toFun x := Measure.pi (fun i ↦ κ (x i))

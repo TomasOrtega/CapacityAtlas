@@ -13,13 +13,16 @@ namespace CapacityAtlas.MeasureBinning
 
 variable {U : Type*} [MeasurableSpace U]
 
+/-- First accepted member of a finite sample sequence, or the supplied fallback if none is accepted. -/
 noncomputable def firstHit (A : Set U) (fallback : U) :
     (n : ℕ) → (Fin n → U) → U
   | 0, _ => fallback
   | n + 1, book => if book 0 ∈ A then book 0 else firstHit A fallback n (fun i ↦ book i.succ)
 
+/-- At least one member of the finite sample sequence belongs to the acceptance set. -/
 def hasHit (A : Set U) {n : ℕ} (book : Fin n → U) : Prop := ∃ i, book i ∈ A
 
+/-- Sample sequences with an accepted member whose first accepted value lies in the target set. -/
 def firstHitEvent (A E : Set U) (fallback : U) (n : ℕ) : Set (Fin n → U) :=
   {book | hasHit A book ∧ firstHit A fallback n book ∈ E}
 
@@ -144,6 +147,7 @@ theorem measure_noHit_le_exp (μ : Measure U) [IsProbabilityMeasure μ]
     measure_coveringFailure_le_exp (L := Fin n) μ
       (B := (Set.univ : Set Unit) ×ˢ A) (MeasurableSet.univ.prod hA) () (by simpa using hp)
 
+/-- Distribution of the first accepted iid sample, excluding the no-hit event. -/
 noncomputable def firstHitLaw (μ : Measure U) (A : Set U) (fallback : U) (n : ℕ) : Measure U :=
   ((Measure.pi (fun _ : Fin n ↦ μ)).restrict {book | hasHit A book}).map (firstHit A fallback n)
 
@@ -194,6 +198,7 @@ theorem measurableSet_hasHit_section {A : Set (S × U)} (hA : MeasurableSet A) (
   exact MeasurableSet.iUnion (fun i ↦ hA.preimage
     (measurable_fst.prodMk ((measurable_pi_apply i).comp measurable_snd)))
 
+/-- Subprobability kernel of successful first-hit samples, excluding the no-hit event. -/
 noncomputable def firstHitKernel (μ : Measure U) [IsProbabilityMeasure μ]
     {A : Set (S × U)} (hA : MeasurableSet A) (fallback : U) (n : ℕ) : Kernel S U where
   toFun s := firstHitLaw μ {u | (s, u) ∈ A} fallback n

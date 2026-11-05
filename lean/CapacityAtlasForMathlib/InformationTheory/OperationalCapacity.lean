@@ -39,9 +39,13 @@ theorem block_transition (channel : FiniteChannel X Y) (n : ℕ)
 /-- A deterministic block code with a positive finite message set. -/
 @[capacity_shared_api]
 structure BlockCode (channel : FiniteChannel X Y) (blocklength : ℕ) where
+  /-- Number of distinct messages. -/
   messageCount : ℕ
+  /-- The message set is nonempty. -/
   messageCount_pos : 0 < messageCount
+  /-- Input word transmitted for each message. -/
   encode : Fin messageCount → Fin blocklength → X
+  /-- Message estimate obtained from the output word. -/
   decode : (Fin blocklength → Y) → Fin messageCount
 
 namespace BlockCode

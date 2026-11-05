@@ -21,9 +21,11 @@ variable (W : FiniteBroadcastChannel V Y Z) (p : FiniteDistribution A)
     (q : A → FiniteDistribution (Fin n → V)) (tauY tauZ : ℝ) (tauSat : A → ℝ)
     (cloud : Fin C → A) (satellites : Fin C → (Fin S × Fin L) → Fin n → V)
 
+/-- Threshold decoder for cloud centers through the satellite-averaged channel. -/
 noncomputable def commonDecoder (B : FiniteChannel (Fin n → V) O) (tau : ℝ) : O → Fin C :=
   (B.comp (FiniteChannel.ofRows q)).thresholdDecoder p tau cloud
 
+/-- Threshold decoder for the secret and seed indices within a fixed cloud. -/
 noncomputable def satelliteDecoder (B : FiniteChannel (Fin n → V) O)
     (c : Fin C) : O → Fin S × Fin L :=
   B.thresholdDecoder (q (cloud c)) (tauSat (cloud c)) (satellites c)
@@ -43,26 +45,33 @@ noncomputable abbrev code : Code W n := by
       (c, (satelliteDecoder q tauSat cloud satellites (W.receiver₁.block n) c y).1)
     decodeCommon := commonDecoder p q cloud (W.receiver₂.block n) tauZ }
 
+/-- Uniform average over common, secret, and random-seed indices. -/
 noncomputable def average (f : Fin C → Fin S → Fin L → ℝ) : ℝ :=
   ∑ c, FiniteDistribution.uniform (Fin C) c *
     ∑ s, FiniteDistribution.uniform (Fin S) s *
       ∑ l, FiniteDistribution.uniform (Fin L) l * f c s l
 
+/-- Average cloud-decoding error through the given block-output channel. -/
 noncomputable def rawCommonError (B : FiniteChannel (Fin n → V) O) (tau : ℝ) : ℝ := by
   classical
   exact average fun c s l ↦ ∑ y,
     if commonDecoder p q cloud B tau y ≠ c then B.transition (satellites c (s, l)) y else 0
 
+/-- Average satellite-decoding error conditioned on the cloud index. -/
 noncomputable def rawSatelliteError (B : FiniteChannel (Fin n → V) O) : ℝ :=
   average fun c s l ↦
     (B.thresholdCode (q (cloud c)) (tauSat (cloud c)) (satellites c)).errorProbability (s, l)
 
+/-- Common-message decoding error at the legitimate receiver. -/
 noncomputable def commonYError : ℝ := rawCommonError p q cloud satellites (W.receiver₁.block n) tauY
 
+/-- Common-message decoding error at the other receiver. -/
 noncomputable def commonZError : ℝ := rawCommonError p q cloud satellites (W.receiver₂.block n) tauZ
 
+/-- Secret-and-seed decoding error at the legitimate receiver given the cloud. -/
 noncomputable def satelliteError : ℝ := rawSatelliteError q tauSat cloud satellites (W.receiver₁.block n)
 
+/-- Cloud-averaged mutual information from secret messages to the other receiver, in bits. -/
 noncomputable def upperLeakage : ℝ :=
   ∑ c, FiniteDistribution.uniform (Fin C) c *
     (((W.receiver₂.block n).encoded (satellites c)).averageSeed

@@ -15,8 +15,10 @@ namespace CapacityAtlas.Gaussian.MIMOBroadcast
 
 variable {K tx : ℕ}
 
+/-- One length-`n` block of `tx`-dimensional vectors for each input layer. -/
 abbrev LayerBlocks (K tx n : ℕ) := Fin K → Fin n → EuclideanSpace ℝ (Fin tx)
 
+/-- At each time coordinate, sum the input layers strictly after layer `k`. -/
 noncomputable def blockSuffixInput (k : Fin K) (n : ℕ) (x : LayerBlocks K tx n) :
     Fin n → EuclideanSpace ℝ (Fin tx) := fun t ↦ suffixInput k (fun j ↦ x j t)
 
@@ -46,6 +48,7 @@ theorem blockSuffixInput_update_of_le (k j : Fin K) (hjk : j ≤ k) (n : ℕ)
   rw [heq, suffixInput_update_of_le k j hjk]
   rfl
 
+/-- Apply the Gaussian layer-auxiliary map at every time coordinate. -/
 noncomputable def blockLayerAuxiliary {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ)
     (N : Matrix (Fin r) (Fin r) ℝ) (Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ)
     (π : Equiv.Perm (Fin K)) (k : Fin K) (n : ℕ) (x : LayerBlocks K tx n) :
@@ -73,6 +76,7 @@ theorem blockLayerAuxiliary_update_of_lt {r : ℕ} (H : Matrix (Fin r) (Fin tx) 
     (DirtyPaper.costaCoefficient H (Q (π k)) (layerNoiseCovariance H N Q π k) * H).toEuclideanLin s)
       (hs t)
 
+/-- Conditional auxiliary-block law determined by the later input-layer blocks. -/
 noncomputable def blockLayerAuxiliaryKernel {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ)
     (N : Matrix (Fin r) (Fin r) ℝ) (Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ)
     (π : Equiv.Perm (Fin K)) (k : Fin K) (n : ℕ) :
@@ -87,6 +91,7 @@ instance {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ)
   unfold blockLayerAuxiliaryKernel
   infer_instance
 
+/-- State-to-auxiliary block likelihood for one layer and a candidate auxiliary block. -/
 noncomputable def blockLayerDensity {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ)
     (N : Matrix (Fin r) (Fin r) ℝ) (Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ)
     (π : Equiv.Perm (Fin K)) (k : Fin K) (n : ℕ)
@@ -114,6 +119,7 @@ theorem blockLayerAuxiliaryKernel_eq_withDensity {r : ℕ} (H : Matrix (Fin r) (
   DirtyPaper.blockStateKernel_withDensity H (Q (π k)) (suffixCovariance Q π k)
     (layerNoiseCovariance H N Q π k) hk (suffixCovariance_posSemidef Q hQ π k) n _
 
+/-- Physical input block recovered from a candidate auxiliary block and the later-layer state. -/
 noncomputable def blockLayerEncoderInput {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ)
     (N : Matrix (Fin r) (Fin r) ℝ) (Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ)
     (π : Equiv.Perm (Fin K)) (k : Fin K) (n : ℕ)
@@ -130,6 +136,7 @@ theorem measurable_blockLayerEncoderInput {r : ℕ} (H : Matrix (Fin r) (Fin tx)
   (DirtyPaper.measurable_blockEncoderInput H (Q (π k)) (layerNoiseCovariance H N Q π k) n).comp
     (((measurable_blockSuffixInput k n).comp measurable_fst).prodMk measurable_snd)
 
+/-- Replace layer `k` by the physical encoder input recovered from its selected auxiliary block. -/
 noncomputable def blockLayerUpdate {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ)
     (N : Matrix (Fin r) (Fin r) ℝ) (Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ)
     (π : Equiv.Perm (Fin K)) (k : Fin K) (n : ℕ)
@@ -192,6 +199,9 @@ theorem blockLayerUpdate_target_row {r : ℕ}
     Measure.map_map (measurable_update x) hm]
   rfl
 
+/--
+Rejection-sampling stage that selects an auxiliary block and updates one Gaussian input layer.
+-/
 noncomputable def gaussianRejectionStage {r : ℕ}
     (H : Matrix (Fin r) (Fin tx) ℝ) (N : Matrix (Fin r) (Fin r) ℝ)
     (Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ) (hQ : ∀ i, (Q i).PosSemidef)
@@ -232,6 +242,7 @@ theorem gaussianRejectionStage_referenceKernel {r : ℕ}
   simp only [Set.mem_univ, true_and]
   rfl
 
+/-- Independent Gaussian sequences for all layers, with covariances ordered by `π`. -/
 noncomputable def blockLayerLaw (Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ)
     (π : Equiv.Perm (Fin K)) (n : ℕ) : Measure (LayerBlocks K tx n) :=
   Measure.pi (fun k ↦ DirtyPaper.blockStateLaw (Q (π k)) n)
@@ -241,6 +252,10 @@ instance (Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ)
   unfold blockLayerLaw
   infer_instance
 
+/--
+Sequence of Gaussian rejection stages with prescribed layer order, sample counts, and
+thresholds.
+-/
 noncomputable def gaussianStages {rx : Fin K → ℕ}
     (H : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ)
     (N : (i : Fin K) → Matrix (Fin (rx i)) (Fin (rx i)) ℝ)

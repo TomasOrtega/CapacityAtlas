@@ -13,6 +13,7 @@ namespace CapacityAtlas.Gaussian.MIMOBroadcast
 
 variable {K tx : ℕ} {rx : Fin K → ℕ}
 
+/-- Probability that the state-to-auxiliary block likelihood exceeds the rejection threshold. -/
 noncomputable def layeredStateTail
     (H : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ)
     (N : (i : Fin K) → Matrix (Fin (rx i)) (Fin (rx i)) ℝ)
@@ -22,10 +23,12 @@ noncomputable def layeredStateTail
     blockLayerDensity (H (π k)) (N (π k)) Q π k n
       (x, blockLayerAuxiliary (H (π k)) (N (π k)) Q π k n x)}
 
+/-- Probability that the sum of Gaussian input layers exceeds the block power budget. -/
 noncomputable def layeredCostTail (Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ)
     (π : Equiv.Perm (Fin K)) (n : ℕ) (P : ℝ) : ℝ≥0∞ :=
   (blockLayerLaw Q π n) {x | ¬DirtyPaper.blockEnergy n (blockTotalInput n x) ≤ (n : ℝ) * P}
 
+/-- Probability that the intended auxiliary and observation fail the decoding likelihood test. -/
 noncomputable def layeredMissTail
     (H : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ)
     (N : (i : Fin K) → Matrix (Fin (rx i)) (Fin (rx i)) ℝ)
@@ -37,6 +40,7 @@ noncomputable def layeredMissTail
         (blockLayerAuxiliary (H (π k)) (N (π k)) Q π k n p.1,
           blockLayerObservation (H (π k)) n p) ≤ F}
 
+/-- Accumulated rejection-sampling failure bound over the ordered Gaussian layers. -/
 noncomputable def layeredFailureBound
     (H : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ)
     (N : (i : Fin K) → Matrix (Fin (rx i)) (Fin (rx i)) ℝ)
@@ -45,6 +49,9 @@ noncomputable def layeredFailureBound
   ∑ j : Fin K, 2 ^ j.val * (2 * layeredStateTail H N Q π (order j.val) n (T j.val) +
     ENNReal.ofReal (Real.exp (-((L j.val : ℝ) * ((1 / 2) / T j.val)))))
 
+/--
+Sum of rejection, excess-power, missed-decoding, and competing-message bounds for active stages.
+-/
 noncomputable def layeredErrorBound
     (H : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ)
     (N : (i : Fin K) → Matrix (Fin (rx i)) (Fin (rx i)) ℝ)

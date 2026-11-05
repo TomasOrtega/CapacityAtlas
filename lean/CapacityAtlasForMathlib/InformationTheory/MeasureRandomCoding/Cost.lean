@@ -29,6 +29,7 @@ theorem repairCode_encode_mem (allowed : Set X) {fallback : X} (hf : fallback �
   · exact hm
   · exact hf
 
+/-- Fraction of codewords lying outside the allowed input set. -/
 noncomputable def badFraction (allowed : Set X) (codebook : M → X) : ℝ≥0∞ :=
   (Fintype.card M : ℝ≥0∞)⁻¹ * ∑ m, if codebook m ∈ allowed then 0 else 1
 

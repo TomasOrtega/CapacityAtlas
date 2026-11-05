@@ -16,9 +16,11 @@ variable {vertices edges sources : ℕ} (G : Multisource.Network vertices edges 
 
 variable {K : Type} [Fintype K] {b : ℕ} (hcard : Fintype.card K = 2 ^ b)
 
+/-- Bijection between k symbols of a field of size 2^b and b*k binary message bits. -/
 noncomputable def vectorEquiv (k : ℕ) : (Fin k → K) ≃ Fin (2 ^ (b * k)) :=
   Fintype.equivFinOfCardEq (by simp [hcard, ← pow_mul])
 
+/-- Unpack each finite source-message index into its finite-field input symbols. -/
 noncomputable def inputSymbols (demand : Fin sources → ℕ)
     (m : Message (fun i ↦ 2 ^ (b * demand i))) : Input demand → K :=
   fun i ↦ (vectorEquiv hcard (demand i.1)).symm (m i.1) i.2
@@ -31,6 +33,7 @@ theorem inputSymbols_injective (demand : Fin sources → ℕ) :
   funext j
   exact congrFun h ⟨i, j⟩
 
+/-- Pack a finite-field edge vector into its binary packet alphabet using the bit-budget bound. -/
 noncomputable def packedPacket (cap : Fin edges → ℕ) {N : ℕ}
     (hbits : ∀ e, b * cap e ≤ G.packetBits N e) (e : Fin edges)
     (x : Fin (cap e) → K) : G.Packet N e :=

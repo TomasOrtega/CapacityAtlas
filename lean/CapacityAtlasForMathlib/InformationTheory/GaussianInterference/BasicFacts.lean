@@ -11,6 +11,7 @@ open scoped BigOperators
 
 namespace CapacityAtlas.Gaussian.Interference
 
+/-- Code with one message per sender, zero transmissions, and constant correct decoders. -/
 def silentCode (K n : ℕ) : Code K n where
   messages := fun _ ↦ 1
   messages_pos := fun _ ↦ Nat.zero_lt_one

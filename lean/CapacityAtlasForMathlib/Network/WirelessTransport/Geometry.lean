@@ -14,6 +14,7 @@ open MeasureTheory Metric
 
 namespace CapacityAtlas.WirelessTransport
 
+/-- Locations in the Euclidean plane used for wireless node placement. -/
 abbrev Point := EuclideanSpace ℝ (Fin 2)
 
 /-- Packing disjoint planar disks bounds the sum of their radii. -/

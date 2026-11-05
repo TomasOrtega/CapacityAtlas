@@ -11,7 +11,9 @@ namespace CapacityAtlas.Multisource.Network
 
 variable {vertices edges sources : ℕ} (G : Network vertices edges sources)
 
+/-- Source-symbol positions, indexed by a source and its demanded symbol number. -/
 abbrev Input (demand : Fin sources → ℕ) := Σ i : Fin sources, Fin (demand i)
+/-- Edge-symbol positions, indexed by an edge and its available symbol number. -/
 abbrev Wire (cap : Fin edges → ℕ) := Σ e : Fin edges, Fin (cap e)
 
 noncomputable instance inputDecidableEq (demand : Fin sources → ℕ) :
@@ -25,6 +27,7 @@ def linearCircuit (cap : Fin edges → ℕ) (demand : Fin sources → ℕ) :
   parent e p := G.target p.1 = G.source e.1
   parent_lt e p h := by simpa [← h] using G.increasing p.1
 
+/-- Input and wire ports locally observable at a vertex. -/
 def PortAt (cap : Fin edges → ℕ) (demand : Fin sources → ℕ)
     (v : Fin vertices) : Input demand ⊕ Wire cap → Prop
   | Sum.inl i => G.sourceNode i.1 = v

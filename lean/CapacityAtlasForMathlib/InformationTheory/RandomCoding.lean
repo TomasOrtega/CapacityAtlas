@@ -34,6 +34,7 @@ def IsInformationDensityCandidate (channel : FiniteChannel A B)
   0 < channel.transition symbol output ∧
     threshold < channel.informationDensity input (symbol, output)
 
+/-- Choose a codeword passing the information-density threshold, or an arbitrary message if none passes. -/
 noncomputable def thresholdDecoder {M : Type*} [Fintype M] [Nonempty M]
     (channel : FiniteChannel A B) (input : FiniteDistribution A) (threshold : ℝ)
     (codebook : M → A) (output : B) : M :=

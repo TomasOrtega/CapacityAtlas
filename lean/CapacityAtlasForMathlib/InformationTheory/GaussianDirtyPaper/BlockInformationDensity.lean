@@ -16,6 +16,7 @@ namespace CapacityAtlas.Gaussian.DirtyPaper
 
 variable {ι ο : Type*} [Fintype ι] [Fintype ο] [DecidableEq ι] [DecidableEq ο]
 
+/-- Gaussian channel for an additive state and encoder input, with mean `H (x + s)`. -/
 noncomputable def stateChannel (H : Matrix ο ι ℝ) (N : Matrix ο ο ℝ) :
     Kernel (EuclideanSpace ℝ ι × EuclideanSpace ℝ ι) (EuclideanSpace ℝ ο) :=
   (gaussianChannel H N).comap (fun p ↦ p.2 + p.1) (by fun_prop)
@@ -40,6 +41,7 @@ theorem stateChannel_comap_encoderInput (H : Matrix ο ι ℝ) (Q : Matrix ι ι
   ext p A
   rfl
 
+/-- Independent centered Gaussian state vectors over a block of length `n`. -/
 noncomputable def blockStateLaw (S : Matrix ι ι ℝ) (n : ℕ) :
     Measure (Fin n → EuclideanSpace ℝ ι) :=
   Measure.pi (fun _ : Fin n ↦ multivariateGaussian 0 S)
@@ -47,6 +49,7 @@ noncomputable def blockStateLaw (S : Matrix ι ι ℝ) (n : ℕ) :
 instance blockStateLaw_isProbabilityMeasure (S : Matrix ι ι ℝ) (n : ℕ) :
     IsProbabilityMeasure (blockStateLaw S n) := by unfold blockStateLaw; infer_instance
 
+/-- Independent Gaussian auxiliary vectors with the dirty-paper auxiliary covariance. -/
 noncomputable def blockAuxiliaryLaw (H : Matrix ο ι ℝ) (Q S : Matrix ι ι ℝ)
     (N : Matrix ο ο ℝ) (n : ℕ) : Measure (Fin n → EuclideanSpace ℝ ι) :=
   Measure.pi (fun _ : Fin n ↦ multivariateGaussian 0 (auxiliaryCovariance H Q S N))
@@ -56,6 +59,7 @@ instance blockAuxiliaryLaw_isProbabilityMeasure (H : Matrix ο ι ℝ) (Q S : Ma
   unfold blockAuxiliaryLaw
   infer_instance
 
+/-- Block kernel generating auxiliary vectors conditionally on the state sequence. -/
 noncomputable def blockStateKernel (H : Matrix ο ι ℝ) (Q : Matrix ι ι ℝ)
     (N : Matrix ο ο ℝ) (n : ℕ) := iidKernel (gaussianChannel (costaCoefficient H Q N * H) Q) n
 
@@ -64,6 +68,7 @@ instance blockStateKernel_isMarkovKernel (H : Matrix ο ι ℝ) (Q : Matrix ι �
   unfold blockStateKernel
   infer_instance
 
+/-- Block Gaussian kernel expressing the auxiliary variable conditionally on the observation. -/
 noncomputable def blockReverseKernel (H : Matrix ο ι ℝ) (Q : Matrix ι ι ℝ)
     (N : Matrix ο ο ℝ) (n : ℕ) :=
   iidKernel (gaussianChannel (costaCoefficient H Q N) (residualCovariance H Q N)) n
@@ -73,6 +78,7 @@ instance blockReverseKernel_isMarkovKernel (H : Matrix ο ι ℝ) (Q : Matrix ι
   unfold blockReverseKernel
   infer_instance
 
+/-- Memoryless additive-state Gaussian channel acting on paired state and input blocks. -/
 noncomputable def blockChannel (H : Matrix ο ι ℝ) (N : Matrix ο ο ℝ) (n : ℕ) :
     Kernel ((Fin n → EuclideanSpace ℝ ι) × (Fin n → EuclideanSpace ℝ ι))
       (Fin n → EuclideanSpace ℝ ο) :=
@@ -81,6 +87,7 @@ noncomputable def blockChannel (H : Matrix ο ι ℝ) (N : Matrix ο ο ℝ) (n 
 instance blockChannel_isMarkovKernel (H : Matrix ο ι ℝ) (N : Matrix ο ο ℝ) (n : ℕ) :
     IsMarkovKernel (blockChannel H N n) := by unfold blockChannel; infer_instance
 
+/-- Apply the dirty-paper encoder-input map separately at each block coordinate. -/
 noncomputable def blockEncoderInput (H : Matrix ο ι ℝ) (Q : Matrix ι ι ℝ)
     (N : Matrix ο ο ℝ) (n : ℕ)
     (p : (Fin n → EuclideanSpace ℝ ι) × (Fin n → EuclideanSpace ℝ ι)) :
@@ -92,10 +99,12 @@ theorem measurable_blockEncoderInput (H : Matrix ο ι ℝ) (Q : Matrix ι ι �
   unfold blockEncoderInput encoderInput
   fun_prop
 
+/-- Product likelihood ratio for the state-to-auxiliary relation over a block. -/
 noncomputable def blockStateLikelihood (H : Matrix ο ι ℝ) (Q S : Matrix ι ι ℝ)
     (N : Matrix ο ο ℝ) (n : ℕ) :=
   iidLikelihood (fun p ↦ stateInformationDensity H Q S N p.1 p.2) n
 
+/-- Product likelihood ratio for auxiliary decoding from the observed block. -/
 noncomputable def blockObservationLikelihood (H : Matrix ο ι ℝ) (Q S : Matrix ι ι ℝ)
     (N : Matrix ο ο ℝ) (n : ℕ) :=
   iidLikelihood (fun p ↦ observationInformationDensity H Q S N p.2 p.1) n
@@ -170,6 +179,7 @@ theorem blockChannel_comap_encoderInput (H : Matrix ο ι ℝ) (Q : Matrix ι ι
   ext p A
   rfl
 
+/-- Total squared Euclidean norm of a length-`n` input block. -/
 noncomputable def blockEnergy (n : ℕ) (x : Fin n → EuclideanSpace ℝ ι) : ℝ :=
   iidSum (fun v ↦ ‖v‖ ^ 2) n x
 
@@ -179,6 +189,7 @@ theorem measurable_blockEnergy (n : ℕ) : Measurable (blockEnergy (ι := ι) n)
   unfold blockEnergy iidSum
   fun_prop
 
+/-- State/input block pairs whose input energy is at most `n * P`. -/
 def blockAllowed (P : ℝ) (n : ℕ) :
     Set ((Fin n → EuclideanSpace ℝ ι) × (Fin n → EuclideanSpace ℝ ι)) :=
   {p | blockEnergy n p.2 ≤ (n : ℝ) * P}

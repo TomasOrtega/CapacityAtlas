@@ -16,9 +16,11 @@ namespace CapacityAtlas.MeasureInformation
 variable {α β υ : Type*} [MeasurableSpace α] [MeasurableSpace β] [MeasurableSpace υ]
   [Fintype α] [MeasurableSingletonClass α] [Fintype υ] [MeasurableSingletonClass υ]
 
+/-- Integral of conditional mutual information over the auxiliary measure. -/
 noncomputable def finiteConditionalMutualInfo (σ : Measure υ) (ρ : υ → Measure (α × β)) : ℝ :=
   ∫ u, (mutualInfo (ρ u)).toReal ∂σ
 
+/-- Integral of the auxiliary-dependent decoder's error under the conditional joint laws. -/
 noncomputable def finiteConditionalDecodingError
     (σ : Measure υ) (ρ : υ → Measure (α × β)) (decode : υ → β → α) : ℝ :=
   ∫ u, decodingError (ρ u) (decode u) ∂σ

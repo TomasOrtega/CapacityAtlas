@@ -49,10 +49,12 @@ theorem decode_eq_of_cut (cut : Finset (Fin vertices))
     · exact hcut a hacut (by simpa [ha] using hout)
     · exact c.packet_eq_of_cut cut m m' hmessage hcut a hacut
 
+/-- Messages originating outside a cut together with packets crossing outward through the cut. -/
 abbrev CutKey (cut : Finset (Fin vertices)) :=
   ((i : {i : Fin sources // G.sourceNode i ∉ cut}) → Fin (c.messages i.val)) ×
   ((e : {e : Fin edges // G.source e ∈ cut ∧ G.target e ∉ cut}) → G.Packet n e.val)
 
+/-- Cut information determined by a global message tuple for the converse counting argument. -/
 noncomputable def cutKey (cut : Finset (Fin vertices))
     (m : Message c.messages) : c.CutKey cut :=
   (fun i ↦ m i.val, fun e ↦ c.packet m e.val)

@@ -12,6 +12,7 @@ open scoped ENNReal Classical
 
 namespace CapacityAtlas.MeasureBinning
 
+/-- Lebesgue measure restricted to the unit interval, used for rejection-sampling seeds. -/
 noncomputable def seedLaw : Measure ℝ := volume.restrict (Icc 0 1)
 
 instance : IsProbabilityMeasure seedLaw where
@@ -27,6 +28,7 @@ theorem seedLaw_Iic {r : ℝ} (hr : r ≤ 1) : seedLaw (Iic r) = ENNReal.ofReal 
 
 variable {U : Type*} [MeasurableSpace U]
 
+/-- Admissible auxiliaries whose uniform seed lies below the scaled density. -/
 def seededAcceptance (g : U → ℝ≥0∞) (B : Set U) (T : ℝ) : Set (U × ℝ) :=
   {p | p.1 ∈ B ∧ p.2 ≤ (g p.1).toReal / T}
 

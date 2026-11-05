@@ -31,6 +31,7 @@ def measureEntropy (μ : Measure S := by volume_tac) : ℝ :=
 
 /-- A measure has finite support if there exists a finite set whose complement has zero measure. -/
 class FiniteSupport (μ : Measure S := by volume_tac) : Prop where
+  /-- A finite set containing almost every point under the measure. -/
   finite : ∃ A : Finset S, ∀ᵐ x ∂μ, x ∈ A
 
 /-- A set on which a measure with finite support is supported. -/

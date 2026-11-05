@@ -14,6 +14,7 @@ namespace CapacityAtlas.MeasureInformation
 
 variable {K : ℕ} {M : Fin K → Type*}
 
+/-- Replace coordinates before `k` by those of `x`, retaining the remaining coordinates of `u`. -/
 def prefixMessage (k : ℕ) (u x : ∀ i, M i) : ∀ i, M i :=
   spliceProduct (fun i : Fin K ↦ i.val < k) x u
 
@@ -43,6 +44,7 @@ theorem prefixMessage_succ_update (i : Fin K) (u x : ∀ j, M j) (a : M i) :
 variable [∀ i, MeasurableSpace (M i)] [∀ i, Fintype (M i)]
   [∀ i, MeasurableSingletonClass (M i)] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
+/-- Gaussian output law after averaging the message prefix and fixing its remaining coordinates. -/
 noncomputable def prefixGaussianLaw (μ : (i : Fin K) → Measure (M i))
     (f : (∀ i, M i) → EuclideanSpace ℝ ι) (N : Matrix ι ι ℝ) (k : ℕ) (u : ∀ i, M i) :
     Measure (EuclideanSpace ℝ ι) :=
@@ -54,6 +56,7 @@ instance prefixGaussianLaw_isProbabilityMeasure (μ : (i : Fin K) → Measure (M
   unfold prefixGaussianLaw
   infer_instance
 
+/-- Average output entropy in nats after randomizing the message coordinates before `k`. -/
 noncomputable def prefixGaussianEntropy (μ : (i : Fin K) → Measure (M i))
     (f : (∀ i, M i) → EuclideanSpace ℝ ι) (N : Matrix ι ι ℝ) (k : ℕ) : ℝ :=
   ∫ u, entropyWith (prefixGaussianLaw μ f N k u) volume ∂Measure.pi μ

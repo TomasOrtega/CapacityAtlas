@@ -14,6 +14,7 @@ open scoped ENNReal BigOperators
 
 namespace CapacityAtlas.Gaussian.Interference
 
+/-- Uniform probability measure on a finite nonempty message alphabet. -/
 noncomputable def uniformFinLaw (m : ℕ) (hm : 0 < m) : Measure (Fin m) :=
   letI : Nonempty (Fin m) := ⟨⟨0, hm⟩⟩
   (PMF.uniformOfFintype (Fin m)).toMeasure
@@ -28,6 +29,7 @@ theorem uniformFinLaw_singleton (m : ℕ) (hm : 0 < m) (a : Fin m) :
 
 variable {K n : ℕ}
 
+/-- Product of the users' uniform message laws. -/
 noncomputable def messageLaw (c : Code K n) : Measure c.Message :=
   Measure.pi fun i ↦ uniformFinLaw (c.messages i) (c.messages_pos i)
 
@@ -46,10 +48,12 @@ theorem integral_messageLaw (c : Code K n) (f : c.Message → ℝ) :
   rw [integral_fintype Integrable.of_finite]
   simp only [messageLaw_real_singleton, smul_eq_mul, ← Finset.mul_sum]
 
+/-- Noiseless received block represented by its real and imaginary coordinate vector. -/
 noncomputable def receiverMean (c : Code K n) (m : c.Message) (H : StateBlock K n)
     (i : Fin K) : EuclideanSpace ℝ (Fin 2 × Fin n) :=
   realBlock fun t ↦ ∑ j, H t i j * c.encode j (m j) H t
 
+/-- Fading and noise realizations causing a specified receiver's decoding error for a fixed message tuple. -/
 def receiverEvent (c : Code K n) (m : c.Message) (i : Fin K) :
     Set (StateBlock K n × Noise K n) :=
   {hz | (c.decode i).apply (hz.1, output c m hz.1 hz.2 i) ≠ m i}
@@ -59,6 +63,7 @@ theorem measurableSet_receiverEvent (c : Code K n) (m : c.Message) (i : Fin K) :
   (((c.decode i).measurable_fiber (m i)).preimage
     (measurable_fst.prodMk (measurable_output c m i))).compl
 
+/-- Specified receiver's noise-averaged error for a fixed message tuple and fading block. -/
 noncomputable def receiverErrorAt (c : Code K n) (m : c.Message) (H : StateBlock K n)
     (i : Fin K) : ℝ :=
   (blockNoise K n).real (Prod.mk H ⁻¹' receiverEvent c m i)

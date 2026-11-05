@@ -37,6 +37,7 @@ namespace ConfidentialBroadcast
 
 variable {X V Y Z : Type*} [Fintype X] [Fintype V] [Fintype Y] [Fintype Z]
 
+/-- Broadcast channel formed by placing a stochastic input channel before both receivers. -/
 def prefixed (W : FiniteBroadcastChannel X Y Z) (P : FiniteChannel V X) :
     FiniteBroadcastChannel V Y Z := ⟨W.receiver₁.comp P, W.receiver₂.comp P⟩
 
@@ -44,6 +45,7 @@ namespace Code
 
 variable {W : FiniteBroadcastChannel X Y Z} {P : FiniteChannel V X} {n : ℕ}
 
+/-- Realize a code for the prefixed channel by incorporating prefixing into the encoder. -/
 def liftPrefix (c : Code (prefixed W P) n) : Code W n where
   commonCount := c.commonCount
   secretCount := c.secretCount

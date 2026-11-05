@@ -14,9 +14,12 @@ namespace CapacityAtlas
 @[capacity_problem "strong-interference-two-user-dmc", capacity_definition]
 structure FiniteInterferenceChannel (X₁ X₂ Y₁ Y₂ : Type*)
     [Fintype X₁] [Fintype X₂] [Fintype Y₁] [Fintype Y₂] where
+  /-- First receiver's output channel given the pair of sender inputs. -/
   receiver₁ : FiniteChannel (X₁ × X₂) Y₁
+  /-- Second receiver's output channel given the pair of sender inputs. -/
   receiver₂ : FiniteChannel (X₁ × X₂) Y₂
 
+/-- Channel from user 1 to receiver 1 when user 2's input is fixed. -/
 def FiniteInterferenceChannel.user₁ToReceiver₁ {X₁ X₂ Y₁ Y₂ : Type*}
     [Fintype X₁] [Fintype X₂] [Fintype Y₁] [Fintype Y₂]
     (channel : FiniteInterferenceChannel X₁ X₂ Y₁ Y₂) (input₂ : X₂) :
@@ -25,6 +28,7 @@ def FiniteInterferenceChannel.user₁ToReceiver₁ {X₁ X₂ Y₁ Y₂ : Type*}
   nonnegative input₁ := channel.receiver₁.nonnegative (input₁, input₂)
   row_sum input₁ := channel.receiver₁.row_sum (input₁, input₂)
 
+/-- Channel from user 1 to receiver 2 when user 2's input is fixed. -/
 def FiniteInterferenceChannel.user₁ToReceiver₂ {X₁ X₂ Y₁ Y₂ : Type*}
     [Fintype X₁] [Fintype X₂] [Fintype Y₁] [Fintype Y₂]
     (channel : FiniteInterferenceChannel X₁ X₂ Y₁ Y₂) (input₂ : X₂) :
@@ -33,6 +37,7 @@ def FiniteInterferenceChannel.user₁ToReceiver₂ {X₁ X₂ Y₁ Y₂ : Type*}
   nonnegative input₁ := channel.receiver₂.nonnegative (input₁, input₂)
   row_sum input₁ := channel.receiver₂.row_sum (input₁, input₂)
 
+/-- Channel from user 2 to receiver 1 when user 1's input is fixed. -/
 def FiniteInterferenceChannel.user₂ToReceiver₁ {X₁ X₂ Y₁ Y₂ : Type*}
     [Fintype X₁] [Fintype X₂] [Fintype Y₁] [Fintype Y₂]
     (channel : FiniteInterferenceChannel X₁ X₂ Y₁ Y₂) (input₁ : X₁) :
@@ -41,6 +46,7 @@ def FiniteInterferenceChannel.user₂ToReceiver₁ {X₁ X₂ Y₁ Y₂ : Type*}
   nonnegative input₂ := channel.receiver₁.nonnegative (input₁, input₂)
   row_sum input₂ := channel.receiver₁.row_sum (input₁, input₂)
 
+/-- Channel from user 2 to receiver 2 when user 1's input is fixed. -/
 def FiniteInterferenceChannel.user₂ToReceiver₂ {X₁ X₂ Y₁ Y₂ : Type*}
     [Fintype X₁] [Fintype X₂] [Fintype Y₁] [Fintype Y₂]
     (channel : FiniteInterferenceChannel X₁ X₂ Y₁ Y₂) (input₁ : X₁) :

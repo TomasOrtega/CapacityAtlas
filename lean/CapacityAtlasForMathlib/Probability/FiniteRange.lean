@@ -8,6 +8,7 @@ import Mathlib.MeasureTheory.Measure.Map
 
 /-- The property of having a finite range. -/
 class FiniteRange {Ω G : Type*} (X : Ω → G) : Prop where
+  /-- The image of the observable is a finite set. -/
   finite : (Set.range X).Finite
 
 /-- Fintype structure on the range of a finite range map. -/

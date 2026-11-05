@@ -11,6 +11,7 @@ open scoped BigOperators ENNReal
 
 namespace CapacityAtlas.Gaussian.Interference
 
+/-- Noise variance used to degrade receiver observations in the two-user converse comparison. -/
 noncomputable def converseNoise (L U : ℝ) : ℝ := L ^ 2 / (2 * (L ^ 2 + U ^ 2))
 
 theorem converseNoise_pos {L U : ℝ} (hL : 0 < L) : 0 < converseNoise L U := by
