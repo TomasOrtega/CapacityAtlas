@@ -14,9 +14,13 @@ namespace CapacityAtlas.Gaussian.MIMOBroadcast
 
 /-- One joint encoder and a measurable decoder with only its own receiver's observations. -/
 structure Code (K tx : ℕ) (rx : Fin K → ℕ) (n : ℕ) where
+  /-- Message-alphabet size for each receiver. -/
   messages : Fin K → ℕ
+  /-- Every receiver has at least one possible message. -/
   messages_pos : ∀ i, 0 < messages i
+  /-- Common vector input block selected from the complete tuple of messages. -/
   encode : ((i : Fin K) → Fin (messages i)) → Fin n → EuclideanSpace ℝ (Fin tx)
+  /-- Each receiver decodes its own message from its own output block. -/
   decode : (i : Fin K) → Decoder (Fin n → EuclideanSpace ℝ (Fin (rx i))) (messages i)
 
 variable {K tx : ℕ} {rx : Fin K → ℕ}
@@ -55,6 +59,7 @@ theorem blockNoise_covariance
       rw [(blockNoise_eval N i s).map_eq]
       exact covariance_eval_multivariateGaussian hN.posSemidef a b
 
+/-- Receiver output sequence `Hᵢ x + zᵢ` for a common transmitted block. -/
 noncomputable def output
     (H : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ) {n : ℕ}
     (x : Fin n → EuclideanSpace ℝ (Fin tx))
@@ -74,6 +79,7 @@ def PowerAdmissible (P : ℝ) {n : ℕ} (c : Code K tx rx n) : Prop :=
   (∏ i, (c.messages i : ℝ))⁻¹ *
     (∑ m, ∑ s, ∑ a, (c.encode m s a) ^ 2) ≤ (n : ℝ) * P
 
+/-- Noise blocks on which at least one receiver decodes its intended message incorrectly. -/
 def errorEvent (H : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ)
     {n : ℕ} (c : Code K tx rx n) (m : (i : Fin K) → Fin (c.messages i)) :
     Set ((i : Fin K) → Fin n → EuclideanSpace ℝ (Fin (rx i))) :=
@@ -97,6 +103,7 @@ noncomputable def error
   (∏ i, (c.messages i : ℝ))⁻¹ *
     ∑ m, ((blockNoise N n) (errorEvent H c m)).toReal
 
+/-- Message rates for every receiver, measured in bits per physical channel use. -/
 noncomputable def rates {n : ℕ} (c : Code K tx rx n) : Fin K → ℝ :=
   fun i ↦ Operational.messageRate (c.messages i) n
 

@@ -16,12 +16,16 @@ namespace CapacityAtlas.MeasureChannel
 variable {X Y M : Type*} [MeasurableSpace X] [MeasurableSpace Y]
   [MeasurableSpace M]
 
-/-- A deterministic finite-message code with a measurable observation decoder. -/
+/-- A deterministic code with a measurable observation decoder. -/
 structure OneShotCode (X Y M : Type*) [MeasurableSpace Y] [MeasurableSpace M] where
+  /-- Channel input selected by each message. -/
   encode : M → X
+  /-- Message estimate obtained from the channel output. -/
   decode : Y → M
+  /-- The decoder is measurable in the output observation. -/
   measurable_decode : Measurable decode
 
+/-- Decode the first accepted message in the supplied order, using the fallback if none is accepted. -/
 noncomputable def firstAccepted (accept : M → Y → Prop) (fallback : M) : List M → Y → M
   | [], _ => fallback
   | m :: ms, y => if accept m y then m else firstAccepted accept fallback ms y
@@ -53,6 +57,7 @@ section FiniteMessages
 
 variable [Fintype M] [Nonempty M]
 
+/-- Measurable acceptance decoder and deterministic encoder associated with a finite codebook. -/
 noncomputable def thresholdCode (A : Set (X × Y)) (hA : MeasurableSet A)
     (codebook : M → X) : OneShotCode X Y M := by
   classical
@@ -74,9 +79,11 @@ theorem measurable_thresholdCode_decode (A : Set (X × Y)) (hA : MeasurableSet A
         (((measurable_pi_apply m).comp measurable_fst).prodMk measurable_snd)) measurable_const ih
   exact hlist _
 
+/-- Output-kernel mass of decoding failure for a specified message. -/
 noncomputable def errorProbability (κ : Kernel X Y) (code : OneShotCode X Y M)
     (m : M) : ℝ≥0∞ := κ (code.encode m) {y | code.decode y ≠ m}
 
+/-- Uniform average of the message-wise decoding error masses. -/
 noncomputable def averageError (κ : Kernel X Y) (code : OneShotCode X Y M) : ℝ≥0∞ :=
   (Fintype.card M : ℝ≥0∞)⁻¹ * ∑ m, errorProbability κ code m
 
@@ -109,9 +116,11 @@ theorem averageError_toReal (κ : Kernel X Y) [IsMarkovKernel κ]
   congr 1
   exact ENNReal.toReal_sum (fun m _ ↦ measure_ne_top (κ (code.encode m)) _)
 
+/-- Output mass failing the acceptance test for the transmitted input. -/
 noncomputable def missedDetection (κ : Kernel X Y) (A : Set (X × Y)) (x : X) : ℝ≥0∞ :=
   κ x {y | (x, y) ∉ A}
 
+/-- Output mass passing a competing input's acceptance test when the given input is transmitted. -/
 noncomputable def falseAcceptance (κ : Kernel X Y) (A : Set (X × Y))
     (x x' : X) : ℝ≥0∞ := κ x {y | (x', y) ∈ A}
 
@@ -149,6 +158,9 @@ theorem thresholdCode_errorProbability_le (κ : Kernel X Y) (A : Set (X × Y))
   exact (measure_mono hsubset).trans ((measure_union_le _ _).trans
     (add_le_add le_rfl (measure_biUnion_finset_le _ _)))
 
+/--
+Uniform average of missed-detection mass plus the sum of competing-codeword acceptance masses.
+-/
 noncomputable def packingBound (κ : Kernel X Y) (A : Set (X × Y))
     (codebook : M → X) : ℝ≥0∞ := by
   classical

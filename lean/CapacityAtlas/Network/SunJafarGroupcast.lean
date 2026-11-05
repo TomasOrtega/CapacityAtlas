@@ -8,8 +8,11 @@ import CapacityAtlasForMathlib.Network.IndexCoding
 
 namespace CapacityAtlas.IndexCoding
 
+/-- Message indices in the six-message groupcast instance. -/
 abbrev SunJafarGroupcastMessage := Fin 6
+/-- Receiver indices in the ten-receiver groupcast instance. -/
 abbrev SunJafarGroupcastReceiver := Fin 10
+/-- Pairs of groupcast message indices used to describe alignment edges. -/
 abbrev SunJafarGroupcastEdge := SunJafarGroupcastMessage × SunJafarGroupcastMessage
 
 /-- Demands in the paper's one-based receiver order. -/
@@ -34,10 +37,12 @@ def sunJafarGroupcastInterferenceOneBased :
     {3, 5}
   ]
 
+/-- Message requested by each of the ten groupcast receivers. -/
 def sunJafarGroupcastDemand :
     SunJafarGroupcastReceiver → SunJafarGroupcastMessage :=
   ![0, 0, 1, 2, 3, 4, 5, 5, 5, 5]
 
+/-- Messages unknown to each groupcast receiver, excluding its requested message. -/
 def sunJafarGroupcastInterference :
     SunJafarGroupcastReceiver → Finset SunJafarGroupcastMessage :=
   ![
@@ -80,6 +85,7 @@ theorem sunJafarGroupcast_interference (receiver : SunJafarGroupcastReceiver) :
   fin_cases sourceReceiver <;>
     simp [sunJafarGroupcastDemand, sunJafarGroupcastInterference]
 
+/-- Ordered message pairs that interfere together at some groupcast receiver. -/
 @[capacity_problem "sun-jafar-six-message-groupcast-index-coding", capacity_definition]
 def sunJafarGroupcastAlignmentEdges : Finset SunJafarGroupcastEdge :=
   Finset.univ.filter fun edge ↦
@@ -87,6 +93,7 @@ def sunJafarGroupcastAlignmentEdges : Finset SunJafarGroupcastEdge :=
       edge.1 ∈ sunJafarGroupcastInterference receiver ∧
         edge.2 ∈ sunJafarGroupcastInterference receiver
 
+/-- Explicit edge set used to check the computed groupcast alignment graph. -/
 def sunJafarGroupcastExpectedAlignmentEdges : Finset SunJafarGroupcastEdge :=
   {(0, 2), (1, 2), (1, 3), (2, 3), (2, 4), (3, 4)}
 

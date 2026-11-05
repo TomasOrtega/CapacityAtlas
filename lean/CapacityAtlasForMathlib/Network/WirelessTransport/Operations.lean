@@ -12,6 +12,7 @@ namespace CapacityAtlas.WirelessTransport
 
 noncomputable section
 
+/-- Geometric prefactor in the transport upper bound for radius R and guard parameter Δ. -/
 def upperConstant (R Δ : ℝ) : ℝ := 2 * (1 + Δ) * R / Δ
 
 theorem upperConstant_nonneg {R Δ : ℝ} (hR : 0 ≤ R) (hΔ : 0 < Δ) :

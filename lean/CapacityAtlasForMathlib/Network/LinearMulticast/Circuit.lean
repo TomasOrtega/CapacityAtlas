@@ -13,17 +13,23 @@ namespace CapacityAtlas.LinearMulticast
 
 /-- Each wire depends on locally available input symbols and earlier wires. -/
 structure Circuit (Input Wire : Type) where
+  /-- Topological rank assigned to each wire. -/
   height : Wire → ℕ
+  /-- Which input symbols are directly available to a wire. -/
   input : Wire → Input → Prop
+  /-- Which earlier wires may contribute to a wire. -/
   parent : Wire → Wire → Prop
+  /-- Every parent wire has strictly smaller topological rank. -/
   parent_lt : ∀ e p, parent e p → height p < height e
 
 namespace Circuit
 
 variable {I W : Type} [Fintype W] (G : Circuit I W)
 
+/-- Coefficient indices pairing each wire with an input or parent-wire port. -/
 abbrev Variable (_G : Circuit I W) := W × (I ⊕ W)
 
+/-- Transfer coefficient from one input symbol to a wire, evaluated recursively through its parents. -/
 noncomputable def transfer {R : Type*} [CommSemiring R]
     (c : G.Variable → R) (e : W) (i : I) : R := by
   classical
@@ -48,6 +54,7 @@ theorem transfer_map {R S : Type*} [CommSemiring R] [CommSemiring S]
         rfl
       · simp
 
+/-- Transfer coefficient at an observation port, including directly observed input symbols. -/
 noncomputable def observed {R : Type*} [CommSemiring R]
     (c : G.Variable → R) (port : I ⊕ W) (i : I) : R := by
   classical

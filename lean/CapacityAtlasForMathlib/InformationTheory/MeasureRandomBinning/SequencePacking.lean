@@ -14,6 +14,7 @@ namespace CapacityAtlas.MeasureBinning
 
 open MeasureChannel
 
+/-- Extract a stage's sample from the nested finite sample tuple. -/
 def sequenceSampleAt {V : ℕ → Type*} : (n : ℕ) → SequenceSamples V n → (i : Fin n) → V i.val
   | 0, _, i => Fin.elim0 i
   | n + 1, samples, i => Fin.lastCases samples.2 (fun j ↦ sequenceSampleAt n samples.1 j) i
@@ -44,6 +45,7 @@ theorem measurable_sequenceSampleAt {V : ℕ → Type*} [∀ n, MeasurableSpace 
           change Measurable (fun p : SequenceSamples V n × V n ↦ sequenceSampleAt n p.1 j)
           exact (measurable_sequenceSampleAt n j).comp measurable_fst
 
+/-- Select each stage's sample from the row indexed by its message. -/
 def selectedRows {V M : ℕ → Type*} (message : (i : ℕ) → M i) :
     (n : ℕ) → SequenceSamples (fun i ↦ M i → V i) n → SequenceSamples V n
   | 0, _ => PUnit.unit
@@ -185,6 +187,7 @@ theorem lintegral_sequence_competingBins_le {V M : ℕ → Type*} {Y : Type*}
         (Finset.mem_erase.mp hj).1.symm
     _ = _ := by simp [Finset.card_erase_of_mem]
 
+/-- Output pairs accepted by at least one auxiliary in the candidate row. -/
 def candidateRowAcceptance {U Y : Type*} (A : Set (U × Y)) (L : ℕ) :
     Set ((Fin L → U × ℝ) × Y) := {p | ∃ l, ((p.1 l).1, p.2) ∈ A}
 

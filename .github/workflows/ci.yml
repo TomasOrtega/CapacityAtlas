@@ -67,7 +67,7 @@ jobs:
         run: lake --wfail build CapacityAtlas
       - name: Audit transitive Lean trust
         working-directory: lean
-        run: lake exe capacity_audit > "$RUNNER_TEMP/capacity-audit.json"
+        run: lake --wfail exe capacity_audit > "$RUNNER_TEMP/capacity-audit.json"
       - name: Test Lean audit boundaries
         working-directory: lean
         run: lake --wfail build CapacityAtlasAuditTests

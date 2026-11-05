@@ -56,6 +56,7 @@ theorem measurePreserving_pi_swap {α S T : Type*} [MeasurableSpace α]
     (Equiv.prodComm T S).injective
   exact (measurePreserving_pi_curry (fun _ : T => fun _ : S => ν)).comp (hs.comp hf)
 
+/-- Physical position of a symbol in one of b complete length-L blocks inside a longer block. -/
 def blockPosition {b L n : ℕ} (h : b * L ≤ n) (p : Fin b × Fin L) : Fin n :=
   Fin.castLE h (finProdFinEquiv p)
 
@@ -63,9 +64,11 @@ theorem blockPosition_injective {b L n : ℕ} (h : b * L ≤ n) :
     Function.Injective (blockPosition h) := by
   exact (Fin.castLE_injective h).comp finProdFinEquiv.injective
 
+/-- Extract the complete length-L fading blocks from the beginning of a longer state block. -/
 def takeStateBlocks {K b L n : ℕ} (h : b * L ≤ n) (H : StateBlock K n) :
     Fin b → StateBlock K L := fun s t => H (blockPosition h (s, t))
 
+/-- Extract the complete length-L noise blocks from the beginning of a longer noise block. -/
 def takeNoiseBlocks {K b L n : ℕ} (h : b * L ≤ n) (z : Noise K n) :
     Fin b → Noise K L := fun s i t => z i (blockPosition h (s, t))
 

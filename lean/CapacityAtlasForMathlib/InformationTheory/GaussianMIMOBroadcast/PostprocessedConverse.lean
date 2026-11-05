@@ -15,6 +15,7 @@ namespace CapacityAtlas.Gaussian.MIMOBroadcast
 
 variable {K tx n : ℕ} {rx : Fin K → ℕ}
 
+/-- Entropy in nats of the flattened encoded block after averaging its message prefix. -/
 noncomputable def codePrefixEntropy (c : Code K tx rx n)
     (E : Matrix (Fin tx) (Fin tx) ℝ) (k : ℕ) : ℝ :=
   MeasureInformation.prefixGaussianEntropy

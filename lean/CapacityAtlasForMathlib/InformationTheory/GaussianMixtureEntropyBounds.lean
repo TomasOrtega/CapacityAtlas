@@ -18,6 +18,7 @@ section MeasurableLabels
 
 variable [MeasurableSpace α] [MeasurableSingletonClass α]
 
+/-- Probability measure on a finite index set with the supplied normalized nonnegative weights. -/
 noncomputable def finiteWeightLaw (w : α → ℝ) (hw : ∀ a, 0 ≤ w a) (hw1 : ∑ a, w a = 1) :
     Measure α :=
   (PMF.ofFintype (fun a ↦ ENNReal.ofReal (w a)) (by

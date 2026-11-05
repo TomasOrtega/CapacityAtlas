@@ -14,8 +14,11 @@ open scoped BigOperators
 
 namespace CapacityAtlas.Gaussian.Interference
 
+/-- Complex channel matrix indexed by receiver and sender. -/
 abbrev State (K : ℕ) := Fin K → Fin K → ℂ
+/-- Sequence of channel matrices over a finite block of physical channel uses. -/
 abbrev StateBlock (K n : ℕ) := Fin n → State K
+/-- Two real Gaussian noise coordinates for each receiver and time slot. -/
 abbrev Noise (K n : ℕ) := Fin K → Fin n → EuclideanSpace ℝ (Fin 2)
 
 /-- All directed channel coefficients, including direct links, are sampled independently. -/
@@ -25,6 +28,7 @@ noncomputable def stateLaw (μ : Measure ℂ) (K n : ℕ) : Measure (StateBlock 
 instance (μ : Measure ℂ) [IsProbabilityMeasure μ] (K n : ℕ) :
     IsProbabilityMeasure (stateLaw μ K n) := by unfold stateLaw; infer_instance
 
+/-- Complex noise value formed from its real and imaginary coordinates. -/
 def complexNoise (z : EuclideanSpace ℝ (Fin 2)) : ℂ := z 0 + z 1 * Complex.I
 
 /-- Independent real and imaginary noise coordinates each have variance one half. -/
@@ -39,18 +43,26 @@ instance (K n : ℕ) : IsProbabilityMeasure (blockNoise K n) := by
 /-- Encoders know their own messages and the channel history through the current use. -/
 @[capacity_problem "k-user-gaussian-interference-channel", capacity_definition]
 structure Code (K n : ℕ) where
+  /-- Message count for each sender. -/
   messages : Fin K → ℕ
+  /-- Every sender's message alphabet is nonempty. -/
   messages_pos : ∀ i, 0 < messages i
+  /-- Complex inputs determined by a sender's own message and the channel state block. -/
   encode : (i : Fin K) → Fin (messages i) → StateBlock K n → Fin n → ℂ
+  /-- Each encoded channel input depends measurably on fading. -/
   encode_measurable : ∀ i m t, Measurable fun H => encode i m H t
+  /-- Inputs at a slot depend only on the channel history through that slot. -/
   encode_causal : ∀ i m t H H', (∀ s, s ≤ t → H s = H' s) →
     encode i m H t = encode i m H' t
+  /-- Each receiver's measurable decoder using the fading block and its own output block. -/
   decode : (i : Fin K) → Decoder (StateBlock K n × (Fin n → ℂ)) (messages i)
 
 variable {K n : ℕ}
 
+/-- One finite message index for each sender in an interference code. -/
 abbrev Code.Message (c : Code K n) := (i : Fin K) → Fin (c.messages i)
 
+/-- Receiver output block obtained by adding all faded transmissions and complex Gaussian noise. -/
 def output (c : Code K n) (m : c.Message) (H : StateBlock K n) (z : Noise K n)
     (i : Fin K) : Fin n → ℂ :=
   fun t => (∑ j, H t i j * c.encode j (m j) H t) + complexNoise (z i t)
@@ -69,6 +81,7 @@ theorem measurable_output (c : Code K n) (m : c.Message) (i : Fin K) :
     exact hcoef.mul ((c.encode_measurable j (m j) t).comp measurable_fst)
   · fun_prop
 
+/-- Total transmitted squared norm over all senders and physical channel uses. -/
 noncomputable def energy (c : Code K n) (m : c.Message) (H : StateBlock K n) : ℝ :=
   ∑ t, ∑ i, ‖c.encode i (m i) H t‖ ^ 2
 
@@ -78,6 +91,7 @@ def PowerAdmissible (μ : Measure ℂ) (P : ℝ) (c : Code K n) : Prop :=
     (∏ i, (c.messages i : ℝ))⁻¹ *
       (∑ m, ∫ H, energy c m H ∂stateLaw μ K n) ≤ (n : ℝ) * P
 
+/-- Fading and noise realizations for which at least one receiver decodes its message incorrectly. -/
 def errorEvent (c : Code K n) (m : c.Message) : Set (StateBlock K n × Noise K n) :=
   {hz | ∃ i, (c.decode i).apply (hz.1, output c m hz.1 hz.2 i) ≠ m i}
 
@@ -90,18 +104,22 @@ theorem measurableSet_errorEvent (c : Code K n) (m : c.Message) :
   exact (((c.decode i).measurable_fiber (m i)).preimage
     (measurable_fst.prodMk (measurable_output c m i))).compl
 
+/-- Joint receiver error averaged over uniform message tuples, fading, and Gaussian noise. -/
 noncomputable def error (μ : Measure ℂ) (c : Code K n) : ℝ :=
   (∏ i, (c.messages i : ℝ))⁻¹ * ∑ m,
     (((stateLaw μ K n).prod (blockNoise K n)) (errorEvent c m)).toReal
 
+/-- Rate of one sender in bits per physical interference-channel use. -/
 noncomputable def rates (c : Code K n) (i : Fin K) : ℝ :=
   Operational.messageRate (c.messages i) n
 
+/-- Closed vector rate region achievable with vanishing joint average error under total average power P. -/
 @[capacity_problem "k-user-gaussian-interference-channel", capacity_definition]
 noncomputable def capacityRegion (μ : Measure ℂ) (K : ℕ) (P : ℝ) : Set (Fin K → ℝ) :=
   Operational.achievableVectorRegion (Code K) (fun _ c => PowerAdmissible μ P c)
     (fun _ c => error μ c) (fun _ c => rates c)
 
+/-- Supremum of the sum of sender rates in the operational capacity region. -/
 @[capacity_problem "k-user-gaussian-interference-channel", capacity_definition]
 noncomputable def sumCapacity (μ : Measure ℂ) (K : ℕ) (P : ℝ) : ℝ :=
   sSup {s | ∃ R ∈ capacityRegion μ K P, s = ∑ i, R i}

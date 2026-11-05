@@ -123,9 +123,13 @@ theorem blockChannel_transition_ofStrategies (state : FiniteDistribution S)
 @[capacity_shared_api]
 structure BlockCode (state : FiniteDistribution S) (channels : S → FiniteChannel X Y)
     (blocklength : ℕ) where
+  /-- Number of distinct messages. -/
   messageCount : ℕ
+  /-- The message set is nonempty. -/
   messageCount_pos : 0 < messageCount
+  /-- Causal state-dependent input policy selected by each message. -/
   encode : Fin messageCount → Policy S X blocklength
+  /-- Message estimate obtained from the output word. -/
   decode : (Fin blocklength → Y) → Fin messageCount
 
 namespace BlockCode

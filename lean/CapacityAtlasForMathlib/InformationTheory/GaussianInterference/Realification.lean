@@ -12,6 +12,7 @@ open scoped BigOperators Matrix
 
 namespace CapacityAtlas.Gaussian.Interference
 
+/-- Real two-by-two matrix representing multiplication by a complex scalar. -/
 def complexMatrix (z : ℂ) : Matrix (Fin 2) (Fin 2) ℝ :=
   !![z.re, -z.im; z.im, z.re]
 
@@ -31,13 +32,16 @@ theorem complexMatrix_mul_transpose (z : ℂ) :
 
 variable {n : ℕ}
 
+/-- Block-diagonal real matrix representing pointwise multiplication by a complex scalar sequence. -/
 def complexBlockMatrix (z : Fin n → ℂ) :
     Matrix (Fin 2 × Fin n) (Fin 2 × Fin n) ℝ :=
   blockDiagonal (fun t ↦ complexMatrix (z t))
 
+/-- Real and imaginary coordinates of a complex block, indexed by coordinate-time pairs. -/
 noncomputable def realBlock (x : Fin n → ℂ) : EuclideanSpace ℝ (Fin 2 × Fin n) :=
   flattenGaussianBlock (fun t ↦ Complex.orthonormalBasisOneI.repr (x t))
 
+/-- Reconstruct a complex sequence from its real coordinate-time block vector. -/
 noncomputable def complexBlock (x : EuclideanSpace ℝ (Fin 2 × Fin n)) : Fin n → ℂ :=
   fun t ↦ Complex.orthonormalBasisOneI.repr.symm (unflattenGaussianBlock x t)
 

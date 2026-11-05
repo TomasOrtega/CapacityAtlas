@@ -16,11 +16,14 @@ namespace CapacityAtlas.Gaussian.Interference
 
 noncomputable section
 
+/-- One square-QAM symbol for each monomial alignment stream. -/
 abbrev StreamAlphabet (K n q : ℕ) := Box (Fin K) n → QAM q
 
+/-- Fading and noise blocks for one complete alignment extension. -/
 abbrev Environment (K n : ℕ) :=
   StateBlock K (extensionLength K n) × Noise K (extensionLength K n)
 
+/-- Product fading and Gaussian noise measure for one alignment extension. -/
 def environmentLaw (μ : Measure ℂ) (K n : ℕ) : Measure (Environment K n) :=
   (stateLaw μ K (extensionLength K n)).prod (blockNoise K (extensionLength K n))
 
@@ -29,6 +32,7 @@ instance environmentLaw_probability (μ : Measure ℂ) [IsProbabilityMeasure μ]
   unfold environmentLaw
   infer_instance
 
+/-- Noise stream vector after applying the receiver's alignment decoder. -/
 def effectiveNoise {K n : ℕ} (i : Fin K) (hz : Environment K n) : Box (Fin K) n → ℂ :=
   alignedDecode hz.1 i (fun t => complexNoise (hz.2 i t))
 
@@ -43,9 +47,11 @@ theorem measurable_effectiveNoise {K n : ℕ} (i : Fin K) (a : Box (Fin K) n) :
     (measurable_fst.prodMk (hn.comp measurable_snd))
   exact hc
 
+/-- Complex stream symbols obtained by scaling square-QAM constellation values by δ. -/
 def qamStreams {K n q : ℕ} (δ : ℝ) (a : StreamAlphabet K n q) : Box (Fin K) n → ℂ :=
   fun s => (δ : ℂ) * qamValue (a s)
 
+/-- Finite QAM observation after adding effective decoder noise to the desired stream symbols. -/
 def qamObserve {K n q : ℕ} (hq : 0 < q) (δ : ℝ) (i : Fin K)
     (a : StreamAlphabet K n q) (hz : Environment K n) : StreamAlphabet K n q :=
   fun s => quantizeComplex q hq δ (qamStreams δ a s + effectiveNoise i hz s)
@@ -57,12 +63,14 @@ theorem measurable_qamObserve {K n q : ℕ} (hq : 0 < q) (δ : ℝ) (i : Fin K)
   exact (measurable_quantizeComplex q hq δ).comp
     (measurable_const.add (measurable_effectiveNoise i s))
 
+/-- Finite stream channel induced by QAM observation under the fading and noise environment law. -/
 def qamChannel (μ : Measure ℂ) [IsProbabilityMeasure μ] {K n q : ℕ}
     (hq : 0 < q) (δ : ℝ) (i : Fin K) : FiniteChannel (StreamAlphabet K n q)
       (StreamAlphabet K n q) :=
   observedChannel (environmentLaw μ K n) (qamObserve hq δ i)
     (measurable_qamObserve hq δ i)
 
+/-- Quantize the alignment-decoded physical receiver block to its QAM stream alphabet. -/
 def qamDecode {K n q : ℕ} (hq : 0 < q) (δ : ℝ) (i : Fin K)
     (hy : StateBlock K (extensionLength K n) × (Fin (extensionLength K n) → ℂ)) :
     StreamAlphabet K n q := fun s => quantizeComplex q hq δ (alignedDecode hy.1 i hy.2 s)
@@ -73,6 +81,7 @@ theorem measurable_qamDecode {K n q : ℕ} (hq : 0 < q) (δ : ℝ) (i : Fin K) :
   intro s
   exact (measurable_quantizeComplex q hq δ).comp (measurable_alignedDecode i s)
 
+/-- Coefficient of the squared QAM order in the uniform total transmission-power bound. -/
 def qamPowerFactor (K n : ℕ) (M δ : ℝ) : ℝ :=
   K * (2 * Fintype.card (Box (Fin K) n) * beamBound (Fin K) n M * δ) ^ 2
 
@@ -120,6 +129,7 @@ theorem qam_power_le {K n q : ℕ} (δ : ℝ) (hδ : 0 < δ) (M : ℝ)
         qamPowerFactor]
       ring
 
+/-- Causal monomial-alignment QAM scheme with its induced finite channels and uniform power bound. -/
 def qamScheme (μ : Measure ℂ) [IsProbabilityMeasure μ] [NullSingletonClass μ]
     {K n q : ℕ} (hq : 0 < q) (δ : ℝ) (hδ : 0 < δ) (M : ℝ)
     (hM : ∀ᵐ h ∂μ, ‖h‖ ≤ M) :

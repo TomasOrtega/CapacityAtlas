@@ -16,6 +16,7 @@ namespace Code
 
 variable {n : ℕ} (c : G.Code n)
 
+/-- Run independent copies of a code using supplied message bijections and packet embeddings. -/
 noncomputable def parallel {N : ℕ} (copies : ℕ) (counts : Fin sources → ℕ)
     (hcounts : ∀ i, 0 < counts i)
     (messageEquiv : ∀ i, Fin (counts i) ≃ (Fin copies → Fin (c.messages i)))
@@ -81,6 +82,7 @@ namespace Code
 
 variable {n : ℕ} (c : G.Code n)
 
+/-- Repeat a code in parallel and embed its packets into a longer admissible block. -/
 noncomputable def replicate {N : ℕ} (copies : ℕ) (h : copies * n ≤ N) : G.Code N :=
   c.parallel copies (fun i ↦ c.messages i ^ copies)
     (fun i ↦ pow_pos (c.messages_pos i) _)

@@ -12,9 +12,13 @@ namespace CapacityAtlas.CommonMessageBroadcast
 /-- One message encoder and a decoder for each receiver's own output alphabet. -/
 @[capacity_shared_api]
 structure BlockCode {J : Type*} (X : Type*) (Y : J → Type*) (blocklength : ℕ) where
+  /-- Number of distinct messages. -/
   messageCount : ℕ
+  /-- The message set is nonempty. -/
   messageCount_pos : 0 < messageCount
+  /-- Input word transmitted for each message. -/
   encode : Fin messageCount → Fin blocklength → X
+  /-- Receiver-specific message estimate from that receiver's output word. -/
   decode : (j : J) → (Fin blocklength → Y j) → Fin messageCount
 
 variable {J X : Type*} {Y : J → Type*}

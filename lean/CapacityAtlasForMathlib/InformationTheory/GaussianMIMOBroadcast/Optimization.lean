@@ -38,6 +38,7 @@ theorem continuousOn_dpcRate
   · exact (div_pos (dpcRate_numerator_pos H N Q hN hQ π k)
       (dpcRate_denominator_pos H N Q hN hQ π k)).ne'
 
+/-- Weighted sum of the receiver dirty-paper layer rates in bits per channel use. -/
 noncomputable def weightedDpcRate (w : Fin K → ℝ)
     (H : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ)
     (N : (i : Fin K) → Matrix (Fin (rx i)) (Fin (rx i)) ℝ)
@@ -110,6 +111,7 @@ theorem weightedRate_le_of_mem_region (w : Fin K → ℝ) (hw : ∀ i, 0 ≤ w i
     (convexHull_min (fun R hR ↦ weightedRate_le_of_mem_rawRegion w hw H N hbound hR) hconvex)
     hclosed hR
 
+/-- Receiver-indexed rate vector at the dirty-paper bounds for a fixed allocation and order. -/
 noncomputable def dpcCorner
     (H : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ)
     (N : (i : Fin K) → Matrix (Fin (rx i)) (Fin (rx i)) ℝ)

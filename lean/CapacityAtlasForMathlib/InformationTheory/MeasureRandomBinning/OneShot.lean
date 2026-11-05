@@ -15,6 +15,7 @@ variable {S U X Y M L : Type*} [MeasurableSpace S] [MeasurableSpace U]
   [MeasurableSpace X] [MeasurableSpace Y] [MeasurableSpace M]
   [Fintype M] [Nonempty M] [Fintype L] [Nonempty L]
 
+/-- Channel output kernel induced by the state-dependent binning encoder and its fallback. -/
 noncomputable def binningKernel (κ : Kernel (S × X) Y)
     (B : Set (S × U)) (hB : MeasurableSet B) (input : S × U → X)
     (hinput : Measurable input) (fallback : S → X) (hfallback : Measurable fallback) :

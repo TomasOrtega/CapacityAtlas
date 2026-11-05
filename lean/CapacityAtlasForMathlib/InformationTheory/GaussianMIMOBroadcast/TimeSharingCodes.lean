@@ -42,6 +42,7 @@ def concatMessageEquiv (c : Code K tx rx n) (d : Code K tx rx q) :
   right_inv p := by
     apply Prod.ext <;> funext i <;> simp
 
+/-- Concatenate two broadcast codes in time, pairing each receiver’s message alphabets. -/
 noncomputable def Code.concat (c : Code K tx rx n) (d : Code K tx rx q) : Code K tx rx (n + q) where
   messages i := c.messages i * d.messages i
   messages_pos i := Nat.mul_pos (c.messages_pos i) (d.messages_pos i)

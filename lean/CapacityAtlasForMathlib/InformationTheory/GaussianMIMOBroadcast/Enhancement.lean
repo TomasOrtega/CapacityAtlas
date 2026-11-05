@@ -75,6 +75,7 @@ lemma prefixCovariance_succ (Q : Fin (m + 1) → Matrix (Fin tx) (Fin tx) ℝ)
   have hn : k.castSucc ∉ Finset.univ.filter (fun j : Fin (m + 1) ↦ j < k.castSucc) := by simp
   simp only [prefixCovariance, hf, Finset.sum_insert hn, add_comm]
 
+/-- Intermediate receiver-noise covariance defined by the allocation and multiplier equations. -/
 noncomputable def enhancedCovariance
     (Q N O : Fin (m + 1) → Matrix (Fin tx) (Fin tx) ℝ) (γ : Fin (m + 1) → ℝ)
     (k : Fin (m + 1)) : Matrix (Fin tx) (Fin tx) ℝ :=

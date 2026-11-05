@@ -32,6 +32,7 @@ namespace CapacityAtlas.Gaussian.MIMOBroadcast
 
 variable {K tx : ℕ} {rx : Fin K → ℕ}
 
+/-- Independent Gaussian input layers, listed in the encoding order `π`. -/
 noncomputable def layerLaw (Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ)
     (π : Equiv.Perm (Fin K)) : Measure (Fin K → EuclideanSpace ℝ (Fin tx)) :=
   Measure.pi (fun j ↦ multivariateGaussian 0 (Q (π j)))
@@ -41,12 +42,15 @@ instance layerLaw_isProbabilityMeasure (Q : Fin K → Matrix (Fin tx) (Fin tx) �
   unfold layerLaw
   infer_instance
 
+/-- Sum of input layers strictly before the selected layer. -/
 noncomputable def prefixInput (k : Fin K) (x : Fin K → EuclideanSpace ℝ (Fin tx)) :
     EuclideanSpace ℝ (Fin tx) := ∑ j ∈ Finset.univ.filter (fun j ↦ j < k), x j
 
+/-- Sum of input layers strictly after the selected layer. -/
 noncomputable def suffixInput (k : Fin K) (x : Fin K → EuclideanSpace ℝ (Fin tx)) :
     EuclideanSpace ℝ (Fin tx) := ∑ j ∈ Finset.univ.filter (fun j ↦ k < j), x j
 
+/-- Sum of covariance allocations strictly after the selected layer in encoding order. -/
 def suffixCovariance (Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ)
     (π : Equiv.Perm (Fin K)) (k : Fin K) : Matrix (Fin tx) (Fin tx) ℝ :=
   ∑ j ∈ Finset.univ.filter (fun j ↦ k < j), Q (π j)
@@ -79,6 +83,7 @@ theorem layerLaw_map_groups (Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ)
   · simp
   · simp
 
+/-- Joint law of the independent Gaussian layers and one receiver-noise vector. -/
 noncomputable def layerSourceLaw (Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ)
     (π : Equiv.Perm (Fin K)) {r : ℕ} (N : Matrix (Fin r) (Fin r) ℝ) :=
   (layerLaw Q π).prod (multivariateGaussian 0 N)
@@ -87,6 +92,9 @@ instance layerSourceLaw_isProbabilityMeasure (Q : Fin K → Matrix (Fin tx) (Fin
     (π : Equiv.Perm (Fin K)) {r : ℕ} (N : Matrix (Fin r) (Fin r) ℝ) :
     IsProbabilityMeasure (layerSourceLaw Q π N) := by unfold layerSourceLaw; infer_instance
 
+/--
+Dirty-paper source triple for one layer: its input, earlier-layer noise, and later-layer state.
+-/
 noncomputable def layerSource {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ) (k : Fin K)
     (p : (Fin K → EuclideanSpace ℝ (Fin tx)) × EuclideanSpace ℝ (Fin r)) :
     DirtyPaper.SourceSpace (Fin tx) (Fin r) :=
@@ -151,6 +159,7 @@ theorem prefix_add_current_add_suffix (k : Fin K) (x : Fin K → EuclideanSpace 
   · simp
   · simp [hj, ne_of_gt hj, not_lt_of_gt hj]
 
+/-- Receiver observation obtained by adding noise to the channel image of all input layers. -/
 noncomputable def layerObservation {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ)
     (p : (Fin K → EuclideanSpace ℝ (Fin tx)) × EuclideanSpace ℝ (Fin r)) :
     EuclideanSpace ℝ (Fin r) := H.toEuclideanLin (∑ j, p.1 j) + p.2
@@ -168,6 +177,7 @@ theorem observation_layerSource {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ) (k :
   rw [← prefix_add_current_add_suffix k p.1, map_add, map_add, map_add]
   abel
 
+/-- Receiver covariance contributed by the channel noise and earlier encoding layers. -/
 def layerNoiseCovariance {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ)
     (N : Matrix (Fin r) (Fin r) ℝ) (Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ)
     (π : Equiv.Perm (Fin K)) (k : Fin K) : Matrix (Fin r) (Fin r) ℝ :=
@@ -179,6 +189,7 @@ theorem layerNoiseCovariance_posDef {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ)
     (layerNoiseCovariance H N Q π k).PosDef :=
   receivedCovariance_posDef H N _ hN (prefixCovariance_posSemidef Q hQ π k)
 
+/-- Dirty-paper auxiliary for one input layer, treating later layers as additive state. -/
 noncomputable def layerAuxiliary {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ)
     (N : Matrix (Fin r) (Fin r) ℝ) (Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ)
     (π : Equiv.Perm (Fin K)) (k : Fin K) (x : Fin K → EuclideanSpace ℝ (Fin tx)) :
@@ -200,6 +211,7 @@ theorem auxiliary_layerSource {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ)
     DirtyPaper.auxiliary H (Q (π k)) (layerNoiseCovariance H N Q π k) (layerSource H k p) =
       layerAuxiliary H N Q π k p.1 := rfl
 
+/-- State-to-auxiliary information density in nats for one Gaussian encoding layer. -/
 noncomputable def layerStateStatistic {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ)
     (N : Matrix (Fin r) (Fin r) ℝ) (Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ)
     (π : Equiv.Perm (Fin K)) (k : Fin K)
@@ -207,6 +219,7 @@ noncomputable def layerStateStatistic {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ
   DirtyPaper.stateInformationDensity H (Q (π k)) (suffixCovariance Q π k)
     (layerNoiseCovariance H N Q π k) (suffixInput k p.1) (layerAuxiliary H N Q π k p.1)
 
+/-- Observation-to-auxiliary information density in nats for one Gaussian encoding layer. -/
 noncomputable def layerObservationStatistic {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ)
     (N : Matrix (Fin r) (Fin r) ℝ) (Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ)
     (π : Equiv.Perm (Fin K)) (k : Fin K)
@@ -357,6 +370,7 @@ theorem layerInformationDifference_eq_dpcRate
   field_simp
   rfl
 
+/-- Conditional Gaussian law of one auxiliary vector given the later input layers. -/
 noncomputable def layerAuxiliaryKernel {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ)
     (N : Matrix (Fin r) (Fin r) ℝ) (Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ)
     (π : Equiv.Perm (Fin K)) (k : Fin K) :

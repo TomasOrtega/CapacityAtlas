@@ -12,6 +12,7 @@ namespace CapacityAtlas.Channel
 
 open CapacityAtlas
 
+/-- Joint next-state and output law of the binary trapdoor channel. -/
 noncomputable def trapdoorTransition : Bool → Bool → Bool → Bool → ℝ
   | false, false, false, false => 1
   | true, true, true, true => 1
@@ -30,10 +31,12 @@ noncomputable def trapdoorChannel : FiniteStateChannel Bool Bool Bool where
   row_sum input state := by
     cases input <;> cases state <;> norm_num [trapdoorTransition, Fintype.sum_bool]
 
+/-- Trapdoor state channel used by the operational model with output feedback. -/
 @[capacity_problem "trapdoor-channel-with-feedback", capacity_definition]
 noncomputable def trapdoorFeedbackModel : FiniteStateChannel Bool Bool Bool :=
   trapdoorChannel
 
+/-- Trapdoor state channel used by the operational model without feedback. -/
 @[capacity_problem "trapdoor-channel-without-feedback", capacity_definition]
 noncomputable def trapdoorFeedforwardModel : FiniteStateChannel Bool Bool Bool :=
   trapdoorChannel

@@ -35,8 +35,11 @@ namespace CapacityAtlas.IndexCoding
 /-- A finite index-coding instance with independent messages and arbitrary receivers. -/
 @[capacity_shared_api]
 structure Instance (Message Receiver : Type*) [DecidableEq Message] where
+  /-- Message requested by each receiver. -/
   demand : Receiver → Message
+  /-- Message indices already known to each receiver. -/
   sideInformation : Receiver → Finset Message
+  /-- A receiver does not already know its requested message. -/
   demand_not_sideInformation : ∀ receiver, demand receiver ∉ sideInformation receiver
 
 namespace Instance
@@ -141,9 +144,11 @@ structure Code {Message Receiver : Type*} [DecidableEq Message]
     (problem : Instance Message Receiver)
     (MessageAlphabet BroadcastAlphabet : Type*)
     (messageLength broadcastLength : ℕ) where
+  /-- Broadcast word determined by the complete tuple of source-message words. -/
   encode :
     (Message → Fin messageLength → MessageAlphabet) →
       Fin broadcastLength → BroadcastAlphabet
+  /-- Each receiver recovers its requested word from the broadcast and its side-information words. -/
   decode :
     (receiver : Receiver) →
     (Fin broadcastLength → BroadcastAlphabet) →
@@ -308,11 +313,16 @@ noncomputable def linearEncoderSymmetricCapacityOver (problem : Instance Message
 /-- A finite field packaged so capacities can be compared across characteristics and extensions. -/
 @[capacity_shared_api]
 structure FiniteFieldModel where
+  /-- Underlying type of field elements. -/
   Carrier : Type
+  /-- Finite enumeration of the carrier. -/
   fintype : Fintype Carrier
+  /-- Decidable equality on field elements. -/
   decidableEq : DecidableEq Carrier
+  /-- Field operations and laws on the carrier. -/
   field : Field Carrier
 
+/-- Symmetric linear-encoder capacity over the carrier field of a packaged finite-field model. -/
 @[capacity_shared_api]
 noncomputable def linearEncoderSymmetricCapacityForModel (problem : Instance Message Receiver)
     (model : FiniteFieldModel) : ℝ := by

@@ -13,26 +13,34 @@ namespace CapacityAtlas.MeasureBinning
 
 open MeasureChannel
 
+/-- Deterministic code whose encoder observes the state and whose decoder is measurable. -/
 structure StateCode (S X Y M : Type*) [MeasurableSpace S] [MeasurableSpace X]
     [MeasurableSpace Y] [MeasurableSpace M] where
+  /-- Channel input selected from the message and observed state. -/
   encode : M → S → X
+  /-- For each message, the encoder is measurable in the observed state. -/
   measurable_encode : ∀ m, Measurable (encode m)
+  /-- Message estimate obtained from the channel output. -/
   decode : Y → M
+  /-- The decoder is measurable in the output observation. -/
   measurable_decode : Measurable decode
 
 variable {S U X Y M L : Type*} [MeasurableSpace S] [MeasurableSpace U]
   [MeasurableSpace X] [MeasurableSpace Y] [MeasurableSpace M]
 
+/-- Message-wise decoding error averaged over the state law and the induced output kernel. -/
 noncomputable def stateErrorProbability (κ : Kernel (S × X) Y) (σ : Measure S)
     (code : StateCode S X Y M) (m : M) : ℝ≥0∞ :=
   ∫⁻ s, κ (s, code.encode m s) {y | code.decode y ≠ m} ∂σ
 
+/-- Uniform message average of the state-dependent decoding error. -/
 noncomputable def stateAverageError [Fintype M] (κ : Kernel (S × X) Y) (σ : Measure S)
     (code : StateCode S X Y M) : ℝ≥0∞ :=
   (Fintype.card M : ℝ≥0∞)⁻¹ * ∑ m, stateErrorProbability κ σ code m
 
 variable [Fintype L] [Nonempty L]
 
+/-- Encode the selected admissible auxiliary, using the fallback input on covering failure. -/
 noncomputable def binningInput (B : Set (S × U)) (input : S × U → X) (fallback : S → X)
     (book : L → U) (s : S) : X :=
   if coveringFailure B book s then fallback s else input (s, selectAux B book s)
@@ -56,6 +64,7 @@ theorem binningInput_mem_allowed (B : Set (S × U)) (input : S × U → X) (fall
 
 variable [Fintype M] [Nonempty M]
 
+/-- First accepted message-bin pair, projected to its message index. -/
 noncomputable def binningDecoder (A : Set (U × Y)) (book : M → L → U) (y : Y) : M :=
   (firstAccepted (fun p y ↦ (book p.1 p.2, y) ∈ A)
     (Classical.choice inferInstance : M × L) Finset.univ.toList y).1
@@ -80,6 +89,7 @@ theorem binningDecoder_eq_of_accepts (A : Set (U × Y)) (book : M → L → U)
   by_contra hne
   exact hother _ hne _ hacc
 
+/-- State-dependent binning encoder paired with its measurable acceptance decoder. -/
 noncomputable def binningCode (B : Set (S × U)) (hB : MeasurableSet B)
     (input : S × U → X) (hinput : Measurable input) (fallback : S → X)
     (hfallback : Measurable fallback) (A : Set (U × Y)) (hA : MeasurableSet A)

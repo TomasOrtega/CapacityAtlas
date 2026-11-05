@@ -28,6 +28,7 @@ lemma PosDef.inv_antitone {A B : Matrix ι ι ℝ} (hA : A.PosDef) (hB : B.PosDe
       _ = _ := by rw [ha, hai, hb]; simp
   exact le_iff.mpr (he ▸ h₁.add h₂)
 
+/-- Noise matrix obtained by adding precision M to X and inverting the resulting precision. -/
 noncomputable def enhancedNoise (X M : Matrix ι ι ℝ) : Matrix ι ι ℝ := (X⁻¹ + M)⁻¹
 
 lemma enhancedNoise_posDef {X M : Matrix ι ι ℝ} (hX : X.PosDef) (hM : M.PosSemidef) :
@@ -91,6 +92,7 @@ theorem weighted_inv_add_enhancedNoise {B X O : Matrix ι ι ℝ} (hB : B.PosSem
     (by rw [Matrix.mul_smul, hBO, smul_zero])]
   simp only [smul_add, smul_smul, mul_inv_cancel₀ ha.ne', one_smul]
 
+/-- Enhanced covariance of B + X with precision increment O, after subtracting B. -/
 noncomputable def intermediateNoise (B X O : Matrix ι ι ℝ) : Matrix ι ι ℝ :=
   enhancedNoise (B + X) O - B
 

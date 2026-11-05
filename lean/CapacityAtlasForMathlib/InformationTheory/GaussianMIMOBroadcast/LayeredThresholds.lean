@@ -63,6 +63,7 @@ theorem exists_layered_thresholds
 theorem messageCountAtRate_zero (n : ℕ) : FiniteChannel.messageCountAtRate 0 n = 1 := by
   simp [FiniteChannel.messageCountAtRate]
 
+/-- Sampling stages whose intended receiver has a strictly positive target rate. -/
 noncomputable def layeredActiveStages (π : Equiv.Perm (Fin K)) (order : ℕ → Fin K)
     (R : Fin K → ℝ) : Finset (Fin K) :=
   Finset.univ.filter (fun i ↦ 0 < R (π (order i.val)))

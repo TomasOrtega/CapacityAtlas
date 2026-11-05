@@ -13,6 +13,7 @@ namespace CapacityAtlas.Gaussian.Interference
 
 noncomputable section
 
+/-- Environment realizations where some decoded noise stream has norm at least half the QAM spacing. -/
 def noiseBad {K n : ℕ} (δ : ℝ) : Set (Environment K n) :=
   {hz | ∃ i s, δ / 2 ≤ ‖effectiveNoise i hz s‖}
 

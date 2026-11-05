@@ -15,6 +15,7 @@ namespace CapacityAtlas.Gaussian.MIMOBroadcast
 
 variable {K tx : ℕ}
 
+/-- Receiver block-output kernel for a fixed collection of input-layer blocks. -/
 noncomputable def blockLayerChannel {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ)
     (N : Matrix (Fin r) (Fin r) ℝ) (n : ℕ) :
     Kernel (LayerBlocks K tx n) (Fin n → EuclideanSpace ℝ (Fin r)) :=
@@ -67,6 +68,7 @@ theorem blockLayerChannel_eq_blockNoise {rx : Fin K → ℕ}
   exact (hm.measure_preimage (hE.preimage
     ((measurable_blockLayerObservation (H r) n).comp measurable_prodMk_left)).nullMeasurableSet).symm
 
+/-- Input-layer blocks whose combined transmitted sequence meets the block power budget. -/
 def layerPowerSet (P : ℝ) (n : ℕ) : Set (LayerBlocks K tx n) :=
   {x | DirtyPaper.blockEnergy n (blockTotalInput n x) ≤ (n : ℝ) * P}
 
@@ -82,6 +84,7 @@ theorem zero_mem_layerPowerSet {P : ℝ} (hP : 0 ≤ P) (n : ℕ) :
     OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow]
   positivity
 
+/-- Auxiliary/output block pairs whose observation likelihood exceeds `F`. -/
 noncomputable def layerDecodingSet {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ)
     (N : Matrix (Fin r) (Fin r) ℝ) (Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ)
     (π : Equiv.Perm (Fin K)) (k : Fin K) (n : ℕ) (F : ℝ≥0∞) :
@@ -170,15 +173,18 @@ variable {rx : Fin K → ℕ}
     (n : ℕ) (L : ℕ → ℕ) (T : ℕ → ℝ) (hT : ∀ i, 0 < T i)
     (M : Fin K → ℕ) (hM : ∀ i, 0 < M i)
 
+/-- Collection of sampled rows for all message-dependent Gaussian rejection stages. -/
 abbrev LayeredBooks := SequenceSamples
   (fun j ↦ Fin (M (π (order j))) →
     (gaussianStages H N Q hQ π order n L T hT j).Samples) K
 
+/-- Permutation taking a sampling-stage index to its intended receiver. -/
 def stageReceiverEquiv : Equiv.Perm (Fin K) := e.trans π
 
 theorem stageReceiverEquiv_apply (i : Fin K) :
     stageReceiverEquiv π e i = π (e i) := rfl
 
+/-- Likelihood-threshold binning decoder built from one stage of the sampled codebooks. -/
 noncomputable def layeredStageDecoder (hM : ∀ i, 0 < M i)
     (F : Fin K → ℝ≥0∞) (hL : ∀ j, 0 < L j)
     (books : LayeredBooks H N Q hQ π order n L T hT M) (i : Fin K) :
@@ -193,6 +199,7 @@ noncomputable def layeredStageDecoder (hM : ∀ i, 0 < M i)
     fun m ↦ (measurable_binningDecoder (measurableSet_layerDecodingSet _ _ Q π _ n (F i)) row)
       (measurableSet_singleton m)⟩
 
+/-- Broadcast code obtained by safe sequential Gaussian rejection sampling and stage decoding. -/
 noncomputable def layeredCode (P : ℝ) (F : Fin K → ℝ≥0∞) (hL : ∀ j, 0 < L j)
     (books : LayeredBooks H N Q hQ π order n L T hT M) : Code K tx rx n where
   messages := M

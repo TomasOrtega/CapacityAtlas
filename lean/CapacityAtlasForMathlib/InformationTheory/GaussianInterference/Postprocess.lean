@@ -14,6 +14,7 @@ namespace CapacityAtlas.Gaussian.Interference
 
 variable {ι ο : Type*} [Fintype ι] [Fintype ο] [DecidableEq ι] [DecidableEq ο]
 
+/-- Gaussian channel kernel followed by translation by a fixed output vector. -/
 noncomputable def affineGaussianKernel (H : Matrix ο ι ℝ)
     (c : EuclideanSpace ℝ ο) (R : Matrix ο ο ℝ) :
     Kernel (EuclideanSpace ℝ ι) (EuclideanSpace ℝ ο) :=

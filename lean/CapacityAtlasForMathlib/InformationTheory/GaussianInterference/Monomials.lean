@@ -13,14 +13,18 @@ namespace CapacityAtlas.Gaussian.Interference
 
 variable (U : Type*) [Fintype U] [DecidableEq U]
 
+/-- Off-diagonal receiver-sender pairs indexing interference coefficients. -/
 abbrev Cross := {p : U × U // p.1 ≠ p.2}
 
+/-- Exponent assignments below n to every off-diagonal channel coefficient. -/
 abbrev Box (n : ℕ) := Cross U → Fin n
 
+/-- Desired and interference column indices using exponent boxes of orders n and n + 1. -/
 abbrev Columns (n : ℕ) := Box U n ⊕ Box U (n + 1)
 
 variable {U}
 
+/-- Exponent of a channel coefficient in a beam, with zero exponent on diagonal coefficients. -/
 def beamExponent {n : ℕ} (a : Box U n) (p : U × U) : ℕ :=
   if h : p.1 ≠ p.2 then (a ⟨p, h⟩).val else 0
 
@@ -32,6 +36,7 @@ omit [Fintype U] in
 @[simp] theorem beamExponent_diag {n : ℕ} (a : Box U n) (i : U) :
     beamExponent a (i, i) = 0 := by simp [beamExponent]
 
+/-- Coefficient exponents of a desired or interference column at the selected receiver. -/
 def columnExponent {n : ℕ} (i : U) : Columns U n → U × U → ℕ
   | Sum.inl a, p => beamExponent a p + if p = (i, i) then 1 else 0
   | Sum.inr a, p => beamExponent a p
@@ -65,6 +70,7 @@ theorem columnExponent_injective {n : ℕ} (i : U) :
       have h := congrFun hab p.val
       simpa [columnExponent] using h
 
+/-- Lift an exponent assignment to the next box while incrementing one selected interference exponent. -/
 def shifted {n : ℕ} (a : Box U n) (p : Cross U) : Box U (n + 1) :=
   fun q ↦ ⟨(a q).val + if q = p then 1 else 0, by
     split_ifs <;> have := (a q).isLt <;> omega⟩
@@ -79,6 +85,7 @@ theorem shifted_exponent {n : ℕ} (a : Box U n) (p : Cross U) (q : U × U) :
 
 variable {R : Type*} [CommRing R]
 
+/-- Monomial beam value obtained by multiplying channel coefficients to their assigned exponents. -/
 def beam {n : ℕ} (h : U × U → R) (a : Box U n) : R :=
   ∏ p, h p ^ beamExponent a p
 
@@ -111,6 +118,7 @@ theorem eval_column {n : ℕ} (h : U × U → R) (i : U) (a : Columns U n) :
     rfl
   | inr a => rfl
 
+/-- Determinant polynomial of the selected receiver's monomial decoding matrix. -/
 noncomputable def decodingPolynomial {n : ℕ} (i : U) :
     MvPolynomial (Columns U n × (U × U)) R :=
   Matrix.det (MonomialEvaluation.matrix (columnExponent (n := n) i))

@@ -10,7 +10,9 @@ namespace CapacityAtlas.Channel
 
 open CapacityAtlas
 
+/-- First receiver's deterministic output on the three-symbol Blackwell input alphabet. -/
 def blackwellOutput₁ : Fin 3 → Bool := ![false, false, true]
+/-- Second receiver's deterministic output on the three-symbol Blackwell input alphabet. -/
 def blackwellOutput₂ : Fin 3 → Bool := ![false, true, true]
 
 /-- The three-input deterministic Blackwell broadcast channel. -/

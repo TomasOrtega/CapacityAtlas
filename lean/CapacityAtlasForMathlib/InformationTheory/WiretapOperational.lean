@@ -24,6 +24,7 @@ noncomputable def induced {W : FiniteWiretapChannel X Y Z} {n : ℕ}
     (FiniteDistribution.uniform (Fin c.randomizationCount)).mixture
       (fun seed ↦ (V.block n).rowDistribution (c.encode m seed))
 
+/-- Average message-decoding error at the legitimate receiver. -/
 noncomputable def error {W : FiniteWiretapChannel X Y Z} {n : ℕ}
     (c : WiretapCode W n) : ℝ :=
   FiniteInformation.decodingError (induced c W.legitimate) c.messageCount id c.decode
@@ -39,16 +40,20 @@ noncomputable def leakage {W : FiniteWiretapChannel X Y Z} {n : ℕ}
 noncomputable def defect {W : FiniteWiretapChannel X Y Z} {n : ℕ}
     (c : WiretapCode W n) : ℝ := max (error c) (leakage c)
 
+/-- Confidential message rate in bits per physical channel use. -/
 noncomputable def rate {W : FiniteWiretapChannel X Y Z} {n : ℕ}
     (c : WiretapCode W n) := Operational.messageRate c.messageCount n
 
+/-- Operational capacity requiring vanishing legitimate decoding error and unnormalized message leakage. -/
 noncomputable def capacity (W : FiniteWiretapChannel X Y Z) : ℝ :=
   Operational.capacity (WiretapCode W) (fun _ _ ↦ True)
     (fun _ c ↦ defect c) (fun _ c ↦ rate c)
 
+/-- The eavesdropper channel factors through the legitimate receiver by a finite channel. -/
 def IsDegraded (W : FiniteWiretapChannel X Y Z) : Prop :=
   ∃ degrade : FiniteChannel Y Z, W.eavesdropper = degrade.comp W.legitimate
 
+/-- Supremum of legitimate-minus-eavesdropper mutual information over input laws, in bits. -/
 noncomputable def degradedInformationCapacity (W : FiniteWiretapChannel X Y Z) : ℝ :=
   sSup (Set.range fun p : FiniteDistribution X ↦
     W.legitimate.mutualInformationBits p - W.eavesdropper.mutualInformationBits p)

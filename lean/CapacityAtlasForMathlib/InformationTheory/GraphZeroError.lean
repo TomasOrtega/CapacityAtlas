@@ -9,6 +9,7 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 namespace CapacityAtlas
 
+/-- Every pair of distinct codewords has a coordinate with distinct, nonadjacent vertices. -/
 def IsGraphZeroErrorCode {Vertex : Type*} [DecidableEq Vertex]
     (adjacent : Vertex → Vertex → Prop) [DecidableRel adjacent]
     (blocklength : ℕ) (code : Finset (Fin blocklength → Vertex)) : Prop :=
@@ -16,6 +17,7 @@ def IsGraphZeroErrorCode {Vertex : Type*} [DecidableEq Vertex]
     ∃ coordinate, left coordinate ≠ right coordinate ∧
       ¬adjacent (left coordinate) (right coordinate)
 
+/-- Supremum of zero-error graph code sizes raised to the inverse positive blocklength. -/
 noncomputable def graphShannonCapacity {Vertex : Type*} [Fintype Vertex]
     [DecidableEq Vertex] (adjacent : Vertex → Vertex → Prop) [DecidableRel adjacent] : ℝ :=
   sSup {rate | ∃ blocklength : ℕ, ∃ code : Finset (Fin blocklength → Vertex),

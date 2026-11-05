@@ -26,6 +26,7 @@ lemma receivedCovariance_add_smul {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ)
   simp [receivedCovariance, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul,
     Matrix.smul_mul, add_assoc]
 
+/-- Trace expression for a dirty-paper layer-rate variation along allocation direction `D`. -/
 noncomputable def dpcRateVariation
     (H : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ)
     (N : (i : Fin K) → Matrix (Fin (rx i)) (Fin (rx i)) ℝ)

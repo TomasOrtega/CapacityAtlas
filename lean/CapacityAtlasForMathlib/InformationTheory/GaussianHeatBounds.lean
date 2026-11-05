@@ -13,6 +13,7 @@ namespace CapacityAtlas.MeasureInformation
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
+/-- Logarithmic normalizing factor for a Gaussian with covariance `t • N`. -/
 noncomputable def gaussianHeatLogNormalizer (N : Matrix ι ι ℝ) (t : ℝ) : ℝ :=
   -((Fintype.card ι : ℝ) * log (2 * π) + Fintype.card ι * log t + log N.det) / 2
 
@@ -81,6 +82,10 @@ section FiniteMixture
 
 variable {α : Type*} [Fintype α]
 
+/--
+Finite weighted sum of Gaussian densities with common covariance; weights are not normalized
+here.
+-/
 noncomputable def gaussianMixturePDFReal (w : α → ℝ) (m : α → EuclideanSpace ℝ ι)
     (N : Matrix ι ι ℝ) (x : EuclideanSpace ℝ ι) : ℝ :=
   ∑ a, w a * multivariateGaussianPDFReal (m a) N x

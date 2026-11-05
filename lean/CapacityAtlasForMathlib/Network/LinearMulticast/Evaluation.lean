@@ -12,6 +12,7 @@ namespace CapacityAtlas.LinearMulticast.Circuit
 
 variable {I W : Type} [Fintype I] [Fintype W] (G : Circuit I W)
 
+/-- Wire value obtained by applying its transfer coefficients to the input message vector. -/
 noncomputable def value {R : Type*} [CommSemiring R]
     (c : G.Variable → R) (e : W) (m : I → R) : R :=
   ∑ i, G.transfer c e i * m i
@@ -36,6 +37,7 @@ theorem value_eq {R : Type*} [CommSemiring R]
     · simp only [hp, ↓reduceDIte, ↓reduceIte, Finset.mul_sum, mul_assoc]
     · simp [hp]
 
+/-- Value of an input-symbol or wire observation port for a message vector. -/
 noncomputable def portValue {R : Type*} [CommSemiring R]
     (c : G.Variable → R) (m : I → R) (port : I ⊕ W) : R :=
   match port with
@@ -55,6 +57,7 @@ theorem outputMatrix_mulVec {R : Type*} [CommSemiring R]
   funext i
   exact G.observed_mul_message c m (output i)
 
+/-- Recover a message vector by applying the inverse observation transfer matrix. -/
 noncomputable def decode {K : Type*} [Field K]
     (c : G.Variable → K) (output : I → I ⊕ W) (observations : I → K) : I → K :=
   (G.outputMatrix c output)⁻¹.mulVec observations

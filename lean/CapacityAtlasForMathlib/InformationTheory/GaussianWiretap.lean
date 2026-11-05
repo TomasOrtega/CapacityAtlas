@@ -13,24 +13,34 @@ namespace CapacityAtlas.Gaussian
 
 /-- Independent uniform message and finite private seed. -/
 structure WiretapCode (n : ℕ) where
+  /-- Number of messages in the finite alphabet. -/
   messages : ℕ
+  /-- The message alphabet contains at least one element. -/
   messages_pos : 0 < messages
+  /-- Number of independent private randomization seeds. -/
   seeds : ℕ
+  /-- The encoder seed alphabet is nonempty. -/
   seeds_pos : 0 < seeds
+  /-- Real input block selected from a message and private seed. -/
   encode : Fin messages → Fin seeds → Fin n → ℝ
+  /-- Measurable legitimate-receiver decoder without access to the private seed. -/
   decode : Decoder (Fin n → ℝ) messages
 
+/-- Require every message/seed encoder block to have energy at most `n * P`. -/
 def MessageSeedPowerAdmissible (P : ℝ) {n : ℕ} (c : WiretapCode n) : Prop :=
   ∀ m seed, (∑ t, (c.encode m seed t) ^ 2) ≤ (n : ℝ) * P
 
+/-- Legitimate-receiver decoding error averaged uniformly over messages and encoder seeds. -/
 noncomputable def wiretapError (N : ℝ) {n : ℕ} (c : WiretapCode n) : ℝ :=
   (c.messages * c.seeds : ℝ)⁻¹ * ∑ m, ∑ seed,
     ((noise N n) {z | c.decode.apply (fun t ↦ c.encode m seed t + z t) ≠ m}).toReal
 
+/-- Eavesdropper output-block density for a fixed message, averaged over encoder seeds. -/
 noncomputable def wiretapConditionalDensity (N : ℝ) {n : ℕ} (c : WiretapCode n)
     (m : Fin c.messages) (z : Fin n → ℝ) : ℝ :=
   (c.seeds : ℝ)⁻¹ * ∑ seed, ∏ t, gaussianPDFReal (c.encode m seed t) N.toNNReal (z t)
 
+/-- Eavesdropper output-block density averaged uniformly over messages and encoder seeds. -/
 noncomputable def wiretapOutputDensity (N : ℝ) {n : ℕ} (c : WiretapCode n)
     (z : Fin n → ℝ) : ℝ :=
   (c.messages : ℝ)⁻¹ * ∑ m, wiretapConditionalDensity N c m z
@@ -41,6 +51,7 @@ noncomputable def wiretapLeakage (N : ℝ) {n : ℕ} (c : WiretapCode n) : ℝ :
     ∫ z : Fin n → ℝ, wiretapConditionalDensity N c m z *
       Real.log (wiretapConditionalDensity N c m z / wiretapOutputDensity N c z)) / Real.log 2
 
+/-- Operational secrecy capacity with vanishing decoding error and unnormalized message leakage. -/
 noncomputable def wiretapCapacity (P N₁ N₂ : ℝ) : ℝ :=
   Operational.capacity WiretapCode (fun _ c ↦ MessageSeedPowerAdmissible P c)
     (fun _ c ↦ max (wiretapError N₁ c) (wiretapLeakage N₂ c))

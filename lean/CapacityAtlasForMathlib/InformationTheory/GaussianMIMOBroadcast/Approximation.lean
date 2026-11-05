@@ -14,6 +14,7 @@ namespace CapacityAtlas.Gaussian.MIMOBroadcast
 
 variable {K tx : ℕ} {rx : Fin K → ℕ}
 
+/-- Positive-definite layer covariances whose total trace is strictly below the power budget. -/
 def InteriorAllocationAdmissible (P : ℝ) (Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ) : Prop :=
   (∀ i, (Q i).PosDef) ∧ (∑ i, (Q i).trace) < P
 
@@ -21,8 +22,10 @@ theorem InteriorAllocationAdmissible.admissible {P : ℝ}
     {Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ} (hQ : InteriorAllocationAdmissible P Q) :
     AllocationAdmissible P Q := ⟨fun i ↦ (hQ.1 i).posSemidef, hQ.2.le⟩
 
+/-- Isotropic covariance scale chosen to leave room under the total power budget. -/
 noncomputable def regularizationScale (K tx : ℕ) (P : ℝ) : ℝ := P / (2 * ((K : ℝ) * tx + 1))
 
+/-- Assign the same scaled identity covariance to every message layer. -/
 noncomputable def isotropicAllocation (K tx : ℕ) (P : ℝ) :
     Fin K → Matrix (Fin tx) (Fin tx) ℝ := fun _ ↦ regularizationScale K tx P • 1
 
@@ -45,6 +48,7 @@ theorem isotropicAllocation_interior {P : ℝ} (hP : 0 < P) :
   have hd : 0 ≤ (K : ℝ) * tx := by positivity
   nlinarith
 
+/-- Coordinatewise affine blend of two covariance allocations with weight `t` on `A`. -/
 noncomputable def allocationBlend
     (Q A : Fin K → Matrix (Fin tx) (Fin tx) ℝ) (t : ℝ) :
     Fin K → Matrix (Fin tx) (Fin tx) ℝ := fun i ↦ (1 - t) • Q i + t • A i
@@ -74,6 +78,7 @@ theorem continuous_allocationBlend (Q A : Fin K → Matrix (Fin tx) (Fin tx) ℝ
 theorem allocationBlend_zero (Q A : Fin K → Matrix (Fin tx) (Fin tx) ℝ) :
     allocationBlend Q A 0 = Q := by ext i j k; simp [allocationBlend]
 
+/-- Positive blending weight tending to zero, used to approach a boundary allocation. -/
 noncomputable def approximationWeight (n : ℕ) : ℝ := (1 / ((n : ℝ) + 1)) / 2
 
 theorem approximationWeight_pos (n : ℕ) : 0 < approximationWeight n := by
@@ -109,6 +114,7 @@ theorem dpcRate_allocationBlend_tendsto
     (fun n ↦ (allocationBlend_interior hQ hA (approximationWeight_pos n)
       (approximationWeight_lt_one n).le).admissible.1)⟩
 
+/-- Nonnegative rates below dirty-paper bounds from a strict interior covariance allocation. -/
 def interiorRawRegion
     (H : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ)
     (N : (i : Fin K) → Matrix (Fin (rx i)) (Fin (rx i)) ℝ) (P : ℝ) : Set (Fin K → ℝ) :=
@@ -167,6 +173,7 @@ theorem region_eq_closure_convexHull_interiorRawRegion
       (convex_convexHull ℝ _).closure (fun _ h ↦ subset_closure (subset_convexHull ℝ _ h))
   · exact closure_mono (convexHull_mono (interiorRawRegion_subset_rawRegion H N P))
 
+/-- Interior-allocation rates that are zero or strictly below their dirty-paper layer bounds. -/
 def strictInteriorRawRegion
     (H : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ)
     (N : (i : Fin K) → Matrix (Fin (rx i)) (Fin (rx i)) ℝ) (P : ℝ) : Set (Fin K → ℝ) :=

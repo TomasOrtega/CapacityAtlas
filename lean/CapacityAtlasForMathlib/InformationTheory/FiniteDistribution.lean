@@ -17,8 +17,11 @@ namespace CapacityAtlas
 /-- A real-valued probability distribution on a finite type. -/
 @[capacity_shared_api]
 structure FiniteDistribution (X : Type*) [Fintype X] where
+  /-- Probability mass assigned to each point. -/
   probability : X → ℝ
+  /-- All point masses are nonnegative. -/
   nonnegative : ∀ x, 0 ≤ probability x
+  /-- The point masses sum to one. -/
   sum_probability : ∑ x, probability x = 1
 
 namespace FiniteDistribution

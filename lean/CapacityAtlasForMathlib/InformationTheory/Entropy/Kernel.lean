@@ -23,6 +23,7 @@ variable {Ω S T U : Type*} [mΩ : MeasurableSpace Ω]
 noncomputable
 def entropy (κ : Kernel T S) (μ : Measure T) := μ[fun y ↦ Hm[κ y]]
 
+/-- Entropy of a kernel averaged over its input measure. -/
 notation3:100 "Hk[" κ " , " μ "]" => ProbabilityTheory.Kernel.entropy κ μ
 
 @[simp]

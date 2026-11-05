@@ -27,5 +27,5 @@ lean:
 	cd lean && lake --wfail build CapacityAtlasAuditTests
 	@set -e; audit_report=$$(mktemp /tmp/capacity-atlas-audit.XXXXXX); \
 	trap 'rm -f "$$audit_report"' EXIT; \
-	cd lean; lake exe capacity_audit > "$$audit_report"; cd ..; \
+	cd lean; lake --wfail exe capacity_audit > "$$audit_report"; cd ..; \
 	uv run --locked capacity-atlas validate --lean-report "$$audit_report"

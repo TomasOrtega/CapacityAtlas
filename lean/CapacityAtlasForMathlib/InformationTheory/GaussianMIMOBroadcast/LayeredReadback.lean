@@ -13,6 +13,7 @@ namespace CapacityAtlas.Gaussian.MIMOBroadcast
 
 variable {K tx : ℕ}
 
+/-- Evaluate one layer’s block likelihood at the auxiliary generated from its input layers. -/
 noncomputable def blockLayerStateLikelihood {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ)
     (N : Matrix (Fin r) (Fin r) ℝ) (Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ)
     (π : Equiv.Perm (Fin K)) (k : Fin K) (n : ℕ) (x : LayerBlocks K tx n) : ℝ≥0∞ :=

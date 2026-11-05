@@ -15,10 +15,13 @@ namespace CapacityAtlas.Gaussian.Interference
 
 noncomputable section
 
+/-- Square constellation indices with q levels in each real coordinate. -/
 abbrev QAM (q : ℕ) := Fin q × Fin q
 
+/-- Complex constellation point represented by its nonnegative integer real and imaginary coordinates. -/
 def qamValue {q : ℕ} (a : QAM q) : ℂ := (a.1.val : ℂ) + (a.2.val : ℂ) * Complex.I
 
+/-- Round a real coordinate to the nearest integer, clipping it to the range from zero to q - 1. -/
 def quantizeReal (q : ℕ) (hq : 0 < q) (x : ℝ) : Fin q :=
   ⟨min ⌊x + 1 / 2⌋₊ (q - 1), lt_of_le_of_lt (Nat.min_le_right _ _) (by omega)⟩
 
@@ -39,6 +42,7 @@ theorem quantizeReal_correct {q : ℕ} (hq : 0 < q) (a : Fin q) {z : ℝ}
   simp only [quantizeReal, hf]
   exact min_eq_left (by omega)
 
+/-- Quantize real and imaginary coordinates after dividing by the QAM spacing. -/
 def quantizeComplex (q : ℕ) (hq : 0 < q) (δ : ℝ) (z : ℂ) : QAM q :=
   (quantizeReal q hq (z.re / δ), quantizeReal q hq (z.im / δ))
 

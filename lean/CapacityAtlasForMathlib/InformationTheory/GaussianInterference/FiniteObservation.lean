@@ -15,6 +15,7 @@ namespace CapacityAtlas.Gaussian.Interference
 
 noncomputable section
 
+/-- Finite channel induced by a measurable observation of a probability-distributed environment. -/
 def observedChannel {Ω A : Type*} [MeasurableSpace Ω] [Fintype A]
     [MeasurableSpace A] [MeasurableSingletonClass A]
     (ν : Measure Ω) [IsProbabilityMeasure ν] (f : A → Ω → A)

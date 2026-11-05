@@ -13,6 +13,7 @@ namespace CapacityAtlas.MeasureBinning
 
 variable {S U : Type*} [MeasurableSpace S] [MeasurableSpace U]
 
+/-- State-indexed rejection acceptance set for auxiliary and uniform-seed pairs. -/
 def seededAcceptanceSection (g : S × U → ℝ≥0∞) (B : Set (S × U)) (T : ℝ) :
     Set (S × (U × ℝ)) := {p | p.2 ∈ seededAcceptance (fun u ↦ g (p.1, u))
       {u | (p.1, u) ∈ B} T}
@@ -23,6 +24,7 @@ theorem measurableSet_seededAcceptanceSection {g : S × U → ℝ≥0∞} (hg : 
   (measurableSet_seededAcceptance hg hB T).preimage
     ((measurable_fst.prodMk measurable_snd.fst).prodMk measurable_snd.snd)
 
+/-- States for which the target kernel gives the admissible auxiliary section mass at least one half. -/
 def goodState (η : Kernel S U) (B : Set (S × U)) : Set S :=
   {s | ENNReal.ofReal (1 / 2 : ℝ) ≤ η s {u | (s, u) ∈ B}}
 
@@ -30,6 +32,7 @@ theorem measurableSet_goodState (η : Kernel S U) [IsSFiniteKernel η]
     {B : Set (S × U)} (hB : MeasurableSet B) : MeasurableSet (goodState η B) :=
   measurableSet_le measurable_const (Kernel.measurable_kernel_prodMk_left hB)
 
+/-- Auxiliary marginal of successful first-hit candidate-seed pairs; no-hit mass is discarded. -/
 noncomputable def seededFirstHitKernel (μ : Measure U) [IsProbabilityMeasure μ]
     {g : S × U → ℝ≥0∞} (hg : Measurable g) {B : Set (S × U)}
     (hB : MeasurableSet B) (T : ℝ) (fallback : U × ℝ) (n : ℕ) : Kernel S U :=
@@ -56,6 +59,7 @@ theorem seededFirstHitKernel_apply (μ : Measure U) [IsProbabilityMeasure μ]
     (measurableSet_seededAcceptance (hg.comp measurable_prodMk_left)
       (hB.preimage measurable_prodMk_left) T) (hE.preimage measurable_fst) fallback n
 
+/-- First-hit rejection kernel on good states and the zero measure on other states. -/
 noncomputable def rejectionKernel (η : Kernel S U) [IsSFiniteKernel η]
     (μ : Measure U) [IsProbabilityMeasure μ]
     {g : S × U → ℝ≥0∞} (hg : Measurable g) {B : Set (S × U)}
@@ -99,6 +103,7 @@ theorem rejectionKernel_univ_le_one (η : Kernel S U) [IsSFiniteKernel η]
     exact prob_le_one
   · simp
 
+/-- No-hit sample mass on good states, and one on other states. -/
 noncomputable def rejectionFailure (η : Kernel S U) (μ : Measure U)
     (g : S × U → ℝ≥0∞) (B : Set (S × U)) (T : ℝ) (n : ℕ) (s : S) : ℝ≥0∞ :=
   if s ∈ goodState η B then

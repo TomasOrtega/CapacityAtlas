@@ -17,16 +17,20 @@ namespace CapacityAtlas.NetworkFlow
 
 variable {V E : Type*} [Fintype V] [Fintype E] [DecidableEq V] [DecidableEq E]
 
+/-- Total outgoing minus incoming integer flow at a vertex. -/
 noncomputable def divergence (src dst : E → V) (f : E → ℤ) (v : V) : ℤ :=
   ∑ e, f e * ((if src e = v then 1 else 0) - (if dst e = v then 1 else 0))
 
+/-- Nonnegative edge flow bounded by the specified natural-number capacities. -/
 def Bounded (cap : E → ℕ) (f : E → ℤ) : Prop :=
   ∀ e, 0 ≤ f e ∧ f e ≤ cap e
 
+/-- A directed residual step using spare forward capacity or positive backward flow. -/
 def Residual (src dst : E → V) (cap : E → ℕ) (f : E → ℤ) (a b : V) : Prop :=
   ∃ e, (src e = a ∧ dst e = b ∧ f e < cap e) ∨
     (dst e = a ∧ src e = b ∧ 0 < f e)
 
+/-- Change the flow on one edge by a signed integer amount. -/
 def push (f : E → ℤ) (e : E) (d : ℤ) : E → ℤ :=
   fun x ↦ f x + if x = e then d else 0
 
@@ -134,6 +138,7 @@ theorem augment_chain (src dst : E → V) (cap : E → ℕ) (f : E → ℤ)
         · exact Or.inr (fun h ↦ hx (List.mem_cons_of_mem _ h))
 
 
+/-- Zero flow divergence at every vertex other than the source and terminal. -/
 def Conserved (src dst : E → V) (s t : V) (f : E → ℤ) : Prop :=
   ∀ v, v ≠ s → v ≠ t → divergence src dst f v = 0
 
@@ -183,6 +188,7 @@ theorem residual_not_reachable_of_max (src dst : E → V) (cap : E → ℕ)
   simp only [ite_true, Ne.symm hst, if_false] at this
   omega
 
+/-- Sum of capacities of edges leaving the chosen vertex set. -/
 noncomputable def cutCapacity (src dst : E → V) (cap : E → ℕ) (S : Finset V) : ℕ :=
   ∑ e, if src e ∈ S ∧ dst e ∉ S then cap e else 0
 
@@ -249,10 +255,12 @@ theorem integral_max_flow_min_cut (src dst : E → V) (cap : E → ℕ)
   · simp [hse, hte]
 
 
+/-- A list of directed edges forming a walk from the initial to the terminal vertex. -/
 def Route (src dst : E → V) : V → V → List E → Prop
   | s, t, [] => s = t
   | s, t, e :: es => src e = s ∧ Route src dst (dst e) t es
 
+/-- Existence of a directed edge carrying positive flow between two vertices. -/
 def Positive (src dst : E → V) (f : E → ℤ) (a b : V) : Prop :=
   ∃ e, src e = a ∧ dst e = b ∧ 0 < f e
 

@@ -62,8 +62,11 @@ noncomputable def jointInformation (W : FiniteChannel (X₁ × X₂) Y)
 @[capacity_shared_api]
 structure OneShotCode (W : FiniteChannel (X₁ × X₂) Y)
     (M₁ M₂ : Type*) [Fintype M₁] [Fintype M₂] where
+  /-- First sender's input symbol for its own message. -/
   encode₁ : M₁ → X₁
+  /-- Second sender's input symbol for its own message. -/
   encode₂ : M₂ → X₂
+  /-- Joint estimate of the two messages from one channel output. -/
   decode : Y → M₁ × M₂
 
 namespace OneShotCode
@@ -71,6 +74,7 @@ namespace OneShotCode
 variable {W : FiniteChannel (X₁ × X₂) Y}
 variable {M₁ M₂ : Type*} [Fintype M₁] [Fintype M₂]
 
+/-- Combine the two separate encoders into a single code for a pair of messages. -/
 @[capacity_shared_api]
 def toOneShotCode (code : OneShotCode W M₁ M₂) : CapacityAtlas.OneShotCode W (M₁ × M₂) where
   encode message := (code.encode₁ message.1, code.encode₂ message.2)
@@ -87,12 +91,19 @@ end OneShotCode
 /-- A block code preserves the independence of the senders' message maps. -/
 @[capacity_shared_api]
 structure BlockCode (W : FiniteChannel (X₁ × X₂) Y) (n : ℕ) where
+  /-- Number of first-sender messages. -/
   messageCount₁ : ℕ
+  /-- Number of second-sender messages. -/
   messageCount₂ : ℕ
+  /-- The first sender's message set is nonempty. -/
   messageCount₁_pos : 0 < messageCount₁
+  /-- The second sender's message set is nonempty. -/
   messageCount₂_pos : 0 < messageCount₂
+  /-- First sender's input word for its own message. -/
   encode₁ : Fin messageCount₁ → (Fin n → X₁)
+  /-- Second sender's input word for its own message. -/
   encode₂ : Fin messageCount₂ → (Fin n → X₂)
+  /-- Joint estimate of the two messages from the output word. -/
   decode : (Fin n → Y) → Fin messageCount₁ × Fin messageCount₂
 
 namespace BlockCode
@@ -107,6 +118,7 @@ instance (code : BlockCode W n) : Nonempty (Fin code.messageCount₁) :=
 instance (code : BlockCode W n) : Nonempty (Fin code.messageCount₂) :=
   Fin.pos_iff_nonempty.mp code.messageCount₂_pos
 
+/-- View a multiple-access block code as a one-use code over the product block channel. -/
 @[capacity_shared_api]
 def toOneShotCode (code : BlockCode W n) :
     CapacityAtlas.OneShotCode (W.block n) (Fin code.messageCount₁ × Fin code.messageCount₂) where
@@ -118,10 +130,12 @@ def toOneShotCode (code : BlockCode W n) :
 noncomputable def averageErrorProbability (code : BlockCode W n) : ℝ :=
   code.toOneShotCode.averageErrorProbability
 
+/-- First sender's message rate in bits per channel use. -/
 @[capacity_shared_api]
 noncomputable def rate₁ (code : BlockCode W n) : ℝ :=
   Real.log code.messageCount₁ / ((n : ℝ) * Real.log 2)
 
+/-- Second sender's message rate in bits per channel use. -/
 @[capacity_shared_api]
 noncomputable def rate₂ (code : BlockCode W n) : ℝ :=
   Real.log code.messageCount₂ / ((n : ℝ) * Real.log 2)

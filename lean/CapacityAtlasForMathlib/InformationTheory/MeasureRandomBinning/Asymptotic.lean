@@ -11,6 +11,7 @@ open scoped BigOperators ENNReal Topology
 
 namespace CapacityAtlas.MeasureBinning
 
+/-- Number of bin candidates obtained by rounding the exponential block rate up to a positive integer. -/
 noncomputable def binCount (b : ℝ) (n : ℕ) : ℕ := Nat.ceil (Real.exp ((n : ℝ) * b))
 
 theorem binCount_pos (b : ℝ) (n : ℕ) : 0 < binCount b n := Nat.ceil_pos.mpr (Real.exp_pos _)

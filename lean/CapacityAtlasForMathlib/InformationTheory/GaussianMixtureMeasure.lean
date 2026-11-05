@@ -13,6 +13,7 @@ namespace CapacityAtlas.MeasureInformation
 
 variable {ι α : Type*} [Fintype ι] [DecidableEq ι] [Fintype α]
 
+/-- Finite sum of Gaussian measures scaled by the nonnegative parts of the weights. -/
 noncomputable def gaussianMixtureMeasure (w : α → ℝ) (m : α → EuclideanSpace ℝ ι)
     (N : Matrix ι ι ℝ) : Measure (EuclideanSpace ℝ ι) :=
   ∑ a, ENNReal.ofReal (w a) • multivariateGaussian (m a) N

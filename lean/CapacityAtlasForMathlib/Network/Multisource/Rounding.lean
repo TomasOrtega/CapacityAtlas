@@ -12,6 +12,7 @@ open scoped BigOperators
 
 namespace CapacityAtlas.Multisource
 
+/-- Nonnegative integer symbol demand obtained by scaling the rate minus its margin and rounding down. -/
 noncomputable def roundedDemand (scale : ℕ) (margin rate : ℝ) : ℕ :=
   ⌊(scale : ℝ) * max (rate - margin) 0⌋₊
 

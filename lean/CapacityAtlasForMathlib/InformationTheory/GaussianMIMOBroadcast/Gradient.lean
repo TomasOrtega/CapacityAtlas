@@ -13,6 +13,7 @@ namespace CapacityAtlas.Gaussian.MIMOBroadcast
 
 variable {K tx : ℕ} {rx : Fin K → ℕ}
 
+/-- Input-space precision expression `Hᵀ (N + H S Hᵀ)⁻¹ H`. -/
 noncomputable def receivedPrecision {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ)
     (N : Matrix (Fin r) (Fin r) ℝ) (S : Matrix (Fin tx) (Fin tx) ℝ) :
     Matrix (Fin tx) (Fin tx) ℝ := H.transpose * (receivedCovariance H N S)⁻¹ * H
@@ -39,6 +40,7 @@ lemma sum_trace_prefixCovariance (C D : Fin K → Matrix (Fin tx) (Fin tx) ℝ)
   rw [Finset.sum_comm]
   simp only [mul_ite, ite_mul, Matrix.mul_zero, Matrix.zero_mul, apply_ite trace, trace_zero]
 
+/-- Collect layer and later-prefix contributions to each allocation-coordinate gradient. -/
 noncomputable def cumulativeGradient (A B : Fin K → Matrix (Fin tx) (Fin tx) ℝ)
     (π : Equiv.Perm (Fin K)) (i : Fin K) : Matrix (Fin tx) (Fin tx) ℝ :=
   A (π.symm i) + ∑ k ∈ Finset.univ.filter (fun k : Fin K ↦ π.symm i < k), (A k - B k)
@@ -56,6 +58,7 @@ lemma traceObjective_cumulativeGradient (A B D : Fin K → Matrix (Fin tx) (Fin 
     Finset.sum_sub_distrib, Finset.sum_add_distrib]
   ring
 
+/-- Allocation-gradient expression for the weighted dirty-paper sum rate in bits. -/
 noncomputable def dpcGradient (w : Fin K → ℝ)
     (H : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ)
     (N : (i : Fin K) → Matrix (Fin (rx i)) (Fin (rx i)) ℝ)

@@ -14,17 +14,25 @@ namespace CapacityAtlas
 @[capacity_shared_api]
 structure FiniteBroadcastChannel (X Y₁ Y₂ : Type*)
     [Fintype X] [Fintype Y₁] [Fintype Y₂] where
+  /-- Marginal channel from the input to the first receiver. -/
   receiver₁ : FiniteChannel X Y₁
+  /-- Marginal channel from the input to the second receiver. -/
   receiver₂ : FiniteChannel X Y₂
 
 /-- A finite superposition auxiliary distribution and stochastic encoder. -/
 structure BroadcastAuxiliary (X : Type*) [Fintype X] where
+  /-- Type of auxiliary symbols. -/
   Carrier : Type
+  /-- Finite enumeration of the auxiliary alphabet. -/
   fintype : Fintype Carrier
+  /-- Decidable equality for auxiliary symbols. -/
   decidableEq : DecidableEq Carrier
+  /-- Probability law of the auxiliary symbol. -/
   distribution : @FiniteDistribution Carrier fintype
+  /-- Stochastic prefixing channel from the auxiliary alphabet to physical inputs. -/
   encoder : @FiniteChannel Carrier X fintype inferInstance
 
+/-- Mutual information from the auxiliary to the second receiver, in bits. -/
 noncomputable def BroadcastAuxiliary.weakInformation {X Y₁ Y₂ : Type*}
     [Fintype X] [Fintype Y₁] [Fintype Y₂]
     (channel : FiniteBroadcastChannel X Y₁ Y₂) (auxiliary : BroadcastAuxiliary X) : ℝ := by
@@ -33,6 +41,7 @@ noncomputable def BroadcastAuxiliary.weakInformation {X Y₁ Y₂ : Type*}
   exact (channel.receiver₂.comp auxiliary.encoder).mutualInformationBits
     auxiliary.distribution
 
+/-- First-receiver input-output mutual information averaged over the auxiliary, in bits. -/
 noncomputable def BroadcastAuxiliary.strongConditionalInformation {X Y₁ Y₂ : Type*}
     [Fintype X] [Fintype Y₁] [Fintype Y₂]
     (channel : FiniteBroadcastChannel X Y₁ Y₂) (auxiliary : BroadcastAuxiliary X) : ℝ := by

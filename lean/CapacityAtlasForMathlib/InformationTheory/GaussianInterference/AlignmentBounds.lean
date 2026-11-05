@@ -21,6 +21,7 @@ theorem beamExponent_le (a : Box U n) (p : U × U) : beamExponent a p ≤ n := b
   · exact (a ⟨p, hp⟩).isLt.le
   · exact Nat.zero_le _
 
+/-- Uniform monomial magnitude bound when channel coefficients have norm at most M. -/
 def beamBound (U : Type*) [Fintype U] (n : ℕ) (M : ℝ) : ℝ :=
   (max 1 M) ^ (n * Fintype.card (U × U))
 

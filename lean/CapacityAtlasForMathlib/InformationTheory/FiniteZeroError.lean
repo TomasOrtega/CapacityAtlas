@@ -24,6 +24,7 @@ noncomputable def typewriter (k : ℕ) [NeZero k] : FiniteChannel (Fin k) (Fin k
   exact FiniteChannel.ofRows fun x ↦
     (FiniteDistribution.uniform Bool).map (fun b ↦ if b then x + 1 else x)
 
+/-- Supremum of normalized zero-error code sizes for the specified cycle graph. -/
 noncomputable def cycleGrowth (k : ℕ) : ℝ := by
   classical
   exact graphShannonCapacity (SimpleGraph.cycleGraph k).Adj

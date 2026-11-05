@@ -22,13 +22,20 @@ noncomputable def slotBits (W : PrimitiveRelayChannel X Y Z) (t : ℕ) : ℕ :=
   Nat.floor (((t + 1 : ℕ) : ℝ) * W.relayLinkCapacityBits) -
     Nat.floor ((t : ℝ) * W.relayLinkCapacityBits)
 
+/-- A fixed-length source code with strictly causal relay bits and destination decoding. -/
 structure Code (W : PrimitiveRelayChannel X Y Z) (n : ℕ) where
+  /-- Number of source messages. -/
   messages : ℕ
+  /-- The source-message alphabet is nonempty. -/
   messages_pos : 0 < messages
+  /-- Source codeword assigned to each message. -/
   encode : Fin messages → Fin n → X
+  /-- Relay bits in a slot, determined only by the relay observations from earlier slots. -/
   relay : (t : Fin n) → (Fin t.val → Z) → Fin (W.slotBits t.val) → Bool
+  /-- Destination decoder using its entire output block and all delivered relay bits. -/
   decode : (Fin n → Y) → ((t : Fin n) → Fin (W.slotBits t.val) → Bool) → Fin messages
 
+/-- Decoding error averaged over uniformly chosen messages and the broadcast channel law. -/
 noncomputable def error {W : PrimitiveRelayChannel X Y Z} {n : ℕ} (c : Code W n) : ℝ := by
   classical
   exact (c.messages : ℝ)⁻¹ * ∑ m, ∑ yz : Fin n → Y × Z,
@@ -36,16 +43,19 @@ noncomputable def error {W : PrimitiveRelayChannel X Y Z} {n : ℕ} (c : Code W 
       (fun t ↦ c.relay t (CausalHistories.past (fun k ↦ (yz k).2) t)) = m then 0 else
         (W.broadcast.block n).transition (c.encode m) yz
 
+/-- Vanishing-average-error capacity in bits per physical broadcast-channel use. -/
 noncomputable def operationalCapacity (W : PrimitiveRelayChannel X Y Z) : ℝ :=
   Operational.capacity (Code W) (fun _ _ ↦ True) (fun _ c ↦ error c)
     (fun n c ↦ Operational.messageRate c.messages n)
 
+/-- Supremum of the two information cut bounds over finite input distributions. -/
 noncomputable def cutSet (W : PrimitiveRelayChannel X Y Z) : ℝ :=
   sSup (Set.range fun p : FiniteDistribution X ↦
     let q := FiniteInformation.joint p W.broadcast
     min (FiniteInformation.information q Prod.fst Prod.snd)
       (FiniteInformation.information q Prod.fst (fun a ↦ a.2.1) + W.relayLinkCapacityBits))
 
+/-- Best information rate from a finite relay quantizer satisfying the relay-link constraint. -/
 noncomputable def compressForward (W : PrimitiveRelayChannel X Y Z) : ℝ :=
   sSup {r | ∃ p : FiniteDistribution X, ∃ k : ℕ, ∃ V : FiniteChannel Z (Fin k),
     let q := FiniteInformation.joint (FiniteInformation.joint p W.broadcast)

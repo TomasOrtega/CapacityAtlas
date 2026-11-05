@@ -16,11 +16,13 @@ open MeasureChannel
 variable {S U Y M L : Type*} [MeasurableSpace S] [MeasurableSpace U] [MeasurableSpace Y]
   [Fintype M] [Fintype L]
 
+/-- Pointwise sum of covering failure, permitted detection error, and wrong-message acceptance terms. -/
 noncomputable def binningPointwiseBound (ρ : Kernel ((L → U) × S) Y) (δ : ℝ≥0∞)
     (B : Set (S × U)) (A : Set (U × Y)) (book : M → L → U) (m : M) (s : S) : ℝ≥0∞ :=
   (if coveringFailure B (book m) s then 1 else 0) + δ +
     ∑ j ∈ Finset.univ.erase m, ∑ l : L, ρ (book m, s) {y | (book j l, y) ∈ A}
 
+/-- State-averaged binning error estimate for a fixed collection of message codebooks. -/
 noncomputable def binningBound (ρ : Kernel ((L → U) × S) Y) (σ : Measure S) (δ : ℝ≥0∞)
     (B : Set (S × U)) (A : Set (U × Y)) (book : M → L → U) : ℝ≥0∞ :=
   (Fintype.card M : ℝ≥0∞)⁻¹ * ∑ m, ∫⁻ s, binningPointwiseBound ρ δ B A book m s ∂σ

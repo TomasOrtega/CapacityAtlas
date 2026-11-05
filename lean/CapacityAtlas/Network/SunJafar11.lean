@@ -8,8 +8,11 @@ import CapacityAtlasForMathlib.Network.IndexCoding
 
 namespace CapacityAtlas.IndexCoding
 
+/-- Message indices in the eleven-message index-coding instance. -/
 abbrev SunJafar11Message := Fin 11
+/-- Receiver indices in the eleven-message index-coding instance. -/
 abbrev SunJafar11Receiver := Fin 11
+/-- Pairs of message indices used to describe alignment edges. -/
 abbrev SunJafar11Edge := SunJafar11Message × SunJafar11Message
 
 /-- The source table, retaining the paper's one-based message labels. -/
@@ -99,6 +102,7 @@ def sunJafar11AlignmentEdges : Finset SunJafar11Edge :=
       edge.1 ∈ sunJafar11Interference receiver ∧
         edge.2 ∈ sunJafar11Interference receiver
 
+/-- Explicit edge set used to check the computed eleven-message alignment graph. -/
 def sunJafar11ExpectedAlignmentEdges : Finset SunJafar11Edge :=
   {(0, 2), (1, 2), (1, 3), (2, 3), (2, 4), (3, 4), (3, 5)}
 
@@ -116,8 +120,10 @@ theorem sunJafar11_atMostTwoInterferers (receiver : SunJafar11Receiver) :
     (sunJafar11Interference receiver).card ≤ 2 := by
   fin_cases receiver <;> decide
 
+/-- Four messages forming the selected inner diamond of the alignment graph. -/
 def sunJafar11InnerDiamond : Finset SunJafar11Message := {1, 2, 3, 4}
 
+/-- Explicit alignment edges induced by the selected inner diamond. -/
 def sunJafar11ExpectedDiamondEdges : Finset SunJafar11Edge :=
   {(1, 2), (1, 3), (2, 3), (2, 4), (3, 4)}
 
@@ -197,10 +203,12 @@ theorem sunJafar11_internalConflicts_exact :
   rw [sunJafar11_alignment_reachable_iff]
   fin_cases left <;> fin_cases right <;> decide
 
+/-- Decidable adjacency in either orientation of the message alignment edge set. -/
 def sunJafar11AreAligned (left right : SunJafar11Message) : Bool :=
   decide ((left, right) ∈ sunJafar11AlignmentEdges ∨
     (right, left) ∈ sunJafar11AlignmentEdges)
 
+/-- Whether two messages share an intermediate message joined to both by alignment edges. -/
 def sunJafar11HasAlignmentPathTwo (left right : SunJafar11Message) : Bool :=
   decide ((Finset.univ.filter fun middle ↦
     sunJafar11AreAligned left middle && sunJafar11AreAligned middle right).Nonempty)

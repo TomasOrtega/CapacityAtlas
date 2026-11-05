@@ -16,6 +16,7 @@ namespace CapacityAtlas.Gaussian.MIMOBroadcast
 
 variable {ι ο : Type*} [Fintype ι] [Fintype ο] [DecidableEq ι] [DecidableEq ο]
 
+/-- Input-space noise covariance obtained by regularizing and inverting `Hᵀ N⁻¹ H`. -/
 noncomputable def alignmentNoise (H : Matrix ο ι ℝ) (N : Matrix ο ο ℝ) (δ : ℝ) :
     Matrix ι ι ℝ := (δ • 1 + H.transpose * N⁻¹ * H)⁻¹
 

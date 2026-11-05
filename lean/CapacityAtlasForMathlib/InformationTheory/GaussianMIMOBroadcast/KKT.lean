@@ -14,9 +14,11 @@ namespace CapacityAtlas.Gaussian.MIMOBroadcast
 
 variable {K tx : ℕ}
 
+/-- Sum of matrix trace pairings between allocation coordinates and their coefficients. -/
 noncomputable def traceObjective (G Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ) : ℝ :=
   ∑ i, trace (G i * Q i)
 
+/-- Concentrate the allocation on receiver `i` along vector `v`, with zero on other receivers. -/
 noncomputable def rankOneAllocation (P : ℝ) (i : Fin K) (v : Fin tx → ℝ) :
     Fin K → Matrix (Fin tx) (Fin tx) ℝ := Pi.single i ((P / (v ⬝ᵥ v)) • vecMulVec v v)
 

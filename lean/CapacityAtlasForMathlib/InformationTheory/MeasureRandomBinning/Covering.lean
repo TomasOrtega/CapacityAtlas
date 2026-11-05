@@ -29,13 +29,16 @@ theorem firstAccepted_accepts {A I : Type*} (accept : I → A → Prop) (fallbac
 
 variable [Fintype L] [Nonempty L]
 
+/-- First codebook index whose auxiliary is admissible for the given state, with a fallback index. -/
 noncomputable def selectIndex (B : Set (S × U)) (book : L → U) (s : S) : L :=
   firstAccepted (fun l s ↦ (s, book l) ∈ B) (Classical.choice inferInstance)
     Finset.univ.toList s
 
+/-- Codebook auxiliary chosen by the admissibility test for the given state. -/
 noncomputable def selectAux (B : Set (S × U)) (book : L → U) (s : S) : U :=
   book (selectIndex B book s)
 
+/-- No auxiliary in the codebook satisfies the state-dependent admissibility condition. -/
 def coveringFailure (B : Set (S × U)) (book : L → U) (s : S) : Prop :=
   ∀ l, (s, book l) ∉ B
 

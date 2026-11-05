@@ -15,6 +15,7 @@ universe v
 
 variable {S V : Type*} [MeasurableSpace S] [MeasurableSpace V]
 
+/-- State-update kernel restricted to successful samples at the current state. -/
 noncomputable def sampledKernel (ν : Measure V) [SFinite ν]
     {A : Set (S × V)} (hA : MeasurableSet A) {next : S × V → S}
     (hnext : Measurable next) : Kernel S S where
@@ -99,6 +100,7 @@ theorem sampledKernel_comp_eq_actual {Ω : Type*} [MeasurableSpace Ω]
       simp [hω]
     exact ((congrArg ν hempty).trans measure_empty).symm
 
+/-- Nested tuples of stage-specific samples, with a trivial sample at length zero. -/
 @[reducible]
 def SequenceSamples (V : ℕ → Type v) : ℕ → Type v
   | 0 => PUnit
@@ -113,6 +115,7 @@ instance sequenceSamplesMeasurableSpace (V : ℕ → Type v) [∀ n, MeasurableS
       (sequenceSamplesMeasurableSpace V n) (inferInstanceAs (MeasurableSpace (V n)))
 termination_by structural n => n
 
+/-- Independent product law for the nested samples of a finite sequence of stages. -/
 noncomputable def sequenceSampleLaw {V : ℕ → Type*} [∀ n, MeasurableSpace (V n)]
     (ν : (n : ℕ) → Measure (V n)) : (n : ℕ) → Measure (SequenceSamples V n)
   | 0 => Measure.dirac PUnit.unit
@@ -127,11 +130,13 @@ instance sequenceSampleLawProbability {V : ℕ → Type*} [∀ n, MeasurableSpac
       letI := sequenceSampleLawProbability ν n
       infer_instance
 
+/-- Final state obtained by applying the stage updates successively to a sample tuple. -/
 def sequenceState {V : ℕ → Type*} (initial : S) (next : (n : ℕ) → S × V n → S) :
     (n : ℕ) → SequenceSamples V n → S
   | 0, _ => initial
   | n + 1, samples => next n (sequenceState initial next n samples.1, samples.2)
 
+/-- Sample tuples for which every stage's state-sample pair passes its success test. -/
 def sequenceSuccess {V : ℕ → Type*} (initial : S) (next : (n : ℕ) → S × V n → S)
     (A : (n : ℕ) → Set (S × V n)) : (n : ℕ) → Set (SequenceSamples V n)
   | 0 => univ
@@ -154,6 +159,7 @@ theorem measurableSet_sequenceSuccess {V : ℕ → Type*} [∀ n, MeasurableSpac
       ((hA n).preimage (((measurable_sequenceState initial hnext n).comp measurable_fst).prodMk
         measurable_snd))
 
+/-- Law of the final state restricted to sample tuples with success at every stage. -/
 noncomputable def sequenceSuccessLaw {V : ℕ → Type*} [∀ n, MeasurableSpace (V n)]
     (ν : (n : ℕ) → Measure (V n)) (initial : S) (next : (n : ℕ) → S × V n → S)
     (A : (n : ℕ) → Set (S × V n)) (n : ℕ) : Measure S :=
@@ -185,6 +191,7 @@ theorem sequenceSuccessLaw_zero {V : ℕ → Type*} [∀ n, MeasurableSpace (V n
     (fun _ ↦ initial) = _
   rw [Measure.restrict_univ, Measure.map_dirac' measurable_const]
 
+/-- Law obtained by composing the reference state-transition kernels in chronological order. -/
 noncomputable def sequenceReferenceLaw (κ : ℕ → Kernel S S) (initial : S) : ℕ → Measure S
   | 0 => Measure.dirac initial
   | n + 1 => κ n ∘ₘ sequenceReferenceLaw κ initial n

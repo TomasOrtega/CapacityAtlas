@@ -78,6 +78,7 @@ theorem mimoBroadcast_message_average_allows_uneven_codeword :
   change (2 / 3 : ℝ) < 2 ^ 2
   norm_num
 
+/-- One-use test code with constant two-antenna transmission and singleton message sets. -/
 noncomputable def twoAntennaMIMOBroadcastCode : Gaussian.MIMOBroadcast.Code 2 2 (fun _ ↦ 1) 1 where
   messages := fun _ ↦ 1
   messages_pos _ := by decide

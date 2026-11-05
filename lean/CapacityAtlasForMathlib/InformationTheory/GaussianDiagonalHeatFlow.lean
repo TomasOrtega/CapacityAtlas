@@ -103,10 +103,12 @@ theorem hasDerivAt_multivariateGaussianPDFReal_diagonal_heat
     (fun i ↦ c i + t) (fun i ↦ add_pos_of_nonneg_of_pos (hc i) ht)]
   rw [← Finset.sum_mul, mul_assoc]
 
+/-- Log-density derivative factor when the diagonal covariance is increased by `t`. -/
 noncomputable def gaussianDiagonalHeatScore (m : EuclideanSpace ℝ ι) (c : ι → ℝ)
     (t : ℝ) (x : EuclideanSpace ℝ ι) : ℝ :=
   (1 / 2 : ℝ) * ∑ i, (((x i - m i) / (c i + t)) ^ 2 - 1 / (c i + t))
 
+/-- Weighted component density derivatives along diagonal Gaussian heat flow. -/
 noncomputable def gaussianDiagonalMixtureHeatDeriv (w : α → ℝ)
     (m : α → EuclideanSpace ℝ ι) (c : ι → ℝ) (t : ℝ) (x : EuclideanSpace ℝ ι) : ℝ :=
   ∑ a, w a * (gaussianDiagonalHeatScore (m a) c t x *

@@ -12,6 +12,7 @@ open scoped BigOperators Topology
 
 namespace CapacityAtlas.Gaussian.MIMOBroadcast
 
+/-- Natural-number floor of `a * n`, allocating a block prefix to one time-sharing code. -/
 noncomputable def timeSharingLength (a : ℝ) (n : ℕ) : ℕ := ⌊a * n⌋₊
 
 lemma timeSharingLength_le {a : ℝ} (ha : 0 ≤ a) (ha1 : a ≤ 1) (n : ℕ) :

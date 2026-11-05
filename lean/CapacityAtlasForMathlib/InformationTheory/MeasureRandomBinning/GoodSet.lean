@@ -14,6 +14,7 @@ namespace CapacityAtlas.MeasureBinning
 variable {S U X Y M L : Type*} [MeasurableSpace S] [MeasurableSpace U]
   [MeasurableSpace X] [MeasurableSpace Y]
 
+/-- Output-kernel mass for which the auxiliary and output fail the receiver acceptance test. -/
 noncomputable def conditionalMiss (κ : Kernel (S × X) Y) (input : S × U → X)
     (A : Set (U × Y)) (z : S × U) : ℝ≥0∞ :=
   κ (z.1, input z) {y | (z.2, y) ∉ A}
@@ -25,6 +26,7 @@ theorem measurable_conditionalMiss (κ : Kernel (S × X) Y) [IsSFiniteKernel κ]
   exact Kernel.measurable_kernel_prodMk_left (κ := κ')
     (hA.compl.preimage (measurable_fst.snd.prodMk measurable_snd))
 
+/-- Auxiliaries satisfying density, input-admissibility, and conditional missed-detection bounds. -/
 def encoderAcceptance (κ : Kernel (S × X) Y) (input : S × U → X)
     (A : Set (U × Y)) (g : S × U → ℝ≥0∞) (T δ : ℝ≥0∞) (allowed : Set (S × X)) :
     Set (S × U) :=

@@ -18,12 +18,19 @@ variable {X Y₁ Y₂ : Type*} [Fintype X] [Fintype Y₁] [Fintype Y₂]
 
 /-- Independent private messages, a joint encoder, and a decoder at each receiver. -/
 structure Code (W : FiniteBroadcastChannel X Y₁ Y₂) (n : ℕ) where
+  /-- Number of private messages intended for the first receiver. -/
   messages₁ : ℕ
+  /-- Number of private messages intended for the second receiver. -/
   messages₂ : ℕ
+  /-- The first private-message set is nonempty. -/
   messages₁_pos : 0 < messages₁
+  /-- The second private-message set is nonempty. -/
   messages₂_pos : 0 < messages₂
+  /-- Joint input word selected by the two private messages. -/
   encode : Fin messages₁ → Fin messages₂ → Fin n → X
+  /-- First receiver's estimate of its private message from its output word. -/
   decode₁ : (Fin n → Y₁) → Fin messages₁
+  /-- Second receiver's estimate of its private message from its output word. -/
   decode₂ : (Fin n → Y₂) → Fin messages₂
 
 /-- Maximum of the two average block-error probabilities. Vanishing error is
@@ -49,6 +56,7 @@ noncomputable def jointError {W : FiniteBroadcastChannel X Y₁ Y₂} {n : ℕ}
       if c.decode₁ (fun t ↦ (ys t).1) = m₁ ∧ c.decode₂ (fun t ↦ (ys t).2) = m₂
       then 0 else (V.block n).transition (c.encode m₁ m₂) ys
 
+/-- The two independent private-message rates in bits per channel use. -/
 noncomputable def rates {W : FiniteBroadcastChannel X Y₁ Y₂} {n : ℕ}
     (c : Code W n) : RatePair :=
   (Operational.messageRate c.messages₁ n, Operational.messageRate c.messages₂ n)

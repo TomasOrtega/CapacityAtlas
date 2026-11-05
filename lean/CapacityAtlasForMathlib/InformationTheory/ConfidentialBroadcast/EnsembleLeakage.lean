@@ -24,6 +24,7 @@ namespace CapacityAtlas.ConfidentialBroadcast
 variable {V Y S L : Type*} [Fintype V] [Fintype Y] [Fintype S] [Fintype L]
   [Nonempty S] [Nonempty L] [DecidableEq S] [DecidableEq L]
 
+/-- Seed-decoder error averaged uniformly over the secret-message index. -/
 noncomputable def seedError (W : FiniteChannel V Y) (q : FiniteDistribution V)
     (threshold : ℝ) (book : S × L → V) : ℝ :=
   ∑ s, FiniteDistribution.uniform S s *

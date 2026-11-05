@@ -171,8 +171,11 @@ namespace CapacityAtlas.ConfidentialBroadcast.Code
 variable {X Y Z : Type*} [Fintype X] [Fintype Y] [Fintype Z]
   {W : FiniteBroadcastChannel X Y Z} {n : ℕ}
 
+/-- Common converse auxiliary together with the selected time coordinate. -/
 abbrev TimedCommonAux (c : Code W n) := Fin n × c.CommonAux
+/-- Secret converse auxiliary together with the selected time coordinate. -/
 abbrev TimedSecretAux (c : Code W n) := Fin n × c.SecretAux
+/-- Full block sample paired with a time coordinate. -/
 abbrev TimedSample (c : Code W n) := Fin n × c.FullSample
 
 noncomputable local instance : DecidableEq X := Classical.typeDecidableEq _
@@ -183,27 +186,34 @@ noncomputable local instance (c : Code W n) : DecidableEq c.TimedSecretAux :=
 noncomputable local instance (c : Code W n) : DecidableEq c.TimedCommonAux :=
   Classical.typeDecidableEq _
 
+/-- Forget the secret-message component of the time-indexed auxiliary. -/
 def dropSecret (c : Code W n) (v : c.TimedSecretAux) : c.TimedCommonAux := (v.1, v.2.2)
 
+/-- Independent uniform time coordinate and full block sample. -/
 noncomputable def timedJoint (c : Code W n) [NeZero n] : FiniteDistribution c.TimedSample :=
   (FiniteDistribution.uniform (Fin n)).joint (fun _ ↦ c.fullJoint)
 
+/-- Read the secret converse auxiliary at the sampled coordinate. -/
 def timedSecret (c : Code W n) (z : c.TimedSample) : c.TimedSecretAux :=
   (z.1, c.secretObservation z.1 z.2)
 
+/-- Read the common converse auxiliary at the sampled coordinate. -/
 def timedCommon (c : Code W n) (z : c.TimedSample) : c.TimedCommonAux :=
   c.dropSecret (c.timedSecret z)
 
+/-- Joint law of the time-indexed secret auxiliary and the transmitted input symbol. -/
 noncomputable def inputJoint (c : Code W n) [NeZero n] :
     FiniteDistribution (c.TimedSecretAux × X) := by
   classical
   exact c.timedJoint.map (fun z ↦ (c.timedSecret z, z.2.1.2 z.1))
 
+/-- Joint law pairing the common auxiliary with its corresponding secret auxiliary. -/
 noncomputable def auxiliaryLaw (c : Code W n) [NeZero n] :
     FiniteDistribution (c.TimedCommonAux × c.TimedSecretAux) := by
   classical
   exact c.inputJoint.map (fun z ↦ (c.dropSecret z.1, z.1))
 
+/-- Conditional input channel given the time-indexed secret auxiliary. -/
 noncomputable def prefixing (c : Code W n) [NeZero n] : FiniteChannel c.TimedSecretAux X := by
   classical
   exact FiniteChannel.ofRows c.inputJoint.conditionalRows

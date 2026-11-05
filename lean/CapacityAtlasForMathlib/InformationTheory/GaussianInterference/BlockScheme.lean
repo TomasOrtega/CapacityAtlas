@@ -13,20 +13,29 @@ open scoped BigOperators
 
 namespace CapacityAtlas.Gaussian.Interference
 
+/-- A causal length-L transmission scheme inducing one finite channel per user with a pathwise power bound. -/
 structure BlockScheme (μ : Measure ℂ) (K L : ℕ) (P : ℝ) (A : Type*)
     [Fintype A] [MeasurableSpace A] where
+  /-- Complex channel inputs for one user symbol over the physical block. -/
   encode : Fin K → A → StateBlock K L → Fin L → ℂ
+  /-- Each transmitted symbol is a measurable function of the fading block. -/
   encode_measurable : ∀ i a t, Measurable fun H => encode i a H t
+  /-- Transmission in a slot uses channel state only through that slot. -/
   encode_causal : ∀ i a t H H', (∀ s, s ≤ t → H s = H' s) →
     encode i a H t = encode i a H' t
+  /-- Finite symbol decoder using the fading block and that receiver's output block. -/
   decode : Fin K → (StateBlock K L × (Fin L → ℂ)) → A
+  /-- Each receiver's finite symbol decoder is measurable. -/
   decode_measurable : ∀ i, Measurable (decode i)
+  /-- Finite symbol channel induced at each receiver by the scheme. -/
   channel : Fin K → FiniteChannel A A
+  /-- Physical observation probabilities agree with the induced finite channel for every user-symbol tuple. -/
   row_law : ∀ (a : Fin K → A) i b,
     ((stateLaw μ K L).prod (blockNoise K L))
       {hz | decode i (hz.1, fun t =>
         (∑ j, hz.1 t i j * encode j (a j) hz.1 t) + complexNoise (hz.2 i t)) = b} =
       ENNReal.ofReal ((channel i).transition (a i) b)
+  /-- Total block energy is at most L times P for every symbol tuple, almost surely over fading. -/
   power : ∀ a : Fin K → A, ∀ᵐ H ∂stateLaw μ K L,
     (∑ t, ∑ i, ‖encode i (a i) H t‖ ^ 2) ≤ (L : ℝ) * P
 
@@ -36,6 +45,7 @@ variable {μ : Measure ℂ} {K L : ℕ} {P : ℝ} {A : Type*}
 variable [Fintype A] [MeasurableSpace A]
 variable (S : BlockScheme μ K L P A)
 
+/-- Physical receiver output of the block scheme under a symbol tuple, fading block, and noise block. -/
 def output (a : Fin K → A) (H : StateBlock K L) (z : Noise K L)
     (i : Fin K) : Fin L → ℂ :=
   fun t => (∑ j, H t i j * S.encode j (a j) H t) + complexNoise (z i t)
@@ -53,6 +63,7 @@ theorem measurable_output (a : Fin K → A) (i : Fin K) :
   · unfold complexNoise
     fun_prop
 
+/-- Finite receiver observation obtained by decoding the scheme's physical output block. -/
 def observe (a : Fin K → A) (i : Fin K) (hz : StateBlock K L × Noise K L) : A :=
   S.decode i (hz.1, S.output a hz.1 hz.2 i)
 
@@ -71,6 +82,7 @@ theorem observe_law [MeasurableSingletonClass A] (a : Fin K → A) (i : Fin K) :
   rw [PMF.toMeasure_apply_singleton _ _ (measurableSet_singleton b)]
   exact S.row_law a i b
 
+/-- Concatenate finite-channel code symbols through the block scheme and transmit zero in unused slots. -/
 noncomputable def concatEncode {b n : ℕ} (h : b * L ≤ n)
     (c : ∀ i, FiniteChannel.BlockCode (S.channel i) b)
     (i : Fin K) (m : Fin (c i).messageCount) (H : StateBlock K n) : Fin n → ℂ :=
@@ -119,6 +131,7 @@ theorem concatEncode_causal {b n : ℕ} (h : b * L ≤ n)
     exact Nat.add_le_add_right hs _
   · rw [S.concatEncode_outside h c i m H t ht, S.concatEncode_outside h c i m H' t ht]
 
+/-- Operational interference code formed by concatenating one outer finite-channel code per user. -/
 noncomputable def concat [MeasurableSingletonClass A] {b n : ℕ} (h : b * L ≤ n)
     (c : ∀ i, FiniteChannel.BlockCode (S.channel i) b) : Code K n where
   messages i := (c i).messageCount

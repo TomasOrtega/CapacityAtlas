@@ -19,6 +19,7 @@ private def runAudit : IO Report := do
   let state : Core.State := { env }
   Prod.fst <$> (audit env).toIO context state
 
+/-- Emit the compiled audit as JSON and return a failure status when violations exist. -/
 def run (_args : List String) : IO UInt32 := do
   let report ← runAudit
   IO.println (toJson report).compress
@@ -28,5 +29,6 @@ def run (_args : List String) : IO UInt32 := do
 
 end CapacityAtlas.Audit
 
+/-- Entry point of the compiled registry and transitive-axiom audit. -/
 def main (args : List String) : IO UInt32 :=
   CapacityAtlas.Audit.run args

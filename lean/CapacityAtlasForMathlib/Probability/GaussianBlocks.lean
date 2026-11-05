@@ -68,9 +68,11 @@ namespace ProbabilityTheory
 
 variable {ι τ : Type*}
 
+/-- Reindex a block of Euclidean vectors as one Euclidean vector on coordinate-time pairs. -/
 def flattenGaussianBlock (x : τ → EuclideanSpace ℝ ι) : EuclideanSpace ℝ (ι × τ) :=
   WithLp.toLp 2 (fun p ↦ x p.2 p.1)
 
+/-- Split a Euclidean vector on coordinate-time pairs back into a block of coordinate vectors. -/
 def unflattenGaussianBlock (y : EuclideanSpace ℝ (ι × τ)) : τ → EuclideanSpace ℝ ι :=
   fun s ↦ WithLp.toLp 2 (fun i ↦ y (i, s))
 

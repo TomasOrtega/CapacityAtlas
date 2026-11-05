@@ -24,6 +24,7 @@ def prefixCovariance (Q : Fin K → Matrix (Fin tx) (Fin tx) ℝ)
     (π : Equiv.Perm (Fin K)) (k : Fin K) : Matrix (Fin tx) (Fin tx) ℝ :=
   ∑ j ∈ Finset.univ.filter (fun j : Fin K ↦ j < k), Q (π j)
 
+/-- Receiver noise covariance plus the image of the input covariance under the channel matrix. -/
 def receivedCovariance {r : ℕ} (H : Matrix (Fin r) (Fin tx) ℝ)
     (N : Matrix (Fin r) (Fin r) ℝ) (S : Matrix (Fin tx) (Fin tx) ℝ) :
     Matrix (Fin r) (Fin r) ℝ :=

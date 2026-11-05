@@ -17,14 +17,22 @@ variable {X₁ X₂ Y : Type*} [Fintype X₁] [Fintype X₂] [Fintype Y]
 
 /-- Both encoders receive the same strictly causal output feedback. -/
 structure Code (W : FiniteChannel (X₁ × X₂) Y) (n : ℕ) where
+  /-- Number of first-sender messages. -/
   messages₁ : ℕ
+  /-- Number of second-sender messages. -/
   messages₂ : ℕ
+  /-- The first sender's message set is nonempty. -/
   messages₁_pos : 0 < messages₁
+  /-- The second sender's message set is nonempty. -/
   messages₂_pos : 0 < messages₂
+  /-- First sender's input symbol from its message and strictly earlier common outputs. -/
   encode₁ : Fin messages₁ → (t : Fin n) → (Fin t.val → Y) → X₁
+  /-- Second sender's input symbol from its message and strictly earlier common outputs. -/
   encode₂ : Fin messages₂ → (t : Fin n) → (Fin t.val → Y) → X₂
+  /-- Joint estimate of the two messages from the output word. -/
   decode : (Fin n → Y) → Fin messages₁ × Fin messages₂
 
+/-- Average joint decoding error for uniform message pairs under causal output feedback. -/
 noncomputable def error {W : FiniteChannel (X₁ × X₂) Y} {n : ℕ}
     (c : Code W n) : ℝ := by
   classical
@@ -34,10 +42,12 @@ noncomputable def error {W : FiniteChannel (X₁ × X₂) Y} {n : ℕ}
         (c.encode₁ m₁ t (CausalHistories.past y t),
           c.encode₂ m₂ t (CausalHistories.past y t)) (y t)
 
+/-- The two sender rates in bits per channel use. -/
 noncomputable def rates {W : FiniteChannel (X₁ × X₂) Y} {n : ℕ}
     (c : Code W n) : RatePair :=
   (Operational.messageRate c.messages₁ n, Operational.messageRate c.messages₂ n)
 
+/-- Closed operational rate region for vanishing average joint error with common output feedback. -/
 noncomputable def capacityRegion (W : FiniteChannel (X₁ × X₂) Y) : Set RatePair :=
   Operational.achievableRegion (Code W) (fun _ _ ↦ True)
     (fun _ c ↦ error c) (fun _ c ↦ rates c)

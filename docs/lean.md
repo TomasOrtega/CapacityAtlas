@@ -225,13 +225,27 @@ Its code need not be copied here to register a proof.
 
 ## Build and trust boundary
 
+The package enables Lean's `linter.missingDocs` for all local libraries and the
+audit executable. Library targets include every source module, including files
+not yet imported by an umbrella module. Public definitions, abbreviations,
+structures/classes, fields,
+inductive types and constructors, initializers, and syntax declarations need
+nonempty docstrings or inherited documentation. Private helpers and
+theorem/lemma declarations are exempt from this linter. Describe what a
+declaration represents, including its domain and units where useful; repeating
+its name is not sufficient documentation.
+
+The builds below treat documentation warnings as errors. Documentation regression
+tests also check missing and empty docstrings, structure fields, private helpers,
+and `inherit_doc`, so disabling the package option breaks the test suite.
+
 ```bash
 cd lean
 lake exe cache get
 lake --wfail build CapacityAtlasForMathlib CapacityAtlasUtil
 lake --wfail build CapacityAtlas
 lake --wfail build CapacityAtlasAuditTests
-lake exe capacity_audit > /tmp/capacity-audit.json
+lake --wfail exe capacity_audit > /tmp/capacity-audit.json
 cd ..
 uv run --locked capacity-atlas validate --lean-report /tmp/capacity-audit.json
 ```

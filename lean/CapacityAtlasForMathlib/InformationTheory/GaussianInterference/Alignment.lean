@@ -14,9 +14,11 @@ namespace CapacityAtlas.Gaussian.Interference
 
 variable {U R : Type*} [Fintype U] [DecidableEq U] [Field R] {n : ℕ}
 
+/-- Channel coefficients indexed by alignment-extension rows and receiver-sender pairs. -/
 abbrev FadingBlock (U : Type*) [DecidableEq U] (n : ℕ) (R : Type*) :=
   Columns U n → U × U → R
 
+/-- Square receiver matrix joining desired-signal columns to the interference monomial columns. -/
 def decodingMatrix (h : FadingBlock U n R) (i : U) :
     Matrix (Columns U n) (Columns U n) R :=
   fun r ↦ Sum.elim (fun a ↦ h r (i, i) * beam (h r) a) (beam (h r))
@@ -32,6 +34,7 @@ theorem eval_decodingPolynomial (h : FadingBlock U n R) (i : U) :
   ext r c
   exact (MonomialEvaluation.eval_matrix _ _ r c).trans (eval_column _ _ _)
 
+/-- Linear map extracting desired stream coordinates after applying the receiver matrix inverse. -/
 noncomputable def decoder (h : FadingBlock U n R) (i : U) :
     (Columns U n → R) →ₗ[R] (Box U n → R) :=
   LinearMap.pi (fun a ↦ (LinearMap.proj (Sum.inl a)).comp
@@ -45,6 +48,7 @@ theorem decoder_column (h : FadingBlock U n R) (i : U)
   rw [← Matrix.mulVec_single_one, Matrix.mulVec_mulVec,
     Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hi), Matrix.one_mulVec]
 
+/-- Contribution at one receiver of one sender's monomial beam across the extension rows. -/
 def receivedColumn (h : FadingBlock U n R) (i u : U) (a : Box U n) :
     Columns U n → R := fun r ↦ h r (i, u) * beam (h r) a
 
@@ -69,9 +73,11 @@ theorem decoder_receivedColumn (h : FadingBlock U n R) (i : U)
   · rw [receivedColumn_other h i u hiu, decoder_column h i hi]
     simp [hiu]
 
+/-- Linear combination of monomial beams carrying a sender's stream vector. -/
 def transmitted (h : FadingBlock U n R) (x : Box U n → R) : Columns U n → R :=
   fun r ↦ ∑ a, beam (h r) a * x a
 
+/-- Noiseless receiver vector obtained by adding all senders' faded beam transmissions. -/
 def received (h : FadingBlock U n R) (x : U → Box U n → R) (i : U) :
     Columns U n → R := fun r ↦ ∑ u, h r (i, u) * transmitted h (x u) r
 

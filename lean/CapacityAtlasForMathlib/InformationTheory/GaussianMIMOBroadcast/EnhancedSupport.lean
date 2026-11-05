@@ -14,6 +14,7 @@ namespace CapacityAtlas.Gaussian.MIMOBroadcast
 
 variable {m tx : ℕ}
 
+/-- Weighted sum of logarithmic determinant increments for an aligned broadcast channel. -/
 noncomputable def alignedLogObjective (γ : Fin (m + 1) → ℝ)
     (N Q : Fin (m + 1) → Matrix (Fin tx) (Fin tx) ℝ) : ℝ :=
   ∑ k, γ k * (Real.log (prefixCovariance Q (Equiv.refl _) k + Q k + N k).det -

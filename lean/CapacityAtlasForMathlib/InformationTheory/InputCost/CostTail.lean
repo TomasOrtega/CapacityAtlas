@@ -19,9 +19,11 @@ open CapacityAtlas
 
 variable {X : Type*} [Fintype X]
 
+/-- Variance of the one-symbol input cost under the chosen finite distribution. -/
 noncomputable def costVariance (input : FiniteDistribution X) (cost : X → ℝ) : ℝ :=
   ∑ symbol, input symbol * (cost symbol - input.expectedCost cost) ^ 2
 
+/-- Probability that an iid input word exceeds the prescribed block cost budget. -/
 noncomputable def badCostMass (input : FiniteDistribution X) (cost : X → ℝ)
     (budget : ℝ) (n : ℕ) : ℝ := by
   classical
