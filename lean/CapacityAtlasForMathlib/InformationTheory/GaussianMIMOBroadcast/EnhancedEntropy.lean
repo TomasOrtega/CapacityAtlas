@@ -17,11 +17,12 @@ variable {K tx n : ℕ} {rx : Fin K → ℕ}
 
 theorem codePrefixEntropy_difference_le (c : Code K tx rx n) (htx : 0 < tx) (hn : 0 < n)
     (E F S : Matrix (Fin tx) (Fin tx) ℝ) (hE : E.PosDef) (hF : F.PosDef) (hS : S.PosSemidef)
-    {f g : ℝ} (hf : 0 < f) (hg : 0 < g) (hfg : f ≤ g)
+    {f g : ℝ} (hf : 0 < f) (hfg : f ≤ g)
     (hprop : g • (S + F)⁻¹ = f • (S + E)⁻¹) (k : ℕ) :
     f * codePrefixEntropy c E k - g * codePrefixEntropy c F k ≤
       n * (f * MeasureInformation.entropyWith (multivariateGaussian 0 (S + E)) volume -
         g * MeasureInformation.entropyWith (multivariateGaussian 0 (S + F)) volume) := by
+  have hg : 0 < g := lt_of_lt_of_le hf hfg
   letI : Nonempty (Fin tx) := ⟨⟨0, htx⟩⟩
   letI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
   have hSE := PosDef.posSemidef_add hS hE
@@ -118,7 +119,7 @@ theorem weighted_codePrefixEntropy_le (c : Code (m + 1) tx rx n) (htx : 0 < tx) 
     codePrefixEntropy_difference_le c htx hn (E k.castSucc) (E k.succ)
       (prefixCovariance Q (Equiv.refl _) k.succ) (hE _) (hE _)
       (prefixCovariance_posSemidef Q hQ.1 (Equiv.refl _) k.succ)
-      (hw _) (hw _) (hm k.castSucc_lt_succ.le) (hprop k) (k.val + 1))
+      (hw _) (hm k.castSucc_lt_succ.le) (hprop k) (k.val + 1))
   have ht := codePrefixEntropy_last_le c (E (Fin.last m)) (∑ k, Q k) (hE _)
     (posSemidef_sum _ (fun k _ ↦ hQ.1 k)) hc (hw _).le hlam hstat
     (by simpa only [trace_sum] using hcomp)

@@ -239,6 +239,21 @@ The builds below treat documentation warnings as errors. Documentation regressio
 tests also check missing and empty docstrings, structure fields, private helpers,
 and `inherit_doc`, so disabling the package option breaks the test suite.
 
+Unused-variable linting is enabled explicitly. The compiled audit also rejects
+unused parameters of public proved theorems across the local libraries: a
+parameter must occur in the proof, the result, or another parameter's type or
+value. This check includes typeclass instances and underscore-prefixed names;
+source linter options and `nolint` attributes do not disable it. Private helpers,
+generated declarations, and admitted research statements are excluded. The
+existing trust checks still reject admissions in reusable infrastructure and
+local proofs.
+
+Compiled dependency checks cannot establish every mathematical generalization.
+An assumption used by the current proof may still be removable with a stronger
+proof; those changes need mathematical review and a regression check of the
+stronger theorem signature. A materially strengthened registered claim must
+increment its version in both Lean and YAML.
+
 ```bash
 cd lean
 lake exe cache get

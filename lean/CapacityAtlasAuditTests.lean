@@ -5,8 +5,13 @@ See https://www.apache.org/licenses/LICENSE-2.0
 -/
 
 import CapacityAtlasAuditCore
+import CapacityAtlasAuditTests.Assumptions
+import CapacityAtlasAuditTests.AssumptionBoundaries
 import CapacityAtlasAuditTests.Documentation
 import CapacityAtlasAuditTests.Fixtures
+import CapacityAtlasAuditTests.GaussianAssumptions
+import CapacityAtlasAuditTests.SourceModules
+import CapacityAtlasAuditTests.TrustBoundary
 
 open Lean CapacityAtlas.Audit
 

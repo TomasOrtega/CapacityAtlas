@@ -82,6 +82,10 @@ Capacity Atlas uses Lean 4 for formal verification.
   nonempty Lean docstrings (`/-- ... -/`), or use `@[inherit_doc source]` when the
   meaning is shared. State the purpose, domain, and units when they are not clear
   from the type. The documentation linter runs with warnings as errors in CI.
+- Remove unused theorem parameters instead of hiding them behind underscore names
+  or linter exclusions. The compiled audit checks the proof, result, and dependent
+  parameter types. Derive redundant conditions inside the proof where possible;
+  review mathematical generalizations even when the current proof uses the condition.
 - Attach `@[capacity_problem "problem-id"]` to problem-specific declarations.
 - Mark declaration roles with `@[capacity_definition]`,
   `@[capacity_statement]`, or `@[capacity_shared_api]`.

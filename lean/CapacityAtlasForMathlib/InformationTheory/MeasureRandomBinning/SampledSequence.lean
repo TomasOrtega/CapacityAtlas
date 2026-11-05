@@ -64,7 +64,7 @@ theorem sampledKernel_univ_add_failure (ν : Measure V) [IsProbabilityMeasure ν
   exact (measure_add_measure_compl (hA.preimage measurable_prodMk_left)).trans (measure_univ : ν univ = 1)
 
 theorem sampledKernel_comp_eq_actual {Ω : Type*} [MeasurableSpace Ω]
-    (π : Measure Ω) [IsProbabilityMeasure π] (ν : Measure V) [IsProbabilityMeasure ν]
+    (π : Measure Ω) (ν : Measure V) [IsProbabilityMeasure ν]
     {C : Set Ω} (hC : MeasurableSet C) {state : Ω → S} (hstate : Measurable state)
     {A : Set (S × V)} (hA : MeasurableSet A) {next : S × V → S}
     (hnext : Measurable next) :

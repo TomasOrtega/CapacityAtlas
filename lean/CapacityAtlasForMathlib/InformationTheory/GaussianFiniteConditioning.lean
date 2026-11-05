@@ -50,7 +50,7 @@ theorem gaussianCodebookKernel_output_ac (μ : Measure α) [IsProbabilityMeasure
     gaussianCodebookKernel m N ∘ₘ μ ≪ volume :=
   gaussianMixture_absolutelyContinuous μ _ m N hN (fun _ ↦ rfl)
 
-theorem gaussianCodebookKernel_comp_map (μ : Measure α) [IsProbabilityMeasure μ]
+theorem gaussianCodebookKernel_comp_map (μ : Measure α)
     (f : α → β) (m : β → EuclideanSpace ℝ ι) (N : Matrix ι ι ℝ) :
     gaussianCodebookKernel m N ∘ₘ μ.map f = gaussianCodebookKernel (m ∘ f) N ∘ₘ μ := by
   ext s hs
@@ -79,8 +79,8 @@ instance gaussianMarginalCodebookKernel_isMarkovKernel (ν : Measure β) [IsProb
     (m : α → β → EuclideanSpace ℝ ι) (N : Matrix ι ι ℝ) (a : α) :
     gaussianMarginalCodebookKernel ν m N a = gaussianCodebookKernel (m a) N ∘ₘ ν := rfl
 
-theorem gaussianMarginalCodebookKernel_comp (μ : Measure α) [IsProbabilityMeasure μ]
-    (ν : Measure β) [IsProbabilityMeasure ν]
+theorem gaussianMarginalCodebookKernel_comp (μ : Measure α)
+    (ν : Measure β)
     (m : α → β → EuclideanSpace ℝ ι) (N : Matrix ι ι ℝ) :
     gaussianMarginalCodebookKernel ν m N ∘ₘ μ =
       gaussianCodebookKernel (fun p : α × β ↦ m p.1 p.2) N ∘ₘ μ.prod ν := by

@@ -82,7 +82,7 @@ theorem integrable_receiverErrorAt (μ : Measure ℂ) [IsProbabilityMeasure μ]
   rw [Real.norm_eq_abs, abs_of_nonneg measureReal_nonneg]
   exact measureReal_le_one
 
-theorem integral_receiverErrorAt (μ : Measure ℂ) [IsProbabilityMeasure μ]
+theorem integral_receiverErrorAt (μ : Measure ℂ)
     (c : Code K n) (m : c.Message) (i : Fin K) :
     (∫ H, receiverErrorAt c m H i ∂stateLaw μ K n) =
       ((stateLaw μ K n).prod (blockNoise K n)).real (receiverEvent c m i) := by

@@ -21,9 +21,9 @@ theorem capacityRegion_eq_region_zero_power
 /-- Zero channel gains preclude information transmission at any nonnegative power. -/
 theorem capacityRegion_eq_region_zero_channel
     (N : (i : Fin K) → Matrix (Fin (rx i)) (Fin (rx i)) ℝ)
-    (hN : ∀ i, (N i).PosDef) {P : ℝ} (hP : 0 ≤ P) :
+    {P : ℝ} (hP : 0 ≤ P) :
     capacityRegion (0 : (i : Fin K) → Matrix (Fin (rx i)) (Fin tx) ℝ) N P =
       region (tx := tx) 0 N P := by
-  rw [capacityRegion_zero_channel N hP, region_zero_channel N hN hP]
+  rw [capacityRegion_zero_channel N hP, region_zero_channel N hP]
 
 end CapacityAtlas.Gaussian.MIMOBroadcast

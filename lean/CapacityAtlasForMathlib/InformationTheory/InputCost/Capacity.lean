@@ -48,14 +48,13 @@ theorem achievableRate_of_lt_constrainedInformationCapacityBits
     channel.exists_input_of_lt_constrainedInformationCapacityBits cost budget hfeasible hrate
   exact achievableRate_of_admissible_input channel input cost budget hfeasible hinput hrateInput
 
-/-- Certificate for the unchanged Atlas exact-capacity claim, version 1. -/
+/-- A feasible per-symbol cost constraint identifies finite-DMC capacity. -/
 theorem finiteDMCInputCostCapacity (channel : FiniteChannel X Y)
     (cost : X → ℝ) (budget : ℝ) :
-    (∀ symbol, 0 ≤ cost symbol) →
-      (∃ symbol, cost symbol ≤ budget) →
-        channel.constrainedOperationalCapacityBits cost budget =
-          channel.constrainedInformationCapacityBits cost budget := by
-  intro _ hfeasible
+    (∃ symbol, cost symbol ≤ budget) →
+      channel.constrainedOperationalCapacityBits cost budget =
+        channel.constrainedInformationCapacityBits cost budget := by
+  intro hfeasible
   apply le_antisymm
   · exact channel.constrainedOperationalCapacityBits_le_constrainedInformationCapacityBits
       cost budget hfeasible
@@ -66,11 +65,11 @@ theorem finiteDMCInputCostCapacity (channel : FiniteChannel X Y)
 
 /-- The information supremum is a maximum and equals operational capacity. -/
 theorem exists_capacityAchieving_input (channel : FiniteChannel X Y)
-    (cost : X → ℝ) (budget : ℝ) (hcost : ∀ symbol, 0 ≤ cost symbol)
+    (cost : X → ℝ) (budget : ℝ)
     (hfeasible : ∃ symbol, cost symbol ≤ budget) :
     ∃ input : FiniteDistribution X, input.IsAdmissibleCost cost budget ∧
       channel.mutualInformationBits input = channel.constrainedOperationalCapacityBits cost budget := by
-  rw [finiteDMCInputCostCapacity channel cost budget hcost hfeasible]
+  rw [finiteDMCInputCostCapacity channel cost budget hfeasible]
   exact channel.exists_admissible_input_attaining_constrainedInformationCapacityBits
     cost budget hfeasible
 

@@ -7,6 +7,7 @@ See https://www.apache.org/licenses/LICENSE-2.0
 import CapacityAtlasUtil.Metadata
 import Lean.AutoDecl
 import Lean.Util.CollectAxioms
+import Lean.Util.CollectFVars
 
 open Lean
 
@@ -79,6 +80,43 @@ private def unexpectedAxioms (axioms : Array Name) (allowSorry : Bool) : Array N
   axioms.filter fun axiomName =>
     !standardAxioms.contains axiomName && !(allowSorry && axiomName == ``sorryAx)
 
+private def unusedTheoremArguments (info : ConstantInfo) : MetaM (Array String) := do
+  let .thmInfo theoremInfo := info | return #[]
+  Meta.forallTelescope theoremInfo.type fun args resultType => do
+    let localDeclarations ← args.mapM Meta.getFVarLocalDecl
+    let mut dependencies := mkApp ((mkAppN theoremInfo.value args).headBeta) resultType
+    for localDeclaration in localDeclarations do
+      dependencies := mkApp dependencies localDeclaration.type
+      if let some value := localDeclaration.value? then
+        dependencies := mkApp dependencies value
+    let usedVariables := (Lean.collectFVars {} dependencies).fvarSet
+    let mut errors := #[]
+    for index in [:localDeclarations.size] do
+      let localDeclaration := localDeclarations[index]!
+      unless usedVariables.contains localDeclaration.fvarId do
+        let type ← Meta.ppExpr localDeclaration.type
+        let argument ← Meta.ppExpr (.fvar localDeclaration.fvarId)
+        let binder := if localDeclaration.binderInfo.isInstImplicit then
+          s!"[{type}]" else s!"({argument} : {type})"
+        errors := errors.push s!"unused argument {index + 1}: {binder}; remove this parameter"
+    return errors
+
+private def requiresCleanProof (env : Environment) (moduleName declaration : Name) : Bool :=
+  moduleIn moduleName `CapacityAtlasForMathlib || moduleIn moduleName `CapacityAtlasUtil ||
+    capacityTestAttr.hasTag env declaration || capacityFormalProofAttr.hasTag env declaration ||
+    capacityApiAttr.hasTag env declaration || capacitySharedApiAttr.hasTag env declaration ||
+    capacityPropositionAttr.hasTag env declaration
+
+/-- Whether a public problem-layer research declaration may use an admitted proof. -/
+def allowsResearchAdmission (env : Environment) (moduleName declaration : Name) : CoreM Bool := do
+  let some info := env.find? declaration | return false
+  unless moduleIn moduleName `CapacityAtlas && isPublicTheorem info &&
+      !env.isProjectionFn declaration do return false
+  if ← Lean.isAutoDeclOrPrivate_Internal declaration then return false
+  return !requiresCleanProof env moduleName declaration &&
+    (capacityClaimAttr.getParam? env declaration).isSome &&
+    (capacityOpenAttr.hasTag env declaration || capacitySolvedAttr.hasTag env declaration)
+
 /-- Check compiled declarations, including the bodies of canonical proposition definitions. -/
 def audit (env : Environment) : CoreM Report := do
   let mut records := #[]
@@ -92,7 +130,6 @@ def audit (env : Environment) : CoreM Report := do
     let isTest := capacityTestAttr.hasTag env declaration
     let isFormalProof := capacityFormalProofAttr.hasTag env declaration
     let isProposition := capacityPropositionAttr.hasTag env declaration
-    let isApi := capacityApiAttr.hasTag env declaration
     let isSharedApi := capacitySharedApiAttr.hasTag env declaration
     let claim? := capacityClaimAttr.getParam? env declaration
     let claimId? := claim?.map Claim.id
@@ -106,6 +143,10 @@ def audit (env : Environment) : CoreM Report := do
     let isAutoOrPrivate ← Lean.isAutoDeclOrPrivate_Internal declaration
     let isProblemTheorem := inProblemLayer && isPublicTheorem info && !isAutoOrPrivate &&
       !env.isProjectionFn declaration
+    if isPublicTheorem info && !isAutoOrPrivate && !env.isProjectionFn declaration &&
+        !axioms.contains ``sorryAx then
+      for error in ← (unusedTheoremArguments info).run' do
+        errors := errors.push s!"{declaration}: {error}"
     if inProblemLayer && isAxiom info && !isAutoOrPrivate then
       errors := errors.push s!"{declaration}: public problem-layer axioms are not permitted"
     if isProblemTheorem then
@@ -144,11 +185,8 @@ def audit (env : Environment) : CoreM Report := do
         claim?.isNone then
       errors := errors.push
         s!"{declaration}: research claim is missing [capacity_claim] identity and version"
-    let admittedResearchClaim := claim?.isSome && isPublicTheorem info && !isProposition &&
-      (capacityOpenAttr.hasTag env declaration || capacitySolvedAttr.hasTag env declaration) &&
-      !isFormalProof && !isTest
-    let requiresCleanAxioms :=
-      inForMathlib || inUtil || isTest || isFormalProof || isApi || isSharedApi || isProposition
+    let admittedResearchClaim ← allowsResearchAdmission env moduleName declaration
+    let requiresCleanAxioms := requiresCleanProof env moduleName declaration
     let checkedAxioms := if requiresCleanAxioms || isProblemTheorem then axioms else #[]
     let unexpected := unexpectedAxioms checkedAxioms admittedResearchClaim
     unless unexpected.isEmpty do

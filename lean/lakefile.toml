@@ -5,6 +5,7 @@ defaultTargets = ["CapacityAtlas"]
 [leanOptions]
 autoImplicit = false
 linter.missingDocs = true
+linter.unusedVariables = true
 
 [[lean_lib]]
 name = "CapacityAtlasUtil"

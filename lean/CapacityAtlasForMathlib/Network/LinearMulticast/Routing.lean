@@ -122,7 +122,7 @@ noncomputable def routingOfPaths (output : I → I ⊕ W) (paths : I → List W)
     · exact Or.inl hi
     · exact Or.inr ⟨e, he, (hlabel e i).mpr hm⟩
 
-theorem simultaneous_of_routing [Fintype I] {T : Type} [Fintype T]
+theorem simultaneous_of_routing [Fintype I] {T : Type}
     (output : T → I → I ⊕ W) (routes : ∀ t, G.Routing (output t)) :
     ∃ b : ℕ, 0 < b ∧ ∃ c : G.Variable → GaloisField 2 b,
       ∀ t, (G.outputMatrix c (output t)).det ≠ 0 :=

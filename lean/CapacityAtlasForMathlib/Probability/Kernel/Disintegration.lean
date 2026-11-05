@@ -223,7 +223,7 @@ lemma condDistrib_const_unit (hX : Measurable X) (hY : Measurable Y)
   rfl
 
 omit [Countable U] [DiscreteMeasurableSpace U] in
-lemma map_compProd_condDistrib [Nonempty S] (hX : Measurable X) (_hZ : Measurable Z)
+lemma map_compProd_condDistrib [Nonempty S] (hX : Measurable X)
     (μ : Measure Ω) [IsProbabilityMeasure μ] :
     μ.map Z ⊗ₘ condDistrib X Z μ = μ.map (fun ω ↦ (Z ω, X ω)) :=
   compProd_map_condDistrib hX.aemeasurable

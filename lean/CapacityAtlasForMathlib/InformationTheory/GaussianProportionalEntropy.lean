@@ -38,10 +38,11 @@ theorem weighted_log_sub_le_of_proportional
   nlinarith
 
 theorem proportional_log_sub_le
-    {P Q A B a : ℝ} (hP : 0 < P) (hQ : 0 < Q) (hA : 0 < A) (hB : 0 < B)
+    {P Q A B a : ℝ} (hP : 0 < P) (hA : 0 < A) (hB : 0 < B)
     (ha1 : a ≤ 1) (hAeq : A = a * B) (hPQ : P + (B - A) ≤ Q) :
     a * log P - log Q ≤ a * log A - log B := by
   have hAB : A ≤ B := by rw [hAeq]; nlinarith
+  have hQ : 0 < Q := by linarith
   have hf : a = (1 : ℝ) * A / B := by rw [one_mul, hAeq, mul_div_cancel_right₀ a hB.ne']
   simpa only [one_mul] using weighted_log_sub_le_of_proportional hP hQ hA hB hAB hPQ zero_lt_one hf
 

@@ -41,7 +41,7 @@ theorem block_informationDensity_productFamily (W : FiniteChannel X Y) (n : ℕ)
   rw [block_transition, block_outputDistribution_productFamily, ← Finset.prod_div_distrib,
     Real.log_prod (fun i _ ↦ div_ne_zero (htransition i).ne' (houtput i).ne')]
 
-theorem block_mutualInformationBits_productFamily_le [DecidableEq X]
+theorem block_mutualInformationBits_productFamily_le
     (W : FiniteChannel X Y) (n : ℕ) (p : Fin n → FiniteDistribution X) :
     (W.block n).mutualInformationBits (FiniteDistribution.productFamily p) ≤
       ∑ i, W.mutualInformationBits (p i) := by

@@ -39,7 +39,7 @@ lemma differentiable_gaussianMixturePDFReal (w : α → ℝ) (m : α → Euclide
 
 /-- The total Fisher information is independent of the orthonormal basis. -/
 theorem sum_directionalFisherWith_gaussianMixturePDFReal_basis
-    (w : α → ℝ) (hw : ∀ a, 0 ≤ w a) (hw1 : ∑ a, w a = 1)
+    (w : α → ℝ) (hw : ∀ a, 0 ≤ w a)
     (m : α → EuclideanSpace ℝ ι) (N : Matrix ι ι ℝ) (hN : N.PosDef)
     (b b' : OrthonormalBasis ι ℝ (EuclideanSpace ℝ ι)) :
     (∑ i, directionalFisherWith volume (gaussianMixturePDFReal w m N) (b i)) =
@@ -51,7 +51,7 @@ theorem sum_directionalFisherWith_gaussianMixturePDFReal_basis
     intro a
     exact (memLp_two_iff_integrable_sq
       (measurable_directionalScore_gaussianMixturePDFReal w m N hN v).aestronglyMeasurable).mp
-      (memLp_directionalScore_gaussianMixturePDFReal w hw hw1 m N hN v (m a) N 2 (by norm_num))
+      (memLp_directionalScore_gaussianMixturePDFReal w hw m N hN v (m a) N 2 (by norm_num))
   simp_rw [directionalFisherWith_eq_gaussianMixtureMeasure w hw m N hN]
   rw [← integral_finsetSum Finset.univ (fun i _ ↦ hint (b i)), ← integral_finsetSum Finset.univ (fun i _ ↦ hint (b' i))]
   apply integral_congr_ae

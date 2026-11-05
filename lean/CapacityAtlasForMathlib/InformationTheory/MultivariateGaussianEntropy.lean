@@ -111,7 +111,7 @@ lemma integral_covarianceQuadratic_multivariateGaussian (m : EuclideanSpace ℝ 
 lemma integrable_llr_multivariateGaussian_volume (m : EuclideanSpace ℝ ι)
     (S : Matrix ι ι ℝ) (hS : S.PosDef) :
     Integrable (llr (multivariateGaussian m S) volume) (multivariateGaussian m S) := by
-  apply (integrable_log_multivariateGaussianPDFReal m S hS
+  apply (integrable_log_multivariateGaussianPDFReal m S
     (integrable_covarianceQuadratic_multivariateGaussian m S hS)).congr
   filter_upwards [llr_multivariateGaussian_volume m S hS] with x hx using hx.symm
 
@@ -138,7 +138,7 @@ theorem entropyWith_le_multivariateGaussian_crossEntropy
     simpa only [exp_log (multivariateGaussianPDFReal_pos m S hS _)] using
       integrable_multivariateGaussianPDFReal m S hS
   have h := entropyWith_le_log_partition_sub_integral hμ
-    (integrable_log_multivariateGaussianPDFReal m S hS hquad) hexp hlog
+    (integrable_log_multivariateGaussianPDFReal m S hquad) hexp hlog
   simp_rw [exp_log (multivariateGaussianPDFReal_pos m S hS _)] at h
   rw [integral_multivariateGaussianPDFReal m S hS, log_one,
     integral_log_multivariateGaussianPDFReal m S hS hquad] at h
@@ -168,7 +168,7 @@ theorem klDiv_multivariateGaussian_eq_crossEntropy_sub_entropy
       integrable_multivariateGaussianPDFReal m S hS
   rw [multivariateGaussian_eq_tilted_log_density m S hS,
     klDiv_tilted_eq_entropy_gap hμ
-      (integrable_log_multivariateGaussianPDFReal m S hS hquad) hexp hlog]
+      (integrable_log_multivariateGaussianPDFReal m S hquad) hexp hlog]
   simp_rw [exp_log (multivariateGaussianPDFReal_pos m S hS _)]
   rw [integral_multivariateGaussianPDFReal m S hS, log_one,
     integral_log_multivariateGaussianPDFReal m S hS hquad]
@@ -187,7 +187,7 @@ theorem entropyWith_eq_multivariateGaussian_iff
     simpa only [exp_log (multivariateGaussianPDFReal_pos m S hS _)] using
       integrable_multivariateGaussianPDFReal m S hS
   have h := entropyWith_eq_log_partition_sub_integral_iff hμ
-    (integrable_log_multivariateGaussianPDFReal m S hS hquad) hexp hlog
+    (integrable_log_multivariateGaussianPDFReal m S hquad) hexp hlog
   simp_rw [exp_log (multivariateGaussianPDFReal_pos m S hS _)] at h
   rw [integral_multivariateGaussianPDFReal m S hS, log_one,
     integral_log_multivariateGaussianPDFReal m S hS hquad, hmoment,

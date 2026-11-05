@@ -293,11 +293,29 @@ theorem log_multivariateGaussianPDFReal (m : EuclideanSpace ℝ ι)
 
 theorem integrable_log_multivariateGaussianPDFReal
     {μ : Measure (EuclideanSpace ℝ ι)} [IsFiniteMeasure μ]
-    (m : EuclideanSpace ℝ ι) (S : Matrix ι ι ℝ) (hS : S.PosDef)
+    (m : EuclideanSpace ℝ ι) (S : Matrix ι ι ℝ)
     (hquad : Integrable (fun x : EuclideanSpace ℝ ι ↦ (x - m) ⬝ᵥ S⁻¹ *ᵥ (x - m)) μ) :
     Integrable (fun x ↦ Real.log (multivariateGaussianPDFReal m S x)) μ := by
-  simp_rw [log_multivariateGaussianPDFReal m S hS]
-  exact (integrable_const _).sub (hquad.div_const _)
+  by_cases hpos : 0 < S.det
+  · have hlog (x : EuclideanSpace ℝ ι) :
+        Real.log (multivariateGaussianPDFReal m S x) =
+          -((Fintype.card ι : ℝ) * Real.log (2 * Real.pi) + Real.log S.det) / 2 -
+            ((x - m) ⬝ᵥ S⁻¹ *ᵥ (x - m)) / 2 := by
+      have hconst : 0 < Real.sqrt (2 * Real.pi) := by positivity
+      have hdet : 0 < Real.sqrt S.det := Real.sqrt_pos.mpr hpos
+      rw [multivariateGaussianPDFReal,
+        Real.log_mul (mul_ne_zero (pow_ne_zero _ (inv_ne_zero hconst.ne')) (inv_ne_zero hdet.ne'))
+          (Real.exp_pos _).ne',
+        Real.log_mul (pow_ne_zero _ (inv_ne_zero hconst.ne')) (inv_ne_zero hdet.ne'),
+        Real.log_pow, Real.log_inv, Real.log_inv,
+        Real.log_sqrt (by positivity), Real.log_sqrt hpos.le, Real.log_exp]
+      ring
+    simp_rw [hlog]
+    exact (integrable_const _).sub (hquad.div_const _)
+  · have hdensity (x : EuclideanSpace ℝ ι) : multivariateGaussianPDFReal m S x = 0 := by
+      simp [multivariateGaussianPDFReal, Real.sqrt_eq_zero_of_nonpos (le_of_not_gt hpos)]
+    simpa only [hdensity, Real.log_zero] using (integrable_const (0 : ℝ) :
+      Integrable (fun _ : EuclideanSpace ℝ ι ↦ (0 : ℝ)) μ)
 
 theorem integral_log_multivariateGaussianPDFReal
     {μ : Measure (EuclideanSpace ℝ ι)} [IsProbabilityMeasure μ]

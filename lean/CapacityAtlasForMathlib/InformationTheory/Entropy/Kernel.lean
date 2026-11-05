@@ -75,22 +75,18 @@ lemma aefiniteKernelSupport_condDistrib
   rw [ha]
   exact finiteSupport_of_finiteRange.finite
 
-lemma entropy_comap_equiv [MeasurableSingletonClass T]
-    {T' : Type*} [MeasurableSpace T'] [MeasurableSingletonClass T']
-    (κ : Kernel T S) {μ : Measure T} (f : T' ≃ᵐ T)
-    [IsFiniteMeasure μ] [FiniteSupport μ] :
+lemma entropy_comap_equiv {T' : Type*} [MeasurableSpace T']
+    (κ : Kernel T S) {μ : Measure T} (f : T' ≃ᵐ T) :
     Hk[comap κ f f.measurable, μ.comap f] = Hk[κ, μ] := by
   simp only [entropy, ← MeasurableEquiv.map_symm, integral_map_equiv,
     coe_comap, Function.comp_apply, MeasurableEquiv.apply_symm_apply]
 
-lemma entropy_comap_swap [MeasurableSingletonClass T]
-    {T' : Type*} [MeasurableSpace T'] [MeasurableSingletonClass T']
-    (κ : Kernel (T' × T) S) {μ : Measure (T' × T)} [IsFiniteMeasure μ] [FiniteSupport μ] :
+lemma entropy_comap_swap {T' : Type*} [MeasurableSpace T']
+    (κ : Kernel (T' × T) S) {μ : Measure (T' × T)} :
     Hk[comap κ Prod.swap measurable_swap, μ.comap Prod.swap] = Hk[κ, μ] :=
   entropy_comap_equiv κ MeasurableEquiv.prodComm
 
-lemma entropy_prodMkLeft_unit [MeasurableSingletonClass T]
-    (κ : Kernel T S) {μ : Measure T} [IsZeroOrProbabilityMeasure μ] [FiniteSupport μ] :
+lemma entropy_prodMkLeft_unit (κ : Kernel T S) {μ : Measure T} :
     Hk[prodMkLeft Unit κ, μ.map (Prod.mk ())] = Hk[κ, μ] := by
   convert entropy_comap_equiv κ (.punitProd) (μ := μ)
   · rfl

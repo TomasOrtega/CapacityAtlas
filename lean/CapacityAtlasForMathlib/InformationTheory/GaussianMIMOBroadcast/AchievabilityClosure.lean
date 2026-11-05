@@ -23,11 +23,10 @@ theorem mem_capacityRegion_no_receivers {rx : Fin 0 → ℕ}
 theorem capacityRegion_eq_region_no_transmit_antennas
     (H : (i : Fin K) → Matrix (Fin (rx i)) (Fin 0) ℝ)
     (N : (i : Fin K) → Matrix (Fin (rx i)) (Fin (rx i)) ℝ)
-    (hN : ∀ i, (N i).PosDef) {P : ℝ} (hP : 0 ≤ P) :
+    {P : ℝ} (hP : 0 ≤ P) :
     capacityRegion H N P = region H N P := by
   have hH : H = 0 := by funext i a b; exact Fin.elim0 b
-  rw [hH]
-  exact capacityRegion_eq_region_zero_channel N hN hP
+  rw [hH, capacityRegion_zero_channel N hP, region_zero_channel N hP]
 
 /-- Strict interior coding suffices for the full closed convex DPC region. -/
 theorem region_subset_capacityRegion_of_strict_dpc_achievable
@@ -44,7 +43,7 @@ theorem region_subset_capacityRegion_of_strict_dpc_achievable
     exact fun R _ ↦ mem_capacityRegion_no_receivers H N hP R
   by_cases htx : tx = 0
   · subst tx
-    rw [capacityRegion_eq_region_no_transmit_antennas H N hN hP]
+    rw [capacityRegion_eq_region_no_transmit_antennas H N hP]
   by_cases hPzero : P = 0
   · subst P
     rw [capacityRegion_eq_region_zero_power H N hN]

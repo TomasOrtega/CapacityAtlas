@@ -6,6 +6,7 @@ See https://www.apache.org/licenses/LICENSE-2.0
 
 import CapacityAtlas
 import CapacityAtlasAuditCore
+import CapacityAtlasAuditCore.SourceModules
 
 open Lean
 
@@ -14,7 +15,8 @@ namespace CapacityAtlas.Audit
 private def runAudit : IO Report := do
   unsafe Lean.enableInitializersExecution
   initSearchPath (← findSysroot)
-  let env ← importModules #[{ module := `CapacityAtlas }] {} (loadExts := true)
+  let modules ← discoverSourceModules (← IO.currentDir)
+  let env ← importModules (modules.map fun module => { module }) {} (loadExts := true)
   let context : Core.Context := { fileName := "", fileMap := default }
   let state : Core.State := { env }
   Prod.fst <$> (audit env).toIO context state

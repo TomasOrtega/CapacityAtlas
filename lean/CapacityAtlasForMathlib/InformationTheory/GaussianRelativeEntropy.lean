@@ -53,7 +53,7 @@ theorem klDiv_multivariateGaussian_ne_top (m a : EuclideanSpace ℝ ι)
   exact _root_.InformationTheory.klDiv_ne_top
     ((multivariateGaussian_absolutelyContinuous m S hS).trans (absolutelyContinuous_tilted hexp))
     (integrable_llr_tilted_right (multivariateGaussian_absolutelyContinuous m S hS)
-      (integrable_log_multivariateGaussianPDFReal a T hT
+      (integrable_log_multivariateGaussianPDFReal a T
         (integrable_covarianceQuadratic (memLp_eval_multivariateGaussian m S) a T⁻¹))
       (integrable_llr_multivariateGaussian_volume m S hS) hexp)
 

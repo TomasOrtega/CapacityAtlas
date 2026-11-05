@@ -58,12 +58,15 @@ theorem stateLaw_ae_annulus (μ : Measure ℂ) [IsProbabilityMeasure μ]
     (i := t)).eventually hmatrix
 
 theorem code_pair_converse (μ : Measure ℂ) [IsProbabilityMeasure μ]
-    {L U P : ℝ} (hL : 0 < L) (hU : 0 ≤ U) (hP : 0 ≤ P)
+    {L U P : ℝ} (hL : 0 < L) (hP : 0 ≤ P)
     (hμ : ∀ᵐ z ∂μ, L ≤ ‖z‖ ∧ ‖z‖ ≤ U)
     {K n : ℕ} (c : Code K n) (hc : PowerAdmissible μ P c)
     (i j : Fin K) (hij : i ≠ j) :
     (1 - error μ c) * (Real.log (c.messages i) + Real.log (c.messages j)) ≤
       (n : ℝ) * Real.log (1 + U ^ 2 * P / converseNoise L U) + 2 * Real.log 2 := by
+  have hU : 0 ≤ U := by
+    obtain ⟨z, hz⟩ := hμ.exists
+    exact (norm_nonneg z).trans hz.2
   let e := converseNoise L U
   let t := e + U ^ 2 * P
   have he : 0 < e := converseNoise_pos hL
@@ -74,7 +77,7 @@ theorem code_pair_converse (μ : Measure ℂ) [IsProbabilityMeasure μ]
     filter_upwards [hstate] with H hh
     exact ⟨fun s ↦ (hh s i i).2, fun s ↦ (hh s i j).2⟩
   have hienergy := integrable_messageAverage μ c (fun m H ↦ pairEnergy c H i j m)
-    (integrable_pairEnergy μ c hc hU i j hij hupper)
+    (integrable_pairEnergy μ c hc i j hij hupper)
   have hierror (k : Fin K) := integrable_messageAverage μ c
     (fun m H ↦ receiverErrorAt c m H k) (fun m ↦ integrable_receiverErrorAt μ c m k)
   have herror (k : Fin K) :
@@ -83,7 +86,7 @@ theorem code_pair_converse (μ : Measure ℂ) [IsProbabilityMeasure μ]
     exact average_receiverErrorAt_le_error μ c k
   have henergy : (∫ H, ∫ m, pairEnergy c H i j m ∂messageLaw c ∂stateLaw μ K n) ≤
       2 * n * (t - e) := by
-    convert integral_pairEnergy_le μ c hc hU i j hij hupper using 1
+    convert integral_pairEnergy_le μ c hc i j hij hupper using 1
     dsimp [t]
     ring
   have hpointwise : ∀ᵐ H ∂stateLaw μ K n,

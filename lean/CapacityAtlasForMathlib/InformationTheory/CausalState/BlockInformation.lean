@@ -59,7 +59,7 @@ theorem latentExtension_relabel_eq_block (state : FiniteDistribution S)
   ring
 
 /-- Every causal encoder family obeys the strategy-channel block information bound. -/
-theorem block_mutualInformation_le [Nonempty X] (state : FiniteDistribution S)
+theorem block_mutualInformation_le (state : FiniteDistribution S)
     (channels : S → FiniteChannel X Y) (n : ℕ)
     (encode : M → CausalState.Policy S X n) (input : FiniteDistribution M) :
     ((CausalState.blockChannel state channels n).encoded encode).mutualInformation input ≤

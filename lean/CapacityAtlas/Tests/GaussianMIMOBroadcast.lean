@@ -26,8 +26,7 @@ theorem gaussianMIMOBroadcast_zero_channel {K tx : ℕ} {rx : Fin K → ℕ}
     Gaussian.MIMOBroadcast.capacityRegion W.channelMatrix W.noiseCovariance W.totalPower =
       Gaussian.MIMOBroadcast.region W.channelMatrix W.noiseCovariance W.totalPower := by
   rw [hH]
-  exact Gaussian.MIMOBroadcast.capacityRegion_eq_region_zero_channel _
-    W.noiseCovariance_posDef W.totalPower_nonnegative
+  exact Gaussian.MIMOBroadcast.capacityRegion_eq_region_zero_channel _ W.totalPower_nonnegative
 
 private def constantDecoder {Observation : Type*} [MeasurableSpace Observation]
     {messages : ℕ} (m : Fin messages) : Gaussian.Decoder Observation messages where

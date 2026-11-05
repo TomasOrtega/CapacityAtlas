@@ -82,12 +82,17 @@ variable {rx : Fin K → ℕ}
 
 include e horder hdesc
 
+omit e horder in
 theorem gaussianStages_jointBad_eq_terminal (i : Fin K) :
     let D := gaussianStages H N Q hQ π order n L T hT
     ((sequenceReferenceLaw (fun j ↦ (D j).referenceKernel) initial i.val) ⊗ₘ (D i.val).target)
       (D i.val).goodᶜ = (blockLayerLaw Q π n)
         {x | ENNReal.ofReal (T i.val) < blockLayerStateLikelihood
           (H (π (order i.val))) (N (π (order i.val))) Q π (order i.val) n x} := by
+  let f : Fin K → Fin K := fun j ↦ order j.val
+  have hinj : Function.Injective f := (show StrictAnti f from hdesc).injective
+  let e : Equiv.Perm (Fin K) := Equiv.ofBijective f ⟨hinj, Finite.surjective_of_injective hinj⟩
+  have horder (j : Fin K) : order j.val = e j := rfl
   let D := gaussianStages H N Q hQ π order n L T hT
   let E : Set (LayerBlocks K tx n) :=
     {x | ENNReal.ofReal (T i.val) < blockLayerStateLikelihood
@@ -115,6 +120,7 @@ theorem gaussianStages_jointBad_eq_terminal (i : Fin K) :
     (hdesc i ⟨j, hjK⟩ (by exact Nat.lt_of_succ_le hij))]
   rfl
 
+omit e horder in
 theorem gaussianStages_failure_le_terminal :
     let D := gaussianStages H N Q hQ π order n L T hT
     sequenceSampleLaw (fun j ↦ (D j).sampleLaw) K
@@ -132,7 +138,7 @@ theorem gaussianStages_failure_le_terminal :
   intro i _
   congr 1
   unfold RejectionStage.failureBound
-  rw [gaussianStages_jointBad_eq_terminal H N Q hQ π order e horder hdesc n L T hT initial i]
+  rw [gaussianStages_jointBad_eq_terminal H N Q hQ π order hdesc n L T hT initial i]
   simp only [gaussianStages, gaussianRejectionStage, neg_mul]
 
 omit e horder in

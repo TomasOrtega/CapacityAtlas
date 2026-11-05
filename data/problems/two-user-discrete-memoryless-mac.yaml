@@ -4,7 +4,7 @@ id: two-user-discrete-memoryless-mac
 title: Two-user discrete memoryless multiple-access channel
 abbreviation: DM-MAC
 status: solved
-updated: '2026-10-11'
+updated: '2026-11-05'
 summary: Two independent senders communicate to one receiver through a finite memoryless channel.
 tags:
   model: [multiple-access]
@@ -48,10 +48,11 @@ formalization:
     kind: exact-capacity
     category: solved
     formal_status: proved
-    version: 1
+    version: 2
     description: The complete average-error capacity region with separate deterministic encoders equals the three single-letter inequalities over arbitrary finite time sharing, including boundary rates and zero-rate axes.
   notes: The local proof uses separate random codebooks and a fixed time-sharing schedule. Three Fano bounds
     share one time coordinate; compactness handles boundary rates. The region allows arbitrary finite Q.
+    The version 2 theorem also covers empty input alphabets, without separate nonemptiness assumptions.
   files:
   - path: lean/CapacityAtlasForMathlib/InformationTheory/MultipleAccess.lean
     declaration: CapacityAtlas.MultipleAccess.BlockCode
