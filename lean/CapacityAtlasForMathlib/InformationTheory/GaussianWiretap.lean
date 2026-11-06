@@ -35,23 +35,29 @@ noncomputable def wiretapError (N : ℝ) {n : ℕ} (c : WiretapCode n) : ℝ :=
   (c.messages * c.seeds : ℝ)⁻¹ * ∑ m, ∑ seed,
     ((noise N n) {z | c.decode.apply (fun t ↦ c.encode m seed t + z t) ≠ m}).toReal
 
-/-- Eavesdropper output-block density for a fixed message, averaged over encoder seeds. -/
+/-- For `0 < N`, the eavesdropper output's Lebesgue density conditional on a fixed message,
+averaged uniformly over encoder seeds. Values at `N ≤ 0` are only totalized formula values. -/
 noncomputable def wiretapConditionalDensity (N : ℝ) {n : ℕ} (c : WiretapCode n)
     (m : Fin c.messages) (z : Fin n → ℝ) : ℝ :=
   (c.seeds : ℝ)⁻¹ * ∑ seed, ∏ t, gaussianPDFReal (c.encode m seed t) N.toNNReal (z t)
 
-/-- Eavesdropper output-block density averaged uniformly over messages and encoder seeds. -/
+/-- For `0 < N`, the eavesdropper output's Lebesgue density averaged uniformly over messages
+and encoder seeds. Values at `N ≤ 0` are only totalized formula values. -/
 noncomputable def wiretapOutputDensity (N : ℝ) {n : ℕ} (c : WiretapCode n)
     (z : Fin n → ℝ) : ℝ :=
   (c.messages : ℝ)⁻¹ * ∑ m, wiretapConditionalDensity N c m z
 
-/-- Unnormalized I(M;Z^n) in bits. No division by blocklength. -/
+/-- Density formula for unnormalized `I(M; Z^n)` in bits, valid for `0 < N`.
+There is no division by blocklength. At `N ≤ 0` and positive blocklength, the densities
+and this formula are zero; this value must not be used as noiseless mutual information. -/
 noncomputable def wiretapLeakage (N : ℝ) {n : ℕ} (c : WiretapCode n) : ℝ :=
   ((c.messages : ℝ)⁻¹ * ∑ m,
     ∫ z : Fin n → ℝ, wiretapConditionalDensity N c m z *
       Real.log (wiretapConditionalDensity N c m z / wiretapOutputDensity N c z)) / Real.log 2
 
-/-- Operational secrecy capacity with vanishing decoding error and unnormalized message leakage. -/
+/-- Operational secrecy capacity for `0 < N₁` and `0 < N₂`, with vanishing decoding error
+and unnormalized message leakage. At `N₂ ≤ 0`, the density-based leakage criterion is
+outside its intended domain. -/
 noncomputable def wiretapCapacity (P N₁ N₂ : ℝ) : ℝ :=
   Operational.capacity WiretapCode (fun _ c ↦ MessageSeedPowerAdmissible P c)
     (fun _ c ↦ max (wiretapError N₁ c) (wiretapLeakage N₂ c))
