@@ -3,7 +3,7 @@
 id: gaussian-wiretap-channel
 title: Degraded Gaussian wiretap channel
 status: solved
-updated: '2026-09-14'
+updated: '2026-11-05'
 summary: A Gaussian receiver has a lower noise variance than the eavesdropper, yielding a closed-form
   secrecy capacity.
 tags:
@@ -22,7 +22,7 @@ tags:
 model:
   input: \(X\in\mathbb R\) with average power \(P\).
   output: \(Y=X+N_1\) and \(Z=X+N_2\).
-  law: Gaussian noise variances satisfy \(\sigma_1^2<\sigma_2^2\).
+  law: Gaussian noise variances satisfy \(0<\sigma_1^2<\sigma_2^2\).
   assumptions:
   - The eavesdropper channel is degraded.
   - For every message m and every private seed s, sum_t x_t(m,s)^2 <= n P. This constraint is not averaged

@@ -36,3 +36,4 @@ import CapacityAtlas.Tests.GaussianMIMOBroadcast
 import CapacityAtlas.Tests.GaussianMIMOBroadcastRegion
 import CapacityAtlas.Tests.WirelessTransport
 import CapacityAtlas.Tests.GaussianInterference
+import CapacityAtlas.Tests.GaussianWiretap
